@@ -1,0 +1,5 @@
+{
+  "gpu-rtx3060-12gb": ["rtx 3060 12g", "3060 12gb", "rtx3060 12go", "rtx 3060 ventus 12gb"],
+  "cpu-r5-5600": ["ryzen 5 5600", "r5 5600", "5600 box"],
+  "cooler-h212-v3": ["hyper 212 spectrum v3", "hyper 212 v3", "cooler master 212"]
+}

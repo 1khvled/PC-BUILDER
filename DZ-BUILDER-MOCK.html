@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DZ PartPicker — Builder</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui']},colors:{ink:'#0f172a',brand:'#0a58ca',mint:'#e7f6ec'}}}}</script>
+<style>body{font-family:Inter,system-ui;background:#eef1f5} .card{box-shadow:0 1px 2px rgba(15,23,42,.06),0 8px 24px -12px rgba(15,23,42,.18)} .rowline{border-top:1px solid #e8edf3} .rowline:hover{background:#f7fafd} .pill{font-size:11px;padding:2px 8px;border-radius:999px;font-weight:600} .btn-choose{background:#0a58ca;color:#fff;font-weight:600;font-size:13px;padding:7px 14px;border-radius:8px} .btn-choose:hover{background:#0849a8} .thumb{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#e8eef7,#f7f9fc);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #e2e8f0} table{border-collapse:separate;border-spacing:0}</style>
+</head>
+<body class="text-slate-900">
+<!-- top header -->
+<div class="bg-white border-b">
+<div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+<div class="flex items-center gap-2"><div class="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold">DZ</div><div class="leading-tight"><div class="font-extrabold tracking-tight">DZ PartPicker</div><div class="text-[11px] text-slate-500 -mt-0.5">Pick parts • Build your PC • Compare</div></div></div>
+<div class="hidden md:flex flex-1 max-w-md ml-4"><div class="flex w-full bg-slate-100 rounded-lg overflow-hidden border"><input class="flex-1 bg-transparent px-3 py-2 text-sm outline-none" placeholder="Rechercher RTX 3060, Ryzen 5 5600..."><button class="px-4 text-sm font-semibold bg-slate-900 text-white">Search</button></div></div>
+<div class="ml-auto flex items-center gap-2 text-sm">
+<select class="border rounded-lg px-2 py-1.5 text-sm bg-white"><option>Alger (16)</option><option>Sétif (19)</option><option>Oran (31)</option><option>Toute l'Algérie</option></select>
+<button class="px-3 py-1.5 rounded-lg border font-medium">Log In</button>
+<button class="px-3 py-1.5 rounded-lg bg-slate-900 text-white font-semibold">Register</button>
+</div>
+</div>
+<div class="max-w-6xl mx-auto px-4 pb-2 flex gap-5 text-sm font-medium text-slate-600">
+<a class="text-slate-900 font-bold border-b-2 border-slate-900 pb-1" href="#">Builder</a><a href="#">Products</a><a href="#">Guides</a><a href="#">Completed Builds</a><a href="#">Trends</a><a href="#" class="ml-auto text-slate-400">FR / عربية</a>
+</div>
+</div>
+
+<main class="max-w-6xl mx-auto px-4 py-5">
+<div class="flex items-end justify-between flex-wrap gap-2">
+<div><h1 class="text-[26px] font-extrabold tracking-tight">Choose Your Parts</h1><p class="text-sm text-slate-500">Prix les plus bas en Algérie • mis à jour il y a 2h • 58 wilayas</p></div>
+<div class="flex gap-2 text-xs"><button class="px-3 py-1.5 bg-white border rounded-lg">Copy Permalink</button><button class="px-3 py-1.5 bg-white border rounded-lg">History</button><button class="px-3 py-1.5 bg-slate-900 text-white rounded-lg font-semibold">Copier le build</button></div>
+</div>
+
+<!-- compat bar -->
+<div class="mt-3 card bg-white rounded-xl overflow-hidden">
+<div class="flex flex-wrap items-center gap-3 px-4 py-2.5 bg-mint border-b border-emerald-100 text-sm">
+<span class="flex items-center gap-2 font-semibold text-emerald-800"><span class="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs">✓</span> Compatibility : no issues found <a class="underline font-normal" href="#">details</a></span>
+<span class="ml-auto text-slate-700">Estimated Wattage : <b>412W</b> <span class="text-slate-400">•</span> <span class="text-slate-500">PSU conseillée 650W+</span></span>
+</div>
+
+<div class="overflow-x-auto"><table class="w-full text-sm min-w-[980px]">
+<thead><tr class="text-[11px] uppercase tracking-wide text-slate-400">
+<th class="text-left font-semibold px-4 py-2.5 w-[130px]">Component</th><th class="text-left font-semibold px-2 py-2.5">Selection</th><th class="text-right font-semibold px-2 py-2.5">Base</th><th class="text-right font-semibold px-2 py-2.5">Livraison</th><th class="text-right font-semibold px-2 py-2.5">Dispo</th><th class="text-right font-semibold px-2 py-2.5">Price</th><th class="text-left font-semibold px-4 py-2.5 w-[210px]">Where</th><th class="w-[40px]"></th>
+</tr></thead>
+<tbody id="rows">
+<tr class="rowline"><td class="px-4 py-3 font-semibold text-slate-700">CPU</td>
+<td class="px-2 py-3"><div class="flex gap-3 items-center"><div class="thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.8"><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3"/></svg></div><div><div class="font-semibold">AMD Ryzen 5 5600 3.5 GHz 6-Core</div><div class="text-xs text-slate-500">AM4 • 65W • DDR4</div></div></div></td>
+<td class="px-2 py-3 text-right text-slate-500">24 500 DA</td><td class="px-2 py-3 text-right text-slate-500">58 wilayas</td><td class="px-2 py-3 text-right"><span class="pill bg-emerald-100 text-emerald-700">En stock</span></td><td class="px-2 py-3 text-right font-bold">24 500 DA</td>
+<td class="px-4 py-3"><a class="text-brand font-medium hover:underline" href="#">LICB+ · Alger</a><div class="text-xs text-slate-400">+2 offres dès 23 900 DA</div></td><td class="pr-3 text-right"><button onclick="rm(this)" class="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></td></tr>
+
+<tr class="rowline"><td class="px-4 py-3 font-semibold text-slate-700">CPU Cooler</td>
+<td class="px-2 py-3"><div class="flex gap-3 items-center"><div class="thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></svg></div><div><div class="font-semibold">Cooler Master Hyper 212 Spectrum V3</div><div class="text-xs text-slate-500">158 mm • AM4 / AM5 / LGA1700</div></div></div></td>
+<td class="px-2 py-3 text-right text-slate-500">5 900 DA</td><td class="px-2 py-3 text-right text-slate-500">Alger</td><td class="px-2 py-3 text-right"><span class="pill bg-emerald-100 text-emerald-700">En stock</span></td><td class="px-2 py-3 text-right font-bold">5 900 DA</td>
+<td class="px-4 py-3"><a class="text-brand font-medium hover:underline" href="#">Digitec · Alger-Centre</a></td><td class="pr-3 text-right"><button onclick="rm(this)" class="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></td></tr>
+
+<tr class="rowline"><td class="px-4 py-3 font-semibold text-slate-700">Motherboard</td>
+<td class="px-2 py-3"><div class="flex gap-3 items-center"><div class="thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="9" r="1.4"/><path d="M14 8h3M14 12h3M8 15h8"/></svg></div><div><div class="font-semibold">MSI B550M-A Pro</div><div class="text-xs text-slate-500">AM4 • DDR4 • mATX • 2× M.2</div></div></div></td>
+<td class="px-2 py-3 text-right text-slate-500">19 800 DA</td><td class="px-2 py-3 text-right text-slate-500">58 wilayas</td><td class="px-2 py-3 text-right"><span class="pill bg-emerald-100 text-emerald-700">En stock</span></td><td class="px-2 py-3 text-right font-bold">19 800 DA</td>
+<td class="px-4 py-3"><a class="text-brand font-medium hover:underline" href="#">Click-DZ · Alger</a></td><td class="pr-3 text-right"><button onclick="rm(this)" class="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></td></tr>
+
+<tr class="rowline"><td class="px-4 py-3 font-semibold text-slate-700">Memory</td>
+<td class="px-2 py-3"><div class="flex gap-3 items-center"><div class="thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.8"><rect x="3" y="8" width="18" height="8" rx="1.5"/><path d="M6 11v2M10 11v2M14 11v2M18 11v2"/></svg></div><div><div class="font-semibold">Corsair Vengeance LPX 16GB DDR4-3200</div><div class="text-xs text-slate-500">2× 8GB • CL16</div></div></div></td>
+<td class="px-2 py-3 text-right text-slate-500">11 200 DA</td><td class="px-2 py-3 text-right text-slate-500">—</td><td class="px-2 py-3 text-right"><span class="pill bg-emerald-100 text-emerald-700">En stock</span></td><td class="px-2 py-3 text-right font-bold">11 200 DA</td>
+<td class="px-4 py-3"><a class="text-brand font-medium hover:underline" href="#">WifiDjelfa · Djelfa</a></td><td class="pr-3 text-right"><button onclick="rm(this)" class="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></td></tr>
+
+<tr class="rowline"><td class="px-4 py-3 font-semibold text-slate-700">Storage</td>
+<td class="px-2 py-3"><div class="flex gap-3 items-center"><div class="thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.8"><rect x="5" y="9" width="14" height="7" rx="1.5"/><circle cx="9" cy="12.5" r="1"/></svg></div><div><div class="font-semibold">Samsung 970 Evo Plus 1TB NVMe</div><div class="text-xs text-slate-500">M.2 • 3 500 MB/s</div></div></div></td>
+<td class="px-2 py-3 text-right text-slate-500">14 500 DA</td><td class="px-2 py-3 text-right text-slate-500">58 wilayas</td><td class="px-2 py-3 text-right"><span class="pill bg-emerald-100 text-emerald-700">En stock</span></td><td class="px-2 py-3 text-right font-bold">14 500 DA</td>
+<td class="px-4 py-3"><a class="text-brand font-medium hover:underline" href="#">LICB+ · Alger</a></td><td class="pr-3 text-right"><button onclick="rm(this)" class="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></td></tr>
+
+<tr class="rowline bg-amber-50/60"><td class="px-4 py-3 font-semibold text-slate-700">Video Card</td>
+<td class="px-2 py-3"><div class="flex gap-3 items-center"><div class="thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.8"><rect x="2" y="8" width="20" height="8" rx="2"/><circle cx="8" cy="12" r="1.6"/><circle cx="16" cy="12" r="1.6"/></svg></div><div><div class="font-semibold">MSI RTX 3060 Ventus 2X 12GB OC <span class="pill bg-amber-100 text-amber-800 ml-1">Best price</span></div><div class="text-xs text-slate-500">235 mm • 170W • 1× 8-pin • Neuf</div></div></div></td>
+<td class="px-2 py-3 text-right text-slate-500">89 000 DA</td><td class="px-2 py-3 text-right text-slate-500">Cash à la livraison</td><td class="px-2 py-3 text-right"><span class="pill bg-blue-100 text-blue-700">Ouedkniss · Neuf</span></td><td class="px-2 py-3 text-right font-bold">89 000 DA</td>
+<td class="px-4 py-3"><a class="text-brand font-medium hover:underline" href="#">KOTEK · Draria</a><div class="text-xs text-slate-400">Magasin 94 500 DA • Occasion dès 78 000 DA</div></td><td class="pr-3 text-right"><button onclick="rm(this)" class="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></td></tr>
+
+<tr class="rowline"><td class="px-4 py-3 font-semibold text-slate-700">Case</td>
+<td class="px-2 py-3"><div class="flex gap-3 items-center"><div class="thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.8"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6"/></svg></div><div><div class="font-semibold">Raidmax V217 Mid Tower</div><div class="text-xs text-slate-500">GPU max 350 mm • ATX / mATX</div></div></div></td>
+<td class="px-2 py-3 text-right text-slate-500">8 500 DA</td><td class="px-2 py-3 text-right text-slate-500">Alger</td><td class="px-2 py-3 text-right"><span class="pill bg-emerald-100 text-emerald-700">En stock</span></td><td class="px-2 py-3 text-right font-bold">8 500 DA</td>
+<td class="px-4 py-3"><a class="text-brand font-medium hover:underline" href="#">Digitec · Alger</a></td><td class="pr-3 text-right"><button onclick="rm(this)" class="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></td></tr>
+
+<tr class="rowline"><td class="px-4 py-3 font-semibold text-slate-700">Power Supply</td>
+<td class="px-2 py-3"><div class="flex gap-3 items-center"><div class="thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="1.8"><rect x="3" y="8" width="18" height="9" rx="2"/><path d="M7 8V5h10v3M7 12h4"/></svg></div><div><div class="font-semibold">Cooler Master MWE 650 Bronze V2</div><div class="text-xs text-slate-500">650W • 80+ Bronze • +238W headroom</div></div></div></td>
+<td class="px-2 py-3 text-right text-slate-500">13 900 DA</td><td class="px-2 py-3 text-right text-slate-500">58 wilayas</td><td class="px-2 py-3 text-right"><span class="pill bg-emerald-100 text-emerald-700">En stock</span></td><td class="px-2 py-3 text-right font-bold">13 900 DA</td>
+<td class="px-4 py-3"><a class="text-brand font-medium hover:underline" href="#">Click-DZ · Alger</a></td><td class="pr-3 text-right"><button onclick="rm(this)" class="w-7 h-7 rounded-lg hover:bg-slate-100 text-slate-400">✕</button></td></tr>
+
+<tr class="rowline"><td class="px-4 py-3 font-semibold text-blue-700">Monitor</td>
+<td class="px-2 py-3 text-slate-400">MSI MAG 255F E20 25" 200Hz — dès 32 500 DA</td>
+<td colspan="5"></td>
+<td class="px-4 py-3"><button class="btn-choose">+ Choose</button></td><td></td></tr>
+</tbody>
+</table></div>
+
+<!-- sticky total -->
+<div class="flex flex-wrap items-center gap-3 px-4 py-3 bg-slate-900 text-white rounded-b-xl">
+<div class="text-sm text-slate-300">8 pièces • <span class="text-white font-semibold" id="total">187 300 DA</span> <span class="text-slate-400">≈ $1 420</span></div>
+<div class="ml-auto flex gap-2 text-sm"><button class="px-3 py-1.5 rounded-lg bg-white/10">Markup: PCPP / Reddit / HTML</button><button class="px-4 py-1.5 rounded-lg bg-emerald-500 font-bold">Copier le lien du build</button></div>
+</div>
+</div>
+<p class="text-xs text-slate-400 mt-3">Clone visuel de pcpartpicker.com/list — colonnes US (Base / Promo / Shipping / Tax) remplacées par (Prix / Livraison 58 wilayas / Dispo / Où). Occasion séparée du neuf. Sponsorisé : badge, max 3, jamais dans le tri prix.</p>
+</main>
+<script>
+const PRICES=[24500,5900,19800,11200,14500,89000,8500,13900];
+function rm(b){const tr=b.closest('tr');const i=[...document.querySelectorAll('#rows tr')].indexOf(tr);tr.remove();PRICES.splice(i,1);document.getElementById('total').textContent=PRICES.reduce((a,c)=>a+c,0).toLocaleString('fr-DZ').replace(/,/g,' ')+' DA';}
+</script>
+</body></html>
