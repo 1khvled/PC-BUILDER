@@ -274,7 +274,7 @@ export default function BuilderPage() {
           </div>
           <div className="text-right text-xs text-slate-500">
             <div>Date : {new Date().toLocaleDateString("fr-DZ")}</div>
-            <div className="font-mono text-[10px] text-slate-400">dz-partpicker.dz/builder</div>
+            <div className="text-[10px] text-slate-400">dz-partpicker.dz/builder</div>
           </div>
         </div>
       </div>
@@ -286,7 +286,7 @@ export default function BuilderPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
               System Builder
             </h1>
-            <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-blue-100 text-[#0b63e5] border border-blue-200">
+            <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-blue-100 text-[#2c87c3] border border-blue-200">
               Configurateur PC
             </span>
           </div>
@@ -299,7 +299,7 @@ export default function BuilderPage() {
         <div className="flex items-center gap-2 text-xs">
           <button
             onClick={handleCopyLink}
-            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded-lg font-semibold shadow-2xs transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5]"
+            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded font-semibold transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
             title="Copier le lien partageable qui restaure cette sélection"
           >
             <svg className="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -312,7 +312,7 @@ export default function BuilderPage() {
           {/* Print-friendly export button next to Copier */}
           <button
             onClick={handlePrint}
-            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded-lg font-semibold shadow-2xs transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5]"
+            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded font-semibold transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
             title="Imprimer ou enregistrer en PDF (fiche optimisée pour impression)"
           >
             <svg className="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -325,13 +325,13 @@ export default function BuilderPage() {
 
           <button
             onClick={handleLoadDefault}
-            className="hidden sm:inline-flex px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg font-medium shadow-2xs transition-colors"
+            className="hidden sm:inline-flex px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded font-medium transition-colors"
           >
             Exemple Gamer
           </button>
           <button
             onClick={handleReset}
-            className="px-3 py-2 bg-white border border-slate-200 hover:text-red-600 hover:border-red-200 text-slate-600 rounded-lg font-medium shadow-2xs transition-colors"
+            className="px-3 py-2 bg-white border border-slate-200 hover:text-red-600 hover:border-red-200 text-slate-600 rounded font-medium transition-colors"
           >
             Réinitialiser
           </button>
@@ -339,7 +339,7 @@ export default function BuilderPage() {
       </div>
 
       {/* Progression de la configuration — clarté immédiate */}
-      <div className="mt-4 bg-white rounded-xl border border-slate-200 px-4 py-3 shadow-xs print:hidden">
+      <div className="mt-4 bg-white rounded border border-slate-200 px-4 py-3 print:hidden">
         <div className="flex items-center justify-between gap-3 text-xs font-semibold">
           <span className="text-slate-700">
             {selectedCount} sur {CATEGORIES.length} composants sélectionnés
@@ -348,7 +348,7 @@ export default function BuilderPage() {
         </div>
         <div className="mt-2 h-2 rounded-full bg-slate-100 overflow-hidden" role="progressbar" aria-valuenow={selectedCount} aria-valuemin={0} aria-valuemax={CATEGORIES.length} aria-label="Progression de la configuration">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-[#0b63e5] to-emerald-500 transition-all"
+            className="h-full rounded-full bg-[#2c87c3]"
             style={{ width: `${(selectedCount / CATEGORIES.length) * 100}%` }}
           />
         </div>
@@ -358,7 +358,7 @@ export default function BuilderPage() {
       <div
         role="status"
         aria-live="polite"
-        className={`mt-3 rounded-xl border p-3.5 sm:p-4 text-sm transition-all shadow-xs print:border-slate-300 print:bg-white ${
+        className={`mt-3 rounded border p-3.5 sm:p-4 text-sm transition-colors print:border-slate-300 print:bg-white ${
           result.ok
             ? "bg-[#e7f6ec] border-emerald-200 text-emerald-950"
             : "bg-red-50 border-red-200 text-red-950"
@@ -388,7 +388,7 @@ export default function BuilderPage() {
         </div>
 
         {result.warnings.length > 0 && (
-          <ul className="mt-3 text-xs bg-red-100/60 border border-red-200 rounded-lg p-3 list-disc pl-6 space-y-1 text-red-900 font-medium print:bg-white">
+          <ul className="mt-3 text-xs bg-red-100/60 border border-red-200 rounded p-3 list-disc pl-6 space-y-1 text-red-900 font-medium print:bg-white">
             {result.warnings.map((w, i) => (
               <li key={i}>{w}</li>
             ))}
@@ -397,7 +397,7 @@ export default function BuilderPage() {
       </div>
 
       {/* Main PCPartPicker System Builder Table */}
-      <div className="bg-white rounded-xl shadow-xs border border-slate-200 mt-4 overflow-hidden print:border-slate-300">
+      <div className="bg-white rounded border border-slate-200 mt-4 overflow-hidden print:border-slate-300">
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[860px] border-collapse">
             <thead className="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200 select-none print:bg-slate-100 print:text-slate-700">
@@ -419,12 +419,12 @@ export default function BuilderPage() {
                 return (
                   <tr
                     key={cat.slug}
-                    className={`rowline transition-colors group print:hover:bg-transparent ${product ? "" : "bg-amber-50/40"} hover:bg-blue-50/40`}
+                    className={`transition-colors group print:hover:bg-transparent ${product ? "" : "bg-amber-50/40"} hover:bg-blue-50/40`}
                   >
                     {/* Component Column */}
                     <td className="px-4 py-3.5 align-top">
                       <div className="flex items-center gap-2">
-                        <span className="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-[#0b63e5] group-hover:text-white flex items-center justify-center text-slate-600 transition-colors shrink-0 print:border print:border-slate-200 text-xs font-bold" aria-hidden="true">
+                        <span className="w-7 h-7 rounded bg-slate-100 group-hover:bg-[#2c87c3] group-hover:text-white flex items-center justify-center text-slate-600 transition-colors shrink-0 print:border print:border-slate-200 text-xs font-bold" aria-hidden="true">
                           {product ? <CategoryIcon slug={cat.slug} /> : <span>{catIdx + 1}</span>}
                         </span>
                         <span className="font-bold text-slate-800 text-xs sm:text-sm">
@@ -441,7 +441,7 @@ export default function BuilderPage() {
                           <div className="min-w-0">
                             <Link
                               href={`/product/${product.id}`}
-                              className="font-bold text-sm text-[#0b63e5] hover:text-[#084db8] hover:underline truncate block print:text-slate-900"
+                              className="font-bold text-sm text-[#2c87c3] hover:text-[#1e5c85] hover:underline truncate block print:text-slate-900"
                             >
                               {product.brand} {product.model}
                             </Link>
@@ -450,7 +450,7 @@ export default function BuilderPage() {
                         </div>
                       ) : (
                         <div className="flex items-center gap-3 py-1">
-                          <div className="w-10 h-10 rounded-lg border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-400 print:hidden">
+                          <div className="w-10 h-10 rounded border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-400 print:hidden">
                             <CategoryIcon slug={cat.slug} />
                           </div>
                           <span className="text-slate-400 text-xs italic">
@@ -463,7 +463,7 @@ export default function BuilderPage() {
                     {/* Price Column */}
                     <td className="px-4 py-3.5 text-right align-top">
                       {best ? (
-                        <div className="font-extrabold text-sm sm:text-base text-slate-900 tabular-nums anim-in font-mono">
+                        <div className="font-extrabold text-sm sm:text-base text-slate-900 tabular-nums">
                           {best.priceDa.toLocaleString("fr-DZ")} DA
                         </div>
                       ) : (
@@ -479,7 +479,7 @@ export default function BuilderPage() {
                             href={best.url}
                             target="_blank"
                             rel="noreferrer"
-                            className="font-semibold text-[#0b63e5] hover:underline block truncate print:text-slate-900"
+                            className="font-semibold text-[#2c87c3] hover:underline block truncate print:text-slate-900"
                           >
                             {best.store} · {best.wilaya}
                           </a>
@@ -500,7 +500,7 @@ export default function BuilderPage() {
                       ) : (
                         <button
                           onClick={() => setActiveModalCat(cat.slug)}
-                          className="px-3.5 py-1.5 rounded-lg bg-[#0b63e5] hover:bg-[#094db5] text-white font-bold text-xs transition-colors shadow-2xs print:hidden"
+                          className="px-3.5 py-1.5 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white font-bold text-xs transition-colors print:hidden"
                         >
                           + Choisir
                         </button>
@@ -513,14 +513,14 @@ export default function BuilderPage() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setActiveModalCat(cat.slug)}
-                            className="px-2 py-1 text-[11px] font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] transition-colors"
+                            className="px-2 py-1 text-[11px] font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors"
                             title="Changer de composant"
                           >
                             Changer
                           </button>
                           <button
                             onClick={() => handleRemovePart(cat.slug)}
-                            className="w-7 h-7 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                            className="w-7 h-7 rounded text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                             title="Retirer de la configuration"
                             aria-label={`Retirer ${cat.label}`}
                           >
@@ -530,7 +530,7 @@ export default function BuilderPage() {
                       ) : (
                         <button
                           onClick={() => setActiveModalCat(cat.slug)}
-                          className="text-[#0b63e5] hover:text-[#084db8] hover:underline underline-offset-4 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] rounded"
+                          className="text-[#2c87c3] hover:text-[#1e5c85] hover:underline underline-offset-4 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] rounded"
                         >
                           + Ajouter
                         </button>
@@ -551,7 +551,7 @@ export default function BuilderPage() {
             </span>
             <span
               key={total}
-              className="text-xl sm:text-2xl font-black tracking-tight text-white print:text-slate-900 tabular-nums anim-in font-mono"
+              className="text-xl sm:text-2xl font-black tracking-tight text-white print:text-slate-900 tabular-nums"
             >
               {total.toLocaleString("fr-DZ")} DA
             </span>
@@ -566,7 +566,7 @@ export default function BuilderPage() {
           <div className="flex items-center gap-2 text-xs font-semibold ml-auto print:hidden">
             <button
               onClick={handlePrint}
-              className="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold transition-colors flex items-center gap-1.5"
+              className="px-3.5 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold transition-colors flex items-center gap-1.5"
               title="Imprimer ou enregistrer en PDF"
             >
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -579,7 +579,7 @@ export default function BuilderPage() {
 
             <button
               onClick={handleCopyLink}
-              className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white font-bold transition-colors shadow-sm flex items-center gap-1.5"
+              className="px-4 py-2 rounded bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white font-bold transition-colors shadow-sm flex items-center gap-1.5"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
@@ -597,8 +597,8 @@ export default function BuilderPage() {
 
       {/* Component Picker Modal */}
       {activeModalCat && (
-        <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 anim-in print:hidden" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
-          <div role="dialog" aria-modal="true" aria-label={`Choisir un composant : ${CATEGORIES.find((c) => c.slug === activeModalCat)?.label ?? activeModalCat}`} className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50 print:hidden" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
+          <div role="dialog" aria-modal="true" aria-label={`Choisir un composant : ${CATEGORIES.find((c) => c.slug === activeModalCat)?.label ?? activeModalCat}`} className="bg-white rounded w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden" onClick={(e) => e.stopPropagation()}>
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-slate-50/80">
               <div>
@@ -614,7 +614,7 @@ export default function BuilderPage() {
                   setActiveModalCat(null);
                   setModalSearch("");
                 }}
-                className="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold"
+                className="w-8 h-8 rounded hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold"
               >
                 ✕
               </button>
@@ -627,7 +627,7 @@ export default function BuilderPage() {
                 value={modalSearch}
                 onChange={(e) => setModalSearch(e.target.value)}
                 placeholder="Filtrer par marque, modèle…"
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-800 outline-none focus:border-[#0b63e5] focus:bg-white"
+                className="w-full bg-slate-50 border border-slate-200 rounded px-3 py-2 text-xs text-slate-800 outline-none focus:border-[#2c87c3] focus:bg-white"
                 autoFocus
               />
             </div>
@@ -647,7 +647,7 @@ export default function BuilderPage() {
                   return (
                     <div
                       key={product.id}
-                      className={`p-3 rounded-xl flex items-center gap-3 transition-colors ${
+                      className={`p-3 rounded flex items-center gap-3 transition-colors ${
                         isCurrent ? "bg-blue-50/80 border border-blue-200" : "hover:bg-slate-50"
                       }`}
                     >
@@ -660,7 +660,7 @@ export default function BuilderPage() {
                         <div className="text-xs text-slate-500 mt-1">
                           {best ? (
                             <span>
-                              dès <b className="text-emerald-700 font-bold font-mono">{best.priceDa.toLocaleString("fr-DZ")} DA</b> chez {best.store} ({best.wilaya})
+                              dès <b className="text-emerald-700 font-bold">{best.priceDa.toLocaleString("fr-DZ")} DA</b> chez {best.store} ({best.wilaya})
                             </span>
                           ) : (
                             <span className="text-slate-400 italic">Pas d&apos;offre indexée</span>
@@ -669,10 +669,10 @@ export default function BuilderPage() {
                       </div>
                       <button
                         onClick={() => handleSelectPart(activeModalCat, product.id)}
-                        className={`px-3.5 py-1.5 rounded-lg text-xs font-bold shrink-0 transition-colors ${
+                        className={`px-3.5 py-1.5 rounded text-xs font-bold shrink-0 transition-colors ${
                           isCurrent
                             ? "bg-slate-200 text-slate-700 cursor-default"
-                            : "bg-[#0b63e5] hover:bg-[#094db5] text-white shadow-2xs"
+                            : "bg-[#2c87c3] hover:bg-[#1e5c85] text-white"
                         }`}
                       >
                         {isCurrent ? "Sélectionné" : "Choisir"}
@@ -687,8 +687,8 @@ export default function BuilderPage() {
 
       {/* Floating Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 sm:right-10 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl border border-slate-700 flex items-center gap-2.5 text-xs sm:text-sm font-semibold toast-slide print:hidden">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+        <div className="fixed bottom-6 right-6 sm:right-10 z-50 bg-slate-900 text-white px-4 py-3 rounded shadow-2xl border border-slate-700 flex items-center gap-2.5 text-xs sm:text-sm font-semibold print:hidden">
+          <span className="w-2 h-2 rounded-full bg-emerald-400" />
           <span>{toastMessage}</span>
         </div>
       )}

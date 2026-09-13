@@ -2,12 +2,12 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-950 text-slate-400 border-t border-slate-800 text-xs mt-12 no-print">
+    <footer className="bg-[#26293b] text-slate-300 text-xs mt-12 no-print">
       {/* Trust & Guarantees Strip */}
-      <div className="border-b border-slate-800/80 bg-slate-900/60 py-6">
+      <div className="border-b border-white/10 py-6">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors">
-            <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3 p-3 rounded bg-white/5 border border-white/10">
+            <div className="w-10 h-10 rounded bg-white text-[#26293b] flex items-center justify-center shrink-0">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="2" y="5" width="20" height="14" rx="2" />
                 <line x1="2" y1="10" x2="22" y2="10" />
@@ -19,8 +19,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors">
-            <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center shrink-0" aria-hidden="true">
+          <div className="flex items-center gap-3 p-3 rounded bg-white/5 border border-white/10">
+            <div className="w-10 h-10 rounded bg-white text-[#26293b] flex items-center justify-center shrink-0" aria-hidden="true">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M1 3h15v13H1z" />
                 <path d="M16 8h4l3 3v5h-7V8z" />
@@ -34,8 +34,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors">
-            <div className="w-10 h-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0" aria-hidden="true">
+          <div className="flex items-center gap-3 p-3 rounded bg-white/5 border border-white/10">
+            <div className="w-10 h-10 rounded bg-white text-[#26293b] flex items-center justify-center shrink-0" aria-hidden="true">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
@@ -46,8 +46,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors">
-            <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0" aria-hidden="true">
+          <div className="flex items-center gap-3 p-3 rounded bg-white/5 border border-white/10">
+            <div className="w-10 h-10 rounded bg-white text-[#26293b] flex items-center justify-center shrink-0" aria-hidden="true">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="10" />
                 <path d="M12 6v6l4 2" />
@@ -67,7 +67,7 @@ export default function Footer() {
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 bg-white p-0.5 border border-slate-700">
+              <div className="w-8 h-8 rounded overflow-hidden shrink-0 bg-white p-0.5">
                 <img src="/brand/logo.svg" alt="DZ PartPicker" className="w-full h-full object-contain" />
               </div>
               <span className="text-white font-extrabold text-base tracking-tight">DZ PartPicker</span>
@@ -76,16 +76,16 @@ export default function Footer() {
               Le comparateur indépendant de composants PC en Algérie. Comparez les prix du neuf et de l&apos;occasion parmi les boutiques d&apos;informatique dont les vitrines livrent 58 wilayas.
             </p>
             <div className="flex flex-wrap gap-1.5 pt-1">
-              <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-medium text-[10px] border border-slate-700">
+              <span className="px-2 py-0.5 rounded bg-white/10 text-slate-200 font-medium text-[10px]">
                 100% Indépendant
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-slate-800 text-emerald-400 font-medium text-[10px] border border-slate-700">
+              <span className="px-2 py-0.5 rounded bg-white/10 text-emerald-300 font-medium text-[10px]">
                 Prix live en DA
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-medium text-[10px] border border-slate-700">
+              <span className="px-2 py-0.5 rounded bg-white/10 text-slate-200 font-medium text-[10px]">
                 12 boutiques + Ouedkniss
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-slate-800 text-blue-400 font-medium text-[10px] border border-slate-700">
+              <span className="px-2 py-0.5 rounded bg-white/10 text-blue-300 font-medium text-[10px]">
                 Neuf / Occasion séparés
               </span>
             </div>
@@ -96,27 +96,27 @@ export default function Footer() {
             <h4 className="text-white font-bold text-xs uppercase tracking-wider">Outils & Config</h4>
             <ul className="space-y-1.5">
               <li>
-                <Link href="/builder" className="hover:text-white hover:underline underline-offset-4 transition-colors">
+                <Link href="/builder" className="hover:text-white hover:underline underline-offset-4">
                   System Builder (Configurateur)
                 </Link>
               </li>
               <li>
-                <Link href="/guides" className="hover:text-white hover:underline underline-offset-4 transition-colors">
+                <Link href="/guides" className="hover:text-white hover:underline underline-offset-4">
                   Guides d&apos;achat gaming
                 </Link>
               </li>
               <li>
-                <Link href="/builds" className="hover:text-white hover:underline underline-offset-4 transition-colors">
+                <Link href="/builds" className="hover:text-white hover:underline underline-offset-4">
                   Builds de la communauté
                 </Link>
               </li>
               <li>
-                <Link href="/deals" className="hover:text-white hover:underline underline-offset-4 transition-colors">
+                <Link href="/deals" className="hover:text-white hover:underline underline-offset-4">
                   Bons plans du moment
                 </Link>
               </li>
               <li>
-                <Link href="/category/cpu" className="hover:text-white hover:underline underline-offset-4 transition-colors">
+                <Link href="/category/cpu" className="hover:text-white hover:underline underline-offset-4">
                   Catalogue des composants
                 </Link>
               </li>
@@ -127,15 +127,15 @@ export default function Footer() {
           <div className="space-y-2.5">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider">Composants PC</h4>
             <ul className="space-y-1.5">
-              <li><Link href="/category/cpu" className="hover:text-white hover:underline underline-offset-4 transition-colors">Processeurs (CPU)</Link></li>
-              <li><Link href="/category/gpu" className="hover:text-white hover:underline underline-offset-4 transition-colors">Cartes Graphiques (GPU)</Link></li>
-              <li><Link href="/category/motherboard" className="hover:text-white hover:underline underline-offset-4 transition-colors">Cartes Mères</Link></li>
-              <li><Link href="/category/ram" className="hover:text-white hover:underline underline-offset-4 transition-colors">Mémoire Vive (RAM)</Link></li>
-              <li><Link href="/category/ssd" className="hover:text-white hover:underline underline-offset-4 transition-colors">Stockage SSD / NVMe</Link></li>
-              <li><Link href="/category/psu" className="hover:text-white hover:underline underline-offset-4 transition-colors">Alimentations (PSU)</Link></li>
-              <li><Link href="/category/case" className="hover:text-white hover:underline underline-offset-4 transition-colors">Boîtiers PC</Link></li>
-              <li><Link href="/category/cooler" className="hover:text-white hover:underline underline-offset-4 transition-colors">Refroidisseurs CPU</Link></li>
-              <li><Link href="/category/monitor" className="hover:text-white hover:underline underline-offset-4 transition-colors">Écrans Gaming</Link></li>
+              <li><Link href="/category/cpu" className="hover:text-white hover:underline underline-offset-4">Processeurs (CPU)</Link></li>
+              <li><Link href="/category/gpu" className="hover:text-white hover:underline underline-offset-4">Cartes Graphiques (GPU)</Link></li>
+              <li><Link href="/category/motherboard" className="hover:text-white hover:underline underline-offset-4">Cartes Mères</Link></li>
+              <li><Link href="/category/ram" className="hover:text-white hover:underline underline-offset-4">Mémoire Vive (RAM)</Link></li>
+              <li><Link href="/category/ssd" className="hover:text-white hover:underline underline-offset-4">Stockage SSD / NVMe</Link></li>
+              <li><Link href="/category/psu" className="hover:text-white hover:underline underline-offset-4">Alimentations (PSU)</Link></li>
+              <li><Link href="/category/case" className="hover:text-white hover:underline underline-offset-4">Boîtiers PC</Link></li>
+              <li><Link href="/category/cooler" className="hover:text-white hover:underline underline-offset-4">Refroidisseurs CPU</Link></li>
+              <li><Link href="/category/monitor" className="hover:text-white hover:underline underline-offset-4">Écrans Gaming</Link></li>
             </ul>
           </div>
 
@@ -152,7 +152,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar — Legal line untouched as required by prompt */}
-        <div className="mt-10 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
+        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
           <div>
             © 2026 DZ PartPicker. Tous droits réservés. Clone fidèle inspiré du format PCPartPicker.
           </div>

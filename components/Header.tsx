@@ -152,19 +152,19 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85 border-b border-slate-200 sticky top-0 z-40 shadow-sm no-print">
+    <header className="bg-[#11111c] sticky top-0 z-40 no-print">
       {/* Top Header Row */}
       <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
         {/* Brand Logo & Name */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0 group focus-visible:ring-2 focus-visible:ring-[#0b63e5] rounded-xl">
-          <div className="w-9 h-9 rounded-xl overflow-hidden shrink-0 border border-slate-200/80 shadow-2xs group-hover:scale-105 transition-transform bg-white">
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <div className="w-9 h-9 rounded overflow-hidden shrink-0 bg-white">
             <img src="/brand/logo.svg" alt="DZ PartPicker" className="w-9 h-9 object-contain" />
           </div>
           <div className="leading-tight">
-            <div className="font-extrabold tracking-tight text-slate-900 text-[17px] group-hover:text-[#0b63e5] transition-colors">
+            <div className="font-extrabold tracking-tight text-white text-[17px]">
               DZ PartPicker
             </div>
-            <div className="text-[11px] text-slate-500 -mt-0.5 hidden sm:block">
+            <div className="text-[11px] text-slate-400 -mt-0.5 hidden sm:block">
               Pick parts • Build your PC • Compare in DA
             </div>
           </div>
@@ -186,7 +186,7 @@ export default function Header() {
               onFocus={() => query.trim() && setIsOpen(true)}
               onKeyDown={handleKeyDown}
               placeholder="Rechercher RTX 4060, Ryzen 5 5600, B550, DDR4..."
-              className="w-full bg-slate-100/80 hover:bg-white focus:bg-white border border-slate-200 focus:border-[#0b63e5] rounded-xl pl-9 pr-8 py-2 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 shadow-2xs focus:ring-2 focus:ring-blue-200"
+              className="w-full bg-white border border-[#d8d8d8] rounded pl-9 pr-8 py-2 text-sm text-[#191b2a] outline-none placeholder:text-slate-400"
             />
             <svg
               className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none"
@@ -201,7 +201,7 @@ export default function Header() {
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
             {loading && (
-              <div className="w-4 h-4 absolute right-3 border-2 border-slate-300 border-t-[#0b63e5] rounded-full animate-spin" />
+              <div className="w-4 h-4 absolute right-3 border-2 border-slate-300 border-t-[#2c87c3] rounded-full animate-spin" />
             )}
             {query && !loading && (
               <button
@@ -210,7 +210,7 @@ export default function Header() {
                   setIsOpen(false);
                 }}
                 aria-label="Effacer la recherche"
-                className="absolute right-2.5 text-slate-400 hover:text-slate-600 p-0.5 rounded-full hover:bg-slate-100"
+                className="absolute right-2.5 text-slate-400 hover:text-slate-600 p-0.5 rounded"
               >
                 ✕
               </button>
@@ -219,25 +219,25 @@ export default function Header() {
 
           {/* Search Dropdown Results */}
           {isOpen && (
-            <div id="dz-search-results" role="listbox" aria-label="Suggestions de composants" className="absolute left-0 right-0 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl max-h-96 overflow-y-auto z-50 divide-y divide-slate-100 anim-in">
+            <div id="dz-search-results" role="listbox" aria-label="Suggestions de composants" className="absolute left-0 right-0 top-full mt-1 bg-white border border-[#d8d8d8] rounded max-h-96 overflow-y-auto z-50 divide-y divide-slate-100">
               {results.length > 0 ? (
                 <>
-                  <div className="px-3 py-2 bg-slate-50/80 text-[11px] font-semibold uppercase tracking-wider text-slate-500 flex justify-between items-center">
+                  <div className="px-3 py-2 bg-[#f0f0ef] text-[11px] font-bold uppercase tracking-wider text-slate-500 flex justify-between items-center">
                     <span>Résultats ({results.length})</span>
-                    <span className="text-[10px] text-slate-400">↑↓ pour naviguer • ↵ pour ouvrir</span>
+                    <span className="text-[10px] font-semibold text-slate-400">↑↓ pour naviguer • ↵ pour ouvrir</span>
                   </div>
                   {results.map((p, idx) => (
                     <div
                       key={p.id}
                       onClick={() => selectProduct(p.id)}
-                      className={`p-2.5 flex items-center gap-3 cursor-pointer transition-colors ${
-                        selectedIndex === idx ? "bg-blue-50/80" : "hover:bg-slate-50"
+                      className={`p-2.5 flex items-center gap-3 cursor-pointer ${
+                        selectedIndex === idx ? "bg-blue-50" : "hover:bg-slate-50"
                       }`}
                     >
                       <Thumb src={`/p/${p.id}.webp`} alt={p.model} size={40} />
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.2 rounded bg-slate-100 text-slate-600">
+                          <span className="text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
                             {p.category}
                           </span>
                           <span className="font-semibold text-sm text-slate-900 truncate">
@@ -254,13 +254,13 @@ export default function Header() {
                           )}
                         </div>
                       </div>
-                      <span className="text-[#0b63e5] text-xs font-semibold shrink-0">Voir →</span>
+                      <span className="pcpp-link text-xs font-semibold shrink-0">Voir →</span>
                     </div>
                   ))}
                 </>
               ) : (
                 <div className="p-6 text-center text-sm text-slate-500">
-                  <div className="text-slate-400 mb-1">Aucun composant trouvé pour &quot;{query}&quot;</div>
+                  <div className="mb-1">Aucun composant trouvé pour &quot;{query}&quot;</div>
                   <div className="text-xs text-slate-400">Essayez avec une référence (ex: RTX 3060, Ryzen 5, B550)</div>
                 </div>
               )}
@@ -286,7 +286,7 @@ export default function Header() {
               value={wilaya}
               onChange={(e) => handleWilayaChange(e.target.value)}
               aria-label="Sélectionner votre wilaya"
-              className="border border-slate-200 rounded-lg pl-7 pr-7 py-1.5 text-xs bg-slate-50 hover:bg-white text-slate-700 font-medium outline-none cursor-pointer appearance-none transition-colors shadow-2xs focus-visible:ring-2 focus-visible:ring-[#0b63e5]"
+              className="border border-slate-600 rounded pl-7 pr-7 py-1.5 text-xs bg-[#26293b] text-slate-200 font-medium outline-none cursor-pointer appearance-none"
             >
               {WILAYAS.map((w) => (
                 <option key={w} value={w}>
@@ -302,7 +302,7 @@ export default function Header() {
           {/* Mobile hamburger menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-[#0b63e5]"
+            className="md:hidden p-1.5 rounded border border-slate-600 text-slate-200 hover:bg-[#26293b]"
             aria-label="Menu"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -317,19 +317,19 @@ export default function Header() {
       </div>
 
       {/* Sub-Navigation Bar (PCPartPicker signature 2nd tier menu) */}
-      <div className="border-t border-slate-100 bg-slate-50/80">
+      <div className="border-t border-slate-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-600">
           <nav aria-label="Navigation principale" className="flex items-center gap-1 sm:gap-2 py-1.5 overflow-x-auto whitespace-nowrap [scrollbar-width:thin]">
             <Link
               href="/builder"
               aria-current={pathname === "/builder" ? "page" : undefined}
-              className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:outline-none ${
+              className={`px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 ${
                 pathname === "/builder"
-                  ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-blue-200"
-                  : "hover:text-slate-900 hover:bg-white/80 border border-transparent"
+                  ? "text-[#2c87c3] font-bold"
+                  : "hover:text-slate-900"
               }`}
             >
-              <svg className="w-4 h-4 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="w-4 h-4 text-[#2c87c3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="4" y="4" width="16" height="16" rx="2" />
                 <path d="M9 9h6v6H9z" />
               </svg>
@@ -345,10 +345,10 @@ export default function Header() {
                 }}
                 aria-expanded={catDropdownOpen}
                 aria-haspopup="menu"
-                className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:outline-none ${
+                className={`px-3 py-1.5 rounded transition-colors flex items-center gap-1 ${
                   pathname.startsWith("/category")
-                    ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-blue-200"
-                    : "hover:text-slate-900 hover:bg-white/80 border border-transparent"
+                    ? "text-[#2c87c3] font-bold"
+                    : "hover:text-slate-900"
                 }`}
               >
                 <span>Produits</span>
@@ -356,7 +356,7 @@ export default function Header() {
               </button>
 
               {catDropdownOpen && (
-                <div className="absolute left-0 top-full mt-1 w-64 bg-white border border-slate-200 rounded-xl shadow-xl py-1.5 z-50 divide-y divide-slate-100 anim-in">
+                <div className="absolute left-0 top-full mt-1 w-64 bg-white border border-[#d8d8d8] rounded py-1.5 z-50 divide-y divide-slate-100">
                   <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     Catégories PC
                   </div>
@@ -366,7 +366,7 @@ export default function Header() {
                         key={cat.slug}
                         href={`/category/${cat.slug}`}
                         onClick={() => setCatDropdownOpen(false)}
-                        className="block px-3 py-1.5 text-xs text-slate-700 hover:bg-blue-50 hover:text-[#0b63e5] font-medium transition-colors"
+                        className="block px-3 py-1.5 text-xs text-slate-700 hover:bg-blue-50 pcpp-link font-medium"
                       >
                         {cat.label}
                       </Link>
@@ -379,10 +379,10 @@ export default function Header() {
             <Link
               href="/guides"
               aria-current={pathname.startsWith("/guides") ? "page" : undefined}
-              className={`px-3 py-1.5 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:outline-none ${
+              className={`px-3 py-1.5 rounded transition-colors ${
                 pathname.startsWith("/guides")
-                  ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-blue-200"
-                  : "hover:text-slate-900 hover:bg-white/80 border border-transparent"
+                  ? "text-[#2c87c3] font-bold"
+                  : "hover:text-slate-900"
               }`}
             >
               Guides d&apos;achat
@@ -391,10 +391,10 @@ export default function Header() {
             <Link
               href="/builds"
               aria-current={pathname.startsWith("/builds") ? "page" : undefined}
-              className={`px-3 py-1.5 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:outline-none ${
+              className={`px-3 py-1.5 rounded transition-colors ${
                 pathname.startsWith("/builds")
-                  ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-blue-200"
-                  : "hover:text-slate-900 hover:bg-white/80 border border-transparent"
+                  ? "text-[#2c87c3] font-bold"
+                  : "hover:text-slate-900"
               }`}
             >
               Builds communauté
@@ -402,10 +402,10 @@ export default function Header() {
             <Link
               href="/deals"
               aria-current={pathname.startsWith("/deals") ? "page" : undefined}
-              className={`px-3 py-1.5 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:outline-none ${
+              className={`px-3 py-1.5 rounded transition-colors ${
                 pathname.startsWith("/deals")
-                  ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-blue-200"
-                  : "hover:text-slate-900 hover:bg-white/80 border border-transparent"
+                  ? "text-[#2c87c3] font-bold"
+                  : "hover:text-slate-900"
               }`}
             >
               Bons plans
@@ -413,7 +413,7 @@ export default function Header() {
           </nav>
 
           <div className="hidden sm:flex items-center gap-2 text-xs font-medium text-slate-500 py-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
             <span>Prix live Algérie (DA)</span>
           </div>
         </div>
@@ -421,7 +421,7 @@ export default function Header() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-200 bg-white px-4 py-3 space-y-3 anim-in">
+        <div className="md:hidden border-t border-slate-700 bg-[#11111c] px-4 py-3 space-y-3">
           {/* Mobile Search input */}
           <div className="relative">
             <input
@@ -429,10 +429,10 @@ export default function Header() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Rechercher un composant…"
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm"
+              className="w-full bg-white border border-[#d8d8d8] rounded px-3 py-2 text-sm"
             />
             {query && (
-              <div className="mt-2 bg-white border border-slate-200 rounded-lg p-2 max-h-48 overflow-y-auto divide-y divide-slate-100 shadow-lg">
+              <div className="mt-2 bg-white border border-[#d8d8d8] rounded p-2 max-h-48 overflow-y-auto divide-y divide-slate-100">
                 {results.map((p) => (
                   <div
                     key={p.id}
@@ -443,7 +443,7 @@ export default function Header() {
                     className="py-2 text-xs font-semibold text-slate-800 flex justify-between items-center cursor-pointer hover:bg-slate-50 px-1 rounded"
                   >
                     <span>{p.brand} {p.model}</span>
-                    <span className="text-emerald-700 font-mono font-bold">{p.best ? `${p.best.priceDa.toLocaleString("fr-DZ")} DA` : ""}</span>
+                    <span className="text-emerald-700 tabular-nums font-bold">{p.best ? `${p.best.priceDa.toLocaleString("fr-DZ")} DA` : ""}</span>
                   </div>
                 ))}
               </div>
@@ -454,39 +454,39 @@ export default function Header() {
             <Link
               href="/builder"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2.5 rounded-lg bg-blue-50 text-[#0b63e5] text-center"
+              className="btn-blue p-2.5 text-center text-xs"
             >
               System Builder
             </Link>
             <Link
               href="/category/cpu"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2.5 rounded-lg bg-slate-100 text-slate-800 text-center"
+              className="p-2.5 rounded bg-[#26293b] text-slate-200 text-center"
             >
               Tous les Produits
             </Link>
             <Link
               href="/guides"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2.5 rounded-lg bg-slate-100 text-slate-800 text-center"
+              className="p-2.5 rounded bg-[#26293b] text-slate-200 text-center"
             >
               Guides d&apos;achat
             </Link>
             <Link
               href="/builds"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2.5 rounded-lg bg-slate-100 text-slate-800 text-center"
+              className="p-2.5 rounded bg-[#26293b] text-slate-200 text-center"
             >
               Builds Communauté
             </Link>
           </div>
 
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-            <label className="text-slate-500 font-medium">Wilaya :</label>
+          <div className="pt-2 border-t border-slate-700 flex items-center justify-between text-xs">
+            <label className="text-slate-400 font-medium">Wilaya :</label>
             <select
               value={wilaya}
               onChange={(e) => handleWilayaChange(e.target.value)}
-              className="border border-slate-200 rounded-lg px-2 py-1 text-xs bg-slate-50"
+              className="border border-slate-600 rounded px-2 py-1 text-xs bg-[#26293b] text-slate-200"
             >
               {WILAYAS.map((w) => (
                 <option key={w} value={w}>

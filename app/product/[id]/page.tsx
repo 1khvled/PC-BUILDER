@@ -74,10 +74,10 @@ export default async function ProductPage({ params }: { params: { id: string } }
         {/* Left Column: Gallery Hero + Specs + Offers (8 cols) */}
         <div className="lg:col-span-8 space-y-8">
           {/* Gallery Hero with Badges */}
-          <div className="bg-white rounded-3xl shadow-xs border border-slate-200 p-6 sm:p-8 relative overflow-hidden">
+          <div className="bg-white rounded border border-slate-200 p-6 sm:p-8 relative overflow-hidden">
             {/* Top Badges Row */}
             <div className="flex flex-wrap items-center gap-2 mb-6">
-              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-50 text-[#0b63e5] border border-blue-100">
+              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-50 text-[#2c87c3] border border-blue-100">
                 {product.category}
               </span>
               <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
@@ -85,7 +85,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
               </span>
               {best && (
                 <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
                   <span>Meilleur prix : {best.priceDa.toLocaleString("fr-DZ")} DA</span>
                 </span>
               )}
@@ -97,7 +97,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8">
               {/* Image Container with Badges */}
               <div className="relative group shrink-0">
-                <div className="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 shadow-inner group-hover:scale-102 transition-transform duration-300">
+                <div className="p-3 rounded bg-slate-50 border border-slate-200/80 shadow-inner">
                   <Thumb src={productImage(product)} alt={product.model} size={132} />
                 </div>
                 {best && (
@@ -125,7 +125,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   {specs.slice(0, 5).map(([k, v]) => (
                     <span
                       key={k}
-                      className="text-xs px-3 py-1 rounded-lg bg-slate-100 text-slate-700 font-medium border border-slate-200/60"
+                      className="text-xs px-3 py-1 rounded bg-slate-100 text-slate-700 font-medium border border-slate-200/60"
                     >
                       <b className="text-slate-900 capitalize">{k} :</b> {String(v)}
                     </span>
@@ -136,10 +136,10 @@ export default async function ProductPage({ params }: { params: { id: string } }
           </div>
 
           {/* Upgraded Spec Table */}
-          <section className="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden">
+          <section className="bg-white rounded border border-slate-200 overflow-hidden">
             <div className="p-4 sm:p-5 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="w-4 h-4 text-[#2c87c3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <rect x="4" y="4" width="16" height="16" rx="2" />
                   <line x1="8" y1="2" x2="8" y2="6" />
                   <line x1="16" y1="2" x2="16" y2="6" />
@@ -171,7 +171,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                 </div>
                 <div className="p-4 flex items-center justify-between bg-slate-50/40 hover:bg-slate-50 transition-colors">
                   <span className="text-slate-500 font-medium">Identifiant interne</span>
-                  <span className="font-mono text-xs font-semibold text-slate-700 bg-slate-200/70 px-2 py-0.5 rounded">
+                  <span className="text-xs font-semibold text-slate-700 bg-slate-200/70 px-2 py-0.5 rounded">
                     {product.id}
                   </span>
                 </div>
@@ -188,7 +188,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                     <span className="text-slate-500 font-medium capitalize">{key.replace(/_/g, " ")}</span>
                   </div>
                   <div className="p-4 flex items-center justify-between sm:col-span-1">
-                    <span className="font-bold text-slate-900 font-mono">{String(val)}</span>
+                    <span className="font-bold text-slate-900">{String(val)}</span>
                   </div>
                 </div>
               ))}
@@ -209,7 +209,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
           </section>
 
           {/* Price History (PCPartPicker signature) */}
-          <section className="bg-white rounded-2xl shadow-xs border border-slate-200 p-4 sm:p-5 space-y-3">
+          <section className="bg-white rounded border border-slate-200 p-4 sm:p-5 space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="font-extrabold text-base text-slate-900 tracking-tight">
                 Historique des prix
@@ -222,9 +222,9 @@ export default async function ProductPage({ params }: { params: { id: string } }
           </section>
 
           {/* Facebook Marketplace Paste Box */}
-          <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs anim-in-2">
+          <div className="bg-white rounded border border-slate-200 p-5 sm:p-6">
             <div className="flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs font-bold shadow-2xs">
+              <span className="w-7 h-7 rounded bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
                 f
               </span>
               <h3 className="font-bold text-sm text-slate-900">
@@ -238,11 +238,11 @@ export default async function ProductPage({ params }: { params: { id: string } }
               <input
                 name="url"
                 placeholder="https://www.facebook.com/marketplace/item/..."
-                className="flex-1 min-w-[260px] border border-slate-200 rounded-xl px-3.5 py-2 text-xs bg-slate-50 focus:bg-white focus:border-[#0b63e5] outline-none shadow-2xs transition-all"
+                className="flex-1 min-w-[260px] border border-slate-200 rounded px-3.5 py-2 text-xs bg-slate-50 focus:bg-white focus:border-[#2c87c3] outline-none transition-colors"
               />
               <button
                 type="submit"
-                className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors shadow-2xs"
+                className="px-4 py-2 rounded bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors"
               >
                 Résoudre le prix
               </button>
@@ -252,7 +252,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
         {/* Right Column: Sticky Buy Box (4 cols) */}
         <div className="lg:col-span-4 lg:sticky lg:top-20 space-y-4">
-          <div className="bg-white rounded-3xl border border-slate-200 shadow-md p-6 space-y-5">
+          <div className="bg-white rounded border border-slate-200 shadow-md p-6 space-y-5">
             {/* Header / Price */}
             <div>
               <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
@@ -260,7 +260,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
               </div>
               {best ? (
                 <>
-                  <div className="text-3xl sm:text-4xl font-black text-emerald-700 font-mono tracking-tight mt-1">
+                  <div className="text-3xl sm:text-4xl font-black text-emerald-700 tracking-tight mt-1">
                     {best.priceDa.toLocaleString("fr-DZ")} DA
                   </div>
                   <div className="text-xs text-slate-600 mt-1 flex flex-wrap items-center gap-1.5">
@@ -302,15 +302,15 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   href={best.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full text-center py-3 px-4 rounded-xl bg-[#0b63e5] hover:bg-[#094db5] active:bg-[#08429d] text-white font-bold text-sm shadow-md shadow-blue-500/20 transition-[transform,background-color] duration-150 active:scale-[0.96] card-lift flex items-center justify-center gap-2 group"
+                  className="w-full text-center py-3 px-4 rounded bg-[#2c87c3] hover:bg-[#1e5c85] active:bg-[#153f5b] text-white font-bold text-sm shadow-md transition-colors flex items-center justify-center gap-2 group"
                 >
                   <span>Commander sur {best.store}</span>
-                  <span className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>
+                  <span>↗</span>
                 </a>
 
                 <Link
                   href={`/builder?p=${product.category}:${product.id}`}
-                  className="w-full text-center py-2.5 px-4 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50/50 text-slate-800 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
+                  className="w-full text-center py-2.5 px-4 rounded border border-slate-200 hover:border-[#2c87c3] hover:bg-blue-50/50 text-slate-800 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
                 >
                   <span>+ Ajouter au System Builder</span>
                 </Link>
@@ -319,18 +319,18 @@ export default async function ProductPage({ params }: { params: { id: string } }
 
             {/* Price Range Comparison info */}
             {priceStats && priceStats.diff > 0 && (
-              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs space-y-1.5">
+              <div className="p-3.5 rounded bg-slate-50 border border-slate-200/80 text-xs space-y-1.5">
                 <div className="flex justify-between text-slate-600">
                   <span>Prix le plus bas :</span>
-                  <b className="text-emerald-700 font-mono">{priceStats.min.toLocaleString("fr-DZ")} DA</b>
+                  <b className="text-emerald-700">{priceStats.min.toLocaleString("fr-DZ")} DA</b>
                 </div>
                 <div className="flex justify-between text-slate-600">
                   <span>Prix le plus haut :</span>
-                  <b className="text-slate-800 font-mono">{priceStats.max.toLocaleString("fr-DZ")} DA</b>
+                  <b className="text-slate-800">{priceStats.max.toLocaleString("fr-DZ")} DA</b>
                 </div>
                 <div className="flex justify-between text-slate-800 font-bold pt-1 border-t border-slate-200">
                   <span>Économie possible :</span>
-                  <span className="text-emerald-700 font-mono">+{priceStats.diff.toLocaleString("fr-DZ")} DA</span>
+                  <span className="text-emerald-700">+{priceStats.diff.toLocaleString("fr-DZ")} DA</span>
                 </div>
               </div>
             )}
@@ -357,10 +357,10 @@ export default async function ProductPage({ params }: { params: { id: string } }
           </div>
 
           {/* Help note */}
-          <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-100 text-xs text-blue-900 leading-relaxed">
+          <div className="p-4 rounded bg-blue-50/70 border border-blue-100 text-xs text-blue-900 leading-relaxed">
             <span className="font-bold block mb-0.5">Besoin d&apos;aide pour monter votre PC ?</span>
             Utilisez notre{" "}
-            <Link href="/builder" className="font-bold underline hover:text-[#0b63e5]">
+            <Link href="/builder" className="font-bold underline hover:text-[#2c87c3]">
               System Builder
             </Link>{" "}
             pour vérifier automatiquement la compatibilité de ce composant avec votre processeur, carte mère et alimentation.

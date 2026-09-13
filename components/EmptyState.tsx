@@ -18,8 +18,8 @@ export default function EmptyState({
   onAction,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center p-8 sm:p-12 text-center bg-white rounded-xl border border-slate-200/80 shadow-2xs my-4">
-      <div className="w-20 h-20 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-center mb-4 text-slate-400 shadow-inner">
+    <div className="flex flex-col items-center justify-center p-8 sm:p-12 text-center bg-white rounded border border-slate-200/80 my-4">
+      <div className="w-20 h-20 rounded bg-slate-50 border border-slate-200/80 flex items-center justify-center mb-4 text-slate-400 shadow-inner">
         {type === "search" && (
           <svg className="w-10 h-10 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8" />
@@ -69,7 +69,7 @@ export default function EmptyState({
       {(actionText && actionHref) && (
         <a
           href={actionHref}
-          className="mt-4 px-4 py-2 rounded-lg bg-[#0b63e5] hover:bg-[#094db5] text-white text-xs sm:text-sm font-semibold transition-colors shadow-2xs"
+          className="mt-4 px-4 py-2 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white text-xs sm:text-sm font-semibold transition-colors"
         >
           {actionText}
         </a>
@@ -77,7 +77,7 @@ export default function EmptyState({
       {(actionText && onAction && !actionHref) && (
         <button
           onClick={onAction}
-          className="mt-4 px-4 py-2 rounded-lg bg-[#0b63e5] hover:bg-[#094db5] text-white text-xs sm:text-sm font-semibold transition-colors shadow-2xs"
+          className="mt-4 px-4 py-2 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white text-xs sm:text-sm font-semibold transition-colors"
         >
           {actionText}
         </button>

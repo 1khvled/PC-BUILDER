@@ -106,317 +106,218 @@ export default async function Home() {
   const popularGuides = GUIDES.slice(0, 2);
 
   return (
-    <main className="max-w-7xl mx-auto px-4 py-8 space-y-12">
-      {/* Premium Hero Section with /brand/og-hero.webp Background */}
-      <section
-        className="rounded-3xl border border-slate-800 relative overflow-hidden shadow-2xl bg-slate-950 text-white"
-        style={{
-          backgroundImage: "url('/brand/og-hero.webp')",
-          backgroundSize: "cover",
-          backgroundPosition: "center 30%",
-        }}
-      >
-        {/* Deep ambient dark overlay for razor-sharp readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/85 to-slate-900/75 backdrop-blur-[1px]" />
-
-        <div className="relative z-10 p-6 sm:p-10 lg:p-14 max-w-4xl space-y-6">
-          {/* Live Pulse Ticker */}
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs font-semibold text-emerald-400 backdrop-blur-md">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-            </span>
-            <span>{liveCount} offres indexées en direct</span>
-            <span className="text-emerald-400/40">•</span>
-            <span className="text-slate-300 font-normal">Relevé le {scrapedAt.slice(0, 10)}</span>
-          </div>
-
-          {/* Main Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1]">
-            Assemblez votre PC de rêve au{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-sky-300 to-emerald-400">
-              meilleur prix en Algérie.
-            </span>
-          </h1>
-
-          <p className="text-sm sm:text-base lg:text-lg text-slate-300 max-w-2xl leading-relaxed">
-            Le comparateur indépendant des prix en Dinars Algériens (DA). Vérifiez les stocks de LICB+, Digitec, Click-DZ, WifiDjelfa, GamingDZ et Ouedkniss sur les 58 wilayas. Zéro commission, vérification de compatibilité incluse.
-          </p>
-
-          {/* Live Key Stats Counter */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-2">
-            <div className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
-              <div className="text-xl sm:text-2xl font-extrabold text-white font-mono">{liveCount}+</div>
-              <div className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Offres vérifiées</div>
+    <main className="pb-8">
+      {/* Hero band — flat dark navy, pcbuilder-style */}
+      <section className="bg-[#11111c] text-white">
+        <div className="max-w-7xl mx-auto px-4 py-10 sm:py-14">
+          <div className="max-w-3xl">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              {liveCount} offres indexées • Relevé le {scrapedAt.slice(0, 10)}
+            </p>
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2 leading-tight">
+              Assemblez votre PC au meilleur prix en Algérie.
+            </h1>
+            <p className="text-sm text-slate-300 mt-3 leading-relaxed max-w-2xl">
+              Le comparateur indépendant des prix en Dinars Algériens (DA). Stocks de LICB+, Digitec, Click-DZ, WifiDjelfa, GamingDZ et Ouedkniss sur les 58 wilayas. Zéro commission, vérification de compatibilité incluse.
+            </p>
+            <div className="flex flex-wrap items-center gap-2.5 mt-5">
+              <Link href="/builder" className="btn-blue px-5 py-2.5 text-sm">
+                Lancer le System Builder →
+              </Link>
+              <Link
+                href="/category/cpu"
+                className="px-5 py-2.5 rounded text-sm font-bold border border-slate-500 text-white hover:bg-white/10"
+              >
+                Catalogue des composants
+              </Link>
+              <Link
+                href="/guides"
+                className="px-5 py-2.5 rounded text-sm font-bold border border-slate-500 text-white hover:bg-white/10"
+              >
+                Guides d&apos;achat gaming
+              </Link>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
-              <div className="text-xl sm:text-2xl font-extrabold text-sky-400 font-mono">58</div>
-              <div className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Wilayas livrées</div>
-            </div>
-            <div className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
-              <div className="text-xl sm:text-2xl font-extrabold text-emerald-400 font-mono">100%</div>
-              <div className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Indépendant</div>
-            </div>
-            <div className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm">
-              <div className="text-xl sm:text-2xl font-extrabold text-amber-400 font-mono">0 DA</div>
-              <div className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Frais cachés</div>
-            </div>
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center gap-3.5 pt-2">
-            <Link
-              href="/builder"
-              className="px-6 py-3.5 rounded-xl bg-[#0b63e5] hover:bg-[#094db5] active:bg-[#073ea0] text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-500/25 transition-all card-lift flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
-            >
-              <span>Lancer le System Builder</span>
-              <span aria-hidden="true" className="group-hover:translate-x-1 transition-transform">→</span>
-            </Link>
-            <Link
-              href="/category/cpu"
-              className="px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
-              Catalogue des composants
-            </Link>
-            <Link
-              href="/guides"
-              className="px-5 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white font-semibold text-sm border border-slate-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            >
-              Guides d&apos;achat gaming
-            </Link>
+            <dl className="flex flex-wrap gap-x-8 gap-y-2 mt-6 pt-5 border-t border-white/10 text-sm">
+              <div className="flex items-baseline gap-2">
+                <dt className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Offres vérifiées</dt>
+                <dd className="font-extrabold tabular-nums">{liveCount}+</dd>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <dt className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Wilayas livrées</dt>
+                <dd className="font-extrabold tabular-nums">58</dd>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <dt className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Indépendant</dt>
+                <dd className="font-extrabold tabular-nums">100%</dd>
+              </div>
+              <div className="flex items-baseline gap-2">
+                <dt className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Frais cachés</dt>
+                <dd className="font-extrabold tabular-nums">0 DA</dd>
+              </div>
+            </dl>
           </div>
         </div>
       </section>
 
-      {/* Upgraded Trending Strip — Meilleurs prix du moment */}
-      <section className="space-y-4">
-        <div className="flex flex-wrap items-end justify-between gap-2">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                Tendances & Prix les Plus Bas du Marché
-              </h2>
-            </div>
-            <p className="text-xs text-slate-500 mt-1">
-              Top offres relevées et vérifiées auprès des boutiques partenaires le {scrapedAt.slice(0, 10)}
-            </p>
+      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+        {/* Meilleurs prix du moment — dense price table */}
+        <section className="panel">
+          <div className="panel-hd flex items-center justify-between">
+            <span>Prix les plus bas du marché</span>
+            <Link href="/category/gpu" className="pcpp-link font-bold normal-case tracking-normal">
+              Toutes les cartes graphiques →
+            </Link>
           </div>
-          <Link
-            href="/category/gpu"
-            className="text-xs font-bold text-[#0b63e5] hover:underline flex items-center gap-1"
-          >
-            <span>Voir toutes les cartes graphiques</span>
-            <span>→</span>
-          </Link>
-        </div>
+          <p className="px-3 pt-2 text-xs text-slate-500">
+            Offres relevées et vérifiées auprès des boutiques partenaires le {scrapedAt.slice(0, 10)}
+          </p>
+          <table className="w-full text-sm mt-1">
+            <caption className="sr-only">Les huit meilleurs prix relevés sur le marché algérien</caption>
+            <tbody className="divide-y divide-slate-100">
+              {trending.map(({ p, best }) => (
+                <tr key={p.id} className="hover:bg-blue-50/50">
+                  <td className="px-3 py-2 w-12">
+                    <Thumb src={productImage(p)} alt={p.model} size={40} />
+                  </td>
+                  <td className="px-2 py-2">
+                    <Link href={`/product/${p.id}`} className="pcpp-link font-bold text-sm">
+                      {p.brand} {p.model}
+                    </Link>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      {best?.store} • {best?.wilaya}
+                    </div>
+                  </td>
+                  <td className="px-2 py-2 text-right whitespace-nowrap">
+                    <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Meilleur prix</span>
+                    <span className="font-extrabold text-emerald-700 tabular-nums">{fmt(best?.priceDa ?? 0)}</span>
+                  </td>
+                  <td className="px-3 py-2 text-right w-20">
+                    <Link href={`/product/${p.id}`} className="text-xs font-bold pcpp-link">
+                      Voir →
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          {trending.map(({ p, best }) => (
-            <Link
-              key={p.id}
-              href={`/product/${p.id}`}
-              className="card-lift bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-md flex flex-col justify-between group relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:ring-offset-2"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-md bg-blue-50 text-[#0b63e5] border border-blue-100">
-                    {p.category}
-                  </span>
-                  <span className="text-[11px] font-medium text-slate-500 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-200/60">
-                    📍 {best?.wilaya}
-                  </span>
-                </div>
+        {/* Parcourir par catégorie */}
+        <section>
+          <h2 className="text-lg font-extrabold tracking-tight">
+            Parcourir par catégorie
+          </h2>
+          <p className="text-xs text-slate-500 mt-0.5 mb-3">
+            Filtrez les composants compatibles, comparez les prix et trouvez le revendeur le plus proche
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+            {CATEGORIES.map((c) => {
+              const items = PRODUCTS.filter((p) => p.category === c.slug);
+              const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
+              const minPrice = prices.length ? Math.min(...prices) : null;
+              const extraN = LIVE_EXTRA.filter((e) => e.category === c.slug).length;
 
-                <div className="flex items-center gap-3.5 mt-2">
-                  <div className="p-1 rounded-xl bg-slate-50 border border-slate-100 group-hover:scale-105 transition-transform shrink-0">
-                    <Thumb src={productImage(p)} alt={p.model} size={56} />
+              return (
+                <Link
+                  key={c.slug}
+                  href={`/category/${c.slug}`}
+                  className="panel p-3.5 flex items-center gap-3.5 hover:border-[#2c87c3]"
+                >
+                  <div className="w-11 h-11 rounded bg-[#2c87c3] text-white flex items-center justify-center shrink-0">
+                    <CategorySvg slug={c.slug} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-bold text-sm text-slate-900 group-hover:text-[#0b63e5] transition-colors truncate">
-                      {p.brand} {p.model}
+                    <div className="font-bold text-sm truncate">
+                      {c.label}
                     </div>
-                    <div className="text-xs text-slate-500 mt-0.5 truncate flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      <span>{best?.store}</span>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      {items.length} modèle{items.length > 1 ? "s" : ""}
+                      {minPrice ? ` • dès ${fmt(minPrice)}` : ""}
+                      {extraN > 0 && <span className="text-amber-700 font-semibold"> • +{extraN} annonces live</span>}
                     </div>
                   </div>
-                </div>
-              </div>
+                  <span className="pcpp-link text-base font-bold">→</span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
 
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Meilleur prix</span>
-                  <div className="text-base font-extrabold text-emerald-700 font-mono tracking-tight">
-                    {fmt(best?.priceDa ?? 0)}
-                  </div>
-                </div>
-                <span className="text-xs font-bold text-[#0b63e5] group-hover:translate-x-1 transition-transform flex items-center gap-0.5">
-                  <span>Voir</span>
-                  <span>→</span>
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Parcourir par Catégorie (9 categories) */}
-      <section className="space-y-4">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-            Parcourir par Catégorie de Pièces
-          </h2>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Sélectionnez une catégorie pour filtrer les composants compatibles, comparer les prix et trouver le revendeur le plus proche
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          {CATEGORIES.map((c) => {
-            const items = PRODUCTS.filter((p) => p.category === c.slug);
-            const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
-            const minPrice = prices.length ? Math.min(...prices) : null;
-            const extraN = LIVE_EXTRA.filter((e) => e.category === c.slug).length;
-
-            return (
-              <Link
-                key={c.slug}
-                href={`/category/${c.slug}`}
-                className="card-lift bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-md flex items-center gap-4 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:ring-offset-2"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 text-[#0b63e5] group-hover:bg-[#0b63e5] group-hover:text-white group-hover:border-[#0b63e5] flex items-center justify-center shrink-0 transition-colors shadow-2xs">
-                  <CategorySvg slug={c.slug} />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="font-extrabold text-sm sm:text-base text-slate-900 group-hover:text-[#0b63e5] transition-colors truncate">
-                    {c.label}
-                  </div>
-                  <div className="text-xs text-slate-500 mt-0.5 font-medium">
-                    {items.length} modèle{items.length > 1 ? "s" : ""}
-                    {minPrice ? ` • dès ${fmt(minPrice)}` : ""}
-                  </div>
-                  {extraN > 0 && (
-                    <div className="text-[10px] text-amber-700 font-semibold mt-1 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                      <span>+{extraN} annonces live marché</span>
-                    </div>
-                  )}
-                </div>
-                <span className="text-slate-400 group-hover:text-[#0b63e5] group-hover:translate-x-1 transition-all text-base font-bold">
-                  →
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Guides & Builds Magazine-Style Teaser Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Guides D'achat Teaser */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4 flex flex-col justify-between">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-[#0b63e5] border border-blue-100">
-                  Dossier Spécial
-                </span>
-                <h3 className="font-extrabold text-base text-slate-900 tracking-tight">
-                  Guides d&apos;Achat Gaming DZ
-                </h3>
-              </div>
-              <Link href="/guides" className="text-xs font-bold text-[#0b63e5] hover:underline">
+        {/* Guides & Builds */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* Guides */}
+          <section className="panel">
+            <div className="panel-hd flex items-center justify-between">
+              <span>Guides d&apos;achat gaming DZ</span>
+              <Link href="/guides" className="pcpp-link font-bold normal-case tracking-normal">
                 Tous les guides →
               </Link>
             </div>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Configurations équilibrées pour éviter les goulots d&apos;étranglement, chiffrées aux prix réels des boutiques d&apos;Alger, Oran et Sétif.
+            <p className="px-3 pt-2 text-xs text-slate-500">
+              Configurations équilibrées, chiffrées aux prix réels des boutiques d&apos;Alger, Oran et Sétif.
             </p>
-            <div className="space-y-3 pt-1">
+            <div className="divide-y divide-slate-100 mt-1">
               {popularGuides.map((g) => (
-                <Link
-                  key={g.slug}
-                  href={`/guides/${g.slug}`}
-                  className="p-4 rounded-xl border border-slate-200/80 hover:border-blue-300 hover:bg-slate-50/70 transition-all block group card-lift"
-                >
+                <Link key={g.slug} href={`/guides/${g.slug}`} className="block px-3 py-2.5 hover:bg-blue-50/50">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="font-bold text-sm text-slate-900 group-hover:text-[#0b63e5] transition-colors">
-                      {g.title}
-                    </div>
-                    <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md shrink-0">
-                      ⏱ {g.readMin} min
-                    </span>
+                    <span className="font-bold text-sm pcpp-link">{g.title}</span>
+                    <span className="text-[11px] text-slate-500 shrink-0">⏱ {g.readMin} min</span>
                   </div>
-                  <div className="text-xs text-slate-500 mt-1 line-clamp-1">{g.hook}</div>
-                  <div className="text-[11px] text-slate-400 mt-2 flex items-center gap-2">
-                    <span className="font-semibold text-slate-700">{g.parts.length} pièces sélectionnées</span>
-                    <span>•</span>
+                  <div className="text-xs text-slate-500 mt-0.5 truncate">{g.hook}</div>
+                  <div className="text-[11px] text-slate-400 mt-1">
+                    <span className="font-semibold text-slate-700">{g.parts.length} pièces</span>
+                    {" • "}
                     <span className="text-emerald-700 font-bold">Prix vérifiés en DA</span>
                   </div>
                 </Link>
               ))}
             </div>
-          </div>
-
-          <Link
-            href="/guides"
-            className="w-full text-center py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs transition-colors block mt-2"
-          >
-            Explorer tous les guides recommandés
-          </Link>
-        </div>
-
-        {/* Builds Communauté Teaser */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4 flex flex-col justify-between">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-100">
-                  Communauté DZ
-                </span>
-                <h3 className="font-extrabold text-base text-slate-900 tracking-tight">
-                  Configurations de la Communauté
-                </h3>
-              </div>
-              <Link href="/builds" className="text-xs font-bold text-[#0b63e5] hover:underline">
-                Voir tous les builds →
+            <div className="p-3 border-t border-[#d8d8d8]">
+              <Link
+                href="/guides"
+                className="block text-center py-2 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs"
+              >
+                Explorer tous les guides recommandés
               </Link>
             </div>
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Découvrez les PCs montés par les gamers algériens avec les prix vérifiés et les pièces en stock.
+          </section>
+
+          {/* Builds */}
+          <section className="panel">
+            <div className="panel-hd flex items-center justify-between">
+              <span>Builds de la communauté</span>
+              <Link href="/builds" className="pcpp-link font-bold normal-case tracking-normal">
+                Tous les builds →
+              </Link>
+            </div>
+            <p className="px-3 pt-2 text-xs text-slate-500">
+              Les PCs montés par les gamers algériens, prix vérifiés et pièces en stock.
             </p>
-            <div className="space-y-3 pt-1">
+            <div className="divide-y divide-slate-100 mt-1">
               {popularBuilds.map((b) => (
-                <Link
-                  key={b.id}
-                  href={`/builds/${b.id}`}
-                  className="p-4 rounded-xl border border-slate-200/80 hover:border-blue-300 hover:bg-slate-50/70 transition-all block group card-lift"
-                >
+                <Link key={b.id} href={`/builds/${b.id}`} className="block px-3 py-2.5 hover:bg-blue-50/50">
                   <div className="flex items-center justify-between gap-2">
-                    <div className="font-bold text-sm text-slate-900 group-hover:text-[#0b63e5] transition-colors">
-                      {b.title}
-                    </div>
-                    <span className="text-xs font-bold text-emerald-700 font-mono bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100 shrink-0">
-                      📍 {b.wilaya}
-                    </span>
+                    <span className="font-bold text-sm pcpp-link">{b.title}</span>
+                    <span className="text-[11px] font-bold text-emerald-700 shrink-0">📍 {b.wilaya}</span>
                   </div>
-                  <div className="text-xs text-slate-500 mt-1 line-clamp-1">{b.description}</div>
-                  <div className="text-[11px] text-slate-400 mt-2 flex items-center justify-between">
-                    <span className="font-medium text-slate-600">par {b.author}</span>
+                  <div className="text-xs text-slate-500 mt-0.5 truncate">{b.description}</div>
+                  <div className="text-[11px] text-slate-400 mt-1">
+                    <span className="text-slate-600">par {b.author}</span>
+                    {" • "}
                     <span className="text-rose-600 font-semibold">♥ {b.likes} mentions</span>
                   </div>
                 </Link>
               ))}
             </div>
-          </div>
-
-          <Link
-            href="/builds"
-            className="w-full text-center py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs transition-colors block mt-2"
-          >
-            Découvrir tous les builds des membres
-          </Link>
+            <div className="p-3 border-t border-[#d8d8d8]">
+              <Link
+                href="/builds"
+                className="block text-center py-2 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs"
+              >
+                Découvrir tous les builds des membres
+              </Link>
+            </div>
+          </section>
         </div>
       </div>
     </main>

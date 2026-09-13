@@ -78,19 +78,19 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
   }, [filteredAndSortedOffers]);
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <div className="bg-white rounded shadow-sm border border-slate-200 overflow-hidden">
       {/* Table Header Controls */}
       <div className="p-4 border-b border-slate-200 bg-slate-50/80 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-xs font-bold uppercase tracking-wider text-slate-600 mr-1">
             Offres Marchands ({filteredAndSortedOffers.length})
           </span>
-          <div className="inline-flex rounded-xl border border-slate-200 bg-white p-0.5 text-xs shadow-2xs" role="group" aria-label="Filtrer par état">
+          <div className="inline-flex rounded border border-slate-200 bg-white p-0.5 text-xs" role="group" aria-label="Filtrer par état">
             <button
               onClick={() => setConditionFilter("all")}
               aria-pressed={conditionFilter === "all"}
-              className={`px-3 py-1.5 rounded-lg font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] ${
-                conditionFilter === "all" ? "bg-slate-900 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+              className={`px-3 py-1.5 rounded font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
+                conditionFilter === "all" ? "bg-slate-900 text-white" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
               Tous ({offers.length})
@@ -98,8 +98,8 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
             <button
               onClick={() => setConditionFilter("new")}
               aria-pressed={conditionFilter === "new"}
-              className={`px-3 py-1.5 rounded-lg font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 ${
-                conditionFilter === "new" ? "bg-emerald-600 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+              className={`px-3 py-1.5 rounded font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 ${
+                conditionFilter === "new" ? "bg-emerald-600 text-white" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
               Neuf ({newCount})
@@ -108,8 +108,8 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
               <button
                 onClick={() => setConditionFilter("used")}
                 aria-pressed={conditionFilter === "used"}
-                className={`px-3 py-1.5 rounded-lg font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 ${
-                  conditionFilter === "used" ? "bg-amber-600 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                className={`px-3 py-1.5 rounded font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 ${
+                  conditionFilter === "used" ? "bg-amber-600 text-white" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                 }`}
               >
                 Occasion ({usedCount})
@@ -121,7 +121,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
               onClick={() => setHideRuptured((v) => !v)}
               aria-pressed={hideRuptured}
               title="Les ruptures restent consultables mais ne polluent plus le comparatif"
-              className={`ml-1 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] ${
+              className={`ml-1 inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-[11px] font-semibold border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
                 hideRuptured ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
               }`}
             >
@@ -134,9 +134,9 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
         <div className="flex items-center gap-3">
           {stats && (
             <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500 font-medium">
-              <span>Moyenne : <b className="text-slate-800 font-mono">{stats.avg.toLocaleString("fr-DZ")} DA</b></span>
+              <span>Moyenne : <b className="text-slate-800">{stats.avg.toLocaleString("fr-DZ")} DA</b></span>
               <span className="text-slate-300">•</span>
-              <span>Écart : <b className="font-mono">{(stats.max - stats.min).toLocaleString("fr-DZ")} DA</b></span>
+              <span>Écart : <b>{(stats.max - stats.min).toLocaleString("fr-DZ")} DA</b></span>
             </div>
           )}
           <div className="relative">
@@ -146,7 +146,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Filtrer boutique ou wilaya…"
               aria-label="Filtrer les offres par boutique ou wilaya"
-              className="border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-xs bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#0b63e5] focus:ring-2 focus:ring-blue-100 shadow-2xs w-48 sm:w-56"
+              className="border border-slate-200 rounded pl-8 pr-3 py-2 text-xs bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#2c87c3] focus:ring-2 focus:ring-[#2c87c3]/25 w-48 sm:w-56"
             />
             <svg
               className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2 pointer-events-none"
@@ -233,14 +233,14 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                 return (
                 <tr
                   key={`${o.store}-${o.priceDa}-${idx}`}
-                  className={`rowline transition-colors group ${isBest ? "bg-emerald-50/70 hover:bg-emerald-50" : "hover:bg-blue-50/50"}`}
+                  className={`transition-colors group ${isBest ? "bg-emerald-50/70 hover:bg-emerald-50" : "hover:bg-blue-50/50"}`}
                 >
                   {/* Store info */}
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-3">
                       <Thumb src={o.image} alt={o.store} size={38} />
                       <div className="min-w-0">
-                        <div className="font-bold text-slate-900 text-sm group-hover:text-[#0b63e5] transition-colors flex items-center gap-1.5">
+                        <div className="font-bold text-slate-900 text-sm group-hover:text-[#2c87c3] transition-colors flex items-center gap-1.5">
                           <span>{o.store}</span>
                           <span className="size-1.5 rounded-full bg-emerald-500" title="Boutique indexée" />
                         </div>
@@ -285,7 +285,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                         Meilleur prix
                       </span>
                     )}
-                    <div className={`font-extrabold text-sm sm:text-base tabular-nums font-mono transition-colors ${isBest ? "text-emerald-700" : "text-slate-900 group-hover:text-emerald-700"}`}>
+                    <div className={`font-extrabold text-sm sm:text-base tabular-nums transition-colors ${isBest ? "text-emerald-700" : "text-slate-900 group-hover:text-emerald-700"}`}>
                       {o.priceDa.toLocaleString("fr-DZ")} DA
                     </div>
                   </td>
@@ -297,7 +297,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                       target="_blank"
                       rel="noopener noreferrer sponsored"
                       aria-label={`Acheter chez ${o.store} — ${o.priceDa.toLocaleString("fr-DZ")} DA`}
-                      className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg bg-[#0b63e5] hover:bg-[#094db5] active:bg-[#073ea0] text-white font-bold text-xs transition-[transform,background-color] duration-150 active:scale-[0.96] shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:ring-offset-2"
+                      className="inline-flex items-center justify-center px-3.5 py-2 rounded bg-[#2c87c3] hover:bg-[#1e5c85] active:bg-[#153f5b] text-white font-bold text-xs transition-colors shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] focus-visible:ring-offset-2"
                     >
                       <span>Acheter</span>
                       <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

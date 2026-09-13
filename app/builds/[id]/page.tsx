@@ -44,7 +44,7 @@ export default async function BuildDetail({ params }: { params: { id: string } }
       </nav>
 
       {/* Main Build Header Card */}
-      <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xs space-y-5">
+      <div className="bg-white rounded p-6 sm:p-10 border border-slate-200 space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-800 border border-emerald-200/80">
             Build Communauté Algérie
@@ -62,7 +62,7 @@ export default async function BuildDetail({ params }: { params: { id: string } }
 
         {/* Author Chip */}
         <div className="flex items-center gap-3 pt-1 border-t border-slate-100">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-slate-900 to-slate-700 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+          <div className="w-9 h-9 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs shadow-sm">
             {authorInitials}
           </div>
           <div>
@@ -81,7 +81,7 @@ export default async function BuildDetail({ params }: { params: { id: string } }
         {/* Compatibility & Metrics Bar */}
         <div className="pt-3 flex flex-wrap items-center gap-2 text-xs">
           <span
-            className={`px-3 py-1.5 rounded-xl font-bold ${
+            className={`px-3 py-1.5 rounded font-bold ${
               compat.ok ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-800"
             }`}
           >
@@ -89,21 +89,21 @@ export default async function BuildDetail({ params }: { params: { id: string } }
           </span>
 
           {bn && (
-            <span className="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 font-medium">
+            <span className="px-3 py-1.5 rounded bg-slate-100 text-slate-700 font-medium">
               Équilibre CPU/GPU (1080p) : <b>{bn.note}</b>
             </span>
           )}
 
           <div className="ml-auto flex items-baseline gap-2">
             <span className="text-xs text-slate-400 uppercase font-semibold">Total :</span>
-            <span className="font-black text-2xl text-emerald-700 font-mono">
+            <span className="font-black text-2xl text-emerald-700">
               {total.toLocaleString("fr-DZ")} DA
             </span>
           </div>
         </div>
 
         {compat.warnings.length > 0 && (
-          <ul className="text-xs bg-red-50 border border-red-200 rounded-xl p-4 list-disc pl-6 space-y-1 text-red-900 font-medium">
+          <ul className="text-xs bg-red-50 border border-red-200 rounded p-4 list-disc pl-6 space-y-1 text-red-900 font-medium">
             {compat.warnings.map((w, i) => (
               <li key={i}>{w}</li>
             ))}
@@ -112,7 +112,7 @@ export default async function BuildDetail({ params }: { params: { id: string } }
       </div>
 
       {/* Parts Table */}
-      <div className="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden">
+      <div className="bg-white rounded border border-slate-200 overflow-hidden">
         <div className="p-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-500">
           <span>Liste des Pièces ({rows.length})</span>
           <span className="text-slate-400 font-normal normal-case">Prix du marché en DA</span>
@@ -130,7 +130,7 @@ export default async function BuildDetail({ params }: { params: { id: string } }
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs">
               {rows.map(({ cat, p, best }) => (
-                <tr key={cat} className="rowline hover:bg-blue-50/30 transition-colors group">
+                <tr key={cat} className="hover:bg-blue-50/30 transition-colors group">
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-3">
                       <Thumb src={productImage(p!)} alt={p!.model} size={44} />
@@ -140,7 +140,7 @@ export default async function BuildDetail({ params }: { params: { id: string } }
                         </span>
                         <Link
                           href={`/product/${p!.id}`}
-                          className="font-bold text-sm text-[#0b63e5] hover:underline block truncate"
+                          className="font-bold text-sm text-[#2c87c3] hover:underline block truncate"
                         >
                           {p!.brand} {p!.model}
                         </Link>
@@ -160,7 +160,7 @@ export default async function BuildDetail({ params }: { params: { id: string } }
                   </td>
 
                   <td className="px-4 py-3.5 text-right">
-                    <span className="font-bold text-sm text-slate-900 tabular-nums font-mono">
+                    <span className="font-bold text-sm text-slate-900 tabular-nums">
                       {best ? `${best.priceDa.toLocaleString("fr-DZ")} DA` : "—"}
                     </span>
                   </td>
@@ -171,7 +171,7 @@ export default async function BuildDetail({ params }: { params: { id: string } }
                         href={best.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-[#0b63e5] text-white font-bold text-xs transition-colors shadow-2xs"
+                        className="inline-flex items-center px-3 py-1.5 rounded bg-slate-900 hover:bg-[#2c87c3] text-white font-bold text-xs transition-colors"
                       >
                         <span>Voir</span>
                         <span className="ml-1">↗</span>
@@ -191,13 +191,13 @@ export default async function BuildDetail({ params }: { params: { id: string } }
       <div className="flex flex-wrap gap-3 pt-2">
         <Link
           href={`/builder?p=${Object.entries(build.picks).map(([k, v]) => `${k}:${v}`).join(",")}`}
-          className="px-6 py-3 rounded-xl bg-[#0b63e5] hover:bg-[#094db5] text-white font-bold text-sm shadow-2xs transition-all card-lift"
+          className="px-6 py-3 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white font-bold text-sm transition-colors"
         >
           Reprendre cette configuration dans le Builder →
         </Link>
         <Link
           href="/builds"
-          className="px-6 py-3 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-semibold text-sm transition-colors"
+          className="px-6 py-3 rounded bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-semibold text-sm transition-colors"
         >
           ← Tous les builds
         </Link>

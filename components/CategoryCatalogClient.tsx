@@ -127,7 +127,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
               {catLabel}
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-[#0b63e5] border border-blue-100">
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-[#2c87c3] border border-blue-100">
               {rawProducts.length} modèles canoniques
             </span>
           </div>
@@ -138,7 +138,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
 
         <Link
           href="/builder"
-          className="px-4 py-2.5 rounded-xl bg-[#0b63e5] hover:bg-[#094db5] text-white text-xs sm:text-sm font-bold shadow-2xs transition-all card-lift flex items-center gap-2"
+          className="px-4 py-2.5 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white text-xs sm:text-sm font-bold transition-colors flex items-center gap-2"
         >
           <span>Ouvrir dans le System Builder</span>
           <span>→</span>
@@ -146,7 +146,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
       </div>
 
       {/* Filter / Sort Interactive Toolbar */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-4 shadow-xs space-y-3.5">
+      <div className="bg-white rounded border border-slate-200 p-4 space-y-3.5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* Search inside category */}
           <div className="relative flex-1 min-w-[220px] max-w-sm">
@@ -155,7 +155,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={`Rechercher dans ${catLabel}…`}
-              className="w-full bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-[#0b63e5] rounded-xl pl-8 pr-7 py-2 text-xs text-slate-900 outline-none transition-all placeholder:text-slate-400 shadow-2xs"
+              className="w-full bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-[#2c87c3] rounded pl-8 pr-7 py-2 text-xs text-slate-900 outline-none transition-colors placeholder:text-slate-400"
             />
             <svg
               className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5 pointer-events-none"
@@ -178,11 +178,11 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
           </div>
 
           {/* View mode toggle: Dense Cards vs Dense Table */}
-          <div className="inline-flex rounded-xl border border-slate-200 p-0.5 bg-slate-50 text-xs">
+          <div className="inline-flex rounded border border-slate-200 p-0.5 bg-slate-50 text-xs">
             <button
               onClick={() => setViewMode("cards")}
-              className={`px-3 py-1.5 rounded-lg font-semibold transition-colors flex items-center gap-1.5 ${
-                viewMode === "cards" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-600 hover:text-slate-900"
+              className={`px-3 py-1.5 rounded font-semibold transition-colors flex items-center gap-1.5 ${
+                viewMode === "cards" ? "bg-white text-slate-900" : "text-slate-600 hover:text-slate-900"
               }`}
               title="Affichage fiches denses"
             >
@@ -196,8 +196,8 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             </button>
             <button
               onClick={() => setViewMode("table")}
-              className={`px-3 py-1.5 rounded-lg font-semibold transition-colors flex items-center gap-1.5 ${
-                viewMode === "table" ? "bg-white text-slate-900 shadow-2xs" : "text-slate-600 hover:text-slate-900"
+              className={`px-3 py-1.5 rounded font-semibold transition-colors flex items-center gap-1.5 ${
+                viewMode === "table" ? "bg-white text-slate-900" : "text-slate-600 hover:text-slate-900"
               }`}
               title="Affichage tableau comparatif"
             >
@@ -215,11 +215,11 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
         <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 text-xs">
           <div className="flex flex-wrap items-center gap-2.5">
             {/* Condition Toggle: All, Neuf, Occasion */}
-            <div className="inline-flex rounded-lg border border-slate-200 bg-slate-50 p-0.5">
+            <div className="inline-flex rounded border border-slate-200 bg-slate-50 p-0.5">
               <button
                 onClick={() => setCondition("all")}
                 className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${
-                  condition === "all" ? "bg-slate-900 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900"
+                  condition === "all" ? "bg-slate-900 text-white" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
                 Tous
@@ -227,7 +227,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               <button
                 onClick={() => setCondition("new")}
                 className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${
-                  condition === "new" ? "bg-emerald-600 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900"
+                  condition === "new" ? "bg-emerald-600 text-white" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
                 Neuf
@@ -235,7 +235,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               <button
                 onClick={() => setCondition("used")}
                 className={`px-2.5 py-1 rounded-md font-semibold transition-colors ${
-                  condition === "used" ? "bg-amber-600 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900"
+                  condition === "used" ? "bg-amber-600 text-white" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
                 Occasion
@@ -248,7 +248,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                 <select
                   value={store}
                   onChange={(e) => setStore(e.target.value)}
-                  className="border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-slate-700 font-medium outline-none cursor-pointer hover:bg-white transition-colors"
+                  className="border border-slate-200 rounded px-2.5 py-1 bg-slate-50 text-slate-700 font-medium outline-none cursor-pointer hover:bg-white transition-colors"
                 >
                   <option value="all">Toutes les boutiques ({availableStores.length})</option>
                   {availableStores.map((s) => (
@@ -267,7 +267,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as SortOption)}
-              className="border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 text-slate-700 font-semibold outline-none cursor-pointer hover:bg-white transition-colors"
+              className="border border-slate-200 rounded px-2.5 py-1 bg-slate-50 text-slate-700 font-semibold outline-none cursor-pointer hover:bg-white transition-colors"
             >
               <option value="price-asc">Prix : croissant (moins cher)</option>
               <option value="price-desc">Prix : décroissant (haut de gamme)</option>
@@ -303,13 +303,13 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               return (
                 <div
                   key={p.id}
-                  className="card-lift bg-white rounded-2xl p-4 border border-slate-200/90 shadow-2xs hover:border-blue-300 flex flex-col justify-between group transition-all"
+                  className="bg-white rounded p-4 border border-slate-200/90 hover:border-[#2c87c3] flex flex-col justify-between group transition-colors"
                 >
                   <div>
                     {/* Top Badges */}
                     <div className="flex items-center justify-between mb-2.5">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-[#0b63e5] border border-blue-100">
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-[#2c87c3] border border-blue-100">
                           {p.category}
                         </span>
                         {hasNew && (
@@ -323,20 +323,20 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                           </span>
                         )}
                       </div>
-                      <span className="text-[11px] font-mono font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                      <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
                         {pOffers.length} offre{pOffers.length > 1 ? "s" : ""}
                       </span>
                     </div>
 
                     {/* Image + Title */}
                     <div className="flex items-start gap-3.5">
-                      <div className="p-1 rounded-xl bg-slate-50 border border-slate-100 shrink-0 group-hover:scale-105 transition-transform">
+                      <div className="p-1 rounded bg-slate-50 border border-slate-100 shrink-0 ">
                         <Thumb src={productImage(p)} alt={p.model} size={54} />
                       </div>
                       <div className="min-w-0 flex-1">
                         <Link
                           href={`/product/${p.id}`}
-                          className="font-bold text-sm text-slate-900 group-hover:text-[#0b63e5] transition-colors block leading-snug"
+                          className="font-bold text-sm text-slate-900 group-hover:text-[#2c87c3] transition-colors block leading-snug"
                         >
                           {p.brand} {p.model}
                         </Link>
@@ -367,7 +367,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                       </span>
                       {best ? (
                         <>
-                          <div className="text-base font-extrabold text-emerald-700 font-mono tracking-tight">
+                          <div className="text-base font-extrabold text-emerald-700 tracking-tight">
                             {best.priceDa.toLocaleString("fr-DZ")} DA
                           </div>
                           <div className="text-[11px] text-slate-500 truncate max-w-[170px]">
@@ -381,7 +381,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
 
                     <Link
                       href={`/product/${p.id}`}
-                      className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-[#0b63e5] text-white font-semibold text-xs transition-colors shadow-2xs shrink-0 flex items-center gap-1"
+                      className="px-3 py-1.5 rounded bg-slate-900 hover:bg-[#2c87c3] text-white font-semibold text-xs transition-colors shrink-0 flex items-center gap-1"
                     >
                       <span>Voir offres</span>
                       <span>→</span>
@@ -393,7 +393,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
           </div>
         ) : (
           /* Dense Table View */
-          <div className="bg-white rounded-xl shadow-xs border border-slate-200 overflow-hidden">
+          <div className="bg-white rounded border border-slate-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm min-w-[700px]">
                 <thead className="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-200">
@@ -413,14 +413,14 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                     const specs = Object.entries(p.specs).slice(0, 3);
 
                     return (
-                      <tr key={p.id} className="rowline hover:bg-blue-50/40 transition-colors group">
+                      <tr key={p.id} className="hover:bg-blue-50/40 transition-colors group">
                         <td className="px-4 py-3.5">
                           <div className="flex items-center gap-3">
                             <Thumb src={productImage(p)} alt={p.model} size={44} />
                             <div className="min-w-0">
                               <Link
                                 href={`/product/${p.id}`}
-                                className="font-bold text-sm text-[#0b63e5] hover:underline block truncate"
+                                className="font-bold text-sm text-[#2c87c3] hover:underline block truncate"
                               >
                                 {p.brand} {p.model}
                               </Link>
@@ -444,7 +444,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                           </div>
                         </td>
 
-                        <td className="px-3 py-3.5 text-center font-mono">
+                        <td className="px-3 py-3.5 text-center">
                           <span className="inline-block px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold text-[11px]">
                             {pOffers.length}
                           </span>
@@ -452,7 +452,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
 
                         <td className="px-4 py-3.5 text-right">
                           {best ? (
-                            <div className="font-extrabold text-sm text-slate-900 tabular-nums font-mono">
+                            <div className="font-extrabold text-sm text-slate-900 tabular-nums">
                               {best.priceDa.toLocaleString("fr-DZ")} DA
                             </div>
                           ) : (
@@ -474,7 +474,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                         <td className="px-4 py-3.5 text-right">
                           <Link
                             href={`/product/${p.id}`}
-                            className="inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors shadow-2xs"
+                            className="inline-flex items-center justify-center px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors"
                           >
                             Voir offres →
                           </Link>
@@ -521,11 +521,11 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                 href={e.url}
                 target="_blank"
                 rel="noreferrer"
-                className="card-lift bg-white rounded-xl p-3.5 border border-slate-200/90 shadow-2xs flex gap-3 items-center group"
+                className="bg-white rounded p-3.5 border border-slate-200/90 flex gap-3 items-center group"
               >
                 <Thumb src={e.image} alt={e.title} size={48} />
                 <div className="min-w-0 flex-1">
-                  <div className="text-xs font-semibold text-slate-900 group-hover:text-[#0b63e5] transition-colors truncate">
+                  <div className="text-xs font-semibold text-slate-900 group-hover:text-[#2c87c3] transition-colors truncate">
                     {e.title}
                   </div>
                   <div className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1.5">
@@ -547,11 +547,11 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                       </>
                     ) : null}
                   </div>
-                  <div className="font-extrabold text-sm text-emerald-700 font-mono mt-1">
+                  <div className="font-extrabold text-sm text-emerald-700 mt-1">
                     {e.priceDa.toLocaleString("fr-DZ")} DA
                   </div>
                 </div>
-                <span className="text-slate-400 group-hover:text-[#0b63e5] text-xs font-bold shrink-0">
+                <span className="text-slate-400 group-hover:text-[#2c87c3] text-xs font-bold shrink-0">
                   ↗
                 </span>
               </a>

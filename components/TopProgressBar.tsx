@@ -55,7 +55,7 @@ export default function TopProgressBar() {
       className="fixed top-0 left-0 right-0 z-50 h-1 bg-transparent pointer-events-none overflow-hidden no-print"
     >
       <div
-        className="h-full bg-gradient-to-r from-[#0b63e5] via-indigo-500 to-emerald-400 transition-all ease-out shadow-[0_0_8px_rgba(11,99,229,0.7)]"
+        className="h-full bg-[#2c87c3] transition-all ease-out"
         style={{
           width: `${progress}%`,
           transitionDuration: progress === 100 ? "180ms" : "400ms",

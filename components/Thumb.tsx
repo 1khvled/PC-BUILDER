@@ -11,7 +11,7 @@ export default function Thumb({ src, alt, size = 56 }: { src?: string; alt: stri
         role="img"
         aria-label={alt}
         title={alt}
-        className="rounded-xl flex items-center justify-center shrink-0 border border-slate-200 bg-gradient-to-br from-slate-100 via-slate-50 to-blue-50 relative overflow-hidden"
+        className="rounded flex items-center justify-center shrink-0 border border-slate-200 bg-slate-100 relative overflow-hidden"
         style={{ width: size, height: size }}
       >
         <span aria-hidden="true" className="absolute font-extrabold text-slate-300 select-none" style={{ fontSize: size * 0.42 }}>
@@ -32,7 +32,7 @@ export default function Thumb({ src, alt, size = 56 }: { src?: string; alt: stri
       decoding="async"
       referrerPolicy="no-referrer"
       onError={() => setErr(true)}
-      className="rounded-xl object-contain shrink-0 bg-white p-1 ring-1 ring-black/10"
+      className="rounded object-contain shrink-0 bg-white p-1 ring-1 ring-black/10"
       style={{ width: size, height: size }}
     />
   );

@@ -22,90 +22,73 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr" className="h-full">
       <head>
         <script src="https://cdn.tailwindcss.com"></script>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
-          rel="stylesheet"
-        />
         <style>{`
           body {
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #eef1f5;
-            color: #0f172a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f4f3;
+            color: #191b2a;
           }
-          .font-mono, .tabular-nums {
+          .tabular-nums {
             font-variant-numeric: tabular-nums;
           }
 
           /* Accessible focus rings */
           *:focus-visible {
-            outline: 2px solid #0b63e5;
+            outline: 2px solid #2c87c3;
             outline-offset: 2px;
           }
 
-          @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: none; }
+          /* Flat white panel, 4px radius — the only card style on the site */
+          .panel {
+            background: #ffffff;
+            border: 1px solid #d8d8d8;
+            border-radius: 4px;
           }
-          .anim-in { animation: fadeUp 0.35s ease both; }
-          .anim-in-1 { animation: fadeUp 0.35s 0.04s ease both; }
-          .anim-in-2 { animation: fadeUp 0.35s 0.08s ease both; }
-          .anim-in-3 { animation: fadeUp 0.35s 0.12s ease both; }
-          .anim-in-4 { animation: fadeUp 0.35s 0.16s ease both; }
-
-          @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-          }
-          .skeleton {
-            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite linear;
+          .panel-hd {
+            background: #f0f0ef;
+            border-bottom: 1px solid #d8d8d8;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #55555f;
           }
 
-          .card-lift {
-            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+          /* Primary blue button */
+          .btn-blue {
+            background: #2c87c3;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
           }
-          .card-lift:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.1), 0 8px 12px -6px rgba(15, 23, 42, 0.05);
-          }
+          .btn-blue:hover { background: #1e5c85; }
+          .btn-blue:active { background: #153f5b; }
 
-          .rowline {
-            transition: background-color 0.15s ease;
+          /* Dark navy button */
+          .btn-dark {
+            background: #11111c;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
           }
-          .rowline:hover {
-            background-color: #f8fafc;
-          }
+          .btn-dark:hover { background: #26293b; }
 
           /* Blue links signature PCPP style */
           a.pcpp-link, .pcpp-link {
-            color: #0b63e5;
+            color: #2c87c3;
           }
           a.pcpp-link:hover, .pcpp-link:hover {
-            color: #084db8;
+            color: #1e5c85;
             text-decoration: underline;
-          }
-
-          /* Toast notification animation */
-          @keyframes toastSlide {
-            0% { opacity: 0; transform: translate(-50%, 20px) scale(0.96); }
-            100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
-          }
-          .toast-slide {
-            animation: toastSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          }
-
-          /* Respect reduced-motion preferences */
-          @media (prefers-reduced-motion: reduce) {
-            *, ::before, ::after {
-              animation-duration: 0.001ms !important;
-              animation-iteration-count: 1 !important;
-              transition-duration: 0.001ms !important;
-              scroll-behavior: auto !important;
-            }
-            .card-lift:hover {
-              transform: none !important;
-            }
           }
 
           /* Print styles */
@@ -115,7 +98,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             }
             body {
               background-color: #ffffff !important;
-              color: #0f172a !important;
+              color: #191b2a !important;
             }
             .print-exact {
               -webkit-print-color-adjust: exact !important;
@@ -124,7 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }
         `}</style>
       </head>
-      <body className="text-slate-900 min-h-full flex flex-col antialiased">
+      <body className="min-h-full flex flex-col antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

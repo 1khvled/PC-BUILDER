@@ -44,13 +44,13 @@ export default async function DealsPage() {
   const list = deals(offers);
   return (
     <main className="max-w-6xl mx-auto px-4 py-6">
-      <h1 className="anim-in text-2xl font-extrabold tracking-tight">Bons plans</h1>
-      <p className="anim-in text-xs text-slate-400">
+      <h1 className="text-2xl font-extrabold tracking-tight">Bons plans</h1>
+      <p className="text-xs text-slate-400">
         Offres neuves ≥8% sous la moyenne de leur produit (économie ≥2 000 DA) • relevé du {scrapedAt.slice(0, 10)}
       </p>
       <div className="grid md:grid-cols-2 gap-3 mt-4">
         {list.map((d, i) => (
-          <Link key={d.id} href={`/product/${d.id}`} className={`anim-in-${Math.min((i % 4) + 1, 4)} card-lift bg-white rounded-xl p-4 shadow-sm border flex gap-3 items-center`}>
+          <Link key={d.id} href={`/product/${d.id}`} className="bg-white rounded p-4 shadow-sm border flex gap-3 items-center">
             <Thumb src={productImage(PRODUCTS.find((p) => p.id === d.id)!)} alt={d.model} size={56} />
             <div className="min-w-0 flex-1">
               <div className="font-bold text-sm truncate">{d.brand} {d.model}</div>

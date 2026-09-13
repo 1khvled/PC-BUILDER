@@ -1,6 +1,6 @@
 import type { PricePoint } from "@/lib/data/products";
 
-const COLORS = ["#0b63e5", "#059669", "#d97706", "#7c3aed", "#dc2626"];
+const COLORS = ["#2c87c3", "#00b16a", "#d97706", "#7c3aed", "#d91e18"];
 
 // Pure-SVG price history (PCPartPicker signature), no deps. Server-safe.
 export default function PriceChart({ points }: { points: PricePoint[] }) {
@@ -21,12 +21,12 @@ export default function PriceChart({ points }: { points: PricePoint[] }) {
 
   if (days.length < 2) {
     return (
-      <div className="text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-xl p-4">
+      <div className="text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded p-4">
         Historique en cours de construction — {points.length} relevé{points.length > 1 ? "s" : ""} à ce jour.
         Revenez après le prochain relevé quotidien pour voir la courbe.
         <div className="flex flex-wrap gap-1.5 mt-2">
           {stores.map(({ s, pts }) => (
-            <span key={s} className="px-2 py-0.5 rounded-full bg-white border text-[11px] font-mono">
+            <span key={s} className="px-2 py-0.5 rounded-full bg-white border text-[11px]">
               {s}: {pts[pts.length - 1].price.toLocaleString("fr-DZ")} DA
             </span>
           ))}
