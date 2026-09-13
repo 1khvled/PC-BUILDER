@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { OFFERS, PRODUCTS, bestOffer, priceHistory, productImage } from "@/lib/data/products";
-import { SCRAPED_AT } from "@/lib/data/live";
+import { PRODUCTS, bestOffer, productImage } from "@/lib/data/products";
+import { getOffers, getPriceHistory, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import ProductOffersTable from "@/components/ProductOffersTable";
 import PriceChart from "@/components/PriceChart";
@@ -10,16 +10,18 @@ export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ id: p.id }));
 }
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+export default async function ProductPage({ params }: { params: { id: string } }) {
   const product = PRODUCTS.find((p) => p.id === params.id);
   if (!product) {
     notFound();
   }
 
-  const offers = OFFERS.filter((o) => o.productId === product.id).sort((a, b) => a.priceDa - b.priceDa);
+  const allOffers = await getOffers();
+  const history = await getPriceHistory(product.id);
+  const scrapedAt = await getScrapedAt();
+  const offers = allOffers.filter((o) => o.productId === product.id).sort((a, b) => a.priceDa - b.priceDa);
   // Hero = best NEW + available offer, never a dead/used listing while a live one exists
-  const best = bestOffer(product.id) ?? offers[0];
-  const history = priceHistory(product.id);
+  const best = bestOffer(product.id, allOffers) ?? offers[0];
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -200,7 +202,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 Comparatif des prix marchands en Algérie
               </h2>
               <span className="text-xs text-slate-400">
-                Relevé le {SCRAPED_AT.slice(0, 10)} • Tri organique par prix croissant
+                Relevé le {scrapedAt.slice(0, 10)} • Tri organique par prix croissant
               </span>
             </div>
             <ProductOffersTable offers={offers} />
@@ -283,7 +285,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                     </div>
                   )}
                   <div className="text-[11px] text-slate-400 mt-1">
-                    Stock relevé le {SCRAPED_AT.slice(0, 10)} — confirmez toujours sur la boutique.
+                    Stock relevé le {scrapedAt.slice(0, 10)} — confirmez toujours sur la boutique.
                   </div>
                 </>
               ) : (
@@ -349,7 +351,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                <span>Relevé vérifié le {SCRAPED_AT.slice(0, 10)}</span>
+                <span>Relevé vérifié le {scrapedAt.slice(0, 10)}</span>
               </div>
             </div>
           </div>

@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { OFFERS, PRODUCTS, bestOffer, productImage, type Product } from "@/lib/data/products";
+import { PRODUCTS, bestOffer, productImage, type Offer } from "@/lib/data/products";
+import { useOffers } from "@/lib/data/use-offers";
 import { LIVE_EXTRA } from "@/lib/data/live";
 import Thumb from "./Thumb";
 import EmptyState from "./EmptyState";
@@ -10,12 +11,16 @@ import EmptyState from "./EmptyState";
 interface CategoryCatalogClientProps {
   slug: string;
   catLabel: string;
+  /** Live offers from the server (Supabase). Falls back to the static bake when omitted. */
+  offers?: Offer[];
 }
 
 type SortOption = "price-asc" | "price-desc" | "name-asc" | "offers-desc";
 type ConditionOption = "all" | "new" | "used";
 
-export default function CategoryCatalogClient({ slug, catLabel }: CategoryCatalogClientProps) {
+export default function CategoryCatalogClient({ slug, catLabel, offers: serverOffers }: CategoryCatalogClientProps) {
+  const staticOffers = useOffers();
+  const offers = serverOffers ?? staticOffers;
   const [sort, setSort] = useState<SortOption>("price-asc");
   const [condition, setCondition] = useState<ConditionOption>("all");
   const [store, setStore] = useState<string>("all");
@@ -29,7 +34,7 @@ export default function CategoryCatalogClient({ slug, catLabel }: CategoryCatalo
   const availableStores = useMemo(() => {
     const storeSet = new Set<string>();
     const catProductIds = new Set(rawProducts.map((p) => p.id));
-    for (const o of OFFERS) {
+    for (const o of offers) {
       if (catProductIds.has(o.productId) && o.store) {
         storeSet.add(o.store);
       }
@@ -38,12 +43,12 @@ export default function CategoryCatalogClient({ slug, catLabel }: CategoryCatalo
       if (e.store) storeSet.add(e.store);
     }
     return Array.from(storeSet).sort();
-  }, [rawProducts, rawExtras]);
+  }, [rawProducts, rawExtras, offers]);
 
   // Filter and sort canonical products
   const filteredProducts = useMemo(() => {
     const list = rawProducts.filter((p) => {
-      const pOffers = OFFERS.filter((o) => o.productId === p.id);
+      const pOffers = offers.filter((o) => o.productId === p.id);
 
       // Search filter
       if (search.trim()) {
@@ -70,10 +75,10 @@ export default function CategoryCatalogClient({ slug, catLabel }: CategoryCatalo
     });
 
     list.sort((a, b) => {
-      const bestA = bestOffer(a.id)?.priceDa ?? Infinity;
-      const bestB = bestOffer(b.id)?.priceDa ?? Infinity;
-      const offersA = OFFERS.filter((o) => o.productId === a.id).length;
-      const offersB = OFFERS.filter((o) => o.productId === b.id).length;
+      const bestA = bestOffer(a.id, offers)?.priceDa ?? Infinity;
+      const bestB = bestOffer(b.id, offers)?.priceDa ?? Infinity;
+      const offersA = offers.filter((o) => o.productId === a.id).length;
+      const offersB = offers.filter((o) => o.productId === b.id).length;
 
       if (sort === "price-asc") return bestA - bestB;
       if (sort === "price-desc") return (bestB === Infinity ? -1 : bestB) - (bestA === Infinity ? -1 : bestA);
@@ -83,7 +88,7 @@ export default function CategoryCatalogClient({ slug, catLabel }: CategoryCatalo
     });
 
     return list;
-  }, [rawProducts, search, condition, store, sort]);
+  }, [rawProducts, search, condition, store, sort, offers]);
 
   // Filter extras according to toolbar state
   const filteredExtras = useMemo(() => {
@@ -289,8 +294,8 @@ export default function CategoryCatalogClient({ slug, catLabel }: CategoryCatalo
           /* Denser Magazine Cards View */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {filteredProducts.map((p) => {
-              const best = bestOffer(p.id);
-              const pOffers = OFFERS.filter((o) => o.productId === p.id);
+              const best = bestOffer(p.id, offers);
+              const pOffers = offers.filter((o) => o.productId === p.id);
               const specs = Object.entries(p.specs).slice(0, 3);
               const hasNew = pOffers.some((o) => o.condition === "new");
               const hasUsed = pOffers.some((o) => o.condition === "used");
@@ -403,8 +408,8 @@ export default function CategoryCatalogClient({ slug, catLabel }: CategoryCatalo
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-xs">
                   {filteredProducts.map((p) => {
-                    const best = bestOffer(p.id);
-                    const pOffers = OFFERS.filter((o) => o.productId === p.id);
+                    const best = bestOffer(p.id, offers);
+                    const pOffers = offers.filter((o) => o.productId === p.id);
                     const specs = Object.entries(p.specs).slice(0, 3);
 
                     return (
@@ -535,6 +540,12 @@ export default function CategoryCatalogClient({ slug, catLabel }: CategoryCatalo
                     >
                       {e.condition === "new" ? "Neuf" : "Occasion"}
                     </span>
+                    {e.postedAt ? (
+                      <>
+                        <span>•</span>
+                        <span title={`Annonce du ${e.postedAt.slice(0, 10)}`}>le {e.postedAt.slice(0, 10)}</span>
+                      </>
+                    ) : null}
                   </div>
                   <div className="font-extrabold text-sm text-emerald-700 font-mono mt-1">
                     {e.priceDa.toLocaleString("fr-DZ")} DA

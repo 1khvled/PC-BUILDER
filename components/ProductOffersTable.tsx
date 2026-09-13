@@ -71,26 +71,28 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
   }, [filteredAndSortedOffers]);
 
   return (
-    <div className="bg-white rounded-2xl shadow-xs border border-slate-200 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
       {/* Table Header Controls */}
-      <div className="p-4 border-b border-slate-200 bg-slate-50/70 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 border-b border-slate-200 bg-slate-50/80 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-500 mr-1">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-600 mr-1">
             Offres Marchands ({filteredAndSortedOffers.length})
           </span>
-          <div className="inline-flex rounded-xl border border-slate-200 bg-white p-0.5 text-xs shadow-2xs">
+          <div className="inline-flex rounded-xl border border-slate-200 bg-white p-0.5 text-xs shadow-2xs" role="group" aria-label="Filtrer par état">
             <button
               onClick={() => setConditionFilter("all")}
-              className={`px-3 py-1 rounded-lg font-semibold transition-colors ${
-                conditionFilter === "all" ? "bg-slate-900 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900"
+              aria-pressed={conditionFilter === "all"}
+              className={`px-3 py-1.5 rounded-lg font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] ${
+                conditionFilter === "all" ? "bg-slate-900 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
               Tous ({offers.length})
             </button>
             <button
               onClick={() => setConditionFilter("new")}
-              className={`px-3 py-1 rounded-lg font-semibold transition-colors ${
-                conditionFilter === "new" ? "bg-emerald-600 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900"
+              aria-pressed={conditionFilter === "new"}
+              className={`px-3 py-1.5 rounded-lg font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 ${
+                conditionFilter === "new" ? "bg-emerald-600 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
               Neuf ({newCount})
@@ -98,8 +100,9 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
             {usedCount > 0 && (
               <button
                 onClick={() => setConditionFilter("used")}
-                className={`px-3 py-1 rounded-lg font-semibold transition-colors ${
-                  conditionFilter === "used" ? "bg-amber-600 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900"
+                aria-pressed={conditionFilter === "used"}
+                className={`px-3 py-1.5 rounded-lg font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 ${
+                  conditionFilter === "used" ? "bg-amber-600 text-white shadow-2xs" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                 }`}
               >
                 Occasion ({usedCount})
@@ -122,7 +125,8 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Filtrer boutique ou wilaya…"
-              className="border border-slate-200 rounded-xl pl-7 pr-3 py-1.5 text-xs bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#0b63e5] shadow-2xs w-48 sm:w-56"
+              aria-label="Filtrer les offres par boutique ou wilaya"
+              className="border border-slate-200 rounded-xl pl-8 pr-3 py-2 text-xs bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#0b63e5] focus:ring-2 focus:ring-blue-100 shadow-2xs w-48 sm:w-56"
             />
             <svg
               className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2 pointer-events-none"
@@ -142,11 +146,14 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
       {filteredAndSortedOffers.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[640px]">
-            <thead className="bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200 select-none">
+            <caption className="sr-only">Comparatif des offres marchands triées par prix croissant en Dinars Algériens</caption>
+            <thead className="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200 select-none sticky top-0">
               <tr>
                 <th
+                  scope="col"
+                  aria-sort={sortField === "store" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                   onClick={() => handleSort("store")}
-                  className="text-left px-4 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors"
+                  className="text-left px-4 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors focus-visible:outline-none focus-visible:bg-blue-50"
                 >
                   <div className="flex items-center gap-1.5">
                     <span>Marchand / Boutique</span>
@@ -156,8 +163,10 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                   </div>
                 </th>
                 <th
+                  scope="col"
+                  aria-sort={sortField === "wilaya" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                   onClick={() => handleSort("wilaya")}
-                  className="text-left px-3 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors"
+                  className="text-left px-3 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors focus-visible:outline-none focus-visible:bg-blue-50"
                 >
                   <div className="flex items-center gap-1.5">
                     <span>Wilaya</span>
@@ -167,8 +176,10 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                   </div>
                 </th>
                 <th
+                  scope="col"
+                  aria-sort={sortField === "condition" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                   onClick={() => handleSort("condition")}
-                  className="text-center px-3 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors"
+                  className="text-center px-3 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors focus-visible:outline-none focus-visible:bg-blue-50"
                 >
                   <div className="flex items-center justify-center gap-1.5">
                     <span>État</span>
@@ -177,10 +188,12 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                     </span>
                   </div>
                 </th>
-                <th className="text-left px-3 py-3">Disponibilité</th>
+                <th scope="col" className="text-left px-3 py-3">Disponibilité</th>
                 <th
+                  scope="col"
+                  aria-sort={sortField === "price" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
                   onClick={() => handleSort("price")}
-                  className="text-right px-4 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors"
+                  className="text-right px-4 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors focus-visible:outline-none focus-visible:bg-blue-50"
                 >
                   <div className="flex items-center justify-end gap-1.5">
                     <span>Prix (DA)</span>
@@ -189,14 +202,16 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                     </span>
                   </div>
                 </th>
-                <th className="text-right px-4 py-3 w-28">Action</th>
+                <th scope="col" className="text-right px-4 py-3 w-32">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs">
-              {filteredAndSortedOffers.map((o, idx) => (
+              {filteredAndSortedOffers.map((o, idx) => {
+                const isBest = stats !== null && o.priceDa === stats.min;
+                return (
                 <tr
-                  key={idx}
-                  className="rowline transition-colors hover:bg-blue-50/50 group"
+                  key={`${o.store}-${o.priceDa}-${idx}`}
+                  className={`rowline transition-colors group ${isBest ? "bg-emerald-50/70 hover:bg-emerald-50" : "hover:bg-blue-50/50"}`}
                 >
                   {/* Store info */}
                   <td className="px-4 py-3.5">
@@ -243,7 +258,12 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
 
                   {/* Price */}
                   <td className="px-4 py-3.5 text-right">
-                    <div className="font-extrabold text-sm sm:text-base tabular-nums font-mono text-slate-900 group-hover:text-emerald-700 transition-colors">
+                    {isBest && (
+                      <span className="inline-block mb-1 text-[10px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-full bg-emerald-600 text-white">
+                        Meilleur prix
+                      </span>
+                    )}
+                    <div className={`font-extrabold text-sm sm:text-base tabular-nums font-mono transition-colors ${isBest ? "text-emerald-700" : "text-slate-900 group-hover:text-emerald-700"}`}>
                       {o.priceDa.toLocaleString("fr-DZ")} DA
                     </div>
                   </td>
@@ -253,17 +273,19 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                     <a
                       href={o.url}
                       target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-[#0b63e5] hover:bg-[#094db5] text-white font-bold text-xs transition-colors shadow-2xs"
+                      rel="noopener noreferrer sponsored"
+                      aria-label={`Acheter chez ${o.store} — ${o.priceDa.toLocaleString("fr-DZ")} DA`}
+                      className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg bg-[#0b63e5] hover:bg-[#094db5] active:bg-[#073ea0] text-white font-bold text-xs transition-all shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:ring-offset-2"
                     >
                       <span>Acheter</span>
-                      <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>
                     </a>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>

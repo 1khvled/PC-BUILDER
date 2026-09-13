@@ -12,8 +12,9 @@ export async function searchOuedkniss(keywords: string): Promise<RawOffer[]> {
   // Try deep API first (progressive enhancement)
   try {
     const apiOffers = await searchOuedknissFull(keywords);
-    if (apiOffers && apiOffers.length > 0) {
-      return apiOffers;
+    const storesOnly = (apiOffers || []).filter((o) => o.isFromStore);
+    if (storesOnly.length > 0) {
+      return storesOnly;
     }
   } catch (err) {
     console.warn("Ouedkniss deep API failed, falling back to page-1 parser:", err);
@@ -27,12 +28,15 @@ export async function searchOuedkniss(keywords: string): Promise<RawOffer[]> {
   });
   if (!res.ok) throw new Error(`ouedkniss HTTP ${res.status}`);
   const loaded = cheerio.load(await res.text());
-  const out: RawOffer[] = [];
+  const out: OuedknissOffer[] = [];
   const seen = new Set<string>();
   loaded("a[href]").each((_, a) => {
     const href = loaded(a).attr("href") || "";
-    const m = href.match(/-d(\d+)\/?$/);
-    if (!m || href.includes("/store/") || seen.has(m[1])) return;
+    const m = href.match(/-d(\d+)\/?$/) || href.match(/\/annonce\/(\d+)\/?$/);
+    if (!m || seen.has(m[1])) return;
+    // STORE-ONLY policy: skip individual listings, keep /store/ pages
+    const sm = href.match(/\/store\/\d+\/([^/]+)/);
+    if (!sm) return;
     seen.add(m[1]);
     const anchor = loaded(a);
     let title = anchor.text().replace(/\s+/g, " ").trim();
@@ -73,6 +77,8 @@ export async function searchOuedkniss(keywords: string): Promise<RawOffer[]> {
       url: new URL(href, url).toString(),
       stock: "Ouedkniss",
       image,
+      seller: decodeURIComponent(sm[1]).replace(/-/g, " "),
+      isFromStore: true,
     });
   });
   // no category band here: one query stream covers cpu/gpu/ram/ssd (bands applied at bake by query)

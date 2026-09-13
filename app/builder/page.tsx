@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { CATEGORIES, OFFERS, PRODUCTS, bestOffer, productImage, type Product } from "@/lib/data/products";
+import { CATEGORIES, PRODUCTS, bestOffer, productImage, type Product } from "@/lib/data/products";
+import { useOffers } from "@/lib/data/use-offers";
 import { checkCompat } from "@/lib/compat/check";
 import { recommendedPsu } from "@/lib/compat/watt";
 import Thumb from "@/components/Thumb";
@@ -160,6 +161,7 @@ function parsePicks(raw: string | null): Record<string, string> | null {
 }
 
 export default function BuilderPage() {
+  const offers = useOffers();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [picks, setPicks] = useState<Record<string, string>>(() => {
     if (typeof window === "undefined") return DEFAULT_BUILD;
@@ -167,6 +169,19 @@ export default function BuilderPage() {
   });
   const [activeModalCat, setActiveModalCat] = useState<string | null>(null);
   const [modalSearch, setModalSearch] = useState("");
+
+  // Fermer le modal avec Échap pour une navigation clavier claire
+  useEffect(() => {
+    if (!activeModalCat) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveModalCat(null);
+        setModalSearch("");
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [activeModalCat]);
 
   // Keep the URL as the source of truth so "Copier le permalien" always shares the real build
   useEffect(() => {
@@ -192,8 +207,8 @@ export default function BuilderPage() {
   const result = useMemo(() => checkCompat(build), [build]);
 
   const total = useMemo(
-    () => Object.values(build).reduce((s, p) => s + (bestOffer(p.id)?.priceDa ?? 0), 0),
-    [build]
+    () => Object.values(build).reduce((s, p) => s + (bestOffer(p.id, offers)?.priceDa ?? 0), 0),
+    [build, offers]
   );
 
   const selectedCount = Object.keys(build).length;
@@ -284,7 +299,7 @@ export default function BuilderPage() {
         <div className="flex items-center gap-2 text-xs">
           <button
             onClick={handleCopyLink}
-            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg font-semibold shadow-2xs transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded-lg font-semibold shadow-2xs transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5]"
             title="Copier le lien partageable qui restaure cette sélection"
           >
             <svg className="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -297,7 +312,7 @@ export default function BuilderPage() {
           {/* Print-friendly export button next to Copier */}
           <button
             onClick={handlePrint}
-            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg font-semibold shadow-2xs transition-colors flex items-center gap-1.5"
+            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded-lg font-semibold shadow-2xs transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5]"
             title="Imprimer ou enregistrer en PDF (fiche optimisée pour impression)"
           >
             <svg className="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -323,8 +338,26 @@ export default function BuilderPage() {
         </div>
       </div>
 
+      {/* Progression de la configuration — clarté immédiate */}
+      <div className="mt-4 bg-white rounded-xl border border-slate-200 px-4 py-3 shadow-xs print:hidden">
+        <div className="flex items-center justify-between gap-3 text-xs font-semibold">
+          <span className="text-slate-700">
+            {selectedCount} sur {CATEGORIES.length} composants sélectionnés
+          </span>
+          <span className="text-slate-500 tabular-nums">{Math.round((selectedCount / CATEGORIES.length) * 100)} % complété</span>
+        </div>
+        <div className="mt-2 h-2 rounded-full bg-slate-100 overflow-hidden" role="progressbar" aria-valuenow={selectedCount} aria-valuemin={0} aria-valuemax={CATEGORIES.length} aria-label="Progression de la configuration">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-[#0b63e5] to-emerald-500 transition-all"
+            style={{ width: `${(selectedCount / CATEGORIES.length) * 100}%` }}
+          />
+        </div>
+      </div>
+
       {/* PCPartPicker Green Compatibility Banner */}
       <div
+        role="status"
+        aria-live="polite"
         className={`mt-3 rounded-xl border p-3.5 sm:p-4 text-sm transition-all shadow-xs print:border-slate-300 print:bg-white ${
           result.ok
             ? "bg-[#e7f6ec] border-emerald-200 text-emerald-950"
@@ -367,32 +400,32 @@ export default function BuilderPage() {
       <div className="bg-white rounded-xl shadow-xs border border-slate-200 mt-4 overflow-hidden print:border-slate-300">
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[860px] border-collapse">
-            <thead className="bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200 select-none print:bg-slate-100 print:text-slate-700">
+            <thead className="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200 select-none print:bg-slate-100 print:text-slate-700">
               <tr>
-                <th className="text-left px-4 py-3 w-[150px]">Composant</th>
-                <th className="text-left px-3 py-3">Sélection</th>
-                <th className="text-right px-4 py-3 w-[140px]">Prix</th>
-                <th className="text-left px-4 py-3 w-[220px]">Où acheter</th>
-                <th className="text-right px-4 py-3 w-[110px] print:hidden">Action</th>
+                <th scope="col" className="text-left px-4 py-3 w-[150px]">Composant</th>
+                <th scope="col" className="text-left px-3 py-3">Sélection</th>
+                <th scope="col" className="text-right px-4 py-3 w-[140px]">Prix</th>
+                <th scope="col" className="text-left px-4 py-3 w-[220px]">Où acheter</th>
+                <th scope="col" className="text-right px-4 py-3 w-[110px] print:hidden">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 print:divide-slate-200">
-              {CATEGORIES.map((cat) => {
+              {CATEGORIES.map((cat, catIdx) => {
                 const product = build[cat.slug];
-                const best = product ? bestOffer(product.id) : undefined;
-                const allProductOffers = product ? OFFERS.filter((o) => o.productId === product.id) : [];
+                const best = product ? bestOffer(product.id, offers) : undefined;
+                const allProductOffers = product ? offers.filter((o) => o.productId === product.id) : [];
                 const otherCount = allProductOffers.length - 1;
 
                 return (
                   <tr
                     key={cat.slug}
-                    className="rowline hover:bg-blue-50/30 transition-colors group print:hover:bg-transparent"
+                    className={`rowline transition-colors group print:hover:bg-transparent ${product ? "" : "bg-amber-50/40"} hover:bg-blue-50/40`}
                   >
                     {/* Component Column */}
                     <td className="px-4 py-3.5 align-top">
                       <div className="flex items-center gap-2">
-                        <span className="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-[#0b63e5] group-hover:text-white flex items-center justify-center text-slate-600 transition-colors shrink-0 print:border print:border-slate-200">
-                          <CategoryIcon slug={cat.slug} />
+                        <span className="w-7 h-7 rounded-lg bg-slate-100 group-hover:bg-[#0b63e5] group-hover:text-white flex items-center justify-center text-slate-600 transition-colors shrink-0 print:border print:border-slate-200 text-xs font-bold" aria-hidden="true">
+                          {product ? <CategoryIcon slug={cat.slug} /> : <span>{catIdx + 1}</span>}
                         </span>
                         <span className="font-bold text-slate-800 text-xs sm:text-sm">
                           {cat.label}
@@ -480,15 +513,16 @@ export default function BuilderPage() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setActiveModalCat(cat.slug)}
-                            className="px-2 py-1 text-[11px] font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded transition-colors"
+                            className="px-2 py-1 text-[11px] font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] transition-colors"
                             title="Changer de composant"
                           >
                             Changer
                           </button>
                           <button
                             onClick={() => handleRemovePart(cat.slug)}
-                            className="w-7 h-7 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors"
+                            className="w-7 h-7 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                             title="Retirer de la configuration"
+                            aria-label={`Retirer ${cat.label}`}
                           >
                             ✕
                           </button>
@@ -496,9 +530,9 @@ export default function BuilderPage() {
                       ) : (
                         <button
                           onClick={() => setActiveModalCat(cat.slug)}
-                          className="text-slate-400 hover:text-[#0b63e5] text-xs font-semibold"
+                          className="text-[#0b63e5] hover:text-[#084db8] hover:underline underline-offset-4 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] rounded"
                         >
-                          Ajouter
+                          + Ajouter
                         </button>
                       )}
                     </td>
@@ -563,8 +597,8 @@ export default function BuilderPage() {
 
       {/* Component Picker Modal */}
       {activeModalCat && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 anim-in print:hidden">
-          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+        <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 anim-in print:hidden" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
+          <div role="dialog" aria-modal="true" aria-label={`Choisir un composant : ${CATEGORIES.find((c) => c.slug === activeModalCat)?.label ?? activeModalCat}`} className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden" onClick={(e) => e.stopPropagation()}>
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-slate-50/80">
               <div>
@@ -607,7 +641,7 @@ export default function BuilderPage() {
                   return `${p.brand} ${p.model}`.toLowerCase().includes(q);
                 })
                 .map((product) => {
-                  const best = bestOffer(product.id);
+                  const best = bestOffer(product.id, offers);
                   const isCurrent = picks[activeModalCat] === product.id;
 
                   return (

@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { CATEGORIES, OFFERS, PRODUCTS, bestOffer, productImage } from "@/lib/data/products";
-import { LIVE_EXTRA, SCRAPED_AT } from "@/lib/data/live";
+import { CATEGORIES, PRODUCTS, bestOffer, productImage } from "@/lib/data/products";
+import { getOffers, getScrapedAt } from "@/lib/data/catalog";
+import { LIVE_EXTRA } from "@/lib/data/live";
 import { GUIDES } from "@/lib/data/guides";
 import { BUILDS } from "@/lib/data/builds";
 import Thumb from "@/components/Thumb";
@@ -13,7 +14,7 @@ function CategorySvg({ slug }: { slug: string }) {
   switch (slug) {
     case "cpu":
       return (
-        <svg className="w-6 h-6 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="4" y="4" width="16" height="16" rx="2" />
           <rect x="9" y="9" width="6" height="6" />
           <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" />
@@ -21,7 +22,7 @@ function CategorySvg({ slug }: { slug: string }) {
       );
     case "cooler":
       return (
-        <svg className="w-6 h-6 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="9" />
           <circle cx="12" cy="12" r="2.5" />
           <path d="M12 9.5V3M14.5 12H21M12 14.5V21M9.5 12H3" />
@@ -29,7 +30,7 @@ function CategorySvg({ slug }: { slug: string }) {
       );
     case "motherboard":
       return (
-        <svg className="w-6 h-6 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <rect x="7" y="7" width="4" height="4" />
           <path d="M15 7h2M15 10h2M7 15h10M7 18h5" />
@@ -37,21 +38,21 @@ function CategorySvg({ slug }: { slug: string }) {
       );
     case "ram":
       return (
-        <svg className="w-6 h-6 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="2" y="7" width="20" height="10" rx="1" />
           <path d="M6 17v2M10 17v2M14 17v2M18 17v2M6 11h2M11 11h2M16 11h2" />
         </svg>
       );
     case "ssd":
       return (
-        <svg className="w-6 h-6 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="4" y="5" width="16" height="14" rx="2" />
           <path d="M7 9h10M7 12h4M16 15h1" />
         </svg>
       );
     case "gpu":
       return (
-        <svg className="w-6 h-6 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="2" y="6" width="20" height="12" rx="2" />
           <circle cx="8.5" cy="12" r="2.5" />
           <circle cx="15.5" cy="12" r="2.5" />
@@ -60,7 +61,7 @@ function CategorySvg({ slug }: { slug: string }) {
       );
     case "case":
       return (
-        <svg className="w-6 h-6 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="5" y="3" width="14" height="18" rx="2" />
           <circle cx="12" cy="7" r="1" fill="currentColor" />
           <path d="M9 11h6M9 14h6M9 17h6" />
@@ -68,7 +69,7 @@ function CategorySvg({ slug }: { slug: string }) {
       );
     case "psu":
       return (
-        <svg className="w-6 h-6 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="3" y="4" width="18" height="16" rx="2" />
           <circle cx="10" cy="12" r="3.5" />
           <path d="M16 8h2M16 12h2M16 16h2" />
@@ -76,7 +77,7 @@ function CategorySvg({ slug }: { slug: string }) {
       );
     case "monitor":
       return (
-        <svg className="w-6 h-6 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="3" y="4" width="18" height="12" rx="2" />
           <line x1="8" y1="20" x2="16" y2="20" />
           <line x1="12" y1="16" x2="12" y2="20" />
@@ -84,7 +85,7 @@ function CategorySvg({ slug }: { slug: string }) {
       );
     default:
       return (
-        <svg className="w-6 h-6 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="4" y="4" width="16" height="16" rx="2" />
           <path d="M9 9h6v6H9z" />
         </svg>
@@ -92,9 +93,11 @@ function CategorySvg({ slug }: { slug: string }) {
   }
 }
 
-export default function Home() {
-  const liveCount = OFFERS.length + LIVE_EXTRA.length;
-  const trending = PRODUCTS.map((p) => ({ p, best: bestOffer(p.id) }))
+export default async function Home() {
+  const offers = await getOffers();
+  const scrapedAt = await getScrapedAt();
+  const liveCount = offers.length + LIVE_EXTRA.length;
+  const trending = PRODUCTS.map((p) => ({ p, best: bestOffer(p.id, offers) }))
     .filter((x) => x.best)
     .sort((a, b) => (a.best as { priceDa: number }).priceDa - (b.best as { priceDa: number }).priceDa)
     .slice(0, 8);
@@ -125,7 +128,7 @@ export default function Home() {
             </span>
             <span>{liveCount} offres indexées en direct</span>
             <span className="text-emerald-400/40">•</span>
-            <span className="text-slate-300 font-normal">Relevé le {SCRAPED_AT.slice(0, 10)}</span>
+            <span className="text-slate-300 font-normal">Relevé le {scrapedAt.slice(0, 10)}</span>
           </div>
 
           {/* Main Headline */}
@@ -164,20 +167,20 @@ export default function Home() {
           <div className="flex flex-wrap items-center gap-3.5 pt-2">
             <Link
               href="/builder"
-              className="px-6 py-3.5 rounded-xl bg-[#0b63e5] hover:bg-[#094db5] active:bg-[#073ea0] text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-500/25 transition-all card-lift flex items-center gap-2.5 group"
+              className="px-6 py-3.5 rounded-xl bg-[#0b63e5] hover:bg-[#094db5] active:bg-[#073ea0] text-white font-bold text-sm sm:text-base shadow-lg shadow-blue-500/25 transition-all card-lift flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
             >
               <span>Lancer le System Builder</span>
-              <span className="group-hover:translate-x-1 transition-transform">→</span>
+              <span aria-hidden="true" className="group-hover:translate-x-1 transition-transform">→</span>
             </Link>
             <Link
               href="/category/cpu"
-              className="px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-sm border border-white/20 backdrop-blur-sm transition-colors"
+              className="px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               Catalogue des composants
             </Link>
             <Link
               href="/guides"
-              className="px-5 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white font-semibold text-sm border border-slate-700 transition-colors"
+              className="px-5 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white font-semibold text-sm border border-slate-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               Guides d&apos;achat gaming
             </Link>
@@ -196,7 +199,7 @@ export default function Home() {
               </h2>
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              Top offres relevées et vérifiées auprès des boutiques partenaires le {SCRAPED_AT.slice(0, 10)}
+              Top offres relevées et vérifiées auprès des boutiques partenaires le {scrapedAt.slice(0, 10)}
             </p>
           </div>
           <Link
@@ -213,7 +216,7 @@ export default function Home() {
             <Link
               key={p.id}
               href={`/product/${p.id}`}
-              className="card-lift bg-white rounded-2xl p-4 border border-slate-200/90 shadow-2xs hover:border-blue-300 flex flex-col justify-between group relative overflow-hidden"
+              className="card-lift bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-md flex flex-col justify-between group relative overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:ring-offset-2"
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -272,7 +275,7 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
           {CATEGORIES.map((c) => {
             const items = PRODUCTS.filter((p) => p.category === c.slug);
-            const prices = items.map((p) => bestOffer(p.id)?.priceDa ?? Infinity).filter(Number.isFinite);
+            const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
             const minPrice = prices.length ? Math.min(...prices) : null;
             const extraN = LIVE_EXTRA.filter((e) => e.category === c.slug).length;
 
@@ -280,9 +283,9 @@ export default function Home() {
               <Link
                 key={c.slug}
                 href={`/category/${c.slug}`}
-                className="card-lift bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs hover:border-blue-300 flex items-center gap-4 group"
+                className="card-lift bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm hover:border-blue-300 hover:shadow-md flex items-center gap-4 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:ring-offset-2"
               >
-                <div className="w-13 h-13 rounded-2xl bg-blue-50/70 border border-blue-100 group-hover:bg-[#0b63e5] group-hover:text-white flex items-center justify-center shrink-0 transition-colors shadow-2xs">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 text-[#0b63e5] group-hover:bg-[#0b63e5] group-hover:text-white group-hover:border-[#0b63e5] flex items-center justify-center shrink-0 transition-colors shadow-2xs">
                   <CategorySvg slug={c.slug} />
                 </div>
                 <div className="min-w-0 flex-1">

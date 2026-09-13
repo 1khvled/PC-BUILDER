@@ -1,17 +1,20 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CATEGORIES } from "@/lib/data/products";
+import { getOffers } from "@/lib/data/catalog";
 import CategoryCatalogClient from "@/components/CategoryCatalogClient";
 
 export function generateStaticParams() {
   return CATEGORIES.map((c) => ({ slug: c.slug }));
 }
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
+export default async function CategoryPage({ params }: { params: { slug: string } }) {
   const currentCat = CATEGORIES.find((c) => c.slug === params.slug);
   if (!currentCat) {
     notFound();
   }
+  // Live offers from Supabase (static bake fallback inside getOffers).
+  const offers = await getOffers();
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
@@ -27,7 +30,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
       </nav>
 
       {/* Interactive Client Catalog with Toolbar & Denser Cards */}
-      <CategoryCatalogClient slug={params.slug} catLabel={currentCat.label} />
+      <CategoryCatalogClient slug={params.slug} catLabel={currentCat.label} offers={offers} />
     </main>
   );
 }

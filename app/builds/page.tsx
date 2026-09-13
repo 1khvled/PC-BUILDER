@@ -3,13 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { BUILDS } from "@/lib/data/builds";
-import { PRODUCTS, bestOffer, productImage } from "@/lib/data/products";
+import { PRODUCTS, bestOffer, productImage, type Offer } from "@/lib/data/products";
+import { useOffers } from "@/lib/data/use-offers";
 import { checkCompat } from "@/lib/compat/check";
 import Thumb from "@/components/Thumb";
 import EmptyState from "@/components/EmptyState";
 
-function totalOf(picks: Record<string, string>) {
-  return Object.values(picks).reduce((s, id) => s + (bestOffer(id)?.priceDa ?? 0), 0);
+function totalOf(picks: Record<string, string>, offers: Offer[]) {
+  return Object.values(picks).reduce((s, id) => s + (bestOffer(id, offers)?.priceDa ?? 0), 0);
 }
 
 const FILTERS = [
@@ -20,10 +21,11 @@ const FILTERS = [
 ];
 
 export default function BuildsPage() {
+  const offers = useOffers();
   const [f, setF] = useState("all");
   const [q, setQ] = useState("");
 
-  const list = BUILDS.map((b) => ({ b, total: totalOf(b.picks) })).filter(({ b, total }) => {
+  const list = BUILDS.map((b) => ({ b, total: totalOf(b.picks, offers) })).filter(({ b, total }) => {
     if (f === "lt100" && total >= 100000) return false;
     if (f === "100-200" && (total < 100000 || total > 200000)) return false;
     if (f === "gt200" && total <= 200000) return false;

@@ -2,11 +2,11 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-slate-400 border-t border-slate-800 text-xs mt-12 no-print">
+    <footer className="bg-slate-950 text-slate-400 border-t border-slate-800 text-xs mt-12 no-print">
       {/* Trust & Guarantees Strip */}
-      <div className="border-b border-slate-800/80 bg-slate-950/40 py-6">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800">
+      <div className="border-b border-slate-800/80 bg-slate-900/60 py-6">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors">
             <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="2" y="5" width="20" height="14" rx="2" />
@@ -19,8 +19,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800">
-            <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors">
+            <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center shrink-0" aria-hidden="true">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M1 3h15v13H1z" />
                 <path d="M16 8h4l3 3v5h-7V8z" />
@@ -34,8 +34,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800">
-            <div className="w-10 h-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors">
+            <div className="w-10 h-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0" aria-hidden="true">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
@@ -46,8 +46,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900/80 border border-slate-800">
-            <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors">
+            <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center shrink-0" aria-hidden="true">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="10" />
                 <path d="M12 6v6l4 2" />
@@ -96,22 +96,27 @@ export default function Footer() {
             <h4 className="text-white font-bold text-xs uppercase tracking-wider">Outils & Config</h4>
             <ul className="space-y-1.5">
               <li>
-                <Link href="/builder" className="hover:text-white transition-colors">
+                <Link href="/builder" className="hover:text-white hover:underline underline-offset-4 transition-colors">
                   System Builder (Configurateur)
                 </Link>
               </li>
               <li>
-                <Link href="/guides" className="hover:text-white transition-colors">
+                <Link href="/guides" className="hover:text-white hover:underline underline-offset-4 transition-colors">
                   Guides d&apos;achat gaming
                 </Link>
               </li>
               <li>
-                <Link href="/builds" className="hover:text-white transition-colors">
+                <Link href="/builds" className="hover:text-white hover:underline underline-offset-4 transition-colors">
                   Builds de la communauté
                 </Link>
               </li>
               <li>
-                <Link href="/category/cpu" className="hover:text-white transition-colors">
+                <Link href="/deals" className="hover:text-white hover:underline underline-offset-4 transition-colors">
+                  Bons plans du moment
+                </Link>
+              </li>
+              <li>
+                <Link href="/category/cpu" className="hover:text-white hover:underline underline-offset-4 transition-colors">
                   Catalogue des composants
                 </Link>
               </li>
@@ -122,15 +127,15 @@ export default function Footer() {
           <div className="space-y-2.5">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider">Composants PC</h4>
             <ul className="space-y-1.5">
-              <li><Link href="/category/cpu" className="hover:text-white transition-colors">Processeurs (CPU)</Link></li>
-              <li><Link href="/category/gpu" className="hover:text-white transition-colors">Cartes Graphiques (GPU)</Link></li>
-              <li><Link href="/category/motherboard" className="hover:text-white transition-colors">Cartes Mères</Link></li>
-              <li><Link href="/category/ram" className="hover:text-white transition-colors">Mémoire Vive (RAM)</Link></li>
-              <li><Link href="/category/ssd" className="hover:text-white transition-colors">Stockage SSD / NVMe</Link></li>
-              <li><Link href="/category/psu" className="hover:text-white transition-colors">Alimentations (PSU)</Link></li>
-              <li><Link href="/category/case" className="hover:text-white transition-colors">Boîtiers PC</Link></li>
-              <li><Link href="/category/cooler" className="hover:text-white transition-colors">Refroidisseurs CPU</Link></li>
-              <li><Link href="/category/monitor" className="hover:text-white transition-colors">Écrans Gaming</Link></li>
+              <li><Link href="/category/cpu" className="hover:text-white hover:underline underline-offset-4 transition-colors">Processeurs (CPU)</Link></li>
+              <li><Link href="/category/gpu" className="hover:text-white hover:underline underline-offset-4 transition-colors">Cartes Graphiques (GPU)</Link></li>
+              <li><Link href="/category/motherboard" className="hover:text-white hover:underline underline-offset-4 transition-colors">Cartes Mères</Link></li>
+              <li><Link href="/category/ram" className="hover:text-white hover:underline underline-offset-4 transition-colors">Mémoire Vive (RAM)</Link></li>
+              <li><Link href="/category/ssd" className="hover:text-white hover:underline underline-offset-4 transition-colors">Stockage SSD / NVMe</Link></li>
+              <li><Link href="/category/psu" className="hover:text-white hover:underline underline-offset-4 transition-colors">Alimentations (PSU)</Link></li>
+              <li><Link href="/category/case" className="hover:text-white hover:underline underline-offset-4 transition-colors">Boîtiers PC</Link></li>
+              <li><Link href="/category/cooler" className="hover:text-white hover:underline underline-offset-4 transition-colors">Refroidisseurs CPU</Link></li>
+              <li><Link href="/category/monitor" className="hover:text-white hover:underline underline-offset-4 transition-colors">Écrans Gaming</Link></li>
             </ul>
           </div>
 

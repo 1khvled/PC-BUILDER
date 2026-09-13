@@ -152,7 +152,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs no-print">
+    <header className="bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85 border-b border-slate-200 sticky top-0 z-40 shadow-sm no-print">
       {/* Top Header Row */}
       <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
         {/* Brand Logo & Name */}
@@ -172,16 +172,21 @@ export default function Header() {
 
         {/* Live Search Box (Client-side debounced with dropdown) */}
         <div ref={searchContainerRef} className="relative flex-1 max-w-lg mx-2 hidden md:block">
-          <div className="relative flex items-center">
+          <div className="relative flex items-center" role="search">
             <input
               ref={inputRef}
               type="text"
+              role="combobox"
+              aria-expanded={isOpen && results.length > 0}
+              aria-controls="dz-search-results"
+              aria-label="Rechercher un composant (ex : RTX 4060, Ryzen 5 5600)"
+              autoComplete="off"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => query.trim() && setIsOpen(true)}
               onKeyDown={handleKeyDown}
               placeholder="Rechercher RTX 4060, Ryzen 5 5600, B550, DDR4..."
-              className="w-full bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-[#0b63e5] rounded-lg pl-9 pr-8 py-2 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 shadow-2xs focus:ring-2 focus:ring-blue-100"
+              className="w-full bg-slate-100/80 hover:bg-white focus:bg-white border border-slate-200 focus:border-[#0b63e5] rounded-xl pl-9 pr-8 py-2 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 shadow-2xs focus:ring-2 focus:ring-blue-200"
             />
             <svg
               className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none"
@@ -214,7 +219,7 @@ export default function Header() {
 
           {/* Search Dropdown Results */}
           {isOpen && (
-            <div className="absolute left-0 right-0 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl max-h-96 overflow-y-auto z-50 divide-y divide-slate-100 anim-in">
+            <div id="dz-search-results" role="listbox" aria-label="Suggestions de composants" className="absolute left-0 right-0 top-full mt-1.5 bg-white border border-slate-200 rounded-xl shadow-xl max-h-96 overflow-y-auto z-50 divide-y divide-slate-100 anim-in">
               {results.length > 0 ? (
                 <>
                   <div className="px-3 py-2 bg-slate-50/80 text-[11px] font-semibold uppercase tracking-wider text-slate-500 flex justify-between items-center">
@@ -312,15 +317,16 @@ export default function Header() {
       </div>
 
       {/* Sub-Navigation Bar (PCPartPicker signature 2nd tier menu) */}
-      <div className="border-t border-slate-100 bg-slate-50/50">
+      <div className="border-t border-slate-100 bg-slate-50/80">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-600">
-          <nav className="flex items-center gap-1 sm:gap-2 py-1 overflow-x-auto">
+          <nav aria-label="Navigation principale" className="flex items-center gap-1 sm:gap-2 py-1.5 overflow-x-auto whitespace-nowrap [scrollbar-width:thin]">
             <Link
               href="/builder"
-              className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 ${
+              aria-current={pathname === "/builder" ? "page" : undefined}
+              className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:outline-none ${
                 pathname === "/builder"
-                  ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-slate-200/80"
-                  : "hover:text-slate-900 hover:bg-white/60"
+                  ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-blue-200"
+                  : "hover:text-slate-900 hover:bg-white/80 border border-transparent"
               }`}
             >
               <svg className="w-4 h-4 text-[#0b63e5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -337,10 +343,12 @@ export default function Header() {
                   e.stopPropagation();
                   setCatDropdownOpen(!catDropdownOpen);
                 }}
-                className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 ${
+                aria-expanded={catDropdownOpen}
+                aria-haspopup="menu"
+                className={`px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:outline-none ${
                   pathname.startsWith("/category")
-                    ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-slate-200/80"
-                    : "hover:text-slate-900 hover:bg-white/60"
+                    ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-blue-200"
+                    : "hover:text-slate-900 hover:bg-white/80 border border-transparent"
                 }`}
               >
                 <span>Produits</span>
@@ -370,10 +378,11 @@ export default function Header() {
 
             <Link
               href="/guides"
-              className={`px-3 py-1.5 rounded-lg transition-colors ${
+              aria-current={pathname.startsWith("/guides") ? "page" : undefined}
+              className={`px-3 py-1.5 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:outline-none ${
                 pathname.startsWith("/guides")
-                  ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-slate-200/80"
-                  : "hover:text-slate-900 hover:bg-white/60"
+                  ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-blue-200"
+                  : "hover:text-slate-900 hover:bg-white/80 border border-transparent"
               }`}
             >
               Guides d&apos;achat
@@ -381,13 +390,25 @@ export default function Header() {
 
             <Link
               href="/builds"
-              className={`px-3 py-1.5 rounded-lg transition-colors ${
+              aria-current={pathname.startsWith("/builds") ? "page" : undefined}
+              className={`px-3 py-1.5 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:outline-none ${
                 pathname.startsWith("/builds")
-                  ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-slate-200/80"
-                  : "hover:text-slate-900 hover:bg-white/60"
+                  ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-blue-200"
+                  : "hover:text-slate-900 hover:bg-white/80 border border-transparent"
               }`}
             >
               Builds communauté
+            </Link>
+            <Link
+              href="/deals"
+              aria-current={pathname.startsWith("/deals") ? "page" : undefined}
+              className={`px-3 py-1.5 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:outline-none ${
+                pathname.startsWith("/deals")
+                  ? "bg-white text-[#0b63e5] shadow-2xs font-bold border border-blue-200"
+                  : "hover:text-slate-900 hover:bg-white/80 border border-transparent"
+              }`}
+            >
+              Bons plans
             </Link>
           </nav>
 

@@ -45,6 +45,7 @@ const STORE_BASES: Record<string, string> = {
   "Campus": "https://campusinformatique.com",
   "WifiDjelfa": "https://wifidjelfa.com",
   "KOTEK": "https://kotekdz.com",
+  "DeskCom": "https://deskcom-dz.com",
 };
 
 const KNOWN_STORE_MINOR_UNITS: Record<string, number> = {
@@ -56,6 +57,7 @@ const KNOWN_STORE_MINOR_UNITS: Record<string, number> = {
   "Campus": 2,
   "WifiDjelfa": 2,
   "KOTEK": 2,
+  "DeskCom": 2,
 };
 
 const storeMinorUnitCache = new Map<string, number>();

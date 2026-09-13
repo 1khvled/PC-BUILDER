@@ -8,3 +8,13 @@ batch*.json
 patch*.json
 probe*.mjs
 tsconfig.tsbuildinfo
+
+# one-off DB push helpers (data already live in Supabase)
+push_*.sql
+gen_*.py
+miss1.sql
+tmp_test.py
+photo-backfill*
+check_dups.cjs
+probe_*.cjs
+push_*.cjs

@@ -1,8 +1,10 @@
 import fs from "fs";
 import path from "path";
 import Link from "next/link";
-import { OFFERS, PRODUCTS, type Product } from "@/lib/data/products";
-import { LIVE_EXTRA, SCRAPED_AT } from "@/lib/data/live";
+import { PRODUCTS, type Product } from "@/lib/data/products";
+import { getOffers, getScrapedAt } from "@/lib/data/catalog";
+import { isDbConfigured } from "@/lib/supabase";
+import { LIVE_EXTRA } from "@/lib/data/live";
 import { STORE_CATS, STORE_NAMES, STORE_WILAYA } from "@/lib/scrapers/stores";
 import { selfCheck } from "@/lib/algo/optimizer";
 import AdminOffers from "@/components/AdminOffers";
@@ -20,7 +22,7 @@ function schemaTables(): string[] {
   }
 }
 
-export default function AdminPage({ searchParams }: { searchParams: { key?: string } }) {
+export default async function AdminPage({ searchParams }: { searchParams: { key?: string } }) {
   if (searchParams.key !== KEY) {
     return (
       <main className="min-h-screen bg-slate-950 text-slate-200 flex items-center justify-center p-4">
@@ -56,6 +58,9 @@ export default function AdminPage({ searchParams }: { searchParams: { key?: stri
     );
   }
 
+  const OFFERS = await getOffers();
+  const scrapedAt = await getScrapedAt();
+  const dbLive = isDbConfigured();
   const checks = selfCheck();
   const allChecksPass = checks.every((c) => c.ok);
 
@@ -137,7 +142,7 @@ export default function AdminPage({ searchParams }: { searchParams: { key?: stri
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
-                Relevé du {SCRAPED_AT.slice(0, 10)} • Environnement Next.js 14 • 58 wilayas
+                Relevé du {scrapedAt.slice(0, 10)} • Environnement Next.js 14 • 58 wilayas
               </p>
             </div>
           </div>
@@ -511,7 +516,7 @@ export default function AdminPage({ searchParams }: { searchParams: { key?: stri
             <div className="text-xs bg-slate-950 border border-slate-800 rounded-lg p-3 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-slate-400">Mode d&apos;exécution :</span>
-                <span className="font-semibold text-emerald-400">Bake TypeScript Statique (live.ts)</span>
+                <span className="font-semibold text-emerald-400">{dbLive ? `Supabase live (${OFFERS.length} offres)` : "Bake statique (live.ts)"}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-400">Supabase Storage :</span>

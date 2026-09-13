@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { explainBuild, selfCheck, suggestBuild, type UseCase } from "@/lib/algo/optimizer";
+import { getOffers } from "@/lib/data/catalog";
 
 const USECASES: UseCase[] = ["gaming-1080p", "gaming-1440p", "office", "design"];
 
@@ -8,7 +9,7 @@ const USECASES: UseCase[] = ["gaming-1080p", "gaming-1440p", "office", "design"]
 export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
   if (typeof body.budgetDa === "number" && USECASES.includes(body.useCase)) {
-    const s = suggestBuild(body.budgetDa, body.useCase as UseCase);
+    const s = suggestBuild(body.budgetDa, body.useCase as UseCase, await getOffers());
     return NextResponse.json({ ...s, explanation: explainBuild(s) });
   }
   const id = Math.random().toString(36).slice(2, 8);

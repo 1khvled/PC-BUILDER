@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BUILDS } from "@/lib/data/builds";
 import { PRODUCTS, bestOffer, productImage } from "@/lib/data/products";
+import { getOffers } from "@/lib/data/catalog";
 import { checkCompat } from "@/lib/compat/check";
 import { bottleneckPct } from "@/lib/algo/optimizer";
 import Thumb from "@/components/Thumb";
@@ -10,12 +11,13 @@ export function generateStaticParams() {
   return BUILDS.map((b) => ({ id: b.id }));
 }
 
-export default function BuildDetail({ params }: { params: { id: string } }) {
+export default async function BuildDetail({ params }: { params: { id: string } }) {
+  const offers = await getOffers();
   const build = BUILDS.find((b) => b.id === params.id);
   if (!build) notFound();
 
   const rows = Object.entries(build.picks)
-    .map(([cat, id]) => ({ cat, p: PRODUCTS.find((x) => x.id === id), best: bestOffer(id) }))
+    .map(([cat, id]) => ({ cat, p: PRODUCTS.find((x) => x.id === id), best: bestOffer(id, offers) }))
     .filter((x) => x.p);
 
   const total = rows.reduce((s, r) => s + (r.best?.priceDa ?? 0), 0);

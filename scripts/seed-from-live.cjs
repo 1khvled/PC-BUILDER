@@ -2,7 +2,7 @@
 // Usage: node scripts/seed-from-live.cjs
 const fs = require("fs");
 
-const WILAYA = { "LICB+": "Alger", "Click-DZ": "Alger", Digitec: "Alger", WifiDjelfa: "Djelfa", KOTEK: "Alger", GamingDZ: "Sétif", GigaStore: "Oran", Informatics: "Boumerdes", Lahlou: "Alger", HardSoft: "Oran", Campus: "Alger", KhabirTech: "M'sila" };
+const WILAYA = { "LICB+": "Alger", "Click-DZ": "Alger", Digitec: "Alger", WifiDjelfa: "Djelfa", KOTEK: "Alger", GamingDZ: "Sétif", GigaStore: "Oran", Informatics: "Boumerdes", Lahlou: "Alger", HardSoft: "Oran", Campus: "Alger", KhabirTech: "M'sila", DeskCom: "Oran", NextGen: "Sétif", Ouedkniss: "Alger" };
 const CPU_LAPTOP = /laptop|notebook|12400h|12400u|5600h|5600u/i;
 
 function parseObjLine(line) {

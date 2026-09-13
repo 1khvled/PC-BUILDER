@@ -44,8 +44,32 @@ export async function GET(req: Request) {
       report[`${s}/${c}`] = { error: String(e).slice(0, 160) };
     }
   }
+  // Full-market Ouedkniss sweep: every category, top sellers per band.
   const okQueries = scope === "full"
-    ? ["rtx 3060", "rtx 4060", "rtx 4070", "rx 580", "ryzen 5 5600", "i5 12400", "b550", "16gb ddr4", "ddr5", "nvme 1tb", "650w", "ecran 144hz"]
+    ? [
+        // CPU — AM4 / AM5 / LGA1700 / LGA1851 best sellers
+        "ryzen 5 5600", "ryzen 5 5600x", "ryzen 7 5700x", "ryzen 5 7500f", "ryzen 5 7600", "ryzen 7 7700",
+        "ryzen 7 7800x3d", "ryzen 7 9800x3d", "ryzen 9 7900x", "ryzen 9 7950x",
+        "i5 12400", "i5 13400", "i5 14400", "i7 13700", "i7 14700", "i9 14900", "i3 12100",
+        // GPU — all bands stocked in DZ
+        "rtx 3060", "rtx 4060", "rtx 4060 ti", "rtx 4070", "rtx 4070 super", "rtx 3070", "rtx 3080",
+        "rtx 5060", "rtx 5060 ti", "rtx 5070", "rx 580", "rx 6600", "rx 6700 xt", "rx 6800",
+        "rx 7600", "rx 7700 xt", "rx 7800 xt", "rx 7900 xt", "rx 9070", "rx 9060", "gtx 1660 super",
+        // Motherboard chipsets
+        "b550", "b650", "b660", "b760", "h610", "z790", "a620",
+        // Coolers
+        "ak400", "ak620", "watercooling 240", "watercooling 360",
+        // RAM
+        "16gb ddr4", "32gb ddr4", "ddr5 16gb", "ddr5 32gb",
+        // SSD
+        "980 pro", "nvme 1tb", "nvme 512gb", "nvme 2tb",
+        // PSU wattages
+        "650w", "750w", "850w",
+        // Cases
+        "boitier atx", "boitier gaming",
+        // Monitors
+        "ecran 144hz", "ecran 165hz", "ecran 27", "moniteur gaming",
+      ]
     : ["rtx 3060"];
   const okAll: unknown[] = [];
   if (wantOk) {
@@ -60,6 +84,8 @@ export async function GET(req: Request) {
     } catch (e) {
       report[`ouedkniss:${q}`] = { error: String(e).slice(0, 160) };
     }
+    // Polite gap between Ouedkniss queries (GraphQL rate limits)
+    await new Promise((r) => setTimeout(r, 800));
   }
   if (full) report["ouedkniss:all"] = okAll;
   }

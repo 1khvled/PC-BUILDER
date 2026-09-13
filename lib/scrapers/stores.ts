@@ -25,7 +25,7 @@ interface StoreCfg {
   /** prefer same-origin non-category links, longest first (pretty permalinks) */
   sameOrigin?: boolean;
   /** sitemap mode: crawl product pages (JS-rendered archives, e.g. KOTEK) */
-  mode?: "sitemap" | "shopify";
+  mode?: "sitemap" | "shopify" | "nextgen";
   sitemaps?: string[];
   shopifyBase?: string;
   /** shopify-all: one full-catalog crawl, categorized by title (Lahlou, tags useless) */
@@ -436,6 +436,59 @@ const STORES: Record<string, StoreCfg> = {
       monitor: ["https://khabirtech.com/monitors-accessories/monitors/"],
     },
   },
+  DeskCom: {
+    wilaya: "Oran",
+    item: ["ul.products li.product", "li.product"],
+    title: WOO_TITLE,
+    price: WOO_PRICE,
+    wooApi: {
+      base: "https://deskcom-dz.com",
+      cats: {
+        cpu: 26,
+        cooler: 33,
+        motherboard: 28,
+        ram: 30,
+        ssd: 43,
+        gpu: 27,
+        psu: 32,
+        case: 31,
+        monitor: "37,67",
+      },
+    },
+    cats: {
+      cpu: ["https://deskcom-dz.com/product-category/computer-parts/computer-processors/"],
+      cooler: ["https://deskcom-dz.com/product-category/computer-parts/cpu-coolers/"],
+      motherboard: ["https://deskcom-dz.com/product-category/computer-parts/motherboards/"],
+      ram: ["https://deskcom-dz.com/product-category/computer-parts/computer-memory/"],
+      ssd: ["https://deskcom-dz.com/product-category/computer-parts/drives-and-storage/ssd/"],
+      gpu: ["https://deskcom-dz.com/product-category/computer-parts/graphics-cards/"],
+      psu: ["https://deskcom-dz.com/product-category/computer-parts/power-supplies/"],
+      case: ["https://deskcom-dz.com/product-category/computer-parts/computer-cases/"],
+      monitor: [
+        "https://deskcom-dz.com/product-category/computers/computer_monitors/",
+        "https://deskcom-dz.com/product-category/gaming/gaming-hardware/gaming-monitors/",
+      ],
+    },
+  },
+  NextGen: {
+    wilaya: "Sétif",
+    item: [],
+    title: [],
+    price: [],
+    mode: "nextgen",
+    shopifyBase: "https://nextgendz.com",
+    cats: {
+      cpu: ["cpu"],
+      cooler: ["cooling"],
+      motherboard: ["motherboard"],
+      ram: ["ram"],
+      ssd: ["storage"],
+      gpu: ["gpu"],
+      psu: ["psu"],
+      case: ["case"],
+      monitor: ["monitor"],
+    },
+  },
 };
 
 function readStock(e: cheerio.Cheerio<cheerio.AnyNode>, loaded: cheerio.CheerioAPI): string {
@@ -624,6 +677,55 @@ async function scrapeShopify(store: string, cfg: StoreCfg, category: string): Pr
   return out.filter((o) => quickCheck(o));
 }
 
+// ---- NextGen.DZ: custom PHP catalog, filter via products.php?component_type=X ----
+// Cards: .product-card, detail URL in onclick -> /product-detail.php?id=N,
+// title from img alt (or heading text), price "409 000 DA" in card text.
+async function scrapeNextGen(store: string, cfg: StoreCfg, category: string): Promise<ScrapedOffer[]> {
+  const type = (cfg.cats[category] || [""])[0];
+  if (!type) return [];
+  const out: ScrapedOffer[] = [];
+  for (let page = 1; page <= 4; page++) {
+    await delay(1100);
+    const url = `${cfg.shopifyBase}/products.php?component_type=${type}&lang=en${page > 1 ? `&page=${page}` : ""}`;
+    let html = "";
+    try {
+      const res = await fetch(url, { headers: { "User-Agent": UA, "Accept-Language": "fr-DZ,fr;q=0.9" } });
+      if (!res.ok) break;
+      html = await res.text();
+    } catch {
+      break;
+    }
+    const loaded = cheerio.load(html);
+    const cards = loaded(".product-card");
+    if (cards.length === 0) break;
+    cards.each((_, el) => {
+      const e = loaded(el);
+      let title = cleanTitle(e.find("img").first().attr("alt") || "");
+      if (!title || title.length < 4) {
+        title = cleanTitle(e.find("h3, h4, .product-title").first().text());
+      }
+      const price = parsePrice(e.text());
+      if (!title || !price) return;
+      const onclick = e.attr("onclick") || "";
+      const m = onclick.match(/product-detail\.php\?id=(\d+)/);
+      const link = m ? `${cfg.shopifyBase}/product-detail.php?id=${m[1]}` : url;
+      let img = e.find("img.primary-image").attr("src") || e.find("img").first().attr("src") || "";
+      if (img.startsWith("data:")) img = "";
+      let image = "";
+      try {
+        image = img ? new URL(img, url).toString() : "";
+      } catch {
+        image = "";
+      }
+      const txt = e.text();
+      const stock = /out of stock|rupture|sold out|épuisé/i.test(txt) ? "Rupture" : "En stock";
+      out.push({ store, category, title, priceDa: price, url: link, image, stock });
+    });
+    if (cards.length < 24) break; // last page
+  }
+  return out.filter((o) => quickCheck(o));
+}
+
 export async function scrapeStoreCategory(store: string, category: string): Promise<ScrapedOffer[]> {
   const cfg = STORES[store];
   if (!cfg) throw new Error(`unknown store ${store}`);
@@ -647,6 +749,9 @@ export async function scrapeStoreCategory(store: string, category: string): Prom
   }
   if (cfg.mode === "shopify") {
     return scrapeShopify(store, cfg, category);
+  }
+  if (cfg.mode === "nextgen") {
+    return scrapeNextGen(store, cfg, category);
   }
   const urls = cfg.cats[category];
   if (!urls) throw new Error(`no category ${category} for ${store}`);

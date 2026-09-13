@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { GUIDES } from "@/lib/data/guides";
 import { PRODUCTS, bestOffer, productImage } from "@/lib/data/products";
-import { SCRAPED_AT } from "@/lib/data/live";
+import { getOffers, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 
-export default function GuidesPage() {
+export default async function GuidesPage() {
+  const offers = await getOffers();
+  const scrapedAt = await getScrapedAt();
   return (
     <main className="max-w-7xl mx-auto px-4 py-8 space-y-8">
       {/* Magazine Page Header */}
@@ -17,7 +19,7 @@ export default function GuidesPage() {
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mt-1.5 max-w-2xl leading-relaxed">
-            Configurations équilibrées pour éviter les goulots d&apos;étranglement, chiffrées aux prix réels des magasins d&apos;Alger, Sétif et Oran • Prix relevés le {SCRAPED_AT.slice(0, 10)}
+            Configurations équilibrées pour éviter les goulots d&apos;étranglement, chiffrées aux prix réels des magasins d&apos;Alger, Sétif et Oran • Prix relevés le {scrapedAt.slice(0, 10)}
           </p>
         </div>
 
@@ -33,7 +35,7 @@ export default function GuidesPage() {
       {/* Magazine-Style Guides Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {GUIDES.map((g, idx) => {
-          const total = g.parts.reduce((sum, id) => sum + (bestOffer(id)?.priceDa ?? 0), 0);
+          const total = g.parts.reduce((sum, id) => sum + (bestOffer(id, offers)?.priceDa ?? 0), 0);
           const sampleProducts = g.parts
             .map((id) => PRODUCTS.find((p) => p.id === id))
             .filter((p): p is (typeof PRODUCTS)[0] => Boolean(p))

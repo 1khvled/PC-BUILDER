@@ -2,19 +2,21 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GUIDES } from "@/lib/data/guides";
 import { PRODUCTS, bestOffer, productImage } from "@/lib/data/products";
-import { SCRAPED_AT } from "@/lib/data/live";
+import { getOffers, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 
 export function generateStaticParams() {
   return GUIDES.map((g) => ({ slug: g.slug }));
 }
 
-export default function GuidePage({ params }: { params: { slug: string } }) {
+export default async function GuidePage({ params }: { params: { slug: string } }) {
+  const offers = await getOffers();
+  const scrapedAt = await getScrapedAt();
   const guide = GUIDES.find((g) => g.slug === params.slug);
   if (!guide) notFound();
 
   const rows = guide.parts
-    .map((id) => ({ p: PRODUCTS.find((x) => x.id === id), best: bestOffer(id) }))
+    .map((id) => ({ p: PRODUCTS.find((x) => x.id === id), best: bestOffer(id, offers) }))
     .filter((x) => x.p);
 
   const total = rows.reduce((s, r) => s + (r.best?.priceDa ?? 0), 0);
@@ -48,7 +50,7 @@ export default function GuidePage({ params }: { params: { slug: string } }) {
           </div>
 
           <span className="text-xs font-medium text-slate-500 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200/70">
-            Relevé le {SCRAPED_AT.slice(0, 10)}
+            Relevé le {scrapedAt.slice(0, 10)}
           </span>
         </div>
 

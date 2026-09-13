@@ -62,6 +62,10 @@ export type OuedknissOffer = RawOffer & {
   seller?: string;
   postedAt?: string;
   condition?: string;
+  /** true = actual Ouedkniss STORE (/store/ page + Panier checkout), false = individual seller */
+  isFromStore?: boolean;
+  storeSlug?: string;
+  storeId?: string;
 };
 
 const GRAPHQL_ENDPOINT = "https://api.ouedkniss.com/graphql";
@@ -255,6 +259,9 @@ export async function searchOuedknissFull(
       if (!item || !item.id || seenIds.has(item.id)) continue;
       seenIds.add(item.id);
 
+      // STORE-ONLY policy: individuals have no warranty/invoice — skip them.
+      if (!item.isFromStore) continue;
+
       const price = item.price ?? item.pricePreview ?? null;
       if (price === null || price < 500 || price > 5_000_000) continue;
 
@@ -291,6 +298,9 @@ export async function searchOuedknissFull(
         seller,
         postedAt,
         condition,
+        isFromStore: true,
+        storeSlug: item.store?.slug || undefined,
+        storeId: item.store?.id || undefined,
       });
     }
 

@@ -1,4 +1,4 @@
-import { OFFERS, PRODUCTS, bestOffer, type Product } from "@/lib/data/products";
+import { OFFERS, PRODUCTS, bestOffer, type Offer, type Product } from "@/lib/data/products";
 import { checkCompat } from "@/lib/compat/check";
 import { estimatedWattage, recommendedPsu } from "@/lib/compat/watt";
 
@@ -15,20 +15,20 @@ const CPU_TIERS: Tier[] = [
   [/9800x3d/i, 95], [/7800x3d/i, 90], [/5800x3d/i, 78],
   [/7950x/i, 92], [/7900x/i, 88], [/7700x/i, 82], [/7600x/i, 76], [/7600\b/i, 74],
   [/9600x/i, 80], [/7500f/i, 72],
-  [/5900x/i, 80], [/5800x/i, 74], [/5700x/i, 72], [/5600x/i, 68], [/\b5600\b/i, 65], [/5600g/i, 55], [/5600gt/i, 58],
+  [/5900x/i, 82], [/5800x/i, 74], [/5700x/i, 72], [/5600x/i, 68], [/\b5600\b/i, 65], [/5600g/i, 55], [/5600gt/i, 58], [/8600g/i, 68],
   [/5500/i, 58], [/3600/i, 52],
   [/14900k/i, 93], [/14700k/i, 89], [/14600k/i, 84], [/14400/i, 76],
   [/13700k/i, 88], [/13600k/i, 82], [/13400/i, 74],
-  [/12700k?/i, 80], [/12400/i, 70], [/12100/i, 58],
+  [/12700k?/i, 80], [/12400/i, 70], [/12100/i, 58], [/10400/i, 60],
   [/265k?/i, 84], [/245k?/i, 78],
   [/g39|g65|celeron|pentium/i, 30],
 ];
 
 const GPU_TIERS: Tier[] = [
-  [/4090/i, 100], [/5080/i, 94], [/5070\s?ti/i, 88], [/5070/i, 84], [/4080/i, 90], [/4070\s?ti/i, 84], [/4070/i, 80],
+  [/5090/i, 108], [/4090/i, 100], [/5080/i, 94], [/5070\s?ti/i, 88], [/5070/i, 84], [/4080/i, 90], [/4070\s?super/i, 82], [/4070\s?ti/i, 84], [/4070/i, 80],
   [/5060\s?ti/i, 74], [/5060/i, 70], [/4060\s?ti/i, 72], [/4060/i, 66], [/5050/i, 60], [/3050/i, 52],
   [/3080/i, 82], [/3070/i, 76], [/3060/i, 64],
-  [/9070\s?xt/i, 86], [/9070\b/i, 80], [/7800\s?xt/i, 78], [/7700\s?xt/i, 72], [/7600/i, 62], [/6700\s?xt/i, 70], [/6600/i, 58], [/6500/i, 48], [/580/i, 45],
+  [/9070\s?xt/i, 86], [/9070\b/i, 80], [/9060/i, 74], [/7900\s?xtx/i, 92], [/7900\s?xt/i, 88], [/7800\s?xt/i, 78], [/7700\s?xt/i, 72], [/7600\s?xt/i, 66], [/7600/i, 62], [/6900\s?xt/i, 80], [/6800\s?xt/i, 78], [/6800\b/i, 74], [/6750\s?xt/i, 72], [/6700\s?xt/i, 70], [/6700\b/i, 66], [/6650\s?xt/i, 62], [/6600\s?xt/i, 60], [/6600/i, 58], [/6500/i, 48], [/580/i, 45],
   [/1650/i, 40], [/950/i, 28], [/315/i, 18], [/p600/i, 22], [/p2000/i, 40],
 ];
 
@@ -84,9 +84,9 @@ const SPLITS: Record<UseCase, Record<CategoryKey, number>> = {
 
 const ORDER: CategoryKey[] = ["cpu", "motherboard", "ram", "gpu", "ssd", "psu", "case", "cooler"];
 
-function cheapest(category: string, maxDa: number, exclude: string[] = []): Product | null {
+function cheapest(category: string, maxDa: number, exclude: string[] = [], offers: Offer[] = OFFERS): Product | null {
   const cands = PRODUCTS.filter((p) => p.category === category && !exclude.includes(p.id))
-    .map((p) => ({ p, price: bestOffer(p.id)?.priceDa ?? Infinity }))
+    .map((p) => ({ p, price: bestOffer(p.id, offers)?.priceDa ?? Infinity }))
     .filter((x) => x.price <= maxDa)
     .sort((a, b) => a.price - b.price);
   return cands[0]?.p ?? null;
@@ -103,7 +103,7 @@ export interface Suggestion {
   budgetDa: number;
 }
 
-export function suggestBuild(budgetDa: number, useCase: UseCase): Suggestion {
+export function suggestBuild(budgetDa: number, useCase: UseCase, offers: Offer[] = OFFERS): Suggestion {
   const split = SPLITS[useCase];
   const warnings: string[] = [];
   // Relaxation passes: full budget, then +15% (occasion), then cheapest-of-category fallback.
@@ -114,17 +114,17 @@ export function suggestBuild(budgetDa: number, useCase: UseCase): Suggestion {
       if (split[cat] === 0 && pass !== Infinity) continue;
       // GPU for office: skip unless spare budget later
       if (cat === "gpu" && useCase === "office" && pass !== Infinity) continue;
-      const p = cheapest(cat, limit(cat));
+      const p = cheapest(cat, limit(cat), [], offers);
       if (p) picks[cat] = p;
     }
     // Office: add cheapest GPU only if 15%+ budget remains
     if (useCase === "office" && !picks.gpu && pass === Infinity) {
-      const g = cheapest("gpu", Infinity);
+      const g = cheapest("gpu", Infinity, [], offers);
       if (g) picks.gpu = g;
     }
     const built = picks as Record<string, Product>;
     const res = checkCompat(built as never);
-    const total = Object.values(picks).reduce((s, p) => s + (bestOffer((p as Product).id)?.priceDa ?? 0), 0);
+    const total = Object.values(picks).reduce((s, p) => s + (bestOffer((p as Product).id, offers)?.priceDa ?? 0), 0);
     const blocks = res.warnings.filter((w) => w.startsWith("BLOCK"));
     if (blocks.length === 0 && (total <= budgetDa * pass || pass === Infinity)) {
       const cpu = picks.cpu;
@@ -138,7 +138,7 @@ export function suggestBuild(budgetDa: number, useCase: UseCase): Suggestion {
         picks: Object.fromEntries(Object.entries(picks).map(([k, v]) => [k, (v as Product).id])),
         totalDa: total,
         perPart: Object.values(picks).map((p) => {
-          const b = bestOffer((p as Product).id);
+          const b = bestOffer((p as Product).id, offers);
           return { productId: (p as Product).id, model: `${(p as Product).brand} ${(p as Product).model}`, priceDa: b?.priceDa ?? 0, store: b?.store ?? "—", url: b?.url ?? "#" };
         }),
         warnings: [...res.warnings, ...(pass > 1 && pass !== Infinity ? ["Budget dépassé de <15% — regardez l'occasion Ouedkniss."] : [])],
