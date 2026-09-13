@@ -36,13 +36,13 @@ async function main() {
   };
 
   // 1. stores upsert -> id map
-  await api("stores", "POST", seed.stores, { Prefer: "resolution=merge-duplicates" });
+  await api("stores?on_conflict=name", "POST", seed.stores, { Prefer: "resolution=merge-duplicates" });
   const storeRows = await api(`stores?select=id,name`, "GET");
   const sid = Object.fromEntries(storeRows.map((s) => [s.name, s.id]));
   console.log("stores mapped:", Object.keys(sid).length);
 
   // 2. products upsert (id-keyed; merge duplicates needs onConflict)
-  await api("canonical_products", "POST", seed.products, { Prefer: "resolution=merge-duplicates" });
+  await api("canonical_products?on_conflict=id", "POST", seed.products, { Prefer: "resolution=merge-duplicates" });
   console.log("products upserted:", seed.products.length);
 
   // 3. offers snapshot upsert
@@ -55,7 +55,7 @@ async function main() {
 
   // 4. history append (ignore dupes if re-run same day)
   const hist = offers.map(({ product_id, store_id, price_da }) => ({ product_id, store_id, price_da, day: seed.day }));
-  await api("price_history", "POST", hist, { Prefer: "resolution=ignore-duplicates" });
+  await api("price_history?on_conflict=product_id,store_id,day", "POST", hist, { Prefer: "resolution=ignore-duplicates" });
   console.log("history rows appended:", hist.length);
 
   // 5. retention prune (>400 days)

@@ -80,7 +80,7 @@ async function main() {
     }
     let queries = [];
     if (!SKIP_OK) {
-      const { queries: qs } = await get("/api/cron/refresh?oklist=1");
+      const { queries: qs } = await get("/api/cron/refresh?oklist=1&scope=full");
       queries = qs || [];
     }
     for (const q of queries) jobs.push({ kind: "ok", q, key: `ouedkniss:${q}` });
