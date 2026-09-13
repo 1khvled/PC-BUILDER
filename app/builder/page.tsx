@@ -273,7 +273,7 @@ export default function BuilderPage() {
             </p>
           </div>
           <div className="text-right text-xs text-slate-500">
-            <div>Date : {new Date().toLocaleDateString("fr-DZ")}</div>
+            <div suppressHydrationWarning>Date : {new Date().toLocaleDateString("fr-DZ")}</div>
             <div className="text-[10px] text-slate-400">dz-partpicker.dz/builder</div>
           </div>
         </div>
