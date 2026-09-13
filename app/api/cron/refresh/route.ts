@@ -13,6 +13,11 @@ export async function GET(req: Request) {
     }
   }
   const { searchParams } = new URL(req.url);
+  if (searchParams.get("matrix") === "1") {
+    return NextResponse.json({
+      stores: Object.fromEntries(STORE_NAMES.map((s) => [s, STORE_CATS(s)])),
+    });
+  }
   const store = searchParams.get("store") || "";
   const cat = searchParams.get("cat") || "";
   const scope = searchParams.get("scope") || "smoke";
@@ -71,6 +76,26 @@ export async function GET(req: Request) {
         "ecran 144hz", "ecran 165hz", "ecran 27", "moniteur gaming",
       ]
     : ["rtx 3060"];
+  // Driver modes for the refresh pipeline (scripts/refresh-full.mjs):
+  // oklist=1 -> the full Ouedkniss query list; okq=<q> -> full offers for one query.
+  if (searchParams.get("oklist") === "1") {
+    return NextResponse.json({ queries: okQueries });
+  }
+  const okq = searchParams.get("okq") || "";
+  if (okq) {
+    try {
+      const ok = await searchOuedkniss(okq);
+      return NextResponse.json({
+        ok: true,
+        report: {
+          [`ouedkniss:${okq}`]: { count: ok.length, offers: ok },
+          "ouedkniss:all": ok.map((o) => ({ ...o, query: okq })),
+        },
+      });
+    } catch (e) {
+      return NextResponse.json({ ok: true, report: { [`ouedkniss:${okq}`]: { error: String(e).slice(0, 160) } } });
+    }
+  }
   const okAll: unknown[] = [];
   if (wantOk) {
   for (const q of okQueries) {

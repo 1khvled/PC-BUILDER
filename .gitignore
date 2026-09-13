@@ -20,3 +20,5 @@ probe_*.cjs
 push_*.cjs
 upd_img_*.sql
 upd_stock_*.sql
+refresh-progress.json
+full.prev.json
