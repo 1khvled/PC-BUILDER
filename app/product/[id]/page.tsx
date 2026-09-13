@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { OFFERS, PRODUCTS, productImage } from "@/lib/data/products";
+import { OFFERS, PRODUCTS, bestOffer, priceHistory, productImage } from "@/lib/data/products";
 import { SCRAPED_AT } from "@/lib/data/live";
 import Thumb from "@/components/Thumb";
 import ProductOffersTable from "@/components/ProductOffersTable";
+import PriceChart from "@/components/PriceChart";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ id: p.id }));
@@ -16,7 +17,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   }
 
   const offers = OFFERS.filter((o) => o.productId === product.id).sort((a, b) => a.priceDa - b.priceDa);
-  const best = offers[0];
+  // Hero = best NEW + available offer, never a dead/used listing while a live one exists
+  const best = bestOffer(product.id) ?? offers[0];
+  const history = priceHistory(product.id);
   const specs = Object.entries(product.specs);
 
   const priceStats = offers.length > 0 ? {
@@ -75,7 +78,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 </div>
                 {best && (
                   <div className="absolute -bottom-2 -right-2 bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-md border border-slate-700">
-                    58 Wilayas COD
+                    Prix vérifiés DA
                   </div>
                 )}
               </div>
@@ -181,6 +184,19 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <ProductOffersTable offers={offers} />
           </section>
 
+          {/* Price History (PCPartPicker signature) */}
+          <section className="bg-white rounded-2xl shadow-xs border border-slate-200 p-4 sm:p-5 space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h2 className="font-extrabold text-base text-slate-900 tracking-tight">
+                Historique des prix
+              </h2>
+              <span className="text-xs text-slate-400">
+                {history.length} relevé{history.length > 1 ? "s" : ""} • toutes boutiques
+              </span>
+            </div>
+            <PriceChart points={history} />
+          </section>
+
           {/* Facebook Marketplace Paste Box */}
           <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs anim-in-2">
             <div className="flex items-center gap-2.5">
@@ -223,10 +239,29 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   <div className="text-3xl sm:text-4xl font-black text-emerald-700 font-mono tracking-tight mt-1">
                     {best.priceDa.toLocaleString("fr-DZ")} DA
                   </div>
-                  <div className="text-xs text-slate-600 mt-1 flex items-center gap-1.5">
-                    <span>Disponible chez</span>
+                  <div className="text-xs text-slate-600 mt-1 flex flex-wrap items-center gap-1.5">
+                    <span>chez</span>
                     <b className="text-slate-900 font-bold">{best.store}</b>
                     <span className="text-slate-400">({best.wilaya})</span>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${best.condition === "new" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"}`}>
+                      {best.condition === "new" ? "Neuf" : "Occasion"}
+                    </span>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${/rupture/i.test(best.stock) ? "bg-red-100 text-red-700" : "bg-slate-100 text-slate-600"}`}>
+                      {best.stock}
+                    </span>
+                  </div>
+                  {/rupture/i.test(best.stock) && (
+                    <div className="text-xs text-red-600 font-semibold mt-1.5">
+                      Rupture constatée au dernier relevé — vérifiez avant de commander.
+                    </div>
+                  )}
+                  {best.condition === "used" && (
+                    <div className="text-xs text-amber-700 font-semibold mt-1.5">
+                      Offre d'occasion — exigez test + facture (voir guide Ouedkniss).
+                    </div>
+                  )}
+                  <div className="text-[11px] text-slate-400 mt-1">
+                    Stock relevé le {SCRAPED_AT.slice(0, 10)} — confirmez toujours sur la boutique.
                   </div>
                 </>
               ) : (
@@ -280,11 +315,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className="pt-2 border-t border-slate-100 space-y-2.5 text-xs text-slate-600">
               <div className="flex items-start gap-2">
                 <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                <span>Paiement à la livraison (COD / espèces)</span>
+                <span>La plupart des marchands proposent le paiement à la livraison</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                <span>Livraison assurée sur les 58 wilayas</span>
+                <span>Expédition vers 58 wilayas selon la boutique</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="text-emerald-600 font-bold shrink-0">✓</span>

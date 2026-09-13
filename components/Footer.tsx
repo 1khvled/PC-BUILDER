@@ -14,8 +14,8 @@ export default function Footer() {
               </svg>
             </div>
             <div>
-              <div className="text-white font-bold text-xs">Paiement à la Livraison (COD)</div>
-              <div className="text-[11px] text-slate-400">Réglez en espèces à réception chez vous</div>
+              <div className="text-white font-bold text-xs">Paiement à la livraison</div>
+              <div className="text-[11px] text-slate-400">Proposé par nos marchands — vous payez à réception, pas ici</div>
             </div>
           </div>
 
@@ -29,8 +29,8 @@ export default function Footer() {
               </svg>
             </div>
             <div>
-              <div className="text-white font-bold text-xs">Livraison 58 Wilayas</div>
-              <div className="text-[11px] text-slate-400">Yalidine, Kazi Tour, ZR Express, Procolis</div>
+              <div className="text-white font-bold text-xs">Boutiques d'Alger, Sétif, Oran…</div>
+              <div className="text-[11px] text-slate-400">Elles expédient vers 58 wilayas (Yalidine, Maystro…)</div>
             </div>
           </div>
 
@@ -41,8 +41,8 @@ export default function Footer() {
               </svg>
             </div>
             <div>
-              <div className="text-white font-bold text-xs">100% Boutiques Réelles</div>
-              <div className="text-[11px] text-slate-400">Marchands vérifiés avec adresses physiques</div>
+              <div className="text-white font-bold text-xs">12 boutiques + Ouedkniss</div>
+              <div className="text-[11px] text-slate-400">Vitrines en ligne suivies chaque jour</div>
             </div>
           </div>
 
@@ -54,8 +54,8 @@ export default function Footer() {
               </svg>
             </div>
             <div>
-              <div className="text-white font-bold text-xs">Prix Live en Dinars (DA)</div>
-              <div className="text-[11px] text-slate-400">Relevés quotidiens sans commission</div>
+              <div className="text-white font-bold text-xs">Prix en Dinars (DA)</div>
+              <div className="text-[11px] text-slate-400">Relevés quotidiens, tri 100% organique, zéro commission</div>
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@ export default function Footer() {
               <span className="text-white font-extrabold text-base tracking-tight">DZ PartPicker</span>
             </div>
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
-              Le premier comparateur indépendant de composants PC en Algérie. Comparez en temps réel les prix du neuf et de l&apos;occasion parmi les meilleures boutiques d&apos;informatique à travers les 58 wilayas.
+              Le comparateur indépendant de composants PC en Algérie. Comparez les prix du neuf et de l&apos;occasion parmi les boutiques d&apos;informatique dont les vitrines livrent 58 wilayas.
             </p>
             <div className="flex flex-wrap gap-1.5 pt-1">
               <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-medium text-[10px] border border-slate-700">
@@ -83,10 +83,10 @@ export default function Footer() {
                 Prix live en DA
               </span>
               <span className="px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-medium text-[10px] border border-slate-700">
-                58 Wilayas
+                12 boutiques + Ouedkniss
               </span>
               <span className="px-2 py-0.5 rounded-full bg-slate-800 text-blue-400 font-medium text-[10px] border border-slate-700">
-                Paiement Cash / COD
+                Neuf / Occasion séparés
               </span>
             </div>
           </div>

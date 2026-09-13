@@ -137,7 +137,7 @@ export default function Home() {
           </h1>
 
           <p className="text-sm sm:text-base lg:text-lg text-slate-300 max-w-2xl leading-relaxed">
-            Le comparateur indépendant numéro 1 en Dinars Algériens (DA). Vérifiez les stocks de LICB+, Digitec, Click-DZ, WifiDjelfa, GamingDZ et Ouedkniss sur les 58 wilayas. Zéro commission, compatibilité garantie.
+            Le comparateur indépendant des prix en Dinars Algériens (DA). Vérifiez les stocks de LICB+, Digitec, Click-DZ, WifiDjelfa, GamingDZ et Ouedkniss sur les 58 wilayas. Zéro commission, vérification de compatibilité incluse.
           </p>
 
           {/* Live Key Stats Counter */}

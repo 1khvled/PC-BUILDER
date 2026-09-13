@@ -438,6 +438,26 @@ const STORES: Record<string, StoreCfg> = {
   },
 };
 
+function readStock(e: cheerio.Cheerio<cheerio.AnyNode>, loaded: cheerio.CheerioAPI): string {
+  // 1) Nest-style status badges (LICB+/GamingDZ): class tells the truth
+  const badgeCls = e.find(".stock-status").first().attr("class") || "";
+  if (/out-stock/.test(badgeCls)) return "Rupture";
+  if (/(in-stock|new-stock|promo-stock|back-stock)/.test(badgeCls)) return "En stock";
+  // 2) Woo/text badges: only VISIBLE elements (themes render hidden ribbons with stale text)
+  const texts: string[] = [];
+  e.find(".stock-status, .stock, .availability, .stock-info").each((_, el) => {
+    const node = loaded(el);
+    const meta = `${node.attr("class") || ""} ${node.attr("style") || ""} ${node.parents().map((_, p) => loaded(p).attr("class") || "").get().join(" ")}`;
+    if (/hidden|d-none|sr-only|screen-reader|display:\s*none|visibility:\s*hidden/i.test(meta)) return;
+    const t = node.text().replace(/\s+/g, " ").trim();
+    if (t) texts.push(t);
+  });
+  const txt = texts.join(" | ");
+  if (/rupture|out of stock|sold out|épuisé|indisponible|non disponible/i.test(txt)) return "Rupture";
+  if (/en stock|in stock|disponible/i.test(txt)) return "En stock";
+  return "À vérifier";
+}
+
 function pickImage(loaded: cheerio.CheerioAPI, el: unknown, base: string): string {
   let src = "";
   loaded(el as never)
@@ -653,7 +673,7 @@ export async function scrapeStoreCategory(store: string, category: string): Prom
           if (price) break;
         }
         if (!title || !price) return;
-        const stockTxt = e.find(".stock-status, .out-of-stock, .in-stock, .stock").first().text().trim();
+        const stock = readStock(e, loaded);
         let explicit = "";
         for (const lSel of cfg.link || []) {
           explicit = e.find(lSel).first().attr("href") || "";
@@ -678,7 +698,7 @@ export async function scrapeStoreCategory(store: string, category: string): Prom
               exclude: urls,
             }),
           image: pickImage(loaded, el, url),
-          stock: /out|rupture|epuise/i.test(stockTxt) ? "Rupture" : "En stock",
+          stock,
         });
       });
       if (out.length > 0) break; // first working selector wins

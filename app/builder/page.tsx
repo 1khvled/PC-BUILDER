@@ -276,7 +276,7 @@ export default function BuilderPage() {
             </span>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Prix les plus bas en Algérie relevés en temps réel • Vérification automatique de compatibilité • 58 wilayas
+            Prix les plus bas en Algérie relevés quotidiennement • Vérification automatique de compatibilité • 58 wilayas
           </p>
         </div>
 

@@ -1,5 +1,6 @@
 import { LIVE_OFFERS } from "./live";
 import { LIVE_IMAGES } from "./live-images";
+import PRICE_HISTORY_JSON from "./price-history.json";
 
 export type Category =
   | "cpu" | "cooler" | "motherboard" | "ram"
@@ -92,6 +93,41 @@ export function productImage(p: Product): string | undefined {
   return LIVE_IMAGES[p.id] ?? bestOffer(p.id)?.image;
 }
 
+function offerRank(o: Offer): number {
+  // Hero/buy-box must NEVER be a used or dead listing while a live new one exists.
+  // tier: new+confirmed stock (0) < new+unconfirmed (1) < used+confirmed (2) < used+unconfirmed (3) < ruptured (4)
+  const ruptured = /rupture|out of stock|sold out|épuisé|indisponible|non disponible/i.test(o.stock);
+  if (ruptured) return 4;
+  const confirmed = /en stock|^in stock/i.test(o.stock);
+  const used = o.condition === "used";
+  if (!used && confirmed) return 0;
+  if (!used) return 1;
+  if (confirmed) return 2;
+  return 3;
+}
+
 export function bestOffer(productId: string): Offer | undefined {
-  return OFFERS.filter((o) => o.productId === productId).sort((a, b) => a.priceDa - b.priceDa)[0];
+  return OFFERS.filter((o) => o.productId === productId).sort(
+    (a, b) => offerRank(a) - offerRank(b) || a.priceDa - b.priceDa
+  )[0];
+}
+
+export interface PricePoint {
+  day: string;
+  store: string;
+  price: number;
+}
+
+interface HistoryRow {
+  d: string;
+  p: string;
+  s: string;
+  pr: number;
+}
+
+export function priceHistory(productId: string): PricePoint[] {
+  return (PRICE_HISTORY_JSON as HistoryRow[])
+    .filter((h) => h.p === productId)
+    .map((h) => ({ day: h.d, store: h.s, price: h.pr }))
+    .sort((a, b) => (a.day < b.day ? -1 : 1));
 }
