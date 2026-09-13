@@ -6,6 +6,7 @@ import TopProgressBar from "@/components/TopProgressBar";
 import BackToTop from "@/components/BackToTop";
 
 export const metadata: Metadata = {
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
   title: "DZ PartPicker — Pick parts. Build your PC. Compare in DA.",
   description: "Comparateur indépendant de composants PC en Algérie : CPU, GPU, RAM, SSD. Prix le plus bas en DA avec lien marchand direct.",
   icons: { icon: "/brand/logo.svg" },
@@ -124,6 +125,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         `}</style>
       </head>
       <body className="text-slate-900 min-h-full flex flex-col antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "DZ PartPicker",
+              inLanguage: "fr-DZ",
+              description: "Comparateur indépendant des prix PC en Algérie (DA).",
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "DZ PartPicker",
+              areaServed: "DZ",
+            }),
+          }}
+        />
         <Suspense fallback={null}>
           <TopProgressBar />
         </Suspense>

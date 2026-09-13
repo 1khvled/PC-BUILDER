@@ -20,6 +20,27 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   // Hero = best NEW + available offer, never a dead/used listing while a live one exists
   const best = bestOffer(product.id) ?? offers[0];
   const history = priceHistory(product.id);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `${product.brand} ${product.model}`,
+    brand: product.brand,
+    category: product.category,
+    image: productImage(product),
+    offers: offers.slice(0, 20).map((o) => ({
+      "@type": "Offer",
+      price: o.priceDa,
+      priceCurrency: "DZD",
+      availability: /rupture/i.test(o.stock)
+        ? "https://schema.org/OutOfStock"
+        : "https://schema.org/InStock",
+      itemCondition: o.condition === "new"
+        ? "https://schema.org/NewCondition"
+        : "https://schema.org/UsedCondition",
+      seller: o.store,
+      url: o.url,
+    })),
+  };
   const specs = Object.entries(product.specs);
 
   const priceStats = offers.length > 0 ? {
@@ -30,6 +51,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {/* Breadcrumbs */}
       <nav aria-label="Fil d'Ariane" className="flex items-center gap-2 text-xs text-slate-500">
         <Link href="/" className="hover:text-slate-900 transition-colors">
