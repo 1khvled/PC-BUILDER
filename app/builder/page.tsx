@@ -7,6 +7,7 @@ import { useOffers } from "@/lib/data/use-offers";
 import { checkCompat } from "@/lib/compat/check";
 import { recommendedPsu } from "@/lib/compat/watt";
 import Thumb from "@/components/Thumb";
+import { useAnimatedNumber } from "@/lib/use-animated-number";
 
 function CategoryIcon({ slug }: { slug: string }) {
   switch (slug) {
@@ -125,6 +126,16 @@ function SpecPills({ product }: { product: Product }) {
   );
 }
 
+/** Per-row price that counts to its new value instead of snapping. */
+function RowPrice({ value }: { value: number }) {
+  const display = useAnimatedNumber(value, 250);
+  return (
+    <div className="font-extrabold text-sm sm:text-base text-slate-900 tabular-nums">
+      {Math.round(display).toLocaleString("fr-DZ")} DA
+    </div>
+  );
+}
+
 const DEFAULT_BUILD: Record<string, string> = {
   cpu: "cpu-r5-5600",
   cooler: "cooler-h212-v3",
@@ -163,10 +174,33 @@ function parsePicks(raw: string | null): Record<string, string> | null {
 export default function BuilderPage() {
   const offers = useOffers();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [picks, setPicks] = useState<Record<string, string>>(() => {
-    if (typeof window === "undefined") return DEFAULT_BUILD;
-    return parsePicks(new URLSearchParams(window.location.search).get("p")) ?? DEFAULT_BUILD;
-  });
+  // Row that just changed — drives the row-flash micro-animation.
+  const [flashCat, setFlashCat] = useState<string | null>(null);
+
+  const triggerFlash = (cat: string) => {
+    setFlashCat(cat);
+    window.setTimeout(() => {
+      setFlashCat((cur) => (cur === cat ? null : cur));
+    }, 650);
+  };
+  // Prerender-identical default first (hydration-safe); the shared URL —
+  // then the saved local build — is applied in an effect below.
+  const [picks, setPicks] = useState<Record<string, string>>(DEFAULT_BUILD);
+
+  // Restore once on mount: shared link wins, then localStorage, then default.
+  useEffect(() => {
+    try {
+      const fromUrl = parsePicks(new URLSearchParams(window.location.search).get("p"));
+      if (fromUrl) {
+        setPicks(fromUrl);
+        return;
+      }
+      const saved = parsePicks(window.localStorage.getItem("dz_builder_picks"));
+      if (saved) setPicks(saved);
+    } catch {
+      /* private mode etc. — stay on default */
+    }
+  }, []);
   const [activeModalCat, setActiveModalCat] = useState<string | null>(null);
   const [modalSearch, setModalSearch] = useState("");
 
@@ -183,11 +217,13 @@ export default function BuilderPage() {
     return () => document.removeEventListener("keydown", onKey);
   }, [activeModalCat]);
 
-  // Keep the URL as the source of truth so "Copier le permalien" always shares the real build
+  // Persist every change: the URL stays the shareable source of truth,
+  // localStorage keeps the build across revisits.
   useEffect(() => {
     try {
       const s = serializePicks(picks);
       window.history.replaceState(null, "", s ? `/builder?p=${encodeURIComponent(s)}` : "/builder");
+      window.localStorage.setItem("dz_builder_picks", s);
     } catch {
       /* noop */
     }
@@ -210,6 +246,7 @@ export default function BuilderPage() {
     () => Object.values(build).reduce((s, p) => s + (bestOffer(p.id, offers)?.priceDa ?? 0), 0),
     [build, offers]
   );
+  const animatedTotal = useAnimatedNumber(total, 300);
 
   const selectedCount = Object.keys(build).length;
 
@@ -239,6 +276,7 @@ export default function BuilderPage() {
     const next = { ...picks };
     delete next[category];
     setPicks(next);
+    triggerFlash(category);
     showToast(`Composant retiré.`);
   };
 
@@ -246,6 +284,7 @@ export default function BuilderPage() {
     setPicks((prev) => ({ ...prev, [category]: productId }));
     setActiveModalCat(null);
     setModalSearch("");
+    triggerFlash(category);
     showToast(`Composant mis à jour.`);
   };
 
@@ -299,7 +338,7 @@ export default function BuilderPage() {
         <div className="flex items-center gap-2 text-xs">
           <button
             onClick={handleCopyLink}
-            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded font-semibold transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
+            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
             title="Copier le lien partageable qui restaure cette sélection"
           >
             <svg className="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -312,7 +351,7 @@ export default function BuilderPage() {
           {/* Print-friendly export button next to Copier */}
           <button
             onClick={handlePrint}
-            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded font-semibold transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
+            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
             title="Imprimer ou enregistrer en PDF (fiche optimisée pour impression)"
           >
             <svg className="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -325,13 +364,13 @@ export default function BuilderPage() {
 
           <button
             onClick={handleLoadDefault}
-            className="hidden sm:inline-flex px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded font-medium transition-colors"
+            className="hidden sm:inline-flex px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded font-medium transition-colors btn-press"
           >
             Exemple Gamer
           </button>
           <button
             onClick={handleReset}
-            className="px-3 py-2 bg-white border border-slate-200 hover:text-red-600 hover:border-red-200 text-slate-600 rounded font-medium transition-colors"
+            className="px-3 py-2 bg-white border border-slate-200 hover:text-red-600 hover:border-red-200 text-slate-600 rounded font-medium transition-colors btn-press"
           >
             Réinitialiser
           </button>
@@ -348,7 +387,7 @@ export default function BuilderPage() {
         </div>
         <div className="mt-2 h-2 rounded-full bg-slate-100 overflow-hidden" role="progressbar" aria-valuenow={selectedCount} aria-valuemin={0} aria-valuemax={CATEGORIES.length} aria-label="Progression de la configuration">
           <div
-            className="h-full rounded-full bg-[#2c87c3]"
+            className="h-full rounded-full bg-[#2c87c3] transition-[width] duration-500 ease-out"
             style={{ width: `${(selectedCount / CATEGORIES.length) * 100}%` }}
           />
         </div>
@@ -367,7 +406,8 @@ export default function BuilderPage() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3 font-semibold">
             <span
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs shrink-0 print:border ${
+              key={result.ok ? "ok" : "ko"}
+              className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs shrink-0 print:border animate-icon-pop ${
                 result.ok ? "bg-emerald-600" : "bg-red-600"
               }`}
             >
@@ -419,7 +459,7 @@ export default function BuilderPage() {
                 return (
                   <tr
                     key={cat.slug}
-                    className={`transition-colors group print:hover:bg-transparent ${product ? "" : "bg-amber-50/40"} hover:bg-blue-50/40`}
+                    className={`transition-colors group print:hover:bg-transparent ${product ? "" : "bg-amber-50/40"} hover:bg-blue-50/40 ${flashCat === cat.slug ? "animate-row-flash" : ""}`}
                   >
                     {/* Component Column */}
                     <td className="px-4 py-3.5 align-top">
@@ -463,9 +503,7 @@ export default function BuilderPage() {
                     {/* Price Column */}
                     <td className="px-4 py-3.5 text-right align-top">
                       {best ? (
-                        <div className="font-extrabold text-sm sm:text-base text-slate-900 tabular-nums">
-                          {best.priceDa.toLocaleString("fr-DZ")} DA
-                        </div>
+                        <RowPrice value={best.priceDa} />
                       ) : (
                         <span className="text-slate-300 font-normal">—</span>
                       )}
@@ -500,7 +538,7 @@ export default function BuilderPage() {
                       ) : (
                         <button
                           onClick={() => setActiveModalCat(cat.slug)}
-                          className="px-3.5 py-1.5 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white font-bold text-xs transition-colors print:hidden"
+                          className="px-3.5 py-1.5 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white font-bold text-xs transition-colors btn-press print:hidden"
                         >
                           + Choisir
                         </button>
@@ -513,14 +551,14 @@ export default function BuilderPage() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setActiveModalCat(cat.slug)}
-                            className="px-2 py-1 text-[11px] font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors"
+                            className="px-2 py-1 text-[11px] font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors btn-press"
                             title="Changer de composant"
                           >
                             Changer
                           </button>
                           <button
                             onClick={() => handleRemovePart(cat.slug)}
-                            className="w-7 h-7 rounded text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                            className="w-7 h-7 rounded text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                             title="Retirer de la configuration"
                             aria-label={`Retirer ${cat.label}`}
                           >
@@ -530,7 +568,7 @@ export default function BuilderPage() {
                       ) : (
                         <button
                           onClick={() => setActiveModalCat(cat.slug)}
-                          className="text-[#2c87c3] hover:text-[#1e5c85] hover:underline underline-offset-4 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] rounded"
+                          className="text-[#2c87c3] hover:text-[#1e5c85] hover:underline underline-offset-4 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] rounded btn-press"
                         >
                           + Ajouter
                         </button>
@@ -550,13 +588,12 @@ export default function BuilderPage() {
               {selectedCount} sur {CATEGORIES.length} pièces :
             </span>
             <span
-              key={total}
               className="text-xl sm:text-2xl font-black tracking-tight text-white print:text-slate-900 tabular-nums"
             >
-              {total.toLocaleString("fr-DZ")} DA
+              {Math.round(animatedTotal).toLocaleString("fr-DZ")} DA
             </span>
             <span className="text-slate-400 print:text-slate-500 text-xs">
-              ≈ ${Math.round(total / 132).toLocaleString()} USD
+              ≈ ${Math.round(animatedTotal / 132).toLocaleString()} USD
             </span>
             <span className="text-slate-500 text-xs hidden sm:inline">
               • {result.wattage}W estimés
@@ -566,7 +603,7 @@ export default function BuilderPage() {
           <div className="flex items-center gap-2 text-xs font-semibold ml-auto print:hidden">
             <button
               onClick={handlePrint}
-              className="px-3.5 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold transition-colors flex items-center gap-1.5"
+              className="px-3.5 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold transition-colors btn-press flex items-center gap-1.5"
               title="Imprimer ou enregistrer en PDF"
             >
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -579,7 +616,7 @@ export default function BuilderPage() {
 
             <button
               onClick={handleCopyLink}
-              className="px-4 py-2 rounded bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white font-bold transition-colors shadow-sm flex items-center gap-1.5"
+              className="px-4 py-2 rounded bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white font-bold transition-colors btn-press shadow-sm flex items-center gap-1.5"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
@@ -597,8 +634,8 @@ export default function BuilderPage() {
 
       {/* Component Picker Modal */}
       {activeModalCat && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50 print:hidden" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
-          <div role="dialog" aria-modal="true" aria-label={`Choisir un composant : ${CATEGORIES.find((c) => c.slug === activeModalCat)?.label ?? activeModalCat}`} className="bg-white rounded w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50 print:hidden animate-backdrop-fade" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
+          <div role="dialog" aria-modal="true" aria-label={`Choisir un composant : ${CATEGORIES.find((c) => c.slug === activeModalCat)?.label ?? activeModalCat}`} className="bg-white rounded w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-modal-pop" onClick={(e) => e.stopPropagation()}>
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-slate-50/80">
               <div>
@@ -614,7 +651,7 @@ export default function BuilderPage() {
                   setActiveModalCat(null);
                   setModalSearch("");
                 }}
-                className="w-8 h-8 rounded hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold"
+                className="w-8 h-8 rounded hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold btn-press"
               >
                 ✕
               </button>
@@ -669,7 +706,7 @@ export default function BuilderPage() {
                       </div>
                       <button
                         onClick={() => handleSelectPart(activeModalCat, product.id)}
-                        className={`px-3.5 py-1.5 rounded text-xs font-bold shrink-0 transition-colors ${
+                        className={`px-3.5 py-1.5 rounded text-xs font-bold shrink-0 transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
                           isCurrent
                             ? "bg-slate-200 text-slate-700 cursor-default"
                             : "bg-[#2c87c3] hover:bg-[#1e5c85] text-white"
@@ -687,7 +724,7 @@ export default function BuilderPage() {
 
       {/* Floating Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 sm:right-10 z-50 bg-slate-900 text-white px-4 py-3 rounded shadow-2xl border border-slate-700 flex items-center gap-2.5 text-xs sm:text-sm font-semibold print:hidden">
+        <div key={toastMessage} className="fixed bottom-6 right-6 sm:right-10 z-50 bg-slate-900 text-white px-4 py-3 rounded shadow-2xl border border-slate-700 flex items-center gap-2.5 text-xs sm:text-sm font-semibold print:hidden animate-toast-in">
           <span className="w-2 h-2 rounded-full bg-emerald-400" />
           <span>{toastMessage}</span>
         </div>
