@@ -185,7 +185,7 @@ export async function fetchProducts(
         if (!title || title.length < 3) continue;
 
         const productUrl = p.permalink || `${base}/product/${p.slug}`;
-        const stock = p.is_in_stock ? "En stock" : "Rupture";
+        const stock = p.is_in_stock === false ? "Rupture" : p.is_in_stock === true ? "En stock" : "À vérifier";
         const image = p.images?.[0]?.src || "";
 
         offers.push({

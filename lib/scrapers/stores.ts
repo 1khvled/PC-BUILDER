@@ -491,11 +491,55 @@ const STORES: Record<string, StoreCfg> = {
   },
 };
 
+// JSON-LD offers.availability — the most reliable stock signal on WooCommerce/Shopify
+// product pages (schema.org InStock / OutOfStock). "" when absent/unparseable.
+function readJsonLdStock(loaded: cheerio.CheerioAPI): string {
+  let found = "";
+  loaded("script[type='application/ld+json']").each((_, el) => {
+    if (found) return;
+    try {
+      const raw = loaded(el).contents().text();
+      const docs = JSON.parse(raw);
+      const walk = (n: unknown): void => {
+        if (found || !n || typeof n !== "object") return;
+        const o = n as Record<string, unknown>;
+        const t = o["@type"];
+        const types = Array.isArray(t) ? t : [t];
+        if (types.includes("Product")) {
+          const off = o.offers;
+          const list = Array.isArray(off) ? off : off ? [off] : [];
+          for (const item of list) {
+            const av = String((item as Record<string, unknown>)?.availability ?? "");
+            if (/OutOfStock/i.test(av)) { found = "Rupture"; return; }
+            if (/InStock|LimitedAvailability/i.test(av)) { found = "En stock"; return; }
+            if (/PreOrder/i.test(av)) { found = "À vérifier"; return; }
+          }
+        }
+        for (const v of Object.values(o)) {
+          if (Array.isArray(v)) v.forEach(walk);
+          else if (v && typeof v === "object") walk(v);
+        }
+      };
+      (Array.isArray(docs) ? docs : [docs]).forEach(walk);
+    } catch {
+      /* malformed JSON-LD — fall through to DOM signals */
+    }
+  });
+  return found;
+}
+
 function readStock(e: cheerio.Cheerio<cheerio.AnyNode>, loaded: cheerio.CheerioAPI): string {
+  // 0) JSON-LD first (page-level truth when present)
+  const ld = readJsonLdStock(loaded);
+  if (ld) return ld;
   // 1) Nest-style status badges (LICB+/GamingDZ): class tells the truth
   const badgeCls = e.find(".stock-status").first().attr("class") || "";
   if (/out-stock/.test(badgeCls)) return "Rupture";
   if (/(in-stock|new-stock|promo-stock|back-stock)/.test(badgeCls)) return "En stock";
+  // 1b) WooCommerce stock paragraph class
+  const wooCls = e.find("p.stock").first().attr("class") || "";
+  if (/out-of-stock/i.test(wooCls)) return "Rupture";
+  if (/in-stock/i.test(wooCls)) return "En stock";
   // 2) Woo/text badges: only VISIBLE elements (themes render hidden ribbons with stale text)
   const texts: string[] = [];
   e.find(".stock-status, .stock, .availability, .stock-info").each((_, el) => {
@@ -643,7 +687,7 @@ async function scrapeShopify(store: string, cfg: StoreCfg, category: string): Pr
         title: it.title,
         priceDa: it.priceDa,
         url: it.url,
-        stock: "En stock",
+        stock: "À vérifier",
         image: it.image,
       }));
   }
@@ -666,7 +710,7 @@ async function scrapeShopify(store: string, cfg: StoreCfg, category: string): Pr
           priceDa: price,
           url: `${cfg.shopifyBase}/products/${p.handle}`,
           image: p.images?.[0]?.src || "",
-          stock: v?.available === false ? "Rupture" : "En stock",
+          stock: v?.available === false ? "Rupture" : v?.available === true ? "En stock" : "À vérifier",
         });
       }
     } catch {
@@ -718,7 +762,7 @@ async function scrapeNextGen(store: string, cfg: StoreCfg, category: string): Pr
         image = "";
       }
       const txt = e.text();
-      const stock = /out of stock|rupture|sold out|épuisé/i.test(txt) ? "Rupture" : "En stock";
+      const stock = /out of stock|rupture|sold out|épuisé/i.test(txt) ? "Rupture" : /en stock|in stock/i.test(txt) ? "En stock" : "À vérifier";
       out.push({ store, category, title, priceDa: price, url: link, image, stock });
     });
     if (cards.length < 24) break; // last page
@@ -892,7 +936,7 @@ async function scrapeKotek(): Promise<ScrapedOffer[]> {
           priceDa: price,
           url: u,
           image,
-          stock: /rupture|out/i.test(stockTxt) ? "Rupture" : "En stock",
+          stock: /rupture|out-of-stock|out of stock/i.test(stockTxt) ? "Rupture" : /en stock|in stock/i.test(stockTxt) ? "En stock" : "À vérifier",
         });
         done = true;
       } catch {

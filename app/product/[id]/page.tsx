@@ -302,7 +302,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   href={best.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full text-center py-3 px-4 rounded-xl bg-[#0b63e5] hover:bg-[#094db5] active:bg-[#08429d] text-white font-bold text-sm shadow-md shadow-blue-500/20 transition-all card-lift flex items-center justify-center gap-2 group"
+                  className="w-full text-center py-3 px-4 rounded-xl bg-[#0b63e5] hover:bg-[#094db5] active:bg-[#08429d] text-white font-bold text-sm shadow-md shadow-blue-500/20 transition-[transform,background-color] duration-150 active:scale-[0.96] card-lift flex items-center justify-center gap-2 group"
                 >
                   <span>Commander sur {best.store}</span>
                   <span className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform">↗</span>

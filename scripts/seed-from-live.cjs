@@ -11,6 +11,13 @@ function parseObjLine(line) {
   return JSON.parse(json);
 }
 
+function stockFlag(t) {
+  const s = String(t || "");
+  if (/rupture|out of stock|sold out|puis|indisponible/i.test(s)) return "out";
+  if (/en stock|^in stock/i.test(s)) return "in";
+  return "";
+}
+
 function main() {
   const live = fs.readFileSync("lib/data/live.ts", "utf8");
   const liveBlock = live.split("LIVE_OFFERS: Offer[] = [")[1].split("];")[0];
@@ -38,9 +45,12 @@ function main() {
     const key = o.productId + "|" + o.store + "|" + o.condition;
     if (!best.has(key) || o.priceDa < best.get(key).priceDa) best.set(key, o);
   }
+  const liSrc = fs.readFileSync("lib/data/live-images.ts", "utf8");
+  const localImg = Object.fromEntries([...liSrc.matchAll(/"([^"]+)":\s*"([^"]+)"/g)].map((m) => [m[1], m[2]]));
   const offers = [...best.values()].map((o) => ({
     p: o.productId, s: o.store, d: o.priceDa, c: o.condition === "used" ? 0 : 1,
     u: (o.url || "").slice(0, 160), t: (o.titleRaw || "").slice(0, 90),
+    i: ((o.image || localImg[o.productId]) || "").slice(0, 300), w: stockFlag(o.stock),
   }));
   const seed = {
     scraped_at: new Date().toISOString(),

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { Offer } from "@/lib/data/products";
+import { isRuptured, type Offer } from "@/lib/data/products";
 import Thumb from "./Thumb";
 import EmptyState from "./EmptyState";
 
@@ -17,6 +17,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [conditionFilter, setConditionFilter] = useState<"all" | "new" | "used">("all");
   const [search, setSearch] = useState("");
+  const [hideRuptured, setHideRuptured] = useState(true);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -27,8 +28,14 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
     }
   };
 
+  const rupturedCount = useMemo(() => offers.filter(isRuptured).length, [offers]);
+  const visibleOffers = useMemo(
+    () => (hideRuptured ? offers.filter((o) => !isRuptured(o)) : offers),
+    [offers, hideRuptured]
+  );
+
   const filteredAndSortedOffers = useMemo(() => {
-    const list = offers.filter((o) => {
+    const list = visibleOffers.filter((o) => {
       if (conditionFilter !== "all" && o.condition !== conditionFilter) return false;
       if (search.trim()) {
         const q = search.toLowerCase();
@@ -56,10 +63,10 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
     });
 
     return list;
-  }, [offers, conditionFilter, search, sortField, sortDir]);
+  }, [visibleOffers, conditionFilter, search, sortField, sortDir]);
 
-  const newCount = useMemo(() => offers.filter((o) => o.condition === "new").length, [offers]);
-  const usedCount = useMemo(() => offers.filter((o) => o.condition === "used").length, [offers]);
+  const newCount = useMemo(() => visibleOffers.filter((o) => o.condition === "new").length, [visibleOffers]);
+  const usedCount = useMemo(() => visibleOffers.filter((o) => o.condition === "used").length, [visibleOffers]);
 
   const stats = useMemo(() => {
     if (filteredAndSortedOffers.length === 0) return null;
@@ -109,6 +116,19 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
               </button>
             )}
           </div>
+          {rupturedCount > 0 && (
+            <button
+              onClick={() => setHideRuptured((v) => !v)}
+              aria-pressed={hideRuptured}
+              title="Les ruptures restent consultables mais ne polluent plus le comparatif"
+              className={`ml-1 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] ${
+                hideRuptured ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+              }`}
+            >
+              <span className={`size-1.5 rounded-full ${hideRuptured ? "bg-slate-400" : "bg-red-500"}`} />
+              <span>{hideRuptured ? `Ruptures masquées (${rupturedCount})` : "Afficher les ruptures"}</span>
+            </button>
+          )}
         </div>
 
         <div className="flex items-center gap-3">
@@ -208,6 +228,8 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
             <tbody className="divide-y divide-slate-100 text-xs">
               {filteredAndSortedOffers.map((o, idx) => {
                 const isBest = stats !== null && o.priceDa === stats.min;
+                const ruptured = isRuptured(o);
+                const unknownStock = !ruptured && o.stock !== "En stock";
                 return (
                 <tr
                   key={`${o.store}-${o.priceDa}-${idx}`}
@@ -220,7 +242,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                       <div className="min-w-0">
                         <div className="font-bold text-slate-900 text-sm group-hover:text-[#0b63e5] transition-colors flex items-center gap-1.5">
                           <span>{o.store}</span>
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" title="Boutique indexée" />
+                          <span className="size-1.5 rounded-full bg-emerald-500" title="Boutique indexée" />
                         </div>
                         <div className="text-slate-500 truncate max-w-xs text-[11px] mt-0.5">{o.titleRaw}</div>
                       </div>
@@ -251,8 +273,8 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                   {/* Stock */}
                   <td className="px-3 py-3.5">
                     <span className="text-slate-700 font-medium flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                      <span>{o.stock || "En stock vérifié"}</span>
+                      <span className={`size-2 rounded-full ${ruptured ? "bg-red-500" : unknownStock ? "bg-slate-300" : "bg-emerald-500"}`} />
+                      <span className={ruptured ? "font-semibold text-red-700" : ""}>{ruptured ? "Rupture" : o.stock || "Prix constaté"}</span>
                     </span>
                   </td>
 
@@ -275,7 +297,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                       target="_blank"
                       rel="noopener noreferrer sponsored"
                       aria-label={`Acheter chez ${o.store} — ${o.priceDa.toLocaleString("fr-DZ")} DA`}
-                      className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg bg-[#0b63e5] hover:bg-[#094db5] active:bg-[#073ea0] text-white font-bold text-xs transition-all shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:ring-offset-2"
+                      className="inline-flex items-center justify-center px-3.5 py-2 rounded-lg bg-[#0b63e5] hover:bg-[#094db5] active:bg-[#073ea0] text-white font-bold text-xs transition-[transform,background-color] duration-150 active:scale-[0.96] shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b63e5] focus-visible:ring-offset-2"
                     >
                       <span>Acheter</span>
                       <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -299,6 +321,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
             onAction={() => {
               setConditionFilter("all");
               setSearch("");
+              setHideRuptured(false);
             }}
           />
         </div>

@@ -28,6 +28,8 @@ create table if not exists offers (
   cond smallint not null default 1, -- 1 = new, 0 = used
   url varchar(160) not null default '',
   title varchar(90) not null default '',
+  image varchar(300) not null default '',
+  stock varchar(16) not null default '',
   day date not null default current_date,
   primary key (product_id, store_id, cond)
 );

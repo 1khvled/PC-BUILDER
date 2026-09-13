@@ -158,6 +158,7 @@ export const LIVE_IMAGES: Record<string, string> = {
   "gpu-rx580-8gb": "/p/gpu-rx580-8gb.webp",
   "gpu-quadro": "/p/gpu-quadro.webp",
   "gpu-gt730-4gb": "/p/gpu-gt730-4gb.webp",
+  "psu-mwe650-b": "/p/psu-mwe650-b.webp",
   "psu-850-gold": "/p/psu-850-gold.webp",
   "psu-1200-gold": "/p/psu-1200-gold.webp",
   "gpu-rtx4060-8gb": "/p/gpu-rtx4060-8gb.webp",

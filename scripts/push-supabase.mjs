@@ -48,6 +48,7 @@ async function main() {
   // 3. offers snapshot upsert
   const offers = seed.offers.map((o) => ({
     product_id: o.p, store_id: sid[o.s], price_da: o.d, cond: o.c, url: o.u, title: o.t, day: seed.day,
+    image: o.i ?? "", stock: o.w ?? "",
   })).filter((o) => o.store_id);
   await api("offers?on_conflict=product_id,store_id,cond", "POST", offers, { Prefer: "resolution=merge-duplicates" });
   console.log("offers upserted:", offers.length);

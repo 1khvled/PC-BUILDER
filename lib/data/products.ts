@@ -417,6 +417,10 @@ export function productImage(p: Product): string | undefined {
   return LIVE_IMAGES[p.id] ?? bestOffer(p.id)?.image;
 }
 
+export function isRuptured(o: Pick<Offer, "stock">): boolean {
+  return /rupture|out of stock|sold out/i.test(o.stock || "");
+}
+
 function offerRank(o: Offer): number {
   // Hero/buy-box must NEVER be a used or dead listing while a live new one exists.
   // tier: new+confirmed stock (0) < new+unconfirmed (1) < used+confirmed (2) < used+unconfirmed (3) < ruptured (4)
@@ -431,7 +435,10 @@ function offerRank(o: Offer): number {
 }
 
 export function bestOffer(productId: string, offers: Offer[] = OFFERS): Offer | undefined {
-  return offers.filter((o) => o.productId === productId).sort(
+  // Ruptured listings never win while a live one exists (trust rule).
+  const list = offers.filter((o) => o.productId === productId);
+  const pool = list.some((o) => !isRuptured(o)) ? list.filter((o) => !isRuptured(o)) : list;
+  return pool.sort(
     (a, b) => offerRank(a) - offerRank(b) || a.priceDa - b.priceDa
   )[0];
 }

@@ -18,3 +18,5 @@ photo-backfill*
 check_dups.cjs
 probe_*.cjs
 push_*.cjs
+upd_img_*.sql
+upd_stock_*.sql

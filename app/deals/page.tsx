@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PRODUCTS, productImage, type Offer } from "@/lib/data/products";
+import { PRODUCTS, isRuptured, productImage, type Offer } from "@/lib/data/products";
 import { getOffers, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 
@@ -20,7 +20,7 @@ interface Deal {
 function deals(offers: Offer[]): Deal[] {
   const out: Deal[] = [];
   for (const p of PRODUCTS) {
-    const fresh = offers.filter((o) => o.productId === p.id && o.condition === "new");
+    const fresh = offers.filter((o) => o.productId === p.id && o.condition === "new" && !isRuptured(o));
     if (fresh.length < 2) continue;
     const prices = fresh.map((o) => o.priceDa).sort((a, b) => a - b);
     const best = prices[0];

@@ -32,7 +32,7 @@ export default function Thumb({ src, alt, size = 56 }: { src?: string; alt: stri
       decoding="async"
       referrerPolicy="no-referrer"
       onError={() => setErr(true)}
-      className="rounded-xl object-contain shrink-0 border border-slate-200 bg-white p-1"
+      className="rounded-xl object-contain shrink-0 bg-white p-1 ring-1 ring-black/10"
       style={{ width: size, height: size }}
     />
   );

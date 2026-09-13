@@ -23,6 +23,8 @@ interface DbOfferRow {
   url: string;
   title: string;
   day: string;
+  image: string;
+  stock: string;
   stores: { name: string; wilaya: string } | { name: string; wilaya: string }[] | null;
 }
 
@@ -49,9 +51,10 @@ function toOffer(r: DbOfferRow): Offer {
     titleRaw: r.title,
     priceDa: r.price_da,
     url: r.url,
-    // Honest label: the DB snapshot carries no live stock flag, so never
-    // claim "En stock". Unconfirmed offers rank below confirmed ones.
-    stock: "Prix constaté",
+    image: r.image || undefined,
+    // Honest labels from the DB stock flag ('in' / 'out' / '' unknown).
+    // Unconfirmed offers rank below confirmed ones (see offerRank).
+    stock: r.stock === "in" ? "En stock" : r.stock === "out" ? "Rupture" : "Prix constaté",
     condition: r.cond === 1 ? "new" : "used",
     scrapedAt: r.day,
   };
@@ -77,7 +80,7 @@ export async function getOffers(): Promise<Offer[]> {
     const rows = await fetchAll<DbOfferRow>((from, to) =>
       client
         .from("offers")
-        .select("product_id, price_da, cond, url, title, day, stores!inner(name, wilaya)")
+        .select("product_id, price_da, cond, url, title, day, image, stock, stores!inner(name, wilaya)")
         .range(from, to)
     );
     if (rows.length === 0) return OFFERS;
