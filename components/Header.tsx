@@ -59,6 +59,7 @@ export default function Header() {
   const [catDropdownOpen, setCatDropdownOpen] = useState(false);
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const catDropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Load saved wilaya preference
@@ -110,16 +111,40 @@ export default function Header() {
     return () => clearTimeout(timer);
   }, [query]);
 
-  // Click outside to close search dropdown and category dropdown
+  // Close menus whenever the route changes (search nav, back/forward, logo…)
+  useEffect(() => {
+    setCatDropdownOpen(false);
+    setMobileMenuOpen(false);
+    setIsOpen(false);
+  }, [pathname]);
+
+  // Click outside to close search dropdown and category dropdown.
+  // NOTE: the category check must be containment-scoped. The old code closed
+  // the menu on EVERY mousedown — including mousedowns inside the open menu —
+  // which unmounted the category links before their click event could fire,
+  // making them unclickable, and broke toggle-to-close on the button itself
+  // (mousedown closed, then click re-opened).
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
-      setCatDropdownOpen(false);
+      if (catDropdownRef.current && !catDropdownRef.current.contains(e.target as Node)) {
+        setCatDropdownOpen(false);
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setCatDropdownOpen(false);
+        setIsOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKey);
+    };
   }, []);
 
   // Keyboard navigation for search dropdown
@@ -337,14 +362,12 @@ export default function Header() {
             </Link>
 
             {/* Products Dropdown */}
-            <div className="relative">
+            <div className="relative" ref={catDropdownRef}>
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCatDropdownOpen(!catDropdownOpen);
-                }}
+                onClick={() => setCatDropdownOpen((v) => !v)}
                 aria-expanded={catDropdownOpen}
                 aria-haspopup="menu"
+                aria-controls="dz-cat-menu"
                 className={`px-3 py-1.5 rounded transition-colors flex items-center gap-1 ${
                   pathname.startsWith("/category")
                     ? "text-[#2c87c3] font-bold"
@@ -356,7 +379,7 @@ export default function Header() {
               </button>
 
               {catDropdownOpen && (
-                <div className="absolute left-0 top-full mt-1 w-64 bg-white border border-[#d8d8d8] rounded py-1.5 z-50 divide-y divide-slate-100">
+                <div id="dz-cat-menu" role="menu" className="absolute left-0 top-full mt-1 w-64 bg-white border border-[#d8d8d8] rounded py-1.5 z-50 divide-y divide-slate-100">
                   <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                     Catégories PC
                   </div>
@@ -364,6 +387,7 @@ export default function Header() {
                     {CATEGORIES.map((cat) => (
                       <Link
                         key={cat.slug}
+                        role="menuitem"
                         href={`/category/${cat.slug}`}
                         onClick={() => setCatDropdownOpen(false)}
                         className="block px-3 py-1.5 text-xs text-slate-700 hover:bg-blue-50 pcpp-link font-medium"
