@@ -14,7 +14,7 @@ export default async function GuidesPage() {
         <div>
           <div className="flex items-center gap-2.5">
             <span className="w-3 h-3 rounded-full bg-[#2c87c3]" />
-            <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-slate-900">
+            <h1 className="text-2xl sm:text-4xl font-display font-bold tracking-tight text-slate-900">
               Guides d&apos;Achat PC Gaming en Algérie
             </h1>
           </div>
@@ -36,12 +36,15 @@ export default async function GuidesPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {GUIDES.map((g, idx) => {
           const total = g.parts.reduce((sum, id) => sum + (bestOffer(id, offers)?.priceDa ?? 0), 0);
+          const missing = g.parts.filter((id) => !bestOffer(id, offers)).length;
           const sampleProducts = g.parts
             .map((id) => PRODUCTS.find((p) => p.id === id))
             .filter((p): p is (typeof PRODUCTS)[0] => Boolean(p))
             .slice(0, 4);
 
-          const tierBadge = total < 100000
+          const tierBadge = missing > 0
+            ? { label: "Budget Partiel", color: "bg-amber-50 text-amber-700 border-amber-200" }
+            : total < 100000
             ? { label: "Budget Malin", color: "bg-emerald-50 text-emerald-700 border-emerald-200" }
             : total <= 200000
             ? { label: "Milieu de Gamme", color: "bg-blue-50 text-blue-700 border-blue-200" }
@@ -113,9 +116,10 @@ export default async function GuidesPage() {
               <div className="pt-4 border-t border-slate-100 flex items-end justify-between gap-2">
                 <div>
                   <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">
-                    Budget estimé
+                    {missing > 0 ? "Budget partiel (dès)" : "Budget estimé"}
                   </span>
                   <div className="text-xl font-black text-emerald-700 tracking-tight">
+                    {missing > 0 ? "Dès " : ""}
                     {total.toLocaleString("fr-DZ")} DA
                   </div>
                 </div>

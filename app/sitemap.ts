@@ -1,5 +1,4 @@
 import type { MetadataRoute } from "next";
-import { BUILDS } from "@/lib/data/builds";
 import { GUIDES } from "@/lib/data/guides";
 import { CATEGORIES, PRODUCTS } from "@/lib/data/products";
 
@@ -7,7 +6,7 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://dzpartpicker.dz";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const staticRoutes = ["", "/builder", "/builds", "/guides"].map((r) => ({
+  const staticRoutes = ["", "/builder", "/guides"].map((r) => ({
     url: `${BASE}${r || "/"}`,
     lastModified: now,
     changeFrequency: "daily" as const,
@@ -31,11 +30,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }));
-  const builds = BUILDS.map((b) => ({
-    url: `${BASE}/builds/${b.id}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }));
-  return [...staticRoutes, ...cats, ...products, ...guides, ...builds];
+  return [...staticRoutes, ...cats, ...products, ...guides];
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PRODUCTS, bestOffer, productImage } from "@/lib/data/products";
+import { PRODUCTS, bestOffer, isRuptured, productImage } from "@/lib/data/products";
 import { getOffers, getPriceHistory, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import ProductOffersTable from "@/components/ProductOffersTable";
@@ -45,10 +45,15 @@ export default async function ProductPage({ params }: { params: { id: string } }
   };
   const specs = Object.entries(product.specs);
 
-  const priceStats = offers.length > 0 ? {
-    min: offers[0].priceDa,
-    max: offers[offers.length - 1].priceDa,
-    diff: offers[offers.length - 1].priceDa - offers[0].priceDa,
+  // Stats ignore ruptures: a dead listing must never set the min/max or the "savings".
+  // offers is already sorted ascending, filter preserves that order.
+  const liveOffers = offers.filter((o) => !isRuptured(o));
+  const statsPool = liveOffers.length > 0 ? liveOffers : offers;
+  const priceStats = statsPool.length > 0 ? {
+    min: statsPool[0].priceDa,
+    max: statsPool[statsPool.length - 1].priceDa,
+    diff: statsPool[statsPool.length - 1].priceDa - statsPool[0].priceDa,
+    live: liveOffers.length > 0,
   } : null;
 
   return (
@@ -260,7 +265,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
               </div>
               {best ? (
                 <>
-                  <div className="text-3xl sm:text-4xl font-black text-emerald-700 tracking-tight mt-1">
+                  <div className="text-3xl sm:text-4xl font-display font-bold text-emerald-700 tracking-tight mt-1">
                     {best.priceDa.toLocaleString("fr-DZ")} DA
                   </div>
                   <div className="text-xs text-slate-600 mt-1 flex flex-wrap items-center gap-1.5">
@@ -302,9 +307,12 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   href={best.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full text-center py-3 px-4 rounded bg-[#2c87c3] hover:bg-[#1e5c85] active:bg-[#153f5b] text-white font-bold text-sm shadow-md transition-colors flex items-center justify-center gap-2 group"
+                  aria-label={isRuptured(best) ? `Voir quand même l'offre en rupture chez ${best.store}` : `Commander sur ${best.store}`}
+                  className={`w-full text-center py-3 px-4 rounded text-white font-bold text-sm shadow-md transition-colors flex items-center justify-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isRuptured(best)
+                    ? "bg-red-600 hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500"
+                    : "bg-[#2c87c3] hover:bg-[#1e5c85] active:bg-[#153f5b] focus-visible:ring-[#2c87c3]"}`}
                 >
-                  <span>Commander sur {best.store}</span>
+                  <span>{isRuptured(best) ? `Voir quand même chez ${best.store}` : `Commander sur ${best.store}`}</span>
                   <span>↗</span>
                 </a>
 
@@ -332,6 +340,11 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   <span>Économie possible :</span>
                   <span className="text-emerald-700">+{priceStats.diff.toLocaleString("fr-DZ")} DA</span>
                 </div>
+                {!priceStats.live && (
+                  <div className="text-[11px] text-red-600 font-semibold">
+                    Toutes les offres sont en rupture — prix à titre indicatif.
+                  </div>
+                )}
               </div>
             )}
 

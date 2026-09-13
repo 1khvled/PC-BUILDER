@@ -54,7 +54,7 @@ export default async function GuidePage({ params }: { params: { slug: string } }
           </span>
         </div>
 
-        <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 leading-tight">
+        <h1 className="text-2xl sm:text-4xl font-display font-bold tracking-tight text-slate-900 leading-tight">
           {guide.title}
         </h1>
 
@@ -79,7 +79,8 @@ export default async function GuidePage({ params }: { params: { slug: string } }
             <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
               Budget total estimé (prix les plus bas relevés) :
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-emerald-400 tracking-tight mt-1">
+            <div className="text-2xl sm:text-3xl font-display font-bold text-emerald-400 tracking-tight mt-1">
+              {missing > 0 ? "Dès " : ""}
               {total.toLocaleString("fr-DZ")} DA
             </div>
             <div className="text-xs text-slate-400 mt-1">
@@ -226,10 +227,10 @@ export default async function GuidePage({ params }: { params: { slug: string } }
           Adapter ce build dans le configurateur →
         </Link>
         <Link
-          href="/builds"
+          href="/guides"
           className="px-6 py-3 rounded bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-semibold text-sm transition-colors"
         >
-          Consulter les builds de la communauté
+          Explorer tous les guides
         </Link>
       </div>
     </main>

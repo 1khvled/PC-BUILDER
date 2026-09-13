@@ -106,11 +106,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/builds" className="hover:text-white hover:underline underline-offset-4">
-                  Builds de la communauté
-                </Link>
-              </li>
-              <li>
                 <Link href="/deals" className="hover:text-white hover:underline underline-offset-4">
                   Bons plans du moment
                 </Link>

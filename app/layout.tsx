@@ -1,10 +1,27 @@
 import type { Metadata } from "next";
+import { Barlow_Condensed, Inter } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import TopProgressBar from "@/components/TopProgressBar";
 import BackToTop from "@/components/BackToTop";
+
+// Body: Inter (neutral, tabular-friendly figures for DA prices).
+// Display: Barlow Condensed (industrial catalog voice for hero,
+// panel headers and headline prices).
+const sans = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sans",
+  display: "swap",
+});
+const display = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-display",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
@@ -20,8 +37,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className="h-full">
-      <body className="min-h-full flex flex-col antialiased">
+    <html lang="fr" className={`h-full ${sans.variable} ${display.variable}`}>
+      <body className="min-h-full flex flex-col antialiased font-sans">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

@@ -389,17 +389,6 @@ export default function Header() {
             </Link>
 
             <Link
-              href="/builds"
-              aria-current={pathname.startsWith("/builds") ? "page" : undefined}
-              className={`px-3 py-1.5 rounded transition-colors ${
-                pathname.startsWith("/builds")
-                  ? "text-[#2c87c3] font-bold"
-                  : "hover:text-slate-900"
-              }`}
-            >
-              Builds communauté
-            </Link>
-            <Link
               href="/deals"
               aria-current={pathname.startsWith("/deals") ? "page" : undefined}
               className={`px-3 py-1.5 rounded transition-colors ${
@@ -471,13 +460,6 @@ export default function Header() {
               className="p-2.5 rounded bg-[#26293b] text-slate-200 text-center"
             >
               Guides d&apos;achat
-            </Link>
-            <Link
-              href="/builds"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-2.5 rounded bg-[#26293b] text-slate-200 text-center"
-            >
-              Builds Communauté
             </Link>
           </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 interface EmptyStateProps {
-  type?: "search" | "products" | "offers" | "builds" | "default";
+  type?: "search" | "products" | "offers" | "default";
   title: string;
   description?: string;
   actionText?: string;
@@ -47,13 +47,6 @@ export default function EmptyState({
             <line x1="2" y1="10" x2="22" y2="10" />
             <circle cx="7" cy="15" r="1" />
             <line x1="11" y1="15" x2="17" y2="15" />
-          </svg>
-        )}
-        {type === "builds" && (
-          <svg className="w-10 h-10 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-            <line x1="12" y1="4" x2="12" y2="20" />
-            <line x1="2" y1="12" x2="22" y2="12" />
           </svg>
         )}
         {type === "default" && (

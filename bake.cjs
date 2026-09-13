@@ -21,7 +21,7 @@ function norm(s) {
     .replace(/((?:[248]|0[48]|1[26]|2[24]|3[26]|4[28]|6[24]))g\b/g, "$1gb") // 8g/08g/16g/32g -> gb (not 5600g!)
     .replace(/(\d+)\s?go\b/g, "$1gb") // 08go/240go/500go -> gb
     .replace(/(\d)\s?to\b/g, "$1tb")
-    .replace(/\b(\d+)t\b/g, "$1tb") // 1T/2T/4T (FR shorthand) -> tb
+    .replace(/\b(\d{1,2})t\b/g, "$1tb") // 1T/2T/4T (FR shorthand) -> tb (1-2 digits only: 7200T/MIN RPM specs must not become 7200tb)
     .replace(/m\.2/g, "m2") // m.2 -> m2 (word-matchable)
     .replace(/(^|[^a-z0-9])([a-z]{0,3})(400|450|500|550|600|650|700|750|800|850|1000|1200|1250|1300)(p|m|b|d|n|x|s|bn|gs|gl|gm|plus)?\b/g, "$1$2$3w") // CX750/PN1000M/PL800/A750BN/GP650 -> 750w (digit-prefixed 1650/5600x safe)
     .replace(/\b0+(\d)/g, "$1") // 08gb/0240go -> 8gb/240go
@@ -597,6 +597,155 @@ const OK_CAT = {
 // non-parts never stored as extras (keeps DB + bundle lean)
 const EXTRA_JUNK = /laptop|notebook|macbook|printer|imprimante|scanner|projecteur|datashow|webcam|tablet|smartphone|console|manette|pate thermique|pad thermique|thermal pad|thermal paste|thermal grizzly|mastergel|tube (magma|watercooling)|ventilateur boitier|case fan|masterfan|sickleflow|mf120|fd12|pack (ventilo|fans)|support (carte|ecran)|monitor stand|vortex|graphics card support|gpu holder|support gpu|herculx|back plate|waterblock|cold series|radiator with thermal|kit .\volution|en configuration|sleeve|power extension|cable (mars|first)|8-pin male|4-pin female|zenscreen|monitor arm|ergo aas|carte pci|ddr2|controleur|controller|fan hub|riser|snowman h9|tf120|chroma|at120|wraith spire|cooling amd|ventill?ateur.*original|original.*fan|ventil+o original|ubisoft|steam key|jeu pc|elgato|capture|12pci|btc|mining|kit .\volution|en configuration|accessoire boitier|pixel|24pin|smart plug|transfo|ddr2|televiseur|television|smart tv|souris|mouse|clavier|keyboard|casque|headset|chaise|chair|gaming desk|bureau gamer|portal|facebook/i;
 
+// ---- variant-capacity guard (SSD/RAM) ----
+// Merchants list one parent product for every capacity ("LEGEND 710
+// 256GB/512GB/1TB/2TB") carrying a single (cheapest-variant) price.
+// First-match-wins would attach that small-capacity price to the largest
+// capacity product. Multi-capacity titles redirect to the SMALLEST capacity
+// product; single-capacity titles redirect when the matched rule disagrees
+// (e.g. model-name rule "m450" matching a 500GB drive onto a 1TB product).
+function capTokenGB(tok) {
+  const m = /^(\d+)(gb|tb)$/.exec(tok);
+  return m ? (+m[1] * (m[2] === "tb" ? 1024 : 1)) : null;
+}
+function titleCapacities(title) {
+  // Kit multipliers must be read from the RAW title: norm() destroys x/×/*
+  // separators ("2×16 Go" -> "2 16go"), losing which number is per-stick.
+  // Decimal "capacities" are speeds, never drives ("7.3GB par Sec" -> phantom
+  // 3GB): strip them. Counts above 8 sticks are model numbers, not kits
+  // ("SN850X 2TB" reads as 850 x 2TB without the guard).
+  const decRe = /\d+\s*[.,]\s*\d+\s*(tb|gb|go|to)/gi;
+  const raw = " " + String(title || "").toLowerCase().replace(decRe, " ") + " ";
+  const kre = /(\d+)\s*[x×*]\s*(\d+)\s*(tb|gb|go|to)|(\d+)\s*(tb|gb|go|to)\s*[x×*]\s*(\d+)/gi;
+  const drop = new Set(); // per-stick sizes, never standalone capacities
+  const totals = new Set(); // kit totals, always kept
+  let km;
+  const frUnit = (u) => (u === "tb" || u === "to" ? 1024 : 1);
+  const kitOk = (n, size) => n >= 1 && n <= 8 && size > 0 && size <= 8192;
+  while ((km = kre.exec(raw))) {
+    if (km[1]) {
+      const size = +km[2] * frUnit(km[3]);
+      if (kitOk(+km[1], size)) {
+        drop.add(size);
+        totals.add(+km[1] * size);
+      }
+    } else {
+      const size = +km[4] * frUnit(km[5]);
+      if (kitOk(+km[6], size)) {
+        drop.add(size);
+        totals.add(size * +km[6]);
+      }
+    }
+  }
+  let t = " " + norm(title).replace(decRe, " ") + " ";
+  t = t.replace(/(\d+)\s*gb\s+s(?=\s|$)/g, " "); // "6gb/s" SATA speed spec, not a 6GB capacity
+  const out = [];
+  const gb = (n, u) => +n * (u === "tb" ? 1024 : 1);
+  const re = /(\d+)\s*x\s*(\d+)\s*(tb|gb)|(\d+)\s*(tb|gb)\s*x\s*(\d+)|(\d+)\s*(tb|gb)/g;
+  let m;
+  while ((m = re.exec(t))) {
+    if (m[1]) {
+      if (kitOk(+m[1], gb(m[2], m[3]))) out.push(+m[1] * gb(m[2], m[3]));
+    } else if (m[4]) {
+      if (kitOk(+m[6], gb(m[4], m[5]))) out.push(gb(m[4], m[5]) * +m[6]);
+    } else out.push(gb(m[7], m[8]));
+  }
+  const sane = (v) => v > 0 && v <= 32768; // absurd values (7200tb RPM fallout) are never capacities
+  return [...new Set([...out.filter((v) => sane(v) && !drop.has(v)), ...[...totals].filter(sane)])];
+}
+// Product-line tokens: shared title<->rule ownership means the match was earned.
+const FAMILY_TOK = new Set(["externe", "external", "portable", "hdd", "disque", "dur", "udimm", "sodimm", "rgb"]);
+// Tokens too generic to prove anything about who matched what.
+const GENERIC_TOK = new Set(["ssd", "sata", "nvme", "pcie", "m2", "gen3", "gen4", "gen5", "ddr4", "ddr5"]);
+function isSignalTok(x) {
+  return capTokenGB(x) === null && !/^\d+$/.test(x) && !GENERIC_TOK.has(x);
+}
+function variantRedirect(category, title, matched, has) {
+  if (category !== "ssd" && category !== "ram") return matched;
+  const caps = titleCapacities(title);
+  if (caps.length === 0) return matched;
+  if (caps.length === 1) {
+    const idm = /(\d+)(tb|gb)/.exec(matched);
+    const matchedCap = idm ? +idm[1] * (idm[2] === "tb" ? 1024 : 1) : null;
+    if (matchedCap === caps[0]) return matched;
+    const mr = RULES.find((r) => r.id === matched && r.cat === category);
+    if (mr) {
+      const s = new Set(
+        [...(mr.all || []), ...(mr.any || [])].map(capTokenGB).filter((v) => v !== null)
+      );
+      if (s.has(caps[0])) return matched;
+      const bare = String(caps[0]);
+      if ([...(mr.all || []), ...(mr.any || [])].includes(bare)) return matched;
+      // Family/brand keep: the matched rule shares a distinctive non-capacity
+      // token with the title, so the match was earned, not an ordering accident.
+      // Family tokens (external/portable/hdd/...) keep unconditionally — they
+      // define the product line, and capacity text there is often descriptive
+      // ("portable 1TB" line vs the actual size). Junk-drawer rules like
+      // ssd-sata-25 own no distinctive token, so they always redirect.
+      const own = [...(mr.all || []), ...(mr.any || [])];
+      if (own.some((x) => FAMILY_TOK.has(x) && has(x))) return matched;
+      // Brand/model signals (hikvision, m450, c300...) keep only when nothing
+      // contradicts the title capacity: a contradicting product id (m450 rule
+      // claims 1tb for a 500GB drive) or contradicting rule capacity tokens
+      // means the model token matched but the row is wrong -> redirect.
+      const mrCaps = own.map(capTokenGB).filter((v) => v !== null);
+      const agree = mrCaps.length > 0 ? mrCaps.includes(caps[0]) : matchedCap === null;
+      if (agree && own.some((x) => !FAMILY_TOK.has(x) && isSignalTok(x) && has(x))) return matched;
+    } else if (matchedCap === null) {
+      return matched; // nothing to compare against — keep
+    }
+  }
+  // Smallest-first over every listed capacity: a phantom small cap from a
+  // decimal speed ("7.3GB" -> 3GB) has no capacity-correct row, so its pass
+  // finds nothing and the loop falls through to the real capacity. (Min-only
+  // took the phantom, found no row, and wrongly kept the matched rule.)
+  const ordered = caps.length === 1 ? caps : [...new Set(caps)].sort((a, b) => a - b);
+  for (const want of ordered) {
+    const toks = new Set(want % 1024 === 0 ? [want / 1024 + "tb", want + "gb"] : [want + "gb"]);
+    const bare = String(want);
+    const cands = [];
+    for (const r of RULES) {
+      if (r.cat !== category) continue;
+      const rt = [...(r.all || []), ...(r.any || [])];
+      // Rule capacity: explicit capacity tokens first, else the capacity
+      // embedded in the product id ("sn850x-1tb" -> 1024). Model rows often
+      // carry no size token but their id names the size they hold; without
+      // this they can never receive a redirect despite being the best home.
+      let rcap = null;
+      for (const x of rt) { const v = capTokenGB(x); if (v !== null) { rcap = v; break; } }
+      if (rcap === null) {
+        const idm = /(\d+)(tb|gb)/.exec(r.id);
+        if (idm) rcap = +idm[1] * (idm[2] === "tb" ? 1024 : 1);
+      }
+      if (rcap !== want && !rt.some((x) => toks.has(x) || x === bare)) continue;
+      // every non-capacity `all` token must still match (keeps SATA/NVMe/brand apart)
+      const rest = (r.all || []).filter((x) => capTokenGB(x) === null && x !== bare);
+      if (!rest.every(has)) continue;
+      if (r.any && !r.any.some((x) => has(x) || toks.has(x) || x === bare)) continue;
+      // mirror matchRule's none-exclusions, except capacity tokens on range
+      // titles: "256GB|512GB|1TB|2TB" lists every capacity, so none:[1tb,2tb]
+      // must not reject the redirect target (interface/family nones still apply)
+      if ((r.none || []).some((x) => {
+        if (caps.length > 1 && (capTokenGB(x) !== null || /^\d+$/.test(x))) return false;
+        return has(x);
+      })) continue;
+      cands.push(r);
+    }
+    // Every candidate is capacity-correct; prefer the one sharing the most
+    // distinctive title signals (model/brand tokens): a "2TB/1TB SN850X" range
+    // belongs on the SN850X 1TB row, not the generic Gen4 1TB row. Score 0 ties
+    // keep RULES order, so behavior only changes where a model token earns it.
+    let best = null, bestScore = -1;
+    for (const r of cands) {
+      let s = 0;
+      for (const x of [...(r.all || []), ...(r.any || [])]) if (isSignalTok(x) && has(x)) s++;
+      if (s > bestScore) { bestScore = s; best = r; }
+    }
+    if (best) return best.id;
+  }
+  return matched;
+}
+
 function matchRule(category, title) {
   const t = " " + norm(title) + " ";
   const words = t.split(" ").filter(Boolean);
@@ -611,7 +760,7 @@ function matchRule(category, title) {
     if (!(r.all || []).every(has)) continue;
     if (r.any && !r.any.some(has)) continue;
     if ((r.none || []).some(has)) continue;
-    return r.id;
+    return variantRedirect(category, title, r.id, has);
   }
   return null;
 }
@@ -671,8 +820,11 @@ for (const m of matched) {
   byPid.get(m.productId).push(m);
 }
 const capped = [];
+const isOut = (m) => /rupture|out of stock|sold out|épuisé|indisponible/i.test(m.stock || "");
 for (const arr of byPid.values()) {
-  arr.sort((a, b) => a.priceDa - b.priceDa);
+  // Available offers first: a rupture price must never push a live price
+  // out of the 6-offer cap, nor become the row's displayed minimum.
+  arr.sort((a, b) => (isOut(a) - isOut(b)) || (a.priceDa - b.priceDa));
   capped.push(...arr.slice(0, 6));
 }
 

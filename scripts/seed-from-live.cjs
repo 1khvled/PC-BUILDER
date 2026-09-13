@@ -6,9 +6,17 @@ const WILAYA = { "LICB+": "Alger", "Click-DZ": "Alger", Digitec: "Alger", WifiDj
 const CPU_LAPTOP = /laptop|notebook|12400h|12400u|5600h|5600u/i;
 
 function parseObjLine(line) {
-  // { key: "str", key2: 123 } -> JSON (keys are bare identifiers, values JSON)
-  const json = line.trim().replace(/,$/, "").replace(/([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:/g, '$1"$2":');
-  return JSON.parse(json);
+  // { key: "str", key2: 123 } -> JSON (keys are bare identifiers, values JSON).
+  // Key-quoting runs OUTSIDE string literals only: titles like
+  // "( Up to R:4850 , W:3600)" contain ", W:" which is not a key.
+  // (Split respects backslash escapes: titles like 2.5\" MAGMA carry \"
+  // which must not toggle the in/out-of-string tracking. JSON.parse consumes
+  // the escapes natively on the rejoined string.)
+  const parts = line.trim().replace(/,$/, "").split(/(?<!\\)"/);
+  for (let i = 0; i < parts.length; i += 2) {
+    parts[i] = parts[i].replace(/([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:/g, '$1"$2":');
+  }
+  return JSON.parse(parts.join('"'));
 }
 
 function stockFlag(t) {
@@ -38,12 +46,17 @@ function main() {
   const all = [...seedOffers, ...liveOffers];
   // DB rule: ONE row per (product, store, condition) = the lowest price. Mission is lowest-price, not archives.
   const best = new Map();
+  // Availability first, price second: an in-stock offer beats a cheaper
+  // rupture one; unknown stock sits between. (Stale rupture rows used to win
+  // the seed on price alone and poison best-deal displays.)
+  const stockRank = (o) => { const f = stockFlag(o.stock); return f === "in" ? 0 : f === "" ? 1 : 2; };
   for (const o of all) {
     if (!o.productId || !o.store) continue;
     // laptop-CPU guard (new bake rule, applied retroactively)
     if (prodCat[o.productId] === "cpu" && /laptop|notebook|12400h|12400u|5600h|5600u/i.test(o.titleRaw || "")) continue;
     const key = o.productId + "|" + o.store + "|" + o.condition;
-    if (!best.has(key) || o.priceDa < best.get(key).priceDa) best.set(key, o);
+    const cur = best.get(key);
+    if (!cur || stockRank(o) < stockRank(cur) || (stockRank(o) === stockRank(cur) && o.priceDa < cur.priceDa)) best.set(key, o);
   }
   const liSrc = fs.readFileSync("lib/data/live-images.ts", "utf8");
   const localImg = Object.fromEntries([...liSrc.matchAll(/"([^"]+)":\s*"([^"]+)"/g)].map((m) => [m[1], m[2]]));

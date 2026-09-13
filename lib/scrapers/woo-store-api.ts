@@ -12,7 +12,16 @@ interface WooProduct {
   name: string;
   slug: string;
   permalink: string;
+  type?: string;
+  parent?: number;
   on_sale: boolean;
+  /** variation ids (Store API exposes these on variable parents) */
+  variations?: number[];
+  /** selected attributes (Store API exposes these on single-variation fetch) */
+  attributes?: Array<{
+    name: string;
+    terms: Array<{ name: string; slug: string }>;
+  }>;
   prices: {
     price: string;
     regular_price: string;
@@ -110,6 +119,95 @@ function decodeHtmlEntities(raw: string): string {
     .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)));
 }
 
+function wooPriceDa(p: WooProduct, storeMinorFallback: number): number | null {
+  // Resolve minor units: prefer product prices level, else store fallback
+  const minorUnit =
+    typeof p.prices?.currency_minor_unit === "number"
+      ? p.prices.currency_minor_unit
+      : storeMinorFallback;
+
+  // Prefer sale_price if on sale and non-zero, otherwise price or regular_price
+  let rawPrice = p.prices?.price;
+  if (p.on_sale && p.prices?.sale_price && p.prices.sale_price !== "0" && p.prices.sale_price !== "") {
+    rawPrice = p.prices.sale_price;
+  } else if (!rawPrice || rawPrice === "0") {
+    rawPrice = p.prices?.regular_price;
+  }
+
+  if (!rawPrice || rawPrice === "0") return null;
+
+  const divisor = Math.pow(10, minorUnit);
+  const priceDa = Math.round(parseFloat(rawPrice) / divisor);
+
+  // Sanity check price bounds (500 DA to 5,000,000 DA)
+  if (!Number.isFinite(priceDa) || priceDa < 500 || priceDa > 5_000_000) {
+    return null;
+  }
+  return priceDa;
+}
+
+function wooStock(p: WooProduct): string {
+  return p.is_in_stock === false ? "Rupture" : p.is_in_stock === true ? "En stock" : "À vérifier";
+}
+
+/**
+ * Expands a variable parent into one offer per variation, each with its own
+ * price, stock and variant label in the title ("NVME ADATA LEGEND 710 2TB").
+ * The parent aggregate price is the cheapest variant — keeping it alongside
+ * per-variant offers would mis-attribute e.g. the 256GB price to 2TB.
+ * Returns [] when nothing resolved; the caller then keeps the parent offer.
+ */
+async function fetchVariationOffers(
+  base: string,
+  store: string,
+  category: string,
+  parent: WooProduct,
+  parentImage: string,
+  parentUrl: string,
+  storeMinorFallback: number
+): Promise<ScrapedOffer[]> {
+  const ids = (parent.variations || []).filter((v) => typeof v === "number");
+  if (ids.length === 0) return [];
+  const out: ScrapedOffer[] = [];
+  const MAX_VAR = 8;
+  for (const vid of ids.slice(0, MAX_VAR)) {
+    try {
+      await delay(250);
+      const res = await fetch(`${base}/wp-json/wc/store/v1/products/${vid}`, {
+        headers: {
+          "User-Agent": UA,
+          "Accept": "application/json",
+          "Accept-Language": "fr-DZ,fr;q=0.9",
+        },
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!res.ok) continue;
+      const v: WooProduct = await res.json();
+      if (!v || typeof v !== "object") continue;
+      const priceDa = wooPriceDa(v, storeMinorFallback);
+      if (priceDa === null) continue;
+      const label = (v.attributes || [])
+        .flatMap((a) => (a.terms || []).map((t) => t.name))
+        .filter(Boolean)
+        .join(" ");
+      const title = cleanTitle(decodeHtmlEntities(`${parent.name || ""}${label ? " " + label : ""}`));
+      if (!title || title.length < 3) continue;
+      out.push({
+        store,
+        category,
+        title,
+        priceDa,
+        url: v.permalink || parentUrl,
+        stock: wooStock(v),
+        image: v.images?.[0]?.src || parentImage,
+      });
+    } catch {
+      // one bad variation must not kill the rest
+    }
+  }
+  return out;
+}
+
 /**
  * Fetches products from WooCommerce Store API with pagination.
  *
@@ -157,36 +255,26 @@ export async function fetchProducts(
       }
 
       for (const p of products) {
-        // Resolve minor units: prefer product prices level, else store fallback
-        const minorUnit =
-          typeof p.prices?.currency_minor_unit === "number"
-            ? p.prices.currency_minor_unit
-            : storeMinorFallback;
-
-        // Prefer sale_price if on sale and non-zero, otherwise price or regular_price
-        let rawPrice = p.prices?.price;
-        if (p.on_sale && p.prices?.sale_price && p.prices.sale_price !== "0" && p.prices.sale_price !== "") {
-          rawPrice = p.prices.sale_price;
-        } else if (!rawPrice || rawPrice === "0") {
-          rawPrice = p.prices?.regular_price;
-        }
-
-        if (!rawPrice || rawPrice === "0") continue;
-
-        const divisor = Math.pow(10, minorUnit);
-        const priceDa = Math.round(parseFloat(rawPrice) / divisor);
-
-        // Sanity check price bounds (500 DA to 5,000,000 DA)
-        if (!Number.isFinite(priceDa) || priceDa < 500 || priceDa > 5_000_000) {
-          continue;
-        }
-
         const title = cleanTitle(decodeHtmlEntities(p.name || ""));
         if (!title || title.length < 3) continue;
 
         const productUrl = p.permalink || `${base}/product/${p.slug}`;
-        const stock = p.is_in_stock === false ? "Rupture" : p.is_in_stock === true ? "En stock" : "À vérifier";
         const image = p.images?.[0]?.src || "";
+
+        // Variable products: one offer per variation (own price/stock/label).
+        if (p.type === "variable" && Array.isArray(p.variations) && p.variations.length > 0) {
+          const varOffers = await fetchVariationOffers(
+            base, store, category, p, image, productUrl, storeMinorFallback
+          );
+          if (varOffers.length > 0) {
+            offers.push(...varOffers);
+            continue;
+          }
+          // fall through to the parent offer when no variation resolved
+        }
+
+        const priceDa = wooPriceDa(p, storeMinorFallback);
+        if (priceDa === null) continue;
 
         offers.push({
           store,
@@ -194,7 +282,7 @@ export async function fetchProducts(
           title,
           priceDa,
           url: productUrl,
-          stock,
+          stock: wooStock(p),
           image,
         });
       }

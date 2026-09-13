@@ -2,7 +2,6 @@ import { PRODUCTS, bestOffer } from "@/lib/data/products";
 import { getOffers, getScrapedAt } from "@/lib/data/catalog";
 import { GUIDES } from "@/lib/data/guides";
 import { LIVE_EXTRA } from "@/lib/data/live";
-import { BUILDS } from "@/lib/data/builds";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://dzpartpicker.dz";
 
@@ -35,7 +34,5 @@ export async function GET() {
     const total = g.parts.reduce((s, id) => s + (bestOffer(id, offers)?.priceDa ?? 0), 0);
     lines.push(`- ${g.title} (~${total.toLocaleString("fr-DZ")} DA): ${g.hook} ${BASE}/guides/${g.slug}`);
   }
-  lines.push("", "## Builds communauté");
-  for (const b of BUILDS) lines.push(`- ${b.title} (${b.author}, ${b.wilaya}): ${b.description.slice(0, 140)} ${BASE}/builds/${b.id}`);
   return new Response(lines.join("\n"), { headers: { "Content-Type": "text/plain; charset=utf-8" } });
 }

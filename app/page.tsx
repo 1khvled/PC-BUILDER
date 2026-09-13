@@ -3,7 +3,6 @@ import { CATEGORIES, PRODUCTS, bestOffer, productImage } from "@/lib/data/produc
 import { getOffers, getScrapedAt } from "@/lib/data/catalog";
 import { LIVE_EXTRA } from "@/lib/data/live";
 import { GUIDES } from "@/lib/data/guides";
-import { BUILDS } from "@/lib/data/builds";
 import Thumb from "@/components/Thumb";
 
 function fmt(n: number) {
@@ -102,7 +101,6 @@ export default async function Home() {
     .sort((a, b) => (a.best as { priceDa: number }).priceDa - (b.best as { priceDa: number }).priceDa)
     .slice(0, 8);
 
-  const popularBuilds = BUILDS.slice(0, 2);
   const popularGuides = GUIDES.slice(0, 2);
 
   return (
@@ -114,7 +112,7 @@ export default async function Home() {
             <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
               {liveCount} offres indexées • Relevé le {scrapedAt.slice(0, 10)}
             </p>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2 leading-tight">
+            <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mt-2 leading-tight">
               Assemblez votre PC au meilleur prix en Algérie.
             </h1>
             <p className="text-sm text-slate-300 mt-3 leading-relaxed max-w-2xl">
@@ -282,42 +280,6 @@ export default async function Home() {
             </div>
           </section>
 
-          {/* Builds */}
-          <section className="panel">
-            <div className="panel-hd flex items-center justify-between">
-              <span>Builds de la communauté</span>
-              <Link href="/builds" className="pcpp-link font-bold normal-case tracking-normal">
-                Tous les builds →
-              </Link>
-            </div>
-            <p className="px-3 pt-2 text-xs text-slate-500">
-              Les PCs montés par les gamers algériens, prix vérifiés et pièces en stock.
-            </p>
-            <div className="divide-y divide-slate-100 mt-1">
-              {popularBuilds.map((b) => (
-                <Link key={b.id} href={`/builds/${b.id}`} className="block px-3 py-2.5 hover:bg-blue-50/50">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-bold text-sm pcpp-link">{b.title}</span>
-                    <span className="text-[11px] font-bold text-emerald-700 shrink-0">📍 {b.wilaya}</span>
-                  </div>
-                  <div className="text-xs text-slate-500 mt-0.5 truncate">{b.description}</div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    <span className="text-slate-600">par {b.author}</span>
-                    {" • "}
-                    <span className="text-rose-600 font-semibold">♥ {b.likes} mentions</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            <div className="p-3 border-t border-[#d8d8d8]">
-              <Link
-                href="/builds"
-                className="block text-center py-2 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs"
-              >
-                Découvrir tous les builds des membres
-              </Link>
-            </div>
-          </section>
         </div>
       </div>
     </main>

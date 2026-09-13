@@ -9,7 +9,13 @@ interface ProductOffersTableProps {
   offers: Offer[];
 }
 
-type SortField = "price" | "store" | "condition" | "wilaya";
+type SortField = "price" | "store" | "condition" | "wilaya" | "stock";
+
+// Availability rank: confirmed in-stock first, unknown stock second, ruptures last.
+function stockRank(o: Offer): number {
+  if (isRuptured(o)) return 2;
+  return o.stock === "En stock" ? 0 : 1;
+}
 type SortDir = "asc" | "desc";
 
 export default function ProductOffersTable({ offers }: ProductOffersTableProps) {
@@ -58,6 +64,8 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
         cmp = a.condition.localeCompare(b.condition);
       } else if (sortField === "wilaya") {
         cmp = a.wilaya.localeCompare(b.wilaya);
+      } else if (sortField === "stock") {
+        cmp = stockRank(a) - stockRank(b);
       }
       return sortDir === "asc" ? cmp : -cmp;
     });
@@ -68,14 +76,22 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
   const newCount = useMemo(() => visibleOffers.filter((o) => o.condition === "new").length, [visibleOffers]);
   const usedCount = useMemo(() => visibleOffers.filter((o) => o.condition === "used").length, [visibleOffers]);
 
+  // Stats ignore ruptures: a shown-but-dead listing must never set the
+  // min/avg/écart or win the "Meilleur prix" badge. Falls back to all
+  // visible offers only when every one of them is ruptured.
+  const statsBase = useMemo(() => {
+    const live = filteredAndSortedOffers.filter((o) => !isRuptured(o));
+    return { list: live.length > 0 ? live : filteredAndSortedOffers, live: live.length > 0 };
+  }, [filteredAndSortedOffers]);
+
   const stats = useMemo(() => {
-    if (filteredAndSortedOffers.length === 0) return null;
-    const prices = filteredAndSortedOffers.map((o) => o.priceDa);
+    if (statsBase.list.length === 0) return null;
+    const prices = statsBase.list.map((o) => o.priceDa);
     const min = Math.min(...prices);
     const avg = Math.round(prices.reduce((a, b) => a + b, 0) / prices.length);
     const max = Math.max(...prices);
     return { min, avg, max };
-  }, [filteredAndSortedOffers]);
+  }, [statsBase]);
 
   return (
     <div className="bg-white rounded shadow-sm border border-slate-200 overflow-hidden">
@@ -208,7 +224,19 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                     </span>
                   </div>
                 </th>
-                <th scope="col" className="text-left px-3 py-3">Disponibilité</th>
+                <th
+                  scope="col"
+                  aria-sort={sortField === "stock" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
+                  onClick={() => handleSort("stock")}
+                  className="text-left px-3 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors focus-visible:outline-none focus-visible:bg-blue-50"
+                >
+                  <div className="flex items-center gap-1.5">
+                    <span>Disponibilité</span>
+                    <span className="text-[10px] text-slate-400">
+                      {sortField === "stock" ? (sortDir === "asc" ? "▲" : "▼") : "↕"}
+                    </span>
+                  </div>
+                </th>
                 <th
                   scope="col"
                   aria-sort={sortField === "price" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
@@ -227,8 +255,8 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs">
               {filteredAndSortedOffers.map((o, idx) => {
-                const isBest = stats !== null && o.priceDa === stats.min;
                 const ruptured = isRuptured(o);
+                const isBest = statsBase.live && !ruptured && stats !== null && o.priceDa === stats.min;
                 const unknownStock = !ruptured && o.stock !== "En stock";
                 return (
                 <tr
@@ -296,10 +324,12 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                       href={o.url}
                       target="_blank"
                       rel="noopener noreferrer sponsored"
-                      aria-label={`Acheter chez ${o.store} — ${o.priceDa.toLocaleString("fr-DZ")} DA`}
-                      className="inline-flex items-center justify-center px-3.5 py-2 rounded bg-[#2c87c3] hover:bg-[#1e5c85] active:bg-[#153f5b] text-white font-bold text-xs transition-colors shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] focus-visible:ring-offset-2"
+                      aria-label={ruptured ? `Voir quand même l'offre en rupture chez ${o.store} — ${o.priceDa.toLocaleString("fr-DZ")} DA` : `Acheter chez ${o.store} — ${o.priceDa.toLocaleString("fr-DZ")} DA`}
+                      className={`inline-flex items-center justify-center px-3.5 py-2 rounded text-white font-bold text-xs transition-colors shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${ruptured
+                        ? "bg-red-600 hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500"
+                        : "bg-[#2c87c3] hover:bg-[#1e5c85] active:bg-[#153f5b] focus-visible:ring-[#2c87c3]"}`}
                     >
-                      <span>Acheter</span>
+                      <span>{ruptured ? "Voir quand même" : "Acheter"}</span>
                       <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>
