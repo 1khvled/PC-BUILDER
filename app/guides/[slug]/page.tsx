@@ -54,7 +54,7 @@ export default async function GuidePage({ params }: { params: { slug: string } }
           </span>
         </div>
 
-        <h1 className="text-2xl sm:text-4xl font-display font-bold tracking-tight text-slate-900 leading-tight">
+        <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight">
           {guide.title}
         </h1>
 
@@ -79,7 +79,7 @@ export default async function GuidePage({ params }: { params: { slug: string } }
             <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
               Budget total estimé (prix les plus bas relevés) :
             </div>
-            <div className="text-2xl sm:text-3xl font-display font-bold text-emerald-400 tracking-tight mt-1">
+            <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 tracking-tight mt-1">
               {missing > 0 ? "Dès " : ""}
               {total.toLocaleString("fr-DZ")} DA
             </div>

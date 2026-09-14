@@ -14,7 +14,7 @@ export default async function GuidesPage() {
         <div>
           <div className="flex items-center gap-2.5">
             <span className="w-3 h-3 rounded-full bg-[#2c87c3]" />
-            <h1 className="text-2xl sm:text-4xl font-display font-bold tracking-tight text-slate-900">
+            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
               Guides d&apos;Achat PC Gaming en Algérie
             </h1>
           </div>

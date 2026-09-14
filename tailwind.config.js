@@ -18,12 +18,6 @@ module.exports = {
           "Arial",
           "sans-serif",
         ],
-        display: [
-          "var(--font-display)",
-          "'Arial Narrow'",
-          "-apple-system",
-          "sans-serif",
-        ],
       },
     },
   },

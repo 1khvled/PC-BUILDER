@@ -128,12 +128,9 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               {catLabel}
             </h1>
             <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-[#2c87c3] border border-blue-100">
-              {rawProducts.length} modèles canoniques
+              {rawProducts.length} modèles
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Comparez les prix en temps réel parmi les boutiques d&apos;informatique d&apos;Algérie • Relevé en Dinars Algériens (DA)
-          </p>
         </div>
 
         <Link
@@ -340,9 +337,6 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                         >
                           {p.brand} {p.model}
                         </Link>
-                        <div className="text-[11px] text-slate-400 mt-0.5 font-medium">
-                          Réf : {p.id}
-                        </div>
 
                         {/* Specs Pills */}
                         <div className="flex flex-wrap gap-1 mt-2">
@@ -424,9 +418,6 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                               >
                                 {p.brand} {p.model}
                               </Link>
-                              <span className="text-[11px] text-slate-400 font-medium">
-                                Réf : {p.id}
-                              </span>
                             </div>
                           </div>
                         </td>

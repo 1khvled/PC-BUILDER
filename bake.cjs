@@ -596,6 +596,14 @@ const OK_CAT = {
 };
 // non-parts never stored as extras (keeps DB + bundle lean)
 const EXTRA_JUNK = /laptop|notebook|macbook|printer|imprimante|scanner|projecteur|datashow|webcam|tablet|smartphone|console|manette|pate thermique|pad thermique|thermal pad|thermal paste|thermal grizzly|mastergel|tube (magma|watercooling)|ventilateur boitier|case fan|masterfan|sickleflow|mf120|fd12|pack (ventilo|fans)|support (carte|ecran)|monitor stand|vortex|graphics card support|gpu holder|support gpu|herculx|back plate|waterblock|cold series|radiator with thermal|kit .\volution|en configuration|sleeve|power extension|cable (mars|first)|8-pin male|4-pin female|zenscreen|monitor arm|ergo aas|carte pci|ddr2|controleur|controller|fan hub|riser|snowman h9|tf120|chroma|at120|wraith spire|cooling amd|ventill?ateur.*original|original.*fan|ventil+o original|ubisoft|steam key|jeu pc|elgato|capture|12pci|btc|mining|kit .\volution|en configuration|accessoire boitier|pixel|24pin|smart plug|transfo|ddr2|televiseur|television|smart tv|souris|mouse|clavier|keyboard|casque|headset|chaise|chair|gaming desk|bureau gamer|portal|facebook/i;
+// ---- multi-item veto (bundle/pack/combo): tested BEFORE matchRule ----
+// A price framed as several parts together ("CPU AMD RYZEN 5 3400G BOX ...
+// BUNDLE ... B550", "Pack Ryzen 5 5600 + B450M") is never a standalone offer
+// for any single part: matching it books a combo price onto one product's
+// page (a CPU ad priced the B550 board). Vetoed rows skip matchRule and fall
+// through to the existing extras path, never canonical. Genuine standalone
+// store titles never contain these words (verified against live bake output).
+const BUNDLE_VETO = /\bbundle\b|\bpack\b|\bcombo\b|\blot de\b/i;
 
 // ---- variant-capacity guard (SSD/RAM) ----
 // Merchants list one parent product for every capacity ("LEGEND 710
@@ -785,12 +793,13 @@ for (const [key, val] of Object.entries(report)) {
     const title = clean(o.title);
     if (!title || !o.priceDa) continue;
     const cond = /\bused\b|occasion|r[eé]cup[eé]ration/i.test(title) ? "used" : "new";
-    const pid = matchRule(category, title);
+    const isBundle = BUNDLE_VETO.test(title);
+    const pid = isBundle ? null : matchRule(category, title);
     if (pid) {
       if (seedPairs.has(pid + "|" + store)) continue; // seed wins
       matched.push({ productId: pid, store, wilaya: WILAYA[store], titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: o.stock || "En stock", condition: cond, image: o.image || "", scrapedAt: NOW });
-    } else if (!EXTRA_JUNK.test(title) && extraCount < 12) {
-      extraCount++;
+    } else if (!EXTRA_JUNK.test(title) && (isBundle || extraCount < 12)) {
+      if (!isBundle) extraCount++;
       pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store, wilaya: WILAYA[store], url: o.url, image: o.image || "", condition: cond });
     }
   }
@@ -804,11 +813,13 @@ for (const o of report["ouedkniss:all"] || []) {
   if (!title || !o.priceDa) continue;
   const isNew = /neuf|new|blister|jamais|scell/i.test(title);
   // canonical match only — bundles/laptops/unknown VRAM go to extras, never canonical
-  const pid = matchRule(category, title);
+  // vetoed bundle rows bypass the 150-cap so combo ads stay visible as raw extras
+  const isBundle = BUNDLE_VETO.test(title);
+  const pid = isBundle ? null : matchRule(category, title);
   if (pid) {
     matched.push({ productId: pid, store: "Ouedkniss", wilaya: o.wilaya || "DZ", titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: "Ouedkniss", condition: isNew ? "new" : "used", image: o.image || "", scrapedAt: NOW });
-  } else if (!EXTRA_JUNK.test(title) && okExtra < 150) {
-    okExtra++;
+  } else if (!EXTRA_JUNK.test(title) && (isBundle || okExtra < 150)) {
+    if (!isBundle) okExtra++;
     pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: "Ouedkniss", wilaya: o.wilaya || "DZ", url: o.url, image: o.image || "", condition: isNew ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: o.isFromStore ? 1 : 0 });
   }
 }

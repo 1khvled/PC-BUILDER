@@ -28,11 +28,10 @@
     background: #f0f0ef;
     border-bottom: 1px solid #d8d8d8;
     padding: 8px 12px;
-    font-family: var(--font-display), 'Arial Narrow', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     color: #55555f;
   }
 

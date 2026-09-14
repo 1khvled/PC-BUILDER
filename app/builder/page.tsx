@@ -588,7 +588,7 @@ export default function BuilderPage() {
               {selectedCount} sur {CATEGORIES.length} pièces :
             </span>
             <span
-              className="text-xl sm:text-2xl font-display font-bold tracking-tight text-white print:text-slate-900 tabular-nums"
+              className="text-xl sm:text-2xl font-extrabold tracking-tight text-white print:text-slate-900 tabular-nums"
             >
               {Math.round(animatedTotal).toLocaleString("fr-DZ")} DA
             </span>

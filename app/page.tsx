@@ -112,47 +112,23 @@ export default async function Home() {
             <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
               {liveCount} offres indexées • Relevé le {scrapedAt.slice(0, 10)}
             </p>
-            <h1 className="text-3xl sm:text-4xl font-display font-bold tracking-tight mt-2 leading-tight">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2 leading-tight">
               Assemblez votre PC au meilleur prix en Algérie.
             </h1>
             <p className="text-sm text-slate-300 mt-3 leading-relaxed max-w-2xl">
-              Le comparateur indépendant des prix en Dinars Algériens (DA). Stocks de LICB+, Digitec, Click-DZ, WifiDjelfa, GamingDZ et Ouedkniss sur les 58 wilayas. Zéro commission, vérification de compatibilité incluse.
+              Prix relevés chaque jour en Algérie, triés par prix croissant. Zéro commission.
             </p>
             <div className="flex flex-wrap items-center gap-2.5 mt-5">
               <Link href="/builder" className="btn-blue px-5 py-2.5 text-sm">
                 Lancer le System Builder →
               </Link>
               <Link
-                href="/category/cpu"
+                href="/deals"
                 className="px-5 py-2.5 rounded text-sm font-bold border border-slate-500 text-white hover:bg-white/10"
               >
-                Catalogue des composants
-              </Link>
-              <Link
-                href="/guides"
-                className="px-5 py-2.5 rounded text-sm font-bold border border-slate-500 text-white hover:bg-white/10"
-              >
-                Guides d&apos;achat gaming
+                Voir les bons plans
               </Link>
             </div>
-            <dl className="flex flex-wrap gap-x-8 gap-y-2 mt-6 pt-5 border-t border-white/10 text-sm">
-              <div className="flex items-baseline gap-2">
-                <dt className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Offres vérifiées</dt>
-                <dd className="font-extrabold tabular-nums">{liveCount}+</dd>
-              </div>
-              <div className="flex items-baseline gap-2">
-                <dt className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Wilayas livrées</dt>
-                <dd className="font-extrabold tabular-nums">58</dd>
-              </div>
-              <div className="flex items-baseline gap-2">
-                <dt className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Indépendant</dt>
-                <dd className="font-extrabold tabular-nums">100%</dd>
-              </div>
-              <div className="flex items-baseline gap-2">
-                <dt className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Frais cachés</dt>
-                <dd className="font-extrabold tabular-nums">0 DA</dd>
-              </div>
-            </dl>
           </div>
         </div>
       </section>
@@ -162,13 +138,10 @@ export default async function Home() {
         <section className="panel">
           <div className="panel-hd flex items-center justify-between">
             <span>Prix les plus bas du marché</span>
-            <Link href="/category/gpu" className="pcpp-link font-bold normal-case tracking-normal">
-              Toutes les cartes graphiques →
+            <Link href="/deals" className="pcpp-link font-bold normal-case tracking-normal">
+              Tous les bons plans →
             </Link>
           </div>
-          <p className="px-3 pt-2 text-xs text-slate-500">
-            Offres relevées et vérifiées auprès des boutiques partenaires le {scrapedAt.slice(0, 10)}
-          </p>
           <table className="w-full text-sm mt-1">
             <caption className="sr-only">Les huit meilleurs prix relevés sur le marché algérien</caption>
             <tbody className="divide-y divide-slate-100">
@@ -185,14 +158,8 @@ export default async function Home() {
                       {best?.store} • {best?.wilaya}
                     </div>
                   </td>
-                  <td className="px-2 py-2 text-right whitespace-nowrap">
-                    <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">Meilleur prix</span>
+                  <td className="px-3 py-2 text-right whitespace-nowrap">
                     <span className="font-extrabold text-emerald-700 tabular-nums">{fmt(best?.priceDa ?? 0)}</span>
-                  </td>
-                  <td className="px-3 py-2 text-right w-20">
-                    <Link href={`/product/${p.id}`} className="text-xs font-bold pcpp-link">
-                      Voir →
-                    </Link>
                   </td>
                 </tr>
               ))}
@@ -202,12 +169,9 @@ export default async function Home() {
 
         {/* Parcourir par catégorie */}
         <section>
-          <h2 className="text-lg font-extrabold tracking-tight">
+          <h2 className="text-lg font-extrabold tracking-tight mb-3">
             Parcourir par catégorie
           </h2>
-          <p className="text-xs text-slate-500 mt-0.5 mb-3">
-            Filtrez les composants compatibles, comparez les prix et trouvez le revendeur le plus proche
-          </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
             {CATEGORIES.map((c) => {
               const items = PRODUCTS.filter((p) => p.category === c.slug);
@@ -251,10 +215,7 @@ export default async function Home() {
                 Tous les guides →
               </Link>
             </div>
-            <p className="px-3 pt-2 text-xs text-slate-500">
-              Configurations équilibrées, chiffrées aux prix réels des boutiques d&apos;Alger, Oran et Sétif.
-            </p>
-            <div className="divide-y divide-slate-100 mt-1">
+            <div className="divide-y divide-slate-100">
               {popularGuides.map((g) => (
                 <Link key={g.slug} href={`/guides/${g.slug}`} className="block px-3 py-2.5 hover:bg-blue-50/50">
                   <div className="flex items-center justify-between gap-2">
@@ -262,21 +223,8 @@ export default async function Home() {
                     <span className="text-[11px] text-slate-500 shrink-0">⏱ {g.readMin} min</span>
                   </div>
                   <div className="text-xs text-slate-500 mt-0.5 truncate">{g.hook}</div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    <span className="font-semibold text-slate-700">{g.parts.length} pièces</span>
-                    {" • "}
-                    <span className="text-emerald-700 font-bold">Prix vérifiés en DA</span>
-                  </div>
                 </Link>
               ))}
-            </div>
-            <div className="p-3 border-t border-[#d8d8d8]">
-              <Link
-                href="/guides"
-                className="block text-center py-2 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs"
-              >
-                Explorer tous les guides recommandés
-              </Link>
             </div>
           </section>
 

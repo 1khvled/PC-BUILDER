@@ -122,7 +122,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                 </h1>
 
                 <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
-                  Composant PC répertorié auprès des distributeurs et boutiques spécialisées en Algérie. Prix vérifié en direct et tri 100% neutre par prix croissant.
+                  Prix relevés en Algérie, triés par prix croissant.
                 </p>
 
                 {/* Highlight Specs Chips */}
@@ -265,7 +265,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
               </div>
               {best ? (
                 <>
-                  <div className="text-3xl sm:text-4xl font-display font-bold text-emerald-700 tracking-tight mt-1">
+                  <div className="text-3xl sm:text-4xl font-extrabold text-emerald-700 tracking-tight mt-1">
                     {best.priceDa.toLocaleString("fr-DZ")} DA
                   </div>
                   <div className="text-xs text-slate-600 mt-1 flex flex-wrap items-center gap-1.5">
@@ -348,35 +348,9 @@ export default async function ProductPage({ params }: { params: { id: string } }
               </div>
             )}
 
-            {/* Guarantees Checklist */}
-            <div className="pt-2 border-t border-slate-100 space-y-2.5 text-xs text-slate-600">
-              <div className="flex items-start gap-2">
-                <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                <span>La plupart des marchands proposent le paiement à la livraison</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                <span>Expédition vers 58 wilayas selon la boutique</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                <span>Comparateur indépendant sans commissions</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                <span>Relevé vérifié le {scrapedAt.slice(0, 10)}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Help note */}
-          <div className="p-4 rounded bg-blue-50/70 border border-blue-100 text-xs text-blue-900 leading-relaxed">
-            <span className="font-bold block mb-0.5">Besoin d&apos;aide pour monter votre PC ?</span>
-            Utilisez notre{" "}
-            <Link href="/builder" className="font-bold underline hover:text-[#2c87c3]">
-              System Builder
-            </Link>{" "}
-            pour vérifier automatiquement la compatibilité de ce composant avec votre processeur, carte mère et alimentation.
+            <p className="pt-2 border-t border-slate-100 text-xs text-slate-500">
+              ✓ Indépendant, sans commission • Relevé le {scrapedAt.slice(0, 10)}
+            </p>
           </div>
         </div>
       </div>
