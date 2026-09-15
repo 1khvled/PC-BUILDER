@@ -4,6 +4,7 @@ export interface RawOffer {
   url: string;
   stock: string;
   image: string;
+  description?: string;
 }
 
 export interface StoreAdapter {

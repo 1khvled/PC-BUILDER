@@ -294,6 +294,7 @@ export async function searchOuedknissFull(
         url,
         stock: "Ouedkniss",
         image,
+        description: (item.description || "").slice(0, 2000),
         wilaya,
         seller,
         postedAt,
