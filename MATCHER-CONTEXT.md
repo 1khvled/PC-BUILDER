@@ -211,3 +211,16 @@ user-side: verify Vercel build, add `NEXT_PUBLIC_SUPABASE_URL` +
   red rupture Commander buttons, variant scraping, rupture-free prices, no fake
   community builds, Inter-only fonts, buying-guide + stale-price fixes, Produits
   dropdown, BUNDLE_VETO 3400G→B550 fix, rebake 10142/1779/579 + reseed + push).
+
+## 10. Description chain (verified 2026-09-15, code-read every link)
+
+`ouedkniss-api.ts` push (`description`, sliced 2000) → `ouedkniss.ts`
+passthrough (same objects) → `route.ts` spreads (`...o`, both okq + wantOk
+paths) → `refresh-full.mjs` merge (whole report objects, `r.json()` raw, no
+field picking) → `full.json` → `bake.cjs` `o.description || ""` (defensive;
+today's static full.json has none, splitter still kills title-only combos).
+Store branch (`full=1`) passes whole objects too (stores just don't set the
+field). Next live scrape activates description split with zero more changes.
+Push path note: `refresh-full.mjs --push` already maps
+NEXT_PUBLIC_SUPABASE_URL → SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY →
+SUPABASE_SERVICE_KEY (script fallbacks added as defense, commit 3e1ba14).
