@@ -704,7 +704,7 @@ function isSignalTok(x) {
   return capTokenGB(x) === null && !/^\d+$/.test(x) && !GENERIC_TOK.has(x);
 }
 function variantRedirect(category, title, matched, has) {
-  if (category !== "ssd" && category !== "ram") return matched;
+  if (category !== "ssd" && category !== "ram" && category !== "gpu") return matched;
   const caps = titleCapacities(title);
   if (caps.length === 0) return matched;
   if (caps.length === 1) {
@@ -851,6 +851,30 @@ function hasDigitTokOn(s, tok) {
   return false;
 }
 
+// PSU wattage / monitor Hz agreement: same shape as variantRedirect's
+// single-capacity check, but for W and Hz units. Redirects to a
+// unit-correct rule when one exists, keeps the match otherwise.
+function unitRedirect(category, title, matched, has) {
+  const unit = category === "psu" ? "w" : category === "monitor" ? "hz" : null;
+  if (!unit) return matched;
+  const t = " " + norm(title) + " ";
+  const re = unit === "w" ? /(\d{3,4})\s*w\b/g : /(\d{2,3})\s*hz\b/g;
+  const units = [...new Set([...t.matchAll(re)].map((m) => +m[1]))];
+  if (units.length !== 1) return matched; // 0 ou ambigu : keep
+  const idm = matched.match(/(\d{3,4})/);
+  if (idm && +idm[1] === units[0]) return matched; // accord : keep
+  for (const r of RULES) {
+    if (r.cat !== category) continue;
+    const rid = (r.id.match(/(\d{3,4})/) || [])[1];
+    if (!rid || +rid !== units[0]) continue;
+    const rest = (r.all || []).filter((x) => !new RegExp(`^${units[0]}`).test(x));
+    if (!rest.every(has)) continue;
+    if ((r.none || []).some(has)) continue;
+    return r.id;
+  }
+  return matched;
+}
+
 function matchRule(category, title) {
   const t = " " + norm(title) + " ";
   const words = t.split(" ").filter(Boolean);
@@ -866,7 +890,8 @@ function matchRule(category, title) {
     if (!(r.all || []).every(has)) continue;
     if (r.any && !r.any.some(has)) continue;
     if ((r.none || []).some(has)) continue;
-    return variantRedirect(category, title, r.id, has);
+    const v = variantRedirect(category, title, r.id, has);
+    return v === r.id ? unitRedirect(category, title, v, has) : v;
   }
   return null;
 }
