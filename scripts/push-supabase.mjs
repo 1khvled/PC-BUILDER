@@ -39,10 +39,11 @@ async function main() {
     return t ? JSON.parse(t) : null;
   };
 
-  // 0. purge stale snapshot rows (older seed days) so poison triples the new
-  // matcher no longer emits cannot survive an upsert-only push
-  await api(`offers?day=lt.${seed.day}`, "DELETE");
-  console.log("purged offers older than", seed.day);
+  // 0. purge snapshot rows up to and including the seed day, then re-upsert
+  // them fresh below: poison triples the new matcher no longer emits cannot
+  // survive (same-day re-push safe — upsert re-adds every seed row)
+  await api(`offers?day=lte.${seed.day}`, "DELETE");
+  console.log("purged offers up to", seed.day);
   // 1. stores upsert -> id map
   await api("stores?on_conflict=name", "POST", seed.stores, { Prefer: "resolution=merge-duplicates" });
   const storeRows = await api(`stores?select=id,name`, "GET");
