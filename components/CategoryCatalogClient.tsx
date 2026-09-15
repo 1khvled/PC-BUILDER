@@ -537,6 +537,17 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                         <span title={`Annonce du ${e.postedAt.slice(0, 10)}`}>le {e.postedAt.slice(0, 10)}</span>
                       </>
                     ) : null}
+                    {e.store === "Ouedkniss" ? (
+                      <>
+                        <span>•</span>
+                        <span
+                          title={e.isStore ? "Vendeur professionnel sur Ouedkniss" : "Vendeur particulier : sans garantie ni facture"}
+                          className={`font-bold ${e.isStore ? "text-[#2c87c3]" : "text-slate-500"}`}
+                        >
+                          {e.isStore ? "Pro" : "Particulier"}
+                        </span>
+                      </>
+                    ) : null}
                   </div>
                   <div className="font-extrabold text-sm text-emerald-700 mt-1">
                     {e.priceDa.toLocaleString("fr-DZ")} DA

@@ -27,8 +27,8 @@ export async function GET(req: Request) {
   const jobs: [string, string][] = [];
   if (store && cat) {
     jobs.push([store, cat]);
-  } else if (searchParams.get("okq")) {
-    // Pure Ouedkniss job (okq/oks): skip store scraping entirely.
+  } else if (searchParams.get("okq") || searchParams.get("oklist") === "1") {
+    // Pure Ouedkniss job (okq/oks/oklist): skip store scraping entirely.
   } else if (scope === "full") {
     for (const s of STORE_NAMES) {
       if (onlyStores.length && !onlyStores.includes(s)) continue;
@@ -87,14 +87,17 @@ export async function GET(req: Request) {
   const oks = searchParams.get("oks") || "";
   if (okq) {
     try {
-      const ok = await searchOuedkniss(okq, oks || undefined);
+      const ind = searchParams.get("okind") === "ind";
+      const ok = await searchOuedkniss(okq, oks || undefined, ind || undefined);
       const stamped = ok.map((o) => ({ ...o, query: okq }));
       // Seller sweep: rows join ouedkniss:all with the raw query stamped,
       // so OK_CAT + seenOkUrl in bake work with zero bake changes.
+      // Individuals (okind=ind) carry isFromStore:false; bake parks them in
+      // extras only (tier 3: visible, never a price reference).
       return NextResponse.json({
         ok: true,
         report: {
-          [oks ? `ouedkniss-store:${oks}:${okq}` : `ouedkniss:${okq}`]: { count: ok.length, offers: ok },
+          [oks ? `ouedkniss-store:${oks}:${okq}` : ind ? `ouedkniss-ind:${okq}` : `ouedkniss:${okq}`]: { count: ok.length, offers: ok },
           "ouedkniss:all": stamped,
         },
       });

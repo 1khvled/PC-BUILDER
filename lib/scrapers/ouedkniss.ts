@@ -8,13 +8,13 @@ export { searchOuedknissFull, type OuedknissOffer };
 // Ouedkniss search pages are server-rendered Vue:
 // - listings: <a href="/<slug>-d<id>"> (store links contain /store/ and are skipped)
 // - price: <div dir="ltr" class="text-no-wrap ml-1">177 200</div> next to a دج div
-export async function searchOuedkniss(keywords: string, storeId?: string | null): Promise<RawOffer[]> {
+export async function searchOuedkniss(keywords: string, storeId?: string | null, includeIndividuals?: boolean | null): Promise<RawOffer[]> {
   // Try deep API first (progressive enhancement)
   try {
-    const apiOffers = await searchOuedknissFull(keywords, 3, storeId ?? null);
-    const storesOnly = (apiOffers || []).filter((o) => o.isFromStore);
-    if (storesOnly.length > 0) {
-      return storesOnly;
+    const apiOffers = await searchOuedknissFull(keywords, 3, storeId ?? null, includeIndividuals ?? null);
+    const kept = (apiOffers || []).filter((o) => includeIndividuals || o.isFromStore);
+    if (kept.length > 0) {
+      return kept;
     }
     // Scoped sweep with no API rows: never fall back to the unscoped page-1
     // parser (it would re-emit the whole query under a store job).

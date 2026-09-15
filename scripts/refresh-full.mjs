@@ -100,9 +100,15 @@ async function main() {
       ["2227", "WELTINFO"],
       ["16056", "IFTA COMPUTER"],
       ["26086", "PROMOTECH IT"],
+      ["37907", "FAIZ TECH"],
     ];
     if (!SKIP_OK) {
       for (const [sid] of OKSTORES) for (const q of queries) jobs.push({ kind: "oks", store: sid, q, key: `ouedkniss-store:${sid}:${q}` });
+    }
+    // Tier-3 individuals (okind=ind): same queries, particuliers included.
+    // Bake parks them in extras only (never a price reference).
+    if (!SKIP_OK) {
+      for (const q of queries) jobs.push({ kind: "oki", q, key: `ouedkniss-ind:${q}` });
     }
     const pending = jobs.filter((j) => !prog.done[j.key]);
     console.log(`jobs: total=${jobs.length} done=${jobs.length - pending.length} pending=${pending.length} limit=${LIMIT === Infinity ? "inf" : LIMIT}`);
@@ -113,7 +119,9 @@ async function main() {
         ? `/api/cron/refresh?store=${encodeURIComponent(job.store)}&cat=${encodeURIComponent(job.cat)}&full=1&ok=0`
         : job.kind === "oks"
           ? `/api/cron/refresh?oks=${encodeURIComponent(job.store)}&okq=${encodeURIComponent(job.q)}`
-          : `/api/cron/refresh?okq=${encodeURIComponent(job.q)}`;
+          : job.kind === "oki"
+            ? `/api/cron/refresh?okind=ind&okq=${encodeURIComponent(job.q)}`
+            : `/api/cron/refresh?okq=${encodeURIComponent(job.q)}`;
       let lastErr = null;
       for (let attempt = 1; attempt <= 2; attempt++) {
         try {

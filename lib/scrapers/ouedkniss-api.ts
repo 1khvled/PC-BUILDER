@@ -212,7 +212,8 @@ function extractCondition(desc?: string | null, title?: string): string | undefi
 export async function searchOuedknissFull(
   keywords: string,
   maxPages: number = 3,
-  storeId?: string | null
+  storeId?: string | null,
+  includeIndividuals?: boolean | null
 ): Promise<OuedknissOffer[]> {
   const out: OuedknissOffer[] = [];
   const seenIds = new Set<string>();
@@ -260,8 +261,9 @@ export async function searchOuedknissFull(
       if (!item || !item.id || seenIds.has(item.id)) continue;
       seenIds.add(item.id);
 
-      // STORE-ONLY policy: individuals have no warranty/invoice — skip them.
-      if (!item.isFromStore) continue;
+      // STORE-ONLY by default: individuals have no warranty/invoice.
+      // Opt-in via includeIndividuals (tier-3 source: extras-only in bake).
+      if (!item.isFromStore && !includeIndividuals) continue;
       // Availability first: only live listings carry trustworthy prices.
       // Search normally returns PUBLISHED; absent status (HTML fallback era)
       // keeps the row — never punish missing data.
@@ -302,9 +304,8 @@ export async function searchOuedknissFull(
         description: (item.description || "").slice(0, 2000),
         wilaya,
         seller,
-        postedAt,
+        isFromStore: !!item.isFromStore,
         condition,
-        isFromStore: true,
         storeSlug: item.store?.slug || undefined,
         storeId: item.store?.id || undefined,
       });

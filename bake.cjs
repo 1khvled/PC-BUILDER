@@ -1061,11 +1061,22 @@ for (const [key, val] of Object.entries(report)) {
 
 // ouedkniss
 let okExtra = 0;
+let okiExtra = 0; // tier-3 particuliers: own extras cap, never canonical
 const seenOkUrl = new Set();
 for (const o of report["ouedkniss:all"] || []) {
   const category = OK_CAT[o.query] || "gpu";
   const title = clean(o.title);
   if (!title || !o.priceDa) continue;
+  // Tier 3 (particulier, isFromStore === false — NOT undefined: legacy HTML
+  // rows without the flag keep store treatment): visible in extras only,
+  // never a price reference. Own cap so they can't crowd out store extras.
+  if (o.isFromStore === false) {
+    if (!EXTRA_JUNK.test(title) && okiExtra < 150) {
+      okiExtra++;
+      pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: "Ouedkniss", wilaya: o.wilaya || "DZ", url: o.url, image: o.image || "", condition: /neuf|new|blister|jamais|scell/i.test(title) ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: 0 });
+    }
+    continue;
+  }
   const isNew = /neuf|new|blister|jamais|scell/i.test(title);
   // canonical match only — bundles/laptops/unknown VRAM go to extras, never canonical
   // vetoed bundle rows bypass the 150-cap so combo ads stay visible as raw extras
