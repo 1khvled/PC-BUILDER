@@ -54,7 +54,7 @@ export default async function DealsPage() {
             <Thumb src={productImage(PRODUCTS.find((p) => p.id === d.id)!)} alt={d.model} size={56} />
             <div className="min-w-0 flex-1">
               <div className="font-bold text-sm truncate">{d.brand} {d.model}</div>
-              <div className="text-xs text-slate-400">moyenne {d.avg.toLocaleString("fr-DZ")} DA • {d.n} offres • {d.store}{d.wilaya ? ` (${d.wilaya})` : ""}</div>
+              <div className="text-xs text-slate-400">médiane {d.avg.toLocaleString("fr-DZ")} DA • {d.n} offres • {d.store}{d.wilaya ? ` (${d.wilaya})` : ""}</div>
             </div>
             <div className="text-right shrink-0">
               <div className="font-extrabold text-emerald-700">{d.best.toLocaleString("fr-DZ")} DA</div>
