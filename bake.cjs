@@ -944,6 +944,13 @@ function splitDescriptionPrices(desc) {
   }
   return out;
 }
+// Title-only multi-family hits are weak evidence: bare numbers collide
+// across families ("7600" = Ryzen CPU and DDR5-7600 speed, "G41" board vs
+// fragments). A combo needs explicit bundle SYNTAX (+, /, avec, config…)
+const COMBO_SYNTAX = /\s[+&]\s|[^0-9.]\s\/\s[^0-9.]|\bavec\b|\bcombo\b|\bpack\b|\bbundle\b|\bconfig\b|\bpc\s+gamer|\bpc\s+complet/i;
+function isBundle(title, desc) {
+  return matchAnyCategory(title).length >= 2 && COMBO_SYNTAX.test(title + " " + (desc || ""));
+}
 
 const matched = []; // Offer-shaped
 const extras = [];
@@ -966,8 +973,7 @@ for (const [key, val] of Object.entries(report)) {
     if (!title || !o.priceDa) continue;
     const cond = /\bused\b|occasion|r[eé]cup[eé]ration/i.test(title) ? "used" : "new";
     const isVeto = isVetoed(category, title);
-    const famHits = matchAnyCategory(title);
-    if (famHits.length >= 2) {
+    if (isBundle(title, o.description)) {
       let split = false;
       for (const part of splitDescriptionPrices(o.description)) {
         const sub = matchAnyCategory(clean(part.label));
@@ -1003,8 +1009,7 @@ for (const o of report["ouedkniss:all"] || []) {
   // canonical match only — bundles/laptops/unknown VRAM go to extras, never canonical
   // vetoed bundle rows bypass the 150-cap so combo ads stay visible as raw extras
   const isVeto = isVetoed(category, title);
-  const famHits = matchAnyCategory(title);
-  if (famHits.length >= 2) {
+  if (isBundle(title, o.description)) {
     let split = false;
     for (const part of splitDescriptionPrices(o.description)) {
       const sub = matchAnyCategory(clean(part.label));
