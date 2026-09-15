@@ -84,16 +84,22 @@ async function main() {
       queries = qs || [];
     }
     for (const q of queries) jobs.push({ kind: "ok", q, key: `ouedkniss:${q}` });
-    // Seller sweep (§7.5): top Ouedkniss parts sellers, scoped per query.
-    // Rows land in ouedkniss:all with the raw query stamped; bake dedups via
-    // seenOkUrl, so overlap with normal query rows is harmless. Skip laptop
-    // sellers (their inventory vetoes to extras anyway).
+    // Seller sweep (§7.5): top Ouedkniss parts sellers by market-wide count
+    // (66 queries x page 1, 2026-09-15: TECHMATE 324, IT DEVICE 141, FUTURE
+    // CITY 130, ADMIN Info 108, ...). Rows land in ouedkniss:all with the raw
+    // query stamped; bake dedups via seenOkUrl. Skip laptop sellers (their
+    // inventory vetoes to extras anyway).
     const OKSTORES = [
-      ["19409", "V2 TECH"],
-      ["14143", "MDI informatique"],
-      ["31499", "Khalil Technologie"],
+      ["31418", "TECHMATE DZ"],
+      ["17937", "IT DEVICE"],
+      ["30409", "FUTURE CITY INFORMATIQUE"],
+      ["1059", "ADMIN Informatique"],
+      ["12489", "Informatics"],
+      ["24255", "AT-informatics"],
       ["5162", "A&Y Info Tech"],
-      ["12902", "Akram Informatique"],
+      ["2227", "WELTINFO"],
+      ["16056", "IFTA COMPUTER"],
+      ["26086", "PROMOTECH IT"],
     ];
     if (!SKIP_OK) {
       for (const [sid] of OKSTORES) for (const q of queries) jobs.push({ kind: "oks", store: sid, q, key: `ouedkniss-store:${sid}:${q}` });
