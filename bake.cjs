@@ -245,6 +245,7 @@ const RULES = [
   { id: "ram-delta-32-d5", cat: "ram", all: ["32gb", "ddr5"], none: ["5600", "6000", "6400", "laptop", "sodimm", "notebook", "portable"] },
   { id: "ram-16gb-d5-6400", cat: "ram", all: ["16gb", "ddr5", "6400"], none: ["laptop", "sodimm", "notebook", "portable"] },
   { id: "ram-16gb-d5-6000", cat: "ram", all: ["16gb", "ddr5", "6000"], none: ["6400", "laptop", "sodimm", "notebook", "portable"] },
+  { id: "ram-96gb-d5", cat: "ram", all: ["48gb", "ddr5"], any: ["96gb"], none: ["laptop", "sodimm", "notebook", "portable"] },
   { id: "ram-16gb-d5-5600", cat: "ram", all: ["16gb", "ddr5", "5600"], none: ["laptop", "sodimm", "notebook", "portable"] },
   { id: "ram-vengeance-16-d5", cat: "ram", all: ["16gb", "ddr5"], none: ["32gb", "5600", "6000", "6400", "laptop", "sodimm", "notebook", "portable"] },
   { id: "ram-8gb-d5-5600", cat: "ram", all: ["8gb", "ddr5"], none: ["16gb", "32gb", "laptop", "sodimm", "notebook", "portable"] },
@@ -295,6 +296,8 @@ const RULES = [
   { id: "ssd-nvme-512gb", cat: "ssd", all: ["512gb"], any: ["nvme", "gen3", "gen4", "m2"], none: ["sata", "1tb", "2tb", "laptop", "notebook"] },
   { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["nv3"] },
   { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["gen4"], any: ["1tb"], none: ["512gb", "256gb", "2tb", "sata", "laptop", "notebook"] },
+  { id: "ssd-sata-120gb", cat: "ssd", all: ["sata", "120gb"], none: ["nvme", "m2", "hdd", "laptop", "notebook"] },
+  { id: "ssd-sata-360gb", cat: "ssd", all: ["sata", "360gb"], none: ["nvme", "m2", "hdd", "laptop", "notebook"] },
   { id: "ssd-sata-25", cat: "ssd", all: ["sata"], any: ["ssd", "2.5"], none: ["nvme", "m2", "hdd", "rpm", "laptop", "notebook"] },
   { id: "ssd-nvme-500gb", cat: "ssd", all: ["500gb"], any: ["nvme", "gen4", "gen3", "m2"], none: ["sata", "laptop", "notebook"] },
   { id: "ssd-nvme-256gb", cat: "ssd", all: ["250gb"], any: ["nvme", "gen3", "gen4", "m2"], none: ["sata", "laptop", "notebook"] },
@@ -711,7 +714,11 @@ function titleCapacities(title) {
     } else out.push(gb(m[7], m[8]));
   }
   const sane = (v) => v > 0 && v <= 32768; // absurd values (7200tb RPM fallout) are never capacities
-  return [...new Set([...out.filter((v) => sane(v) && !drop.has(v)), ...[...totals].filter(sane)])];
+  // Kit totals lead: a "64 Go (2x 48 Go)" title really is 96GB — the stray 64
+  // must not anchor the redirect. Ranges (no kits) keep ascending order.
+  const tots = [...totals].filter(sane).sort((a, b) => a - b);
+  const rest = [...new Set(out.filter((v) => sane(v) && !drop.has(v)))].sort((a, b) => a - b);
+  return [...tots, ...rest.filter((v) => !tots.includes(v))];
 }
 // Product-line tokens: shared title<->rule ownership means the match was earned.
 const FAMILY_TOK = new Set(["externe", "external", "portable", "hdd", "disque", "dur", "udimm", "sodimm", "rgb"]);
@@ -759,7 +766,7 @@ function variantRedirect(category, title, matched, has) {
   // decimal speed ("7.3GB" -> 3GB) has no capacity-correct row, so its pass
   // finds nothing and the loop falls through to the real capacity. (Min-only
   // took the phantom, found no row, and wrongly kept the matched rule.)
-  const ordered = caps.length === 1 ? caps : [...new Set(caps)].sort((a, b) => a - b);
+  const ordered = [...new Set(caps)]; // semantic order from titleCapacities: kit totals, then ascending
   for (const want of ordered) {
     const toks = new Set(want % 1024 === 0 ? [want / 1024 + "tb", want + "gb"] : [want + "gb"]);
     const bare = String(want);
