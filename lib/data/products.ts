@@ -121,6 +121,7 @@ export const PRODUCTS: Product[] = [
   { id: "ram-value-8-d4", category: "ram", brand: "Corsair", model: "Value 8GB DDR4-3200", specs: { type: "DDR4", capacity_gb: 8, speed: 3200 } },
   { id: "ssd-980pro-1tb", category: "ssd", brand: "Samsung", model: "980 Pro 1TB NVMe", specs: { interface: "NVME" } },
   { id: "ssd-sn850x-1tb", category: "ssd", brand: "WD", model: "Black SN850X 1TB NVMe", specs: { interface: "NVME" } },
+  { id: "ssd-sn850-1tb", category: "ssd", brand: "WD", model: "Black SN850 1TB NVMe", specs: { interface: "NVME" } },
   { id: "ssd-nvme-500gb", category: "ssd", brand: "Crucial", model: "P3 500GB NVMe", specs: { interface: "NVME" } },
   { id: "gpu-rtx3050-6gb", category: "gpu", brand: "NVIDIA", model: "RTX 3050 6GB", specs: { length_mm: 200, tdp_w: 70, pins: "none" } },
   { id: "gpu-rtx4080s-16gb", category: "gpu", brand: "NVIDIA", model: "RTX 4080 SUPER 16GB", specs: { length_mm: 310, tdp_w: 320, pins: "16-pin" } },

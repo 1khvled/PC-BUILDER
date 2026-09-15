@@ -16,18 +16,27 @@ for (const m of src.matchAll(/productId:\s*"([^"]+)",\s*store:\s*"([^"]+)"/g)) {
 }
 
 function norm(s) {
-  return (s || "")
+  let t = (s || "")
     .toLowerCase()
     .replace(/c(\d{2})(8|16|24|32|48|64)g\b/g, "c$1 $2gb") // ADATA LANCER AX5U6000C3032G: capacity fused in model -> split before g→gb rule
     .replace(/((?:[248]|0[48]|1[26]|2[24]|3[26]|4[28]|6[24]))g\b/g, "$1gb") // 8g/08g/16g/32g -> gb (not 5600g!)
     .replace(/(\d+)\s?go\b/g, "$1gb") // 08go/240go/500go -> gb
     .replace(/(\d)\s?to\b/g, "$1tb")
+    .replace(/(\d)\s?zh\b/g, "$1hz") // 120ZH/144ZH (FR marketplace Hz spelling) -> hz
+    .replace(/(\d+)\s*pouces?\b/g, "$1 pouce") // 24POUCES (glued size) -> 24 pouce (word-matchable for Hz/size rules)
     .replace(/\b(\d{1,2})t\b/g, "$1tb") // 1T/2T/4T (FR shorthand) -> tb (1-2 digits only: 7200T/MIN RPM specs must not become 7200tb)
     .replace(/((?:[248]|0[48]|1[26]|2[24]|3[26]|4[28]|6[24]))\s+g\b/g, "$1gb") // 8 G/16 G (spaced lone-g) -> gb; allowlist: 5600 g untouched
     .replace(/(\d+)\s*watts?\b/g, "$1w") // 750 watt/750watts -> 750w (before PSU-model map so "750 watt" stays clean)
     .replace(/(\d+)\s+(gb|tb)\b/g, "$1$2") // 16 GB / 1 TB -> 16gb/1tb (spaced-unit recall win)
-    .replace(/m\.2/g, "m2") // m.2 -> m2 (word-matchable)
-    .replace(/(^|[^a-z0-9])([a-z]{0,3})(400|450|500|550|600|650|700|750|800|850|1000|1200|1250|1300)(p|m|b|d|n|x|s|bn|gs|gl|gm|plus)?\b/g, "$1$2$3w") // CX750/PN1000M/PL800/A750BN/GP650 -> 750w (digit-prefixed 1650/5600x safe)
+    .replace(/m\.2/g, "m2"); // m.2 -> m2 (word-matchable)
+  // PSU-model map (CX750->750w) ONLY on PSU-smelling titles: the same pattern
+  // eats storage models (SN850X->sn850w, MX500->mx500w, 980 PRO->980pw),
+  // destroying the tokens their own rules need. Bare "CX750" with no PSU
+  // context keeps its identity (psu rules also carry model tokens).
+  if (/watt|80\s*plus|bronze|gold|platinium|platinum|modulaire|modular|alimentation|\bpsu\b|\batx\b|\bsfx\b/i.test(t)) {
+    t = t.replace(/(^|[^a-z0-9])([a-z]{0,3})(400|450|500|550|600|650|700|750|800|850|1000|1200|1250|1300)(p|m|b|d|n|x|s|bn|gs|gl|gm|plus)?\b/g, "$1$2$3w"); // CX750/PN1000M/PL800/A750BN/GP650 -> 750w (digit-prefixed 1650/5600x safe)
+  }
+  return t
     .replace(/\b0+(\d)/g, "$1") // 08gb/0240go -> 8gb/240go
     .replace(/\bdr4\b/g, "ddr4").replace(/\bd4\b/g, "ddr4").replace(/\bd5\b/g, "ddr5")
     .normalize("NFD").replace(/[̀-ͯ]/g, "")
@@ -132,7 +141,7 @@ const RULES = [
   { id: "cooler-le520", cat: "cooler", all: ["le500"] },
   { id: "cooler-lt520", cat: "cooler", all: ["lt520"] },
   { id: "cooler-assassin4", cat: "cooler", all: ["assassin"] },
-  { id: "cooler-ml240-core", cat: "cooler", all: ["masterliquid", "240"] },
+  { id: "cooler-ml240-core", cat: "cooler", all: ["masterliquid", "240"], none: ["atmos"] },
   { id: "cooler-ml240-core", cat: "cooler", all: ["240l", "core"] },
   { id: "cooler-hyper622", cat: "cooler", all: ["622", "halo"] },
   { id: "cooler-hyper622", cat: "cooler", all: ["hyper", "622"] },
@@ -254,6 +263,7 @@ const RULES = [
   { id: "ssd-980pro-1tb", cat: "ssd", all: ["980pro"], none: ["laptop", "notebook"] },
   { id: "ssd-990pro-2tb", cat: "ssd", all: ["990pro", "2tb"], none: ["laptop", "notebook"] },
   { id: "ssd-990pro-2tb", cat: "ssd", all: ["990pro"], any: ["2tb"], none: ["laptop", "notebook"] },
+  { id: "ssd-sn850-1tb", cat: "ssd", all: ["sn850"], none: ["sn850w", "sn850x", "laptop", "notebook"] },
   { id: "ssd-sn850x-1tb", cat: "ssd", all: ["sn850"], none: ["laptop", "notebook"] },
   { id: "ssd-gen5-1tb", cat: "ssd", all: ["gen5", "1tb"], none: ["laptop", "notebook"] },
   { id: "ssd-gen5-1tb", cat: "ssd", all: ["gen5"], any: ["1tb"], none: ["2tb", "laptop", "notebook"] },
@@ -573,7 +583,7 @@ const RULES = [
   { id: "mon-27-280", cat: "monitor", all: ["27"], any: ["280hz", "300hz", "310hz", "380hz"], none: ["24", "32", "34", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-32-4k240", cat: "monitor", all: ["32"], any: ["4k", "uhd", "2160"], none: ["24", "27", "34", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-32-qhd180", cat: "monitor", all: ["32"], any: ["180hz", "280hz", "165hz", "240hz", "qhd", "2k"], none: ["24", "27", "34", "49", "4k", "uhd", "2160", "laptop", "tv", "televiseur"] },
-  { id: "mon-34-oled", cat: "monitor", all: ["34"], any: ["oled", "175hz", "165hz", "144hz"], none: ["24", "27", "32", "49", "laptop", "tv", "televiseur"] },
+  { id: "mon-34-oled", cat: "monitor", all: ["34", "oled"], any: ["175hz", "165hz", "144hz"], none: ["24", "27", "32", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-49-superwide", cat: "monitor", all: ["49"], none: ["24", "27", "32", "34", "laptop", "tv", "televiseur"] },
   { id: "mon-20-75", cat: "monitor", all: ["20"], any: ["75hz", "60hz"], none: ["24", "27", "32", "34", "22", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-27-4k", cat: "monitor", all: ["27"], any: ["4k", "uhd", "2160"], none: ["laptop", "tv", "televiseur", "32", "34", "49"] },
