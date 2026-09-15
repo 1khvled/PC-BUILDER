@@ -421,7 +421,7 @@ export function productImage(p: Product): string | undefined {
 }
 
 export function isRuptured(o: Pick<Offer, "stock">): boolean {
-  return /rupture|out of stock|sold out/i.test(o.stock || "");
+  return /rupture|out of stock|sold out|épuisé|epuisé|indisponible|0\s*en\s*stock|stock\s*[=:]\s*0/i.test(o.stock || "");
 }
 
 function offerRank(o: Offer): number {

@@ -961,7 +961,7 @@ for (const m of matched) {
   byPid.get(m.productId).push(m);
 }
 const capped = [];
-const isOut = (m) => /rupture|out of stock|sold out|épuisé|indisponible/i.test(m.stock || "");
+const isOut = (m) => /rupture|out of stock|sold out|épuisé|epuisé|indisponible|0\s*en\s*stock|stock\s*[=:]\s*0/i.test(m.stock || "");
 for (const arr of byPid.values()) {
   // Available offers first: a rupture price must never push a live price
   // out of the 6-offer cap, nor become the row's displayed minimum.
