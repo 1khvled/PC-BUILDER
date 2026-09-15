@@ -898,6 +898,28 @@ function isAbsurd(category, pid, price) {
   return price < m * 0.4 || price > m * 2.5;
 }
 
+const BUNDLE_CATS = ["cpu", "gpu", "motherboard", "ram", "ssd"];
+function matchAnyCategory(title) {
+  const hits = [];
+  for (const c of BUNDLE_CATS) {
+    let pid = null;
+    try { pid = matchRule(c, title); } catch { pid = null; }
+    if (pid) hits.push({ cat: c, pid });
+  }
+  return hits;
+}
+function splitDescriptionPrices(desc) {
+  const out = [];
+  for (const line of String(desc || "").split(/\r?\n/)) {
+    const m = line.match(/(.{4,60}?)\s*[:\-–]\s*(\d[\d\s.]{3,})\s*(da|dzd|dinars?)/i);
+    if (!m) continue;
+    const price = parseInt(m[2].replace(/[^0-9]/g, ""), 10);
+    if (!price || price < 500 || price > 5000000) continue;
+    out.push({ label: m[1].trim(), price });
+  }
+  return out;
+}
+
 const matched = []; // Offer-shaped
 const extras = [];
 const seenExtra = new Set();
@@ -919,6 +941,20 @@ for (const [key, val] of Object.entries(report)) {
     if (!title || !o.priceDa) continue;
     const cond = /\bused\b|occasion|r[eé]cup[eé]ration/i.test(title) ? "used" : "new";
     const isVeto = isVetoed(category, title);
+    const famHits = matchAnyCategory(title);
+    if (famHits.length >= 2) {
+      let split = false;
+      for (const part of splitDescriptionPrices(o.description)) {
+        const sub = matchAnyCategory(clean(part.label));
+        if (sub.length === 1 && !isAbsurd(sub[0].cat, sub[0].pid, part.price)) {
+          if (seedPairs.has(sub[0].pid + "|" + store)) continue;
+          matched.push({ productId: sub[0].pid, store, wilaya: WILAYA[store], titleRaw: (title + " | " + part.label).slice(0, 120), priceDa: part.price, url: o.url, stock: o.stock || "En stock", condition: cond, image: o.image || "", scrapedAt: NOW });
+          split = true;
+        }
+      }
+      if (!split) continue; // bundle sans prix unitaires : ditch total
+      continue;
+    }
     const pid = isVeto ? null : matchRule(category, title);
     if (pid && isAbsurd(category, pid, o.priceDa)) continue; // absurd price: ditch total
     if (pid) {
@@ -942,6 +978,21 @@ for (const o of report["ouedkniss:all"] || []) {
   // canonical match only — bundles/laptops/unknown VRAM go to extras, never canonical
   // vetoed bundle rows bypass the 150-cap so combo ads stay visible as raw extras
   const isVeto = isVetoed(category, title);
+  const famHits = matchAnyCategory(title);
+  if (famHits.length >= 2) {
+    let split = false;
+    for (const part of splitDescriptionPrices(o.description)) {
+      const sub = matchAnyCategory(clean(part.label));
+      if (sub.length === 1 && !isAbsurd(sub[0].cat, sub[0].pid, part.price)) {
+        if (seenOkUrl.has(o.url + "#" + sub[0].pid)) continue;
+        seenOkUrl.add(o.url + "#" + sub[0].pid);
+        matched.push({ productId: sub[0].pid, store: "Ouedkniss", wilaya: o.wilaya || "DZ", titleRaw: (title + " | " + part.label).slice(0, 120), priceDa: part.price, url: o.url, stock: "Ouedkniss", condition: isNew ? "new" : "used", image: o.image || "", scrapedAt: NOW });
+        split = true;
+      }
+    }
+    if (!split) continue; // bundle sans prix unitaires : ditch total
+    continue;
+  }
   const pid = isVeto ? null : matchRule(category, title);
   if (pid && isAbsurd(category, pid, o.priceDa)) continue; // absurd price: ditch total
   if (pid) {
