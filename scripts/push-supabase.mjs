@@ -2,11 +2,15 @@
 // Usage:
 //   node scripts/push-supabase.mjs --dry-run                 (no network, prints sizing)
 //   $env:SUPABASE_URL="https://xyz.supabase.co"; $env:SUPABASE_SERVICE_KEY="..."; node scripts/push-supabase.mjs
+// Env fallbacks match repo naming (.env.example / .env.local): NEXT_PUBLIC_SUPABASE_URL,
+// SUPABASE_SERVICE_ROLE_KEY. Purge step: pre-push DELETE of offers older than the seed
+// day, so stale triples (poison rows the new matcher no longer emits) cannot survive
+// an upsert-only push. price_history is append-only and untouched by the purge.
 import fs from "fs";
 
 const DRY = process.argv.includes("--dry-run");
-const URL = process.env.SUPABASE_URL || "";
-const KEY = process.env.SUPABASE_SERVICE_KEY || "";
+const URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
+const KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
 async function main() {
   const seed = JSON.parse(fs.readFileSync("supabase-seed.json", "utf8"));
@@ -19,7 +23,7 @@ async function main() {
   console.log(`history growth: ~${histRowsYear.toLocaleString()} rows/yr ~= ${histMBYear.toFixed(1)}MB/yr (400-day retention => steady ~${(histMBYear * 400 / 365).toFixed(1)}MB)`);
 
   if (DRY) {
-    console.log("DRY RUN — no network. Set SUPABASE_URL + SUPABASE_SERVICE_KEY to push.");
+    console.log(`DRY RUN — no network. Would purge offers older than ${seed.day}, then upsert.`);
     return;
   }
   if (!URL || !KEY) throw new Error("Missing SUPABASE_URL / SUPABASE_SERVICE_KEY env vars.");
@@ -35,6 +39,10 @@ async function main() {
     return t ? JSON.parse(t) : null;
   };
 
+  // 0. purge stale snapshot rows (older seed days) so poison triples the new
+  // matcher no longer emits cannot survive an upsert-only push
+  await api(`offers?day=lt.${seed.day}`, "DELETE");
+  console.log("purged offers older than", seed.day);
   // 1. stores upsert -> id map
   await api("stores?on_conflict=name", "POST", seed.stores, { Prefer: "resolution=merge-duplicates" });
   const storeRows = await api(`stores?select=id,name`, "GET");
