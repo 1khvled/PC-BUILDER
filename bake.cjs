@@ -173,7 +173,7 @@ const RULES = [
   { id: "cooler-am1204", cat: "cooler", all: ["am1204"] },
   { id: "cooler-lq360", cat: "cooler", all: ["lq360"] },
   { id: "cooler-gl120", cat: "cooler", all: ["gl120"] },
-  { id: "cooler-tt120", cat: "cooler", all: ["thermaltake"], none: ["connecteur", "connector", "fitting", "fill", "raccord", "embout", "extension", "adaptateur", "adapter", "barbs", "compression", "petg", "controller", "tube"] },
+  { id: "cooler-tt120", cat: "cooler", all: ["thermaltake"], none: ["connecteur", "connector", "fitting", "fill", "raccord", "embout", "extension", "adaptateur", "adapter", "barbs", "compression", "petg", "controller", "tube", "reservoir", "pompe", "pump", "radiator", "frio", "ux100", "thoughair", "pour cpu", "w2"] },
   { id: "cooler-mars", cat: "cooler", all: ["mars"] },
   { id: "cooler-f2005", cat: "cooler", all: ["f2005"] },
   { id: "cooler-a30", cat: "cooler", all: ["a30"] },
@@ -884,14 +884,28 @@ function unitRedirect(category, title, matched, has) {
   const t = " " + norm(title) + " ";
   const re = unit === "w" ? /(\d{3,4})\s*w\b/g : /(\d{2,3})\s*hz\b/g;
   const units = [...new Set([...t.matchAll(re)].map((m) => +m[1]))];
-  if (units.length !== 1) return matched; // 0 ou ambigu : keep
+  let want = units.length === 1 ? units[0] : null;
+  if (want === null && unit === "w" && units.length > 1) {
+    // Variant list ("650W | 750W", "750W/850W/1000W"): stores show the
+    // cheapest variant price (same convention as SSD capacity ranges), so
+    // the smallest listed wattage wins. Scattered wattages ("850W PSU with
+    // 600W cable") are specs, not variants -> keep.
+    const raw = " " + String(title || "") + " ";
+    const listed = new Set(
+      [...raw.matchAll(/(\d{3,4})\s*w\s*[/|,]/gi)].map((m) => +m[1])
+        .concat([...raw.matchAll(/[/|,]\s*(\d{3,4})\s*w/gi)].map((m) => +m[1]))
+    );
+    const inList = units.filter((u) => listed.has(u));
+    if (inList.length >= 2) want = Math.min(...inList);
+  }
+  if (want === null) return matched; // 0 ou ambigu : keep
   const idm = matched.match(/(\d{3,4})/);
-  if (idm && +idm[1] === units[0]) return matched; // accord : keep
+  if (idm && +idm[1] === want) return matched; // accord : keep
   for (const r of RULES) {
     if (r.cat !== category) continue;
     const rid = (r.id.match(/(\d{3,4})/) || [])[1];
-    if (!rid || +rid !== units[0]) continue;
-    const rest = (r.all || []).filter((x) => !new RegExp(`^${units[0]}`).test(x));
+    if (!rid || +rid !== want) continue;
+    const rest = (r.all || []).filter((x) => !new RegExp(`^${want}`).test(x));
     if (!rest.every(has)) continue;
     if ((r.none || []).some(has)) continue;
     return r.id;

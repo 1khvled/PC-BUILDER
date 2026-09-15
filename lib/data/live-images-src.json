@@ -80,7 +80,6 @@
  "psu-1050-gold": "https://mail.licbplus.com/storage/images/products/thumbnails/DgYm9oIDR4qo0EBaaZZfLSnwym6v1XYECijZouyt.png.webp",
  "psu-600-b": "https://mail.licbplus.com/storage/images/products/thumbnails/hhUzWnmAuumbv3l6BpJQu31A4siZNhe3RYMI1Enb.png.webp",
  "psu-450-b": "https://mail.licbplus.com/storage/images/products/thumbnails/4QABfISRE378wv9lnI6bs3BbcU7Gx1fGyMzfpb7n.png.webp",
- "psu-750-gold": "https://mail.licbplus.com/storage/images/products/thumbnails/FBLqt4J4xujuqPY80IVMhSfe4lPq0bVGIWQ0HOyi.jpg.webp",
  "psu-500-b": "https://mail.licbplus.com/storage/images/products/thumbnails/2vhVDh2pPHwrl1Nf8NQoeclOhx9HnAjCXYcjNaSc.png.webp",
  "case-rev06": "https://mail.licbplus.com/storage/images/products/thumbnails/boitier-pc-galax-revolution-06-argb-p3381-main-pls7a08k.png.webp",
  "case-vector": "https://mail.licbplus.com/storage/images/products/thumbnails/Rkk2O5c4snwv1sMA0LXSifooNUqQWJ8ZIfrxl5vh.png.webp",
@@ -125,6 +124,7 @@
  "cooler-boreas-m2": "https://click-dz.com/wp-content/uploads/2026/08/BOREAS_M2-61L_Slogan.webp",
  "cooler-lq360": "https://click-dz.com/wp-content/uploads/2026/03/DeepCool_LQ360_ULTRA_ARGB_WH__Watercooling@@100164718.jpg",
  "cooler-gl120": "https://click-dz.com/wp-content/uploads/2026/02/61hoEDwTqZL._AC_SL1500_.jpg",
+ "cooler-tt120": "https://click-dz.com/wp-content/uploads/2025/12/CL-W232-PL12SW-A_d6153efe3c4a46d7bd17ba02cd7e9afc-700x700-1.jpg",
  "cooler-wl240ft": "https://click-dz.com/wp-content/uploads/2025/12/WhatsApp-Image-2025-05-11-a-11.31.11_a4dfd14c-Photoroom-1.png",
  "cooler-mars": "https://click-dz.com/wp-content/uploads/2025/11/P079339_1_7e9208cb_thumbnail_1024.jpg",
  "cooler-assassin4": "https://click-dz.com/wp-content/uploads/2025/10/02-6.jpg",
@@ -286,7 +286,7 @@
  "ram-vengeance-32-d4": "https://wifidjelfa.com/wp-content/uploads/2026/04/101866733119209481.jpg",
  "ram-8gb-d3-1600": "https://wifidjelfa.com/wp-content/uploads/2024/09/101024544910737450.jpg",
  "ssd-990pro-2tb": "https://wifidjelfa.com/wp-content/uploads/2026/09/102063045034901687.jpg",
- "ssd-sata-25": "https://wifidjelfa.com/wp-content/uploads/2026/06/101938909088317552.jpg",
+ "ssd-sata-25": "https://wifidjelfa.com/wp-content/uploads/2026/07/101991648552026145.jpg",
  "ssd-budget": "https://wifidjelfa.com/wp-content/uploads/2024/06/100904596439826444.jpg",
  "ssd-sn850-1tb": "https://wifidjelfa.com/wp-content/uploads/2023/08/100442220359843930.jpg",
  "ssd-980pro-1tb": "https://wifidjelfa.com/wp-content/uploads/2023/08/100457193437921285.jpg",
@@ -322,6 +322,7 @@
  "gpu-gtx950-2gb": "https://wifidjelfa.com/wp-content/uploads/2023/03/100217473311178896.jpg",
  "gpu-rx6500xt-4gb": "https://wifidjelfa.com/wp-content/uploads/2023/05/100331656073707520.jpg",
  "psu-850-b": "https://wifidjelfa.com/wp-content/uploads/2024/09/101005606084673679.jpg",
+ "psu-750-gold": "https://wifidjelfa.com/wp-content/uploads/2025/05/101344981028962493.jpg",
  "case-gearmaster": "https://wifidjelfa.com/wp-content/uploads/2026/08/102024641568047407.jpg",
  "case-antec": "https://wifidjelfa.com/wp-content/uploads/2026/04/101866733119209485.jpg",
  "case-budget": "https://wifidjelfa.com/wp-content/uploads/2026/04/101856544366264330.jpg",
@@ -353,5 +354,6 @@
  "gpu-rx480-8gb": "https://khabirtech.com/wp-content/uploads/2026/07/AMD-RX-480-SAPHIRE-NITRO-PLUS-0.webp",
  "gpu-rtx3080ti-12gb": "https://cdn7.ouedkniss.com/400/medias/announcements/images/pYP75p/OkvRyYXm9XOBFaq2uFE6SHyIWL1wjWfejEJW9iIi.jpg",
  "gpu-rx580-4gb": "https://cdn8.ouedkniss.com/400/medias/announcements/images/2kX10W/wBHbkXb9LHVsdHbUWCdfKVK9lDcMYOj7ysC18dPU.jpg",
- "ssd-sn580-1tb": "https://cdn7.ouedkniss.com/400/medias/announcements/images/xk80W3/aD1PkZWbQXhT5XPXjNvYjUkTE1OAMUuHrnsTKmsy.jpg"
+ "ssd-sn580-1tb": "https://cdn7.ouedkniss.com/400/medias/announcements/images/xk80W3/aD1PkZWbQXhT5XPXjNvYjUkTE1OAMUuHrnsTKmsy.jpg",
+ "psu-mwe650-b": "https://cdn9.ouedkniss.com/400/medias/announcements/images/nZWp2D/CyGLhQs4H5layM1TprQGNgkLVOgqjQczVSla3uoF.jpg"
 }
