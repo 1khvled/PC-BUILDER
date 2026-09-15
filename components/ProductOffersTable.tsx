@@ -88,7 +88,8 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
     if (statsBase.list.length === 0) return null;
     const prices = statsBase.list.map((o) => o.priceDa);
     const min = Math.min(...prices);
-    const avg = Math.round(prices.reduce((a, b) => a + b, 0) / prices.length);
+    const sorted = [...prices].sort((a, b) => a - b);
+    const avg = sorted[Math.floor(sorted.length / 2)]; // médiane
     const max = Math.max(...prices);
     return { min, avg, max };
   }, [statsBase]);
@@ -150,7 +151,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
         <div className="flex items-center gap-3">
           {stats && (
             <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500 font-medium">
-              <span>Moyenne : <b className="text-slate-800">{stats.avg.toLocaleString("fr-DZ")} DA</b></span>
+              <span>Médiane : <b className="text-slate-800">{stats.avg.toLocaleString("fr-DZ")} DA</b></span>
               <span className="text-slate-300">•</span>
               <span>Écart : <b>{(stats.max - stats.min).toLocaleString("fr-DZ")} DA</b></span>
             </div>

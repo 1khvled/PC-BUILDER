@@ -21,10 +21,10 @@ function deals(offers: Offer[]): Deal[] {
   const out: Deal[] = [];
   for (const p of PRODUCTS) {
     const fresh = offers.filter((o) => o.productId === p.id && o.condition === "new" && !isRuptured(o));
-    if (fresh.length < 2) continue;
+    if (fresh.length < 3) continue;
     const prices = fresh.map((o) => o.priceDa).sort((a, b) => a - b);
     const best = prices[0];
-    const avg = Math.round(prices.reduce((s, v) => s + v, 0) / prices.length);
+    const avg = prices[Math.floor(prices.length / 2)]; // médiane : insensible aux prix absurdes
     const drop = (avg - best) / avg;
     const saving = avg - best;
     if (drop < 0.08 || saving < 2000) continue;
@@ -46,7 +46,7 @@ export default async function DealsPage() {
     <main className="max-w-6xl mx-auto px-4 py-6">
       <h1 className="text-2xl font-extrabold tracking-tight">Bons plans</h1>
       <p className="text-xs text-slate-400">
-        Offres neuves ≥8% sous la moyenne de leur produit (économie ≥2 000 DA) • relevé du {scrapedAt.slice(0, 10)}
+        Offres neuves ≥8% sous la médiane de leur produit (économie ≥2 000 DA) • relevé du {scrapedAt.slice(0, 10)}
       </p>
       <div className="grid md:grid-cols-2 gap-3 mt-4">
         {list.map((d, i) => (
