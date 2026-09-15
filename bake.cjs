@@ -630,12 +630,19 @@ const TOOL_VETO = /tron[cç]on|meuleuse|\bscie\b|mixeur|gaufre|sandwich|\bcaf[e�
 // ---- PSU-into-motherboard veto (motherboard rows only) ----
 // Moves exactly the ANTEC ATOM B650W rows (matched via "b650") to extras.
 const MOBOPSU_VETO = /psu|\balimentation\b|80\s*plus|modulaire|bronze|gold|antec|seasonic|\bfsp\b|corsair/i;
+// ---- tower-prebuilt veto (cpu/gpu/ram/ssd/motherboard rows) ----
+// Whole towers booked as one part ("UNITE ASUS G10DK 5600X … 1660TI",
+// "KIT UPGRADE 7600+B840M", "PC DE BUREAU LENOVO i5-13400"). Anchored to
+// prebuilt markers so "Desktop Processor" CPU singles and "configurable"
+// RGB copy survive: desktop needs a brand, config needs the "u".
+const PREBUILT_VETO = /unite\s+(gamer|asus|gaming)|kit\s+upgrade|forssa|\(.*configu|configu\w*\s+(uniquement|only)|desktop\s+(hp|lenovo|dell|asus|tower|sff|neo|think|pro\b)|pc\s+(high-tech|de\s+bureau)|tour\s+gamer/i;
 // Single gate, run on the RAW cleaned title BEFORE matchRule. Vetoed rows
 // bypass extras caps exactly like bundles (replaces BUNDLE_VETO at call-sites).
 function isVetoed(category, title) {
   if (BUNDLE_VETO.test(title) || TOOL_VETO.test(title)) return true;
   if ((category === "gpu" || category === "cpu") && (FULLPC_VETO.test(title) || LAPTOP_VETO.test(title))) return true;
   if ((category === "ram" || category === "ssd") && LAPTOP_VETO.test(title)) return true;
+  if ((category === "gpu" || category === "cpu" || category === "ram" || category === "ssd" || category === "motherboard") && PREBUILT_VETO.test(title)) return true;
   if (category === "motherboard" && MOBOPSU_VETO.test(title)) return true;
   return false;
 }
@@ -949,7 +956,20 @@ function splitDescriptionPrices(desc) {
 // fragments). A combo needs explicit bundle SYNTAX (+, /, avec, config…)
 const COMBO_SYNTAX = /\s[+&]\s|[^0-9.]\s\/\s[^0-9.]|\bavec\b|\bcombo\b|\bpack\b|\bbundle\b|\bconfig\b|\bpc\s+gamer|\bpc\s+complet/i;
 function isBundle(title, desc) {
-  return matchAnyCategory(title).length >= 2 && COMBO_SYNTAX.test(title + " " + (desc || ""));
+  if (matchAnyCategory(title).length < 2) return false;
+  const text = title + " " + (desc || "");
+  if (COMBO_SYNTAX.test(text)) return true;
+  // config lists without spaced syntax ("5600X/CM…/PSU", "7600+B840M"):
+  // ≥2 slashes outside capacity runs ("256GB/512GB/1TB" stripped first),
+  // or a glued plus. Single-part titles never look like this.
+  const noCaps = title.replace(/\d+\s*(gb|tb|go|to)\b/gi, " ");
+  // Port lists are not config lists ("1HDMI/1DVI/1VGA"): slashes touching
+  // connectivity tokens don't count as separators.
+  const slashes = (noCaps.match(/\//g) || []).length;
+  const portSlashes = (noCaps.match(/(hdmi|dvi|vga|display\s?port|usb|hdcp)\s*\/|\/\s*(hdmi|dvi|vga|display\s?port|usb|hdcp)/gi) || []).length;
+  if (slashes - portSlashes >= 2) return true;
+  if (/\S\+|\+\S/.test(title)) return true;
+  return false;
 }
 
 const matched = []; // Offer-shaped
