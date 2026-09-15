@@ -18,10 +18,14 @@ for (const m of src.matchAll(/productId:\s*"([^"]+)",\s*store:\s*"([^"]+)"/g)) {
 function norm(s) {
   return (s || "")
     .toLowerCase()
+    .replace(/c(\d{2})(8|16|24|32|48|64)g\b/g, "c$1 $2gb") // ADATA LANCER AX5U6000C3032G: capacity fused in model -> split before g→gb rule
     .replace(/((?:[248]|0[48]|1[26]|2[24]|3[26]|4[28]|6[24]))g\b/g, "$1gb") // 8g/08g/16g/32g -> gb (not 5600g!)
     .replace(/(\d+)\s?go\b/g, "$1gb") // 08go/240go/500go -> gb
     .replace(/(\d)\s?to\b/g, "$1tb")
     .replace(/\b(\d{1,2})t\b/g, "$1tb") // 1T/2T/4T (FR shorthand) -> tb (1-2 digits only: 7200T/MIN RPM specs must not become 7200tb)
+    .replace(/((?:[248]|0[48]|1[26]|2[24]|3[26]|4[28]|6[24]))\s+g\b/g, "$1gb") // 8 G/16 G (spaced lone-g) -> gb; allowlist: 5600 g untouched
+    .replace(/(\d+)\s*watts?\b/g, "$1w") // 750 watt/750watts -> 750w (before PSU-model map so "750 watt" stays clean)
+    .replace(/(\d+)\s+(gb|tb)\b/g, "$1$2") // 16 GB / 1 TB -> 16gb/1tb (spaced-unit recall win)
     .replace(/m\.2/g, "m2") // m.2 -> m2 (word-matchable)
     .replace(/(^|[^a-z0-9])([a-z]{0,3})(400|450|500|550|600|650|700|750|800|850|1000|1200|1250|1300)(p|m|b|d|n|x|s|bn|gs|gl|gm|plus)?\b/g, "$1$2$3w") // CX750/PN1000M/PL800/A750BN/GP650 -> 750w (digit-prefixed 1650/5600x safe)
     .replace(/\b0+(\d)/g, "$1") // 08gb/0240go -> 8gb/240go
@@ -297,6 +301,7 @@ const RULES = [
   { id: "gpu-rtx4060-8gb", cat: "gpu", all: ["4060"], none: ["4060ti", "laptop", "notebook", "portable", "ti", "super"] },
   { id: "gpu-rtx4070-12gb", cat: "gpu", all: ["4070"], none: ["4070ti", "laptop", "notebook", "portable", "ti", "super"] },
   { id: "gpu-rtx5070-12gb", cat: "gpu", all: ["5070"], none: ["laptop", "notebook", "portable", "ti"] },
+  { id: "gpu-rx580-4gb", cat: "gpu", all: ["rx 580"], any: ["4gb", "04g", "4g"], none: ["8gb", "laptop", "notebook", "portable"] },
   { id: "gpu-rx580-8gb", cat: "gpu", all: ["rx 580"] },
   { id: "gpu-rx7900xtx-24gb", cat: "gpu", all: ["7900xtx"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7900xt-20gb", cat: "gpu", all: ["7900xt"], none: ["laptop", "notebook", "portable"] },
@@ -318,7 +323,8 @@ const RULES = [
   { id: "gpu-rtx4070ti-12gb", cat: "gpu", all: ["4070ti"], none: ["super", "laptop", "notebook", "portable"] },
   { id: "gpu-rtx5080-16gb", cat: "gpu", all: ["5080"] },
   { id: "gpu-rtx5070ti-16gb", cat: "gpu", all: ["5070ti"], none: ["laptop", "notebook"] },
-  { id: "gpu-rtx5060ti-16gb", cat: "gpu", all: ["5060ti"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-rtx5060ti-16gb", cat: "gpu", all: ["5060ti", "16gb"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-rtx5060ti-8gb", cat: "gpu", all: ["5060ti"], none: ["16gb", "laptop", "notebook", "portable"] },
   { id: "gpu-rtx4070s-12gb", cat: "gpu", all: ["4070super"], none: ["laptop", "notebook", "portable", "ti"] },
   { id: "gpu-rtx4070tis-16gb", cat: "gpu", all: ["4070tisuper"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-gt1030-4gb", cat: "gpu", all: ["1030"], none: ["laptop", "notebook", "portable"] },
@@ -355,7 +361,8 @@ const RULES = [
   { id: "gpu-rtx4080s-16gb", cat: "gpu", all: ["4080super"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rtx4090-24gb", cat: "gpu", all: ["4090"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rtx5090-32gb", cat: "gpu", all: ["5090"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-rx9060xt-16gb", cat: "gpu", all: ["9060xt"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-rx9060xt-16gb", cat: "gpu", all: ["9060xt", "16gb"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-rx9060xt-8gb", cat: "gpu", all: ["9060xt"], none: ["16gb", "laptop", "notebook", "portable"] },
   { id: "case-v217", cat: "case", all: ["v217"] },
   { id: "case-vector", cat: "case", all: ["vector"], none: ["v217"] },
   { id: "case-nx400", cat: "case", all: ["nx400"] },
@@ -556,6 +563,7 @@ const RULES = [
   { id: "mon-24-280", cat: "monitor", all: ["vg249qm5a"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-34-uw", cat: "monitor", all: ["341cqpx"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-27-180", cat: "monitor", all: ["27g4"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-27-180", cat: "monitor", all: ["27g42e"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-27-100", cat: "monitor", all: ["p27v"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-office-24", cat: "monitor", all: ["p24v"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-office-24", cat: "monitor", all: ["v24v"], none: ["laptop", "tv", "televiseur"] },
@@ -604,6 +612,33 @@ const EXTRA_JUNK = /laptop|notebook|macbook|printer|imprimante|scanner|projecteu
 // through to the existing extras path, never canonical. Genuine standalone
 // store titles never contain these words (verified against live bake output).
 const BUNDLE_VETO = /\bbundle\b|\bpack\b|\bcombo\b|\blot de\b/i;
+// ---- full-PC veto (gpu/cpu rows only): a whole tower priced as one part ----
+// Requires full-PC markers (bare "AVEC CONFIG"/"EN CONFIGURATION" single-part
+// rows carry none and still match). The R in GAMER is required so "ECRAN PC
+// GAME REVOLUTION" monitors survive.
+const FULLPC_VETO = /config\s+pc|pc\s+(gammer|gamers?|gaming)|pc\s+complet|unit[eé]s?\s+centrale?s?|setup\s+(gamer|complet|gaming)|config\s+i\d|avec.{0,40}(ram|nvme|ddr)/i;
+// ---- laptop/prebuilt veto (gpu/cpu/ram/ssd rows only) ----
+// Bare "nitro"/"tuf gaming" are NOT vetoed (Sapphire Nitro GPUs, ASUS TUF
+// boards survive); screen sizes need a separator ([,.\s]+ not *) so "136" in
+// "i5-13600K" and "1733" RAM speeds don't friendly-fire.
+const LAPTOP_VETO = /laptop|notebook|macbook|latitude|optiplex|thinkpad|ideapad|thinkcentre|ideacentre|vivobook|pavilion|victus|omen|legion|zephyrus|tuf\s*[af]\d{2}|acer.{0,10}nitro|nitro.{0,10}acer|nitro\s*\d|pouce|1[357][,.\s]+6|17[,.\s]+3|all\s*in\s*one/i;
+// ---- power-tool/appliance veto (GLOBAL, all categories) ----
+// A/B on full.json: 10 hits, all inside psu rows, 0 outside -> safe globally.
+// Kills "Meuleuse 650W", "Machine à café 650W", "Multiprise 2500W" etc. that
+// match PSU wattage rules.
+const TOOL_VETO = /tron[cç]on|meuleuse|\bscie\b|mixeur|gaufre|sandwich|\bcaf[eé]\b|perceuse|ponceuse|soudeur|soudeuse|aspirateur|tondeuse|\brabot\b|compresseur|[ée]lectrog[eè]ne|onduleur|multiprise|rallonge|cuisine|kitchen|taille-haie|d[ée]broussailleuse|fer à repasser|s[eè]che-cheveux|marmite|cocotte/i;
+// ---- PSU-into-motherboard veto (motherboard rows only) ----
+// Moves exactly the ANTEC ATOM B650W rows (matched via "b650") to extras.
+const MOBOPSU_VETO = /psu|\balimentation\b|80\s*plus|modulaire|bronze|gold|antec|seasonic|\bfsp\b|corsair/i;
+// Single gate, run on the RAW cleaned title BEFORE matchRule. Vetoed rows
+// bypass extras caps exactly like bundles (replaces BUNDLE_VETO at call-sites).
+function isVetoed(category, title) {
+  if (BUNDLE_VETO.test(title) || TOOL_VETO.test(title)) return true;
+  if ((category === "gpu" || category === "cpu") && (FULLPC_VETO.test(title) || LAPTOP_VETO.test(title))) return true;
+  if ((category === "ram" || category === "ssd") && LAPTOP_VETO.test(title)) return true;
+  if (category === "motherboard" && MOBOPSU_VETO.test(title)) return true;
+  return false;
+}
 
 // ---- variant-capacity guard (SSD/RAM) ----
 // Merchants list one parent product for every capacity ("LEGEND 710
@@ -754,6 +789,68 @@ function variantRedirect(category, title, matched, has) {
   return matched;
 }
 
+// Digit-start tokens (len>3) scan the space-padded normed title with a
+// space-flexible pattern: the token's chars joined by \s* (precompiled per
+// token). Flat-concatenation is retired — any flat occurrence is just the
+// token's chars in t separated only by spaces, which \s* already covers, and
+// flat destroyed the boundaries the guards need: "7800X 3D" died (flat
+// "...ryzen77800x3d" trips the LEFT guard on the "7" of "ryzen 7") and
+// "4080 SUPER 16G" died (flat "16gwindforce" fails \b).
+// LEFT guard: the char before the match must not be 0-9, so "2500W" is not
+// "500w", "14100" is not "4100" and "164gb" is not "64gb". RIGHT depends on
+// the token shape. Letter-ending ("5600x","12900k","5060ti","980pro","850g",
+// "200hz"): end/space, a glued suffix (ti|super|xt|xtx|gre|f|s: "12900KF"->
+// "12900k", "12900KS"->"12900k") or a capacity remainder ("5060ti"+"8g"
+// routes VRAM rows). Pure-digit ("5600","12400","6000","650","1050","1030"):
+// end/space, "f" ("12400F"), "w" ("MWE 650W"), "pro" (vestigial, harmless),
+// literal "hz" ("280 HZ" monitors; NOT h[a-z]*, so "5600H"->"5600" stays
+// blocked and "GTX 950M" stays safe), m+letters ("6000MHZ","6000MT"),
+// v* ("1050VA") or a capacity remainder ("GT 1030 4GB" glued as "10304gb"
+// still reaches "1030"). Single-letter suffixes that change the part stay
+// blocked ("5600G"!="5600", "5700X"!="5700", "12400H"!="12400",
+// "5600T"!="5600"); bare "g"-units are rejected (CAP needs \d+ before g) for
+// the same reason. none-tokens use the same has(), so spaced-sibling killing
+// is restored: plain-2060's none "2060super" blocks "2060 SUPER", and
+// plain-9900x's none "9900x3d" blocks "9900X 3D" (which had been falling into
+// the 9900x pool and displacing legit rows). Accepted edge: a none "16gb" no
+// longer blocks "16gbps" (rest "ps" fails the CAP); network-speed strings in
+// GPU titles are rare enough to take that trade.
+// Glued forms like "8pin"/"24pin" keep working: \s* matches zero spaces too,
+// so the regex covers spaced titles ("24 pin") with no flat pass.
+const digitRxCache = new Map();
+function digitTokRx(tok) {
+  let rx = digitRxCache.get(tok);
+  if (!rx) {
+    const body = [...tok].map((c) => (/[a-z0-9]/.test(c) ? c : "\\" + c)).join("\\s*");
+    rx = new RegExp(body, "g");
+    digitRxCache.set(tok, rx);
+  }
+  rx.lastIndex = 0;
+  return rx;
+}
+function hasDigitTokOn(s, tok) {
+  const letterEnd = /[a-z]$/.test(tok);
+  const rx = digitTokRx(tok);
+  let m;
+  while ((m = rx.exec(s))) {
+    const i = m.index;
+    if (i > 0 && s[i - 1] >= "0" && s[i - 1] <= "9") continue;
+    const rest = s.slice(i + m[0].length);
+    if (rest === "" || rest[0] === " ") return true;
+    if (letterEnd) {
+      if (/^(ti|super|xt|xtx|gre|f|s)\b/.test(rest)) return true;
+      if (/^\d+\s*(gb|tb|g|hz)\b/.test(rest)) return true;
+    } else {
+      if (/^(f|w|pro)\b/.test(rest)) return true;
+      if (/^hz\b/.test(rest)) return true;
+      if (/^m[a-z]+\b/.test(rest)) return true;
+      if (/^v[a-z]*\b/.test(rest)) return true;
+      if (/^\d+\s*(gb|tb|g)\b/.test(rest)) return true;
+    }
+  }
+  return false;
+}
+
 function matchRule(category, title) {
   const t = " " + norm(title) + " ";
   const words = t.split(" ").filter(Boolean);
@@ -761,7 +858,8 @@ function matchRule(category, title) {
   const has = (tok) => {
     if (tok.includes(" ")) return t.includes(tok) || flat.includes(tok.replace(/ /g, ""));
     if (tok.length <= 3) return words.includes(tok); // no "ti"-in-"garantie" false hits
-    return t.includes(tok) || flat.includes(tok);
+    if (/^[a-z]/.test(tok)) return t.includes(tok) || flat.includes(tok); // b550/sn850/gt730: unchanged
+    return hasDigitTokOn(t, tok); // digit-start len>3: space-flex regex on t only, no flat pass
   };
   for (const r of RULES) {
     if (r.cat !== category) continue;
@@ -771,6 +869,33 @@ function matchRule(category, title) {
     return variantRedirect(category, title, r.id, has);
   }
   return null;
+}
+
+// ---- price-sanity gates (ditch total, never extras) ----
+// Bands mirror lib/scrapers/validate.ts CATEGORY_BANDS so scrape-time and
+// bake-time agree. Per-product band = seed median x[0.4, 2.5].
+const CAT_BANDS = { cpu: [1000, 250000], cooler: [500, 90000], motherboard: [4000, 200000], ram: [1000, 300000], ssd: [800, 160000], gpu: [2000, 1500000], case: [1000, 130000], psu: [800, 150000], monitor: [3000, 400000] };
+const SEED_MEDS = (() => {
+  try {
+    const seed = JSON.parse(fs.readFileSync("supabase-seed.json", "utf8"));
+    const by = new Map();
+    for (const o of seed.offers || []) {
+      if (!o || !o.p || typeof o.d !== "number") continue;
+      if (!by.has(o.p)) by.set(o.p, []);
+      by.get(o.p).push(o.d);
+    }
+    const med = new Map();
+    for (const [k, v] of by) { v.sort((a, b) => a - b); med.set(k, v[Math.floor(v.length / 2)]); }
+    return med;
+  } catch { return new Map(); }
+})();
+function isAbsurd(category, pid, price) {
+  const b = CAT_BANDS[category];
+  if (!b) return false;
+  if (price < b[0] || price > b[1]) return true;
+  const m = SEED_MEDS.get(pid);
+  if (!m) return false;
+  return price < m * 0.4 || price > m * 2.5;
 }
 
 const matched = []; // Offer-shaped
@@ -793,13 +918,14 @@ for (const [key, val] of Object.entries(report)) {
     const title = clean(o.title);
     if (!title || !o.priceDa) continue;
     const cond = /\bused\b|occasion|r[eé]cup[eé]ration/i.test(title) ? "used" : "new";
-    const isBundle = BUNDLE_VETO.test(title);
-    const pid = isBundle ? null : matchRule(category, title);
+    const isVeto = isVetoed(category, title);
+    const pid = isVeto ? null : matchRule(category, title);
+    if (pid && isAbsurd(category, pid, o.priceDa)) continue; // absurd price: ditch total
     if (pid) {
       if (seedPairs.has(pid + "|" + store)) continue; // seed wins
       matched.push({ productId: pid, store, wilaya: WILAYA[store], titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: o.stock || "En stock", condition: cond, image: o.image || "", scrapedAt: NOW });
-    } else if (!EXTRA_JUNK.test(title) && (isBundle || extraCount < 12)) {
-      if (!isBundle) extraCount++;
+    } else if (!EXTRA_JUNK.test(title) && (isVeto || extraCount < 12)) {
+      if (!isVeto) extraCount++;
       pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store, wilaya: WILAYA[store], url: o.url, image: o.image || "", condition: cond });
     }
   }
@@ -807,6 +933,7 @@ for (const [key, val] of Object.entries(report)) {
 
 // ouedkniss
 let okExtra = 0;
+const seenOkUrl = new Set();
 for (const o of report["ouedkniss:all"] || []) {
   const category = OK_CAT[o.query] || "gpu";
   const title = clean(o.title);
@@ -814,12 +941,15 @@ for (const o of report["ouedkniss:all"] || []) {
   const isNew = /neuf|new|blister|jamais|scell/i.test(title);
   // canonical match only — bundles/laptops/unknown VRAM go to extras, never canonical
   // vetoed bundle rows bypass the 150-cap so combo ads stay visible as raw extras
-  const isBundle = BUNDLE_VETO.test(title);
-  const pid = isBundle ? null : matchRule(category, title);
+  const isVeto = isVetoed(category, title);
+  const pid = isVeto ? null : matchRule(category, title);
+  if (pid && isAbsurd(category, pid, o.priceDa)) continue; // absurd price: ditch total
   if (pid) {
+    if (seenOkUrl.has(o.url)) continue; // same ad twice in feed: keep first assignment
+    seenOkUrl.add(o.url);
     matched.push({ productId: pid, store: "Ouedkniss", wilaya: o.wilaya || "DZ", titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: "Ouedkniss", condition: isNew ? "new" : "used", image: o.image || "", scrapedAt: NOW });
-  } else if (!EXTRA_JUNK.test(title) && (isBundle || okExtra < 150)) {
-    if (!isBundle) okExtra++;
+  } else if (!EXTRA_JUNK.test(title) && (isVeto || okExtra < 150)) {
+    if (!isVeto) okExtra++;
     pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: "Ouedkniss", wilaya: o.wilaya || "DZ", url: o.url, image: o.image || "", condition: isNew ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: o.isFromStore ? 1 : 0 });
   }
 }

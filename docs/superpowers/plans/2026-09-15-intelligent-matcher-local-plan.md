@@ -123,7 +123,7 @@ Run :
 ```bash
 node -e 'const fs=require("fs"),vm=require("vm");const src=fs.readFileSync("bake.cjs","utf8");const code=src.slice(src.indexOf("function norm("),src.indexOf("const matched = []"));const ctx={fs,console};vm.createContext(ctx);vm.runInContext(code,ctx);const isAbsurd=vm.runInContext("isAbsurd",ctx);console.log("3060@180000:",isAbsurd("gpu","gpu-rtx3060-12gb",180000));console.log("3060@65000:",isAbsurd("gpu","gpu-rtx3060-12gb",65000));'
 ```
-Expected: `3060@180000: true` puis `3060@65000: false`. (Si la médiane seed manque pour ce pid, seul le 2e cas est décisif et le 1er dépend de la bande catégorie — gpu max 1 500 000 donc 180 000 ne serait rejeté QUE par la bande produit ; si `false`, vérifier que `SEED_MEDS` contient bien le pid avant de continuer.)
+Expected: `3060@180000: false` (médiane 77000 × 2.5 = 192500 : le cas PC-complet à 180k est tué par le détecteur bundle Task 4a, pas par la bande — choix spec), `3060@65000: false`. Leurres bas type `3060@5000: true` (sous 0.4×médiane).
 
 - [ ] **Step 5: Commit**
 
