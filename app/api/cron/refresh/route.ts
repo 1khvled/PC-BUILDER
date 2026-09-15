@@ -27,6 +27,8 @@ export async function GET(req: Request) {
   const jobs: [string, string][] = [];
   if (store && cat) {
     jobs.push([store, cat]);
+  } else if (searchParams.get("okq")) {
+    // Pure Ouedkniss job (okq/oks): skip store scraping entirely.
   } else if (scope === "full") {
     for (const s of STORE_NAMES) {
       if (onlyStores.length && !onlyStores.includes(s)) continue;
