@@ -211,7 +211,8 @@ function extractCondition(desc?: string | null, title?: string): string | undefi
  */
 export async function searchOuedknissFull(
   keywords: string,
-  maxPages: number = 3
+  maxPages: number = 3,
+  storeId?: string | null
 ): Promise<OuedknissOffer[]> {
   const out: OuedknissOffer[] = [];
   const seenIds = new Set<string>();
@@ -233,10 +234,10 @@ export async function searchOuedknissFull(
       body: JSON.stringify({
         query: SEARCH_QUERY,
         variables: {
-          q: keywords,
           filter: {
             page,
             count: 48,
+            ...(storeId ? { storeId } : {}),
           },
         },
       }),

@@ -82,14 +82,18 @@ export async function GET(req: Request) {
     return NextResponse.json({ queries: okQueries });
   }
   const okq = searchParams.get("okq") || "";
+  const oks = searchParams.get("oks") || "";
   if (okq) {
     try {
-      const ok = await searchOuedkniss(okq);
+      const ok = await searchOuedkniss(okq, oks || undefined);
+      const stamped = ok.map((o) => ({ ...o, query: okq }));
+      // Seller sweep: rows join ouedkniss:all with the raw query stamped,
+      // so OK_CAT + seenOkUrl in bake work with zero bake changes.
       return NextResponse.json({
         ok: true,
         report: {
-          [`ouedkniss:${okq}`]: { count: ok.length, offers: ok },
-          "ouedkniss:all": ok.map((o) => ({ ...o, query: okq })),
+          [oks ? `ouedkniss-store:${oks}:${okq}` : `ouedkniss:${okq}`]: { count: ok.length, offers: ok },
+          "ouedkniss:all": stamped,
         },
       });
     } catch (e) {

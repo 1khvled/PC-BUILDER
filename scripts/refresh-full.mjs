@@ -84,6 +84,20 @@ async function main() {
       queries = qs || [];
     }
     for (const q of queries) jobs.push({ kind: "ok", q, key: `ouedkniss:${q}` });
+    // Seller sweep (§7.5): top Ouedkniss parts sellers, scoped per query.
+    // Rows land in ouedkniss:all with the raw query stamped; bake dedups via
+    // seenOkUrl, so overlap with normal query rows is harmless. Skip laptop
+    // sellers (their inventory vetoes to extras anyway).
+    const OKSTORES = [
+      ["19409", "V2 TECH"],
+      ["14143", "MDI informatique"],
+      ["31499", "Khalil Technologie"],
+      ["5162", "A&Y Info Tech"],
+      ["12902", "Akram Informatique"],
+    ];
+    if (!SKIP_OK) {
+      for (const [sid] of OKSTORES) for (const q of queries) jobs.push({ kind: "oks", store: sid, q, key: `ouedkniss-store:${sid}:${q}` });
+    }
     const pending = jobs.filter((j) => !prog.done[j.key]);
     console.log(`jobs: total=${jobs.length} done=${jobs.length - pending.length} pending=${pending.length} limit=${LIMIT === Infinity ? "inf" : LIMIT}`);
     let ran = 0;
@@ -91,7 +105,9 @@ async function main() {
       if (ran >= LIMIT) break;
       const path = job.kind === "store"
         ? `/api/cron/refresh?store=${encodeURIComponent(job.store)}&cat=${encodeURIComponent(job.cat)}&full=1&ok=0`
-        : `/api/cron/refresh?okq=${encodeURIComponent(job.q)}`;
+        : job.kind === "oks"
+          ? `/api/cron/refresh?oks=${encodeURIComponent(job.store)}&okq=${encodeURIComponent(job.q)}`
+          : `/api/cron/refresh?okq=${encodeURIComponent(job.q)}`;
       let lastErr = null;
       for (let attempt = 1; attempt <= 2; attempt++) {
         try {
