@@ -173,7 +173,7 @@ const RULES = [
   { id: "cooler-am1204", cat: "cooler", all: ["am1204"] },
   { id: "cooler-lq360", cat: "cooler", all: ["lq360"] },
   { id: "cooler-gl120", cat: "cooler", all: ["gl120"] },
-  { id: "cooler-tt120", cat: "cooler", all: ["thermaltake"] },
+  { id: "cooler-tt120", cat: "cooler", all: ["thermaltake"], none: ["connecteur", "connector", "fitting", "fill", "raccord", "embout", "extension", "adaptateur", "adapter", "barbs", "compression", "petg", "controller", "tube"] },
   { id: "cooler-mars", cat: "cooler", all: ["mars"] },
   { id: "cooler-f2005", cat: "cooler", all: ["f2005"] },
   { id: "cooler-a30", cat: "cooler", all: ["a30"] },
