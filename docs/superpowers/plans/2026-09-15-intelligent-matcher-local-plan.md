@@ -200,6 +200,13 @@ function matchAnyCategory(title) {
   }
   return hits;
 }
+// Déclencheur : ≥2 familles ET syntaxe combo explicite (les nombres nus
+// collisionnent : "7600" = CPU Ryzen et vitesse DDR5, "4.0 GHz / 5.2 GHz"
+// n'est pas un combo — le slash exigé a des voisins non-numériques).
+const COMBO_SYNTAX = /\s[+&]\s|[^0-9.]\s\/\s[^0-9.]|\bavec\b|\bcombo\b|\bpack\b|\bbundle\b|\bconfig\b|\bpc\s+gamer|\bpc\s+complet/i;
+function isBundle(title, desc) {
+  return matchAnyCategory(title).length >= 2 && COMBO_SYNTAX.test(title + " " + (desc || ""));
+}
 function splitDescriptionPrices(desc) {
   const out = [];
   for (const line of String(desc || "").split(/\r?\n/)) {
@@ -217,8 +224,7 @@ function splitDescriptionPrices(desc) {
 
 Ancre : après `const isVeto = isVetoed(category, title);`, avant `const pid = ...` (re-lire). Insérer :
 ```js
-    const famHits = matchAnyCategory(title);
-    if (famHits.length >= 2) {
+    if (isBundle(title, o.description)) {
       let split = false;
       for (const part of splitDescriptionPrices(o.description)) {
         const sub = matchAnyCategory(clean(part.label));
