@@ -261,6 +261,10 @@ export async function searchOuedknissFull(
 
       // STORE-ONLY policy: individuals have no warranty/invoice — skip them.
       if (!item.isFromStore) continue;
+      // Availability first: only live listings carry trustworthy prices.
+      // Search normally returns PUBLISHED; absent status (HTML fallback era)
+      // keeps the row — never punish missing data.
+      if (item.status && String(item.status).toUpperCase() !== "PUBLISHED") continue;
 
       const price = item.price ?? item.pricePreview ?? null;
       if (price === null || price < 500 || price > 5_000_000) continue;

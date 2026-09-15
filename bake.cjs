@@ -938,7 +938,17 @@ function matchRule(category, title) {
 // Bands mirror lib/scrapers/validate.ts CATEGORY_BANDS so scrape-time and
 // bake-time agree. Per-product band = seed median x[0.4, 2.5].
 const CAT_BANDS = { cpu: [1000, 250000], cooler: [500, 90000], motherboard: [4000, 200000], ram: [1000, 300000], ssd: [800, 160000], gpu: [2000, 1500000], case: [1000, 130000], psu: [800, 150000], monitor: [3000, 400000] };
+// Stable reference: lib/data/price-meds.json (frozen medians, versioned).
+// Reading them from the regenerating seed made bake oscillate (medians lag
+// one bake behind and borderline rows flip-flop forever). Refresh the file
+// manually when the catalog genuinely shifts, never per-bake.
 const SEED_MEDS = (() => {
+  try {
+    const med = new Map();
+    const ref = JSON.parse(fs.readFileSync("lib/data/price-meds.json", "utf8"));
+    for (const [k, v] of Object.entries(ref)) if (typeof v === "number") med.set(k, v);
+    if (med.size > 0) return med;
+  } catch { /* fall through to seed */ }
   try {
     const seed = JSON.parse(fs.readFileSync("supabase-seed.json", "utf8"));
     const by = new Map();
@@ -974,7 +984,7 @@ function matchAnyCategory(title) {
 function splitDescriptionPrices(desc) {
   const out = [];
   for (const line of String(desc || "").split(/\r?\n/)) {
-    const m = line.match(/(.{4,60}?)\s*[:\-–]\s*(\d[\d\s.]{3,})\s*(da|dzd|dinars?)/i);
+    const m = line.match(/(.{4,60}?)\s*[:\-–+]\s*(\d[\d\s.]{3,})\s*(da|dzd|dinars?)/i);
     if (!m) continue;
     const price = parseInt(m[2].replace(/[^0-9]/g, ""), 10);
     if (!price || price < 500 || price > 5000000) continue;
