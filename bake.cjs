@@ -1108,7 +1108,8 @@ function pushExtra(category, e) {
 for (const [key, val] of Object.entries(report)) {
   if (key === "ouedkniss:all" || !val.offers || !Array.isArray(val.offers)) continue;
   const [store, category] = key.split("/");
-  if (!store || !category || !WILAYA[store]) continue;
+  if (!store || !category) continue;
+  const storeWilaya = WILAYA[store] || "Alger";
   let extraCount = 0;
   for (const o of val.offers) {
     const title = clean(o.title);
@@ -1121,7 +1122,7 @@ for (const [key, val] of Object.entries(report)) {
         const sub = matchAnyCategory(clean(part.label));
         if (sub.length === 1 && !isAbsurd(sub[0].cat, sub[0].pid, part.price)) {
           if (seedPairs.has(sub[0].pid + "|" + store)) continue;
-          matched.push({ productId: sub[0].pid, store, wilaya: WILAYA[store], titleRaw: (title + " | " + part.label).slice(0, 120), priceDa: part.price, url: o.url, stock: o.stock || "En stock", condition: cond, image: o.image || "", scrapedAt: NOW });
+          matched.push({ productId: sub[0].pid, store, wilaya: storeWilaya, titleRaw: (title + " | " + part.label).slice(0, 120), priceDa: part.price, url: o.url, stock: o.stock || "En stock", condition: cond, image: o.image || "", scrapedAt: NOW });
           split = true;
         }
       }
@@ -1132,10 +1133,10 @@ for (const [key, val] of Object.entries(report)) {
     if (pid && isAbsurd(category, pid, o.priceDa)) continue; // absurd price: ditch total
     if (pid) {
       if (seedPairs.has(pid + "|" + store)) continue; // seed wins
-      matched.push({ productId: pid, store, wilaya: WILAYA[store], titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: o.stock || "En stock", condition: cond, image: o.image || "", scrapedAt: NOW });
+      matched.push({ productId: pid, store, wilaya: storeWilaya, titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: o.stock || "En stock", condition: cond, image: o.image || "", scrapedAt: NOW });
     } else if (!isVeto && !EXTRA_JUNK.test(title) && extraCount < 12) {
       extraCount++;
-      pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store, wilaya: WILAYA[store], url: o.url, image: o.image || "", condition: cond });
+      pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store, wilaya: storeWilaya, url: o.url, image: o.image || "", condition: cond });
     }
   }
 }
@@ -1148,12 +1149,20 @@ for (const o of report["ouedkniss:all"] || []) {
   const category = OK_CAT[o.query] || "gpu";
   const title = clean(o.title);
   if (!title || !o.priceDa) continue;
+
+  // Filter out ancient dead listings: reject deals older than October 2025
+  const postDate = o.postedAt || o.day || "";
+  if (postDate && postDate < "2025-10-01") continue;
+
+  const realStore = (o.store && o.store !== "Ouedkniss" ? o.store : (o.seller || "Ouedkniss")).trim();
+  const realWilaya = o.wilaya || WILAYA[realStore] || "Alger";
+
   // Tier 3 (particulier, isFromStore === false): visible in extras only,
   // never a price reference. Skip entirely if non-PC tool, non-PC slug or non-legit PSU.
   if (o.isFromStore === false) {
     if (!isVetoed(category, title, o.url) && !EXTRA_JUNK.test(title) && okiExtra < 150) {
       okiExtra++;
-      pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: "Ouedkniss", wilaya: o.wilaya || "DZ", url: o.url, image: o.image || "", condition: /neuf|new|blister|jamais|scell/i.test(title) ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: 0 });
+      pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: realStore, wilaya: realWilaya, url: o.url, image: o.image || "", condition: /neuf|new|blister|jamais|scell/i.test(title) ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: 0 });
     }
     continue;
   }
@@ -1167,7 +1176,7 @@ for (const o of report["ouedkniss:all"] || []) {
       if (sub.length === 1 && !isAbsurd(sub[0].cat, sub[0].pid, part.price)) {
         if (seenOkUrl.has(o.url + "#" + sub[0].pid)) continue;
         seenOkUrl.add(o.url + "#" + sub[0].pid);
-        matched.push({ productId: sub[0].pid, store: "Ouedkniss", wilaya: o.wilaya || "DZ", titleRaw: (title + " | " + part.label).slice(0, 120), priceDa: part.price, url: o.url, stock: "Ouedkniss", condition: isNew ? "new" : "used", image: o.image || "", scrapedAt: NOW });
+        matched.push({ productId: sub[0].pid, store: realStore, wilaya: realWilaya, titleRaw: (title + " | " + part.label).slice(0, 120), priceDa: part.price, url: o.url, stock: o.stock || "En stock", condition: isNew ? "new" : "used", image: o.image || "", scrapedAt: NOW });
         split = true;
       }
     }
@@ -1179,10 +1188,10 @@ for (const o of report["ouedkniss:all"] || []) {
   if (pid) {
     if (seenOkUrl.has(o.url)) continue; // same ad twice in feed: keep first assignment
     seenOkUrl.add(o.url);
-    matched.push({ productId: pid, store: "Ouedkniss", wilaya: o.wilaya || "DZ", titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: "Ouedkniss", condition: isNew ? "new" : "used", image: o.image || "", scrapedAt: NOW });
+    matched.push({ productId: pid, store: realStore, wilaya: realWilaya, titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: o.stock || "En stock", condition: isNew ? "new" : "used", image: o.image || "", scrapedAt: NOW });
   } else if (!isVeto && !EXTRA_JUNK.test(title) && okExtra < 150) {
     okExtra++;
-    pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: "Ouedkniss", wilaya: o.wilaya || "DZ", url: o.url, image: o.image || "", condition: isNew ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: o.isFromStore ? 1 : 0 });
+    pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: realStore, wilaya: realWilaya, url: o.url, image: o.image || "", condition: isNew ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: o.isFromStore ? 1 : 0 });
   }
 }
 
@@ -1247,15 +1256,22 @@ fs.writeFileSync("lib/data/live-images-src.json", JSON.stringify(imgSrc, null, 1
 const prodSrc = fs.readFileSync("lib/data/products.ts", "utf8");
 const seedProducts = [...prodSrc.matchAll(/id:\s*"([^"]+)",\s*category:\s*"([^"]+)",\s*brand:\s*"([^"]+)",\s*model:\s*"([^"]+)"/g)]
   .map((m) => ({ id: m[1], category: m[2], brand: m[3], model: m[4] }));
+const storeWilayaMap = new Map();
+for (const o of capped) {
+  if (!storeWilayaMap.has(o.store) || storeWilayaMap.get(o.store) === "Alger") {
+    storeWilayaMap.set(o.store, o.wilaya || WILAYA[o.store] || "Alger");
+  }
+}
+const seedStores = [...storeWilayaMap.entries()].map(([name, wilaya]) => ({ name, wilaya }));
 const seed = {
   scraped_at: NOW,
   day: NOW.slice(0, 10),
   products: seedProducts,
-  stores: [...new Set(capped.map((o) => o.store))].map((s) => ({ name: s, wilaya: WILAYA[s] || "Alger" })),
+  stores: seedStores,
   offers: capped.map((o) => ({
     p: o.productId, s: o.store, d: o.priceDa, c: o.condition === "used" ? 0 : 1,
     u: o.url.slice(0, 160), t: o.titleRaw.slice(0, 90),
-    w: o.stock === "Rupture" ? "out" : o.stock === "En stock" ? "in" : o.stock === "Ouedkniss" ? "ouedkniss" : (o.stock || ""),
+    w: o.stock === "Rupture" ? "out" : o.stock === "En stock" ? "in" : o.stock === "Ouedkniss" ? "ouedkniss" : (o.stock || "in"),
   })),
 };
 fs.writeFileSync("supabase-seed.json", JSON.stringify(seed));

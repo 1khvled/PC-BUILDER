@@ -54,17 +54,39 @@ async function main() {
   await api("canonical_products?on_conflict=id", "POST", seed.products, { Prefer: "resolution=merge-duplicates" });
   console.log("products upserted:", seed.products.length);
 
-  // 3. offers snapshot upsert
-  const offers = seed.offers.map((o) => ({
-    product_id: o.p, store_id: sid[o.s], price_da: o.d, cond: o.c, url: o.u, title: o.t, day: seed.day,
-    image: o.i ?? "", stock: o.w ?? "",
-  })).filter((o) => o.store_id);
-  await api("offers?on_conflict=product_id,store_id,cond", "POST", offers, { Prefer: "resolution=merge-duplicates" });
+  // 3. offers snapshot upsert (deduplicated by product_id, store_id, cond)
+  const dedupedMap = new Map();
+  for (const o of seed.offers) {
+    const storeId = sid[o.s];
+    if (!storeId) continue;
+    const key = `${o.p}|${storeId}|${o.c}`;
+    if (!dedupedMap.has(key) || dedupedMap.get(key).price_da > o.d) {
+      dedupedMap.set(key, {
+        product_id: o.p,
+        store_id: storeId,
+        price_da: o.d,
+        cond: o.c,
+        url: o.u,
+        title: o.t,
+        day: seed.day,
+        image: o.i ?? "",
+        stock: o.w ?? "",
+      });
+    }
+  }
+  const offers = [...dedupedMap.values()];
+  for (let i = 0; i < offers.length; i += 400) {
+    const chunk = offers.slice(i, i + 400);
+    await api("offers?on_conflict=product_id,store_id,cond", "POST", chunk, { Prefer: "resolution=merge-duplicates" });
+  }
   console.log("offers upserted:", offers.length);
 
-  // 4. history append (ignore dupes if re-run same day)
+  // 4. history append (ignore dupes if re-run same day, chunked in batches of 400)
   const hist = offers.map(({ product_id, store_id, price_da }) => ({ product_id, store_id, price_da, day: seed.day }));
-  await api("price_history?on_conflict=product_id,store_id,day", "POST", hist, { Prefer: "resolution=ignore-duplicates" });
+  for (let i = 0; i < hist.length; i += 400) {
+    const chunk = hist.slice(i, i + 400);
+    await api("price_history?on_conflict=product_id,store_id,day", "POST", chunk, { Prefer: "resolution=ignore-duplicates" });
+  }
   console.log("history rows appended:", hist.length);
 
   // 5. retention prune (>400 days)
