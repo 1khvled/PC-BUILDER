@@ -5,9 +5,8 @@ import { bestOffer, productImage } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 
-export function generateStaticParams() {
-  return GUIDES.map((g) => ({ slug: g.slug }));
-}
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function GuidePage({ params }: { params: { slug: string } }) {
   const [products, offers, scrapedAt] = await Promise.all([

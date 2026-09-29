@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getOffers } from "@/lib/data/catalog";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 // GET /api/product/:id/offers — organic always sorted price ASC (PLAN 8 trust rule)
 export async function GET(_req: Request, { params }: { params: { id: string } }) {

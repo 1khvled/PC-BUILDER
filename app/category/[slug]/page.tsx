@@ -5,10 +5,7 @@ import { getOffers, getProducts } from "@/lib/data/catalog";
 import CategoryCatalogClient from "@/components/CategoryCatalogClient";
 
 export const dynamic = "force-dynamic";
-
-export function generateStaticParams() {
-  return CATEGORIES.map((c) => ({ slug: c.slug }));
-}
+export const revalidate = 0;
 
 export default async function CategoryPage({ params }: { params: { slug: string } }) {
   const currentCat = CATEGORIES.find((c) => c.slug === params.slug);

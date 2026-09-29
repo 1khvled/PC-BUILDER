@@ -39,6 +39,7 @@ function deals(products: Product[], offers: Offer[]): Deal[] {
 }
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function DealsPage() {
   const [products, offers, scrapedAt] = await Promise.all([

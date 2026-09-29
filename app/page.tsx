@@ -6,6 +6,7 @@ import { GUIDES } from "@/lib/data/guides";
 import Thumb from "@/components/Thumb";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 function fmt(n: number) {
   return n.toLocaleString("fr-DZ") + " DA";

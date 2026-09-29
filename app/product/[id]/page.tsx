@@ -8,11 +8,7 @@ import PriceChart from "@/components/PriceChart";
 import FbResolveForm from "@/components/FbResolveForm";
 
 export const dynamic = "force-dynamic";
-
-export async function generateStaticParams() {
-  const prods = await getProducts();
-  return prods.map((p) => ({ id: p.id }));
-}
+export const revalidate = 0;
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
   const [product, allOffers, history, scrapedAt] = await Promise.all([

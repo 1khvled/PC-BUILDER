@@ -342,16 +342,16 @@ export default function Header() {
       </div>
 
       {/* Sub-Navigation Bar (PCPartPicker signature 2nd tier menu) */}
-      <div className="border-t border-slate-200 bg-white">
+      <div className="border-t border-slate-200 bg-white relative z-30">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-600">
-          <nav aria-label="Navigation principale" className="flex items-center gap-1 sm:gap-2 py-1.5 overflow-x-auto whitespace-nowrap [scrollbar-width:thin]">
+          <nav aria-label="Navigation principale" className="flex items-center gap-1 sm:gap-2 py-1.5 overflow-visible">
             <Link
               href="/builder"
               aria-current={pathname === "/builder" ? "page" : undefined}
               className={`px-3 py-1.5 rounded transition-colors flex items-center gap-1.5 ${
                 pathname === "/builder"
                   ? "text-[#2c87c3] font-bold"
-                  : "hover:text-slate-900"
+                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
               <svg className="w-4 h-4 text-[#2c87c3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -362,26 +362,39 @@ export default function Header() {
             </Link>
 
             {/* Products Dropdown */}
-            <div className="relative" ref={catDropdownRef}>
+            <div
+              className="relative"
+              ref={catDropdownRef}
+              onMouseEnter={() => setCatDropdownOpen(true)}
+              onMouseLeave={() => setCatDropdownOpen(false)}
+            >
               <button
-                onClick={() => setCatDropdownOpen((v) => !v)}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCatDropdownOpen((v) => !v);
+                }}
                 aria-expanded={catDropdownOpen}
                 aria-haspopup="menu"
                 aria-controls="dz-cat-menu"
-                className={`px-3 py-1.5 rounded transition-colors flex items-center gap-1 ${
+                className={`px-3 py-1.5 rounded transition-colors flex items-center gap-1 font-semibold cursor-pointer ${
                   pathname.startsWith("/category")
-                    ? "text-[#2c87c3] font-bold"
-                    : "hover:text-slate-900"
+                    ? "text-[#2c87c3] font-bold bg-blue-50/50"
+                    : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
                 }`}
               >
                 <span>Produits</span>
-                <span className="text-[10px] text-slate-400">▾</span>
+                <span className={`text-[10px] text-slate-400 transition-transform ${catDropdownOpen ? "rotate-180" : ""}`}>▾</span>
               </button>
 
               {catDropdownOpen && (
-                <div id="dz-cat-menu" role="menu" className="absolute left-0 top-full mt-1 w-64 bg-white border border-[#d8d8d8] rounded py-1.5 z-50 divide-y divide-slate-100">
-                  <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    Catégories PC
+                <div
+                  id="dz-cat-menu"
+                  role="menu"
+                  className="absolute left-0 top-full mt-1 w-64 bg-white border border-slate-200 rounded-lg shadow-2xl py-1.5 z-[100] divide-y divide-slate-100"
+                >
+                  <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50">
+                    Catégories Composants ({CATEGORIES.length})
                   </div>
                   <div className="py-1">
                     {CATEGORIES.map((cat) => (
@@ -390,9 +403,10 @@ export default function Header() {
                         role="menuitem"
                         href={`/category/${cat.slug}`}
                         onClick={() => setCatDropdownOpen(false)}
-                        className="block px-3 py-1.5 text-xs text-slate-700 hover:bg-blue-50 pcpp-link font-medium"
+                        className="flex items-center justify-between px-3 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-[#2c87c3] font-medium transition-colors"
                       >
-                        {cat.label}
+                        <span>{cat.label}</span>
+                        <span className="text-[10px] text-slate-400">→</span>
                       </Link>
                     ))}
                   </div>
@@ -405,8 +419,8 @@ export default function Header() {
               aria-current={pathname.startsWith("/guides") ? "page" : undefined}
               className={`px-3 py-1.5 rounded transition-colors ${
                 pathname.startsWith("/guides")
-                  ? "text-[#2c87c3] font-bold"
-                  : "hover:text-slate-900"
+                  ? "text-[#2c87c3] font-bold bg-blue-50/50"
+                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
               Guides d&apos;achat
@@ -417,8 +431,8 @@ export default function Header() {
               aria-current={pathname.startsWith("/deals") ? "page" : undefined}
               className={`px-3 py-1.5 rounded transition-colors ${
                 pathname.startsWith("/deals")
-                  ? "text-[#2c87c3] font-bold"
-                  : "hover:text-slate-900"
+                  ? "text-[#2c87c3] font-bold bg-blue-50/50"
+                  : "text-slate-700 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
               Bons plans

@@ -3,6 +3,7 @@ import { bestOffer } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
