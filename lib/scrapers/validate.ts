@@ -17,7 +17,7 @@ export const CATEGORY_BANDS: Record<Category, Band> = {
   ssd: createBand(800, 160000),
   gpu: createBand(2000, 1500000),
   case: createBand(1000, 130000),
-  psu: createBand(800, 150000),
+  psu: createBand(3500, 150000),
   monitor: createBand(3000, 400000),
 };
 

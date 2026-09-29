@@ -236,29 +236,29 @@ const RULES = [
   { id: "mobo-z370", cat: "motherboard", all: ["z370"], none: ["laptop", "notebook"] },
   { id: "mobo-h81", cat: "motherboard", any: ["h81da", "h81m", "h81j", "h81 "], none: ["laptop", "notebook"] },
   { id: "mobo-h61", cat: "motherboard", any: ["h61", "h61n", "ih61"], none: ["laptop", "notebook"] },
-  { id: "ram-64gb-d5-6000", cat: "ram", all: ["64gb", "ddr5"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-48gb-d5-6000", cat: "ram", all: ["48gb", "ddr5"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-24gb-d5", cat: "ram", all: ["24gb", "ddr5"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-32gb-d5-6400", cat: "ram", all: ["32gb", "ddr5", "6400"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-32gb-d5-6000", cat: "ram", all: ["32gb", "ddr5", "6000"], none: ["6400", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-32gb-d5-5600", cat: "ram", all: ["32gb", "ddr5", "5600"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-delta-32-d5", cat: "ram", all: ["32gb", "ddr5"], none: ["5600", "6000", "6400", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-16gb-d5-6400", cat: "ram", all: ["16gb", "ddr5", "6400"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-16gb-d5-6000", cat: "ram", all: ["16gb", "ddr5", "6000"], none: ["6400", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-96gb-d5", cat: "ram", all: ["48gb", "ddr5"], any: ["96gb"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-16gb-d5-5600", cat: "ram", all: ["16gb", "ddr5", "5600"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-vengeance-16-d5", cat: "ram", all: ["16gb", "ddr5"], none: ["32gb", "5600", "6000", "6400", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-8gb-d5-5600", cat: "ram", all: ["8gb", "ddr5"], none: ["16gb", "32gb", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-32gb-d4-3600", cat: "ram", all: ["32gb", "ddr4", "3600"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-vengeance-32-d4", cat: "ram", all: ["32gb", "ddr4"], none: ["3600", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-value-8-d4", cat: "ram", all: ["8gb"], any: ["3200", "2666", "2400"], none: ["16gb", "32gb", "3600", "4800", "5600", "6000", "ddr5", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-vengeance-16-d5", cat: "ram", all: ["16gb"], any: ["4800", "5600"], none: ["32gb", "6000", "6400", "ddr4", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-16gb-d4-3600", cat: "ram", all: ["16gb", "ddr4", "3600"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-vengeance-16-d4", cat: "ram", all: ["16gb", "ddr4"], none: ["32gb", "3600", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-8gb-d4-3600", cat: "ram", all: ["8gb", "ddr4", "3600"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-value-8-d4", cat: "ram", all: ["8gb", "ddr4"], none: ["16gb", "32gb", "3600", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-4gb-d4-2666", cat: "ram", all: ["4gb", "ddr4"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-8gb-d3-1600", cat: "ram", all: ["ddr3"], none: ["laptop", "sodimm", "notebook", "portable"] },
+  { id: "ram-64gb-d5-6000", cat: "ram", all: ["64gb", "ddr5"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-48gb-d5-6000", cat: "ram", all: ["48gb", "ddr5"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-24gb-d5", cat: "ram", all: ["24gb", "ddr5"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-32gb-d5-6400", cat: "ram", all: ["32gb", "ddr5", "6400"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-32gb-d5-6000", cat: "ram", all: ["32gb", "ddr5", "6000"], none: ["6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-32gb-d5-5600", cat: "ram", all: ["32gb", "ddr5", "5600"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-delta-32-d5", cat: "ram", all: ["32gb", "ddr5"], none: ["5600", "6000", "6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-16gb-d5-6400", cat: "ram", all: ["16gb", "ddr5", "6400"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-16gb-d5-6000", cat: "ram", all: ["16gb", "ddr5", "6000"], none: ["6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-96gb-d5", cat: "ram", all: ["48gb", "ddr5"], any: ["96gb"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-16gb-d5-5600", cat: "ram", all: ["16gb", "ddr5", "5600"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-vengeance-16-d5", cat: "ram", all: ["16gb", "ddr5"], none: ["32gb", "5600", "6000", "6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-8gb-d5-5600", cat: "ram", all: ["8gb", "ddr5"], none: ["16gb", "32gb", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-32gb-d4-3600", cat: "ram", all: ["32gb", "ddr4", "3600"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-vengeance-32-d4", cat: "ram", all: ["32gb", "ddr4"], none: ["3600", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-value-8-d4", cat: "ram", all: ["8gb"], any: ["3200", "2666", "2400"], none: ["16gb", "32gb", "3600", "4800", "5600", "6000", "ddr5", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-vengeance-16-d5", cat: "ram", all: ["16gb"], any: ["4800", "5600"], none: ["32gb", "6000", "6400", "ddr4", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-16gb-d4-3600", cat: "ram", all: ["16gb", "ddr4", "3600"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-vengeance-16-d4", cat: "ram", all: ["16gb", "ddr4"], none: ["32gb", "3600", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-8gb-d4-3600", cat: "ram", all: ["8gb", "ddr4", "3600"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-value-8-d4", cat: "ram", all: ["8gb", "ddr4"], none: ["16gb", "32gb", "3600", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-4gb-d4-2666", cat: "ram", all: ["4gb", "ddr4"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-8gb-d3-1600", cat: "ram", all: ["ddr3"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ssd-970evo-1tb", cat: "ssd", all: ["970", "1tb"] },
   { id: "ssd-sn580-1tb", cat: "ssd", all: ["sn580"] },
   { id: "ssd-980pro-1tb", cat: "ssd", all: ["980pro"], none: ["laptop", "notebook"] },
@@ -636,7 +636,7 @@ const OK_CAT = {
   "ecran 24": "monitor", "ecran 27": "monitor", "ecran 32": "monitor", "moniteur gaming": "monitor",
 };
 // non-parts never stored as extras (keeps DB + bundle lean)
-const EXTRA_JUNK = /laptop|notebook|macbook|printer|imprimante|scanner|projecteur|datashow|webcam|tablet|smartphone|console|manette|pate thermique|pad thermique|thermal pad|thermal paste|thermal grizzly|mastergel|tube (magma|watercooling)|ventilateur boitier|case fan|masterfan|sickleflow|mf120|fd12|pack (ventilo|fans)|support (carte|ecran)|monitor stand|vortex|graphics card support|gpu holder|support gpu|herculx|back plate|waterblock|cold series|radiator with thermal|kit .\volution|en configuration|sleeve|power extension|cable (mars|first)|8-pin male|4-pin female|zenscreen|monitor arm|ergo aas|carte pci|ddr2|controleur|controller|fan hub|riser|snowman h9|tf120|chroma|at120|wraith spire|cooling amd|ventill?ateur.*original|original.*fan|ventil+o original|ubisoft|steam key|jeu pc|elgato|capture|12pci|btc|mining|kit .\volution|en configuration|accessoire boitier|pixel|24pin|smart plug|transfo|ddr2|televiseur|television|smart tv|souris|mouse|clavier|keyboard|casque|headset|chaise|chair|gaming desk|bureau gamer|portal|facebook|tron[cç][oe]n|troncen|meuleuse|disqueuse|\bscie\b|panineuse|gaufrier|plaque\s+de\s+cuisson|grille[\s-]pain|moulinex|multismart|brandmann|perceuse|visseuse|boulonneuse|perforateur|marteau\s*piqueur|ponceuse|soudeur|soudeuse|poste\s*[aà]\s*souder|aspirateur|tondeuse|\brabot\b|compresseur|[ée]lectrog[eè]ne|onduleur|multiprise|rallonge|cuisine|kitchen|cuisson|four\b|micro[\s-]ondes|hachoir|presse[\s-]agrumes|taille[\s-]haie|d[ée]broussailleuse|fer\s+[aà]\s+repasser|s[eè]che[\s-]cheveux|marmite|cocotte|115mm|125mm|makita|dewalt|ingco|crown\b|dwt\b|total\s*tools/i;
+const EXTRA_JUNK = /laptop|notebook|macbook|printer|imprimante|scanner|projecteur|datashow|webcam|tablet|smartphone|console|manette|pate thermique|pad thermique|thermal pad|thermal paste|thermal grizzly|mastergel|tube (magma|watercooling)|ventilateur boitier|case fan|masterfan|sickleflow|mf120|fd12|pack (ventilo|fans)|support (carte|ecran)|monitor stand|vortex|graphics card support|gpu holder|support gpu|herculx|back plate|waterblock|cold series|radiator with thermal|kit .\volution|en configuration|sleeve|power extension|cable (mars|first)|8-pin male|4-pin female|zenscreen|monitor arm|ergo aas|carte pci|ddr2|controleur|controller|fan hub|riser|snowman h9|tf120|chroma|at120|wraith spire|cooling amd|ventill?ateur.*original|original.*fan|ventil+o original|ubisoft|steam key|jeu pc|elgato|capture|12pci|btc|mining|kit .\volution|en configuration|accessoire boitier|pixel|24pin|smart plug|transfo|ddr2|televiseur|television|smart tv|souris|mouse|clavier|keyboard|casque|headset|chaise|chair|gaming desk|bureau gamer|portal|facebook|tron[cç][oe]n|troncen|meuleuse|disqueuse|\bscie\b|panineuse|gaufrier|plaque\s+de\s+cuisson|grille[\s-]pain|moulinex|multismart|brandmann|perceuse|visseuse|boulonneuse|perforateur|marteau\s*piqueur|ponceuse|soudeur|soudeuse|poste\s*[aà]\s*souder|aspirateur|tondeuse|\brabot\b|compresseur|[ée]lectrog[eè]ne|onduleur|multiprise|rallonge|cuisine|kitchen|cuisson|four\b|micro[\s-]ondes|hachoir|presse[\s-]agrumes|taille[\s-]haie|d[ée]broussailleuse|fer\s+[aà]\s+repasser|s[eè]che[\s-]cheveux|marmite|cocotte|115mm|125mm|makita|dewalt|ingco|crown\b|dwt\b|total\s*tools|sodimm|so-dimm|so\s*dimm|\blap\b|pc\s*portable|portatif|pc-portable|memoires-pc-portables/i;
 // ---- multi-item veto (bundle/pack/combo): tested BEFORE matchRule ----
 // A price framed as several parts together ("CPU AMD RYZEN 5 3400G BOX ...
 // BUNDLE ... B550", "Pack Ryzen 5 5600 + B450M") is never a standalone offer
@@ -654,12 +654,14 @@ const FULLPC_VETO = /config\s+pc|pc\s+(gammer|gamers?|gaming)|pc\s+complet|unit[
 // Bare "nitro"/"tuf gaming" are NOT vetoed (Sapphire Nitro GPUs, ASUS TUF
 // boards survive); screen sizes need a separator ([,.\s]+ not *) so "136" in
 // "i5-13600K" and "1733" RAM speeds don't friendly-fire.
-const LAPTOP_VETO = /laptop|notebook|macbook|latitude|optiplex|thinkpad|ideapad|thinkcentre|ideacentre|vivobook|zenbook|elitebook|probook|thinkbook|yoga\b|surface\s*pro|pavilion|victus|omen|legion|zephyrus|tuf\s*[af]\d{2}|acer.{0,10}nitro|nitro.{0,10}acer|nitro\s*\d|inspiron|predator|helios|razer\s*blade|blade\s*\d|\bkatana\b|\bgf\s*\d{2}\b|pulse\s*\d|cyborg\s*\d|stealth\s*\d|sword\s*\d|loq\b|\b\d{4,5}(?:hx|hs|h|u)\b|pouce|1[34567][,.\s]+[0-9]|all\s*in\s*one/i;
+const LAPTOP_VETO = /laptop|\blap\b|notebook|macbook|latitude|optiplex|thinkpad|ideapad|thinkcentre|ideacentre|vivobook|zenbook|elitebook|probook|thinkbook|yoga\b|surface\s*pro|pavilion|victus|omen|legion|zephyrus|tuf\s*[af]\d{2}|acer.{0,10}nitro|nitro.{0,10}acer|nitro\s*\d|inspiron|predator|helios|razer\s*blade|blade\s*\d|\bkatana\b|\bgf\s*\d{2}\b|pulse\s*\d|cyborg\s*\d|stealth\s*\d|sword\s*\d|loq\b|\b\d{4,5}(?:hx|hs|h|u)\b|pouce|1[34567][,.\s]+[0-9]|all\s*in\s*one|sodimm|so-dimm|so\s*dimm|portable|portatif/i;
 // ---- power-tool/appliance veto (GLOBAL, all categories) ----
 // Catches tronçonneuses (all spellings including tronceneuse), meuleuses, grills, toasters, etc.
 const TOOL_VETO = /tron[cç][oe]n|troncen|meuleuse|disqueuse|\bscie\b|scie\s*sauteuse|scie\s*circulaire|mixeur|gaufre|gaufrier|panineuse|panini|plaque\s+de\s+cuisson|sandwich|\bcaf[eé]\b|cafeti[eè]re|bouilloire|grille[\s-]pain|moulinex|multismart|brandmann|perceuse|visseuse|boulonneuse|perforateur|marteau\s*piqueur|ponceuse|soudeur|soudeuse|poste\s*[aà]\s*souder|aspirateur|tondeuse|\brabot\b|compresseur|[ée]lectrog[eè]ne|onduleur|multiprise|rallonge|cuisine|kitchen|cuisson|four\b|micro[\s-]ondes|hachoir|presse[\s-]agrumes|taille[\s-]haie|d[ée]broussailleuse|fer\s+[aà]\s+repasser|s[eè]che[\s-]cheveux|marmite|cocotte|115mm|125mm|makita|dewalt|ingco|crown\b|dwt\b|total\s*tools/i;
 // Non-PC category slugs from Ouedkniss announcement URLs
-const NON_PC_SLUG_VETO = /materiel-electrique|grills-panineuses|electromenager|grille-pain|outillage|bricolage|art-table|cuisine|vaisselle|jardin|auto|moto|vetement|chaussures|bebe|sport/i;
+const NON_PC_SLUG_VETO = /materiel-electrique|grills-panineuses|electromenager|grille-pain|outillage|bricolage|art-table|cuisine|vaisselle|jardin|auto|moto|vetement|chaussures|bebe|sport|pc-portable|pc-portables|memoires-pc-portables|pieces-detachees-pc-portable|accessoires-pc-portable/i;
+// Laptop RAM markers (strictly reject SODIMM / laptop RAM from desktop catalog)
+const LAPTOP_RAM_MARKERS = /\blap\b|laptop|sodimm|so-dimm|so\s*dimm|portable|portatif|pc-portable|memoires-pc-portables/i;
 // Strict computer power supply identification
 const PSU_KEYWORDS = /alimentation|allimentation|\balim\b|\bpsu\b|power\s*supply|bloc\s*d\s*alim|boite\s*d\s*alim|alimentations-boitiers|80\s*plus|80plus|80\+|\bmodulaire\b|\bmodular\b|bronze|gold|platinum|titanium|\batx\b|\bsfx\b/i;
 const PSU_BRANDS = /corsair|seasonic|cooler\s*master|deepcool|thermaltake|be\s*quiet|msi|asus|gigabyte|antec|fsp|aerocool|kolink|mars\s*gaming|gamemax|redragon|silverstone|nzxt|enermax|huntkey|cougar|zalman|xigmatek|sama|1stplayer|darkflash|aigo|hybrok|raidmax|segotep|inwin|chieftec|super\s*flower|evga|gamdias/i;
@@ -683,7 +685,8 @@ function isVetoed(category, title, url = "") {
   if (url && NON_PC_SLUG_VETO.test(url)) return true;
   if (BUNDLE_VETO.test(title) || TOOL_VETO.test(title)) return true;
   if (FULLPC_VETO.test(title) || PREBUILT_VETO.test(title)) return true;
-  if (LAPTOP_VETO.test(title)) return true;
+  if (LAPTOP_VETO.test(title) || LAPTOP_VETO.test(url)) return true;
+  if (category === "ram" && (LAPTOP_RAM_MARKERS.test(title) || LAPTOP_RAM_MARKERS.test(url))) return true;
   if (category === "motherboard" && MOBOPSU_VETO.test(title)) return true;
   if (category === "psu" && !isLegitPsu(title, url)) return true;
   return false;
