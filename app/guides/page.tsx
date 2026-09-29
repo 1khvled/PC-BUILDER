@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { GUIDES } from "@/lib/data/guides";
-import { PRODUCTS, bestOffer, productImage } from "@/lib/data/products";
-import { getOffers, getScrapedAt } from "@/lib/data/catalog";
+import { bestOffer, productImage, type Product } from "@/lib/data/products";
+import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 
 export default async function GuidesPage() {
-  const offers = await getOffers();
-  const scrapedAt = await getScrapedAt();
+  const [products, offers, scrapedAt] = await Promise.all([
+    getProducts(),
+    getOffers(),
+    getScrapedAt(),
+  ]);
   return (
     <main className="max-w-7xl mx-auto px-4 py-8 space-y-8">
       {/* Magazine Page Header */}
@@ -38,8 +41,8 @@ export default async function GuidesPage() {
           const total = g.parts.reduce((sum, id) => sum + (bestOffer(id, offers)?.priceDa ?? 0), 0);
           const missing = g.parts.filter((id) => !bestOffer(id, offers)).length;
           const sampleProducts = g.parts
-            .map((id) => PRODUCTS.find((p) => p.id === id))
-            .filter((p): p is (typeof PRODUCTS)[0] => Boolean(p))
+            .map((id) => products.find((p) => p.id === id))
+            .filter((p): p is Product => Boolean(p))
             .slice(0, 4);
 
           const tierBadge = missing > 0

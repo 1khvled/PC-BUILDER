@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { CATEGORIES, PRODUCTS, bestOffer, productImage } from "@/lib/data/products";
-import { getOffers, getScrapedAt } from "@/lib/data/catalog";
+import { CATEGORIES, bestOffer, productImage } from "@/lib/data/products";
+import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { LIVE_EXTRA } from "@/lib/data/live";
 import { GUIDES } from "@/lib/data/guides";
 import Thumb from "@/components/Thumb";
@@ -95,10 +95,13 @@ function CategorySvg({ slug }: { slug: string }) {
 }
 
 export default async function Home() {
-  const offers = await getOffers();
-  const scrapedAt = await getScrapedAt();
+  const [products, offers, scrapedAt] = await Promise.all([
+    getProducts(),
+    getOffers(),
+    getScrapedAt(),
+  ]);
   const liveCount = offers.length + LIVE_EXTRA.length;
-  const trending = PRODUCTS.map((p) => ({ p, best: bestOffer(p.id, offers) }))
+  const trending = products.map((p) => ({ p, best: bestOffer(p.id, offers) }))
     .filter((x) => x.best)
     .sort((a, b) => (a.best as { priceDa: number }).priceDa - (b.best as { priceDa: number }).priceDa)
     .slice(0, 8);
@@ -176,7 +179,7 @@ export default async function Home() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
             {CATEGORIES.map((c) => {
-              const items = PRODUCTS.filter((p) => p.category === c.slug);
+              const items = products.filter((p) => p.category === c.slug);
               const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
               const minPrice = prices.length ? Math.min(...prices) : null;
               const extraN = LIVE_EXTRA.filter((e) => e.category === c.slug).length;

@@ -1,12 +1,14 @@
 import type { MetadataRoute } from "next";
 import { GUIDES } from "@/lib/data/guides";
-import { CATEGORIES, PRODUCTS } from "@/lib/data/products";
+import { CATEGORIES } from "@/lib/data/products";
+import { getProducts } from "@/lib/data/catalog";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://dzpartpicker.dz";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
-  const staticRoutes = ["", "/builder", "/guides"].map((r) => ({
+  const prods = await getProducts();
+  const staticRoutes = ["", "/builder", "/guides", "/deals"].map((r) => ({
     url: `${BASE}${r || "/"}`,
     lastModified: now,
     changeFrequency: "daily" as const,
@@ -18,7 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "daily" as const,
     priority: 0.9,
   }));
-  const products = PRODUCTS.map((p) => ({
+  const products = prods.map((p) => ({
     url: `${BASE}/product/${p.id}`,
     lastModified: now,
     changeFrequency: "daily" as const,

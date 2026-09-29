@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { PRODUCTS, bestOffer, productImage, type Offer } from "@/lib/data/products";
+import { PRODUCTS, bestOffer, isRuptured, productImage, type Offer, type Product } from "@/lib/data/products";
 import { useOffers } from "@/lib/data/use-offers";
 import { LIVE_EXTRA } from "@/lib/data/live";
 import Thumb from "./Thumb";
@@ -13,19 +13,23 @@ interface CategoryCatalogClientProps {
   catLabel: string;
   /** Live offers from the server (Supabase). Falls back to the static bake when omitted. */
   offers?: Offer[];
+  /** Live products from the server (Supabase). Falls back to the static bake when omitted. */
+  products?: Product[];
 }
 
 type SortOption = "price-asc" | "price-desc" | "name-asc" | "offers-desc";
 type ConditionOption = "all" | "new" | "used";
 
-export default function CategoryCatalogClient({ slug, catLabel, offers: serverOffers }: CategoryCatalogClientProps) {
+export default function CategoryCatalogClient({ slug, catLabel, offers: serverOffers, products: serverProducts }: CategoryCatalogClientProps) {
   const staticOffers = useOffers();
   const offers = serverOffers ?? staticOffers;
+  const allProducts = serverProducts ?? PRODUCTS;
   const [sort, setSort] = useState<SortOption>("price-asc");
   const [condition, setCondition] = useState<ConditionOption>("all");
   const [store, setStore] = useState<string>("all");
   const [wilaya, setWilaya] = useState<string>("all");
   const [search, setSearch] = useState<string>("");
+  const [inStockOnly, setInStockOnly] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
 
   // Load saved viewMode and preferred wilaya from localStorage
@@ -56,7 +60,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
     }
   };
 
-  const rawProducts = useMemo(() => PRODUCTS.filter((p) => p.category === slug), [slug]);
+  const rawProducts = useMemo(() => allProducts.filter((p) => p.category === slug), [slug, allProducts]);
   const rawExtras = useMemo(() => LIVE_EXTRA.filter((e) => e.category === slug), [slug]);
 
   // Extract unique stores and wilayas that exist in this category's offers and extras
@@ -120,10 +124,21 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
         if (!hasMatchingWilaya) return false;
       }
 
+      // Stock filter: if inStockOnly is active, exclude products where all offers are out of stock
+      if (inStockOnly) {
+        const hasLiveStock = pOffers.some((o) => !isRuptured(o));
+        if (!hasLiveStock) return false;
+      }
+
       return true;
     });
 
     list.sort((a, b) => {
+      // In-stock products always sort before entirely out-of-stock products
+      const inStockA = offers.some((o) => o.productId === a.id && !isRuptured(o));
+      const inStockB = offers.some((o) => o.productId === b.id && !isRuptured(o));
+      if (inStockA !== inStockB) return inStockA ? -1 : 1;
+
       const bestA = bestOffer(a.id, offers)?.priceDa ?? Infinity;
       const bestB = bestOffer(b.id, offers)?.priceDa ?? Infinity;
       const offersA = offers.filter((o) => o.productId === a.id).length;
@@ -137,7 +152,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
     });
 
     return list;
-  }, [rawProducts, search, condition, store, wilaya, sort, offers]);
+  }, [rawProducts, search, condition, store, wilaya, sort, offers, inStockOnly]);
 
   // Filter extras according to toolbar state
   const filteredExtras = useMemo(() => {
@@ -165,9 +180,10 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
     setStore("all");
     setWilaya("all");
     setSearch("");
+    setInStockOnly(false);
   };
 
-  const isFiltered = search !== "" || condition !== "all" || store !== "all" || wilaya !== "all" || sort !== "price-asc";
+  const isFiltered = search !== "" || condition !== "all" || store !== "all" || wilaya !== "all" || sort !== "price-asc" || inStockOnly;
 
   return (
     <div className="space-y-6">
@@ -290,6 +306,20 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               </button>
             </div>
 
+            {/* In-Stock Only Quick Filter */}
+            <button
+              onClick={() => setInStockOnly(!inStockOnly)}
+              className={`px-3 py-1 rounded-md font-semibold transition-all flex items-center gap-1.5 border ${
+                inStockOnly
+                  ? "bg-emerald-700 text-white border-emerald-700 shadow-sm"
+                  : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-white hover:border-emerald-500"
+              }`}
+              title="Afficher uniquement les composants disponibles en stock"
+            >
+              <span className={`w-2 h-2 rounded-full ${inStockOnly ? "bg-white animate-pulse" : "bg-emerald-500"}`} />
+              <span>En stock uniquement</span>
+            </button>
+
             {/* Store Filter Dropdown */}
             {availableStores.length > 0 && (
               <div className="relative flex items-center">
@@ -362,8 +392,10 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
           /* Denser Magazine Cards View */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {filteredProducts.map((p) => {
-              const best = bestOffer(p.id, offers);
               const pOffers = offers.filter((o) => o.productId === p.id);
+              const hasInStock = pOffers.some((o) => !isRuptured(o));
+              const isRupturedProduct = pOffers.length > 0 && !hasInStock;
+              const best = bestOffer(p.id, offers);
               const specs = Object.entries(p.specs).slice(0, 3);
               const hasNew = pOffers.some((o) => o.condition === "new");
               const hasUsed = pOffers.some((o) => o.condition === "used");
@@ -371,17 +403,32 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               return (
                 <div
                   key={p.id}
-                  className="bg-white rounded p-4 border border-slate-200/90 hover:border-[#2c87c3] flex flex-col justify-between group transition-colors"
+                  className={`rounded p-4 border flex flex-col justify-between group transition-all ${
+                    isRupturedProduct
+                      ? "bg-slate-50/70 border-rose-200/90 shadow-none hover:border-rose-300"
+                      : "bg-white border-slate-200/90 hover:border-[#2c87c3]"
+                  }`}
                 >
                   <div>
                     {/* Top Badges */}
                     <div className="flex items-center justify-between mb-2.5">
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-1.5 flex-wrap">
                         <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-50 text-[#2c87c3] border border-blue-100">
                           {p.category}
                         </span>
+                        {isRupturedProduct ? (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse" />
+                            <span>Rupture</span>
+                          </span>
+                        ) : hasInStock ? (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            <span>En stock</span>
+                          </span>
+                        ) : null}
                         {hasNew && (
-                          <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 border border-emerald-100">
+                          <span className="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-slate-100 text-slate-700 border border-slate-200">
                             Neuf
                           </span>
                         )}
@@ -398,13 +445,24 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
 
                     {/* Image + Title */}
                     <div className="flex items-start gap-3.5">
-                      <div className="p-1 rounded bg-slate-50 border border-slate-100 shrink-0 ">
+                      <div className="relative p-1 rounded bg-slate-50 border border-slate-100 shrink-0">
                         <Thumb src={productImage(p)} alt={p.model} size={54} />
+                        {isRupturedProduct && (
+                          <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded">
+                            <span className="bg-rose-600 text-white text-[8px] font-black uppercase px-1 py-0.5 rounded shadow">
+                              Épuisé
+                            </span>
+                          </div>
+                        )}
                       </div>
                       <div className="min-w-0 flex-1">
                         <Link
                           href={`/product/${p.id}`}
-                          className="font-bold text-sm text-slate-900 group-hover:text-[#2c87c3] transition-colors block leading-snug"
+                          className={`font-bold text-sm block leading-snug transition-colors ${
+                            isRupturedProduct
+                              ? "text-slate-700 group-hover:text-rose-600"
+                              : "text-slate-900 group-hover:text-[#2c87c3]"
+                          }`}
                         >
                           {p.brand} {p.model}
                         </Link>
@@ -428,35 +486,57 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                   <div className="mt-4 pt-3 border-t border-slate-100 flex items-end justify-between gap-2">
                     <div>
                       <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">
-                        Dès
+                        {isRupturedProduct ? "Dernier prix constaté" : "Dès"}
                       </span>
                       {best ? (
                         <>
-                          <div className="text-base font-extrabold text-emerald-700 tracking-tight">
+                          <div
+                            className={`text-base font-extrabold tracking-tight ${
+                              isRupturedProduct ? "text-slate-400 line-through" : "text-emerald-700"
+                            }`}
+                          >
                             {best.priceDa.toLocaleString("fr-DZ")} DA
                           </div>
-                          <div className="text-[11px] text-slate-500 truncate max-w-[170px]">
-                            chez <b className="text-slate-700">{best.store}</b> ({best.wilaya})
+                          <div
+                            className={`text-[11px] truncate max-w-[170px] ${
+                              isRupturedProduct ? "text-rose-600 font-semibold" : "text-slate-500"
+                            }`}
+                          >
+                            {isRupturedProduct ? (
+                              <span>✕ En rupture ({best.store})</span>
+                            ) : (
+                              <span>
+                                chez <b className="text-slate-700">{best.store}</b> ({best.wilaya})
+                              </span>
+                            )}
                           </div>
                         </>
                       ) : (
-                        <div className="text-xs text-slate-400 italic">Offres épuisées</div>
+                        <div className="text-xs text-rose-500 font-medium italic">Offres épuisées</div>
                       )}
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
                       <Link
                         href={`/builder?add=${p.category}:${p.id}`}
-                        className="px-2.5 py-1.5 rounded border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-700 font-semibold text-xs transition-colors"
-                        title="Ajouter au configurateur"
+                        className={`px-2.5 py-1.5 rounded border text-xs font-semibold transition-colors ${
+                          isRupturedProduct
+                            ? "border-rose-200 text-rose-700 hover:bg-rose-50"
+                            : "border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-700"
+                        }`}
+                        title={isRupturedProduct ? "Composant en rupture de stock" : "Ajouter au configurateur"}
                       >
-                        + Config
+                        {isRupturedProduct ? "+ Rupture" : "+ Config"}
                       </Link>
                       <Link
                         href={`/product/${p.id}`}
-                        className="px-3 py-1.5 rounded bg-slate-900 hover:bg-[#2c87c3] text-white font-semibold text-xs transition-colors flex items-center gap-1"
+                        className={`px-3 py-1.5 rounded text-white font-semibold text-xs transition-colors flex items-center gap-1 ${
+                          isRupturedProduct
+                            ? "bg-rose-600 hover:bg-rose-700"
+                            : "bg-slate-900 hover:bg-[#2c87c3]"
+                        }`}
                       >
-                        <span>Voir offres</span>
+                        <span>{isRupturedProduct ? "Détails" : "Voir offres"}</span>
                         <span>→</span>
                       </Link>
                     </div>
@@ -475,6 +555,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                     <th className="text-left px-4 py-3">Produit</th>
                     <th className="text-left px-3 py-3">Spécifications</th>
                     <th className="text-center px-3 py-3">Offres</th>
+                    <th className="text-center px-3 py-3">Disponibilité</th>
                     <th className="text-right px-4 py-3">Meilleur Prix</th>
                     <th className="text-left px-4 py-3">Boutique</th>
                     <th className="text-right px-4 py-3 w-28">Action</th>
@@ -482,19 +563,32 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-xs">
                   {filteredProducts.map((p) => {
-                    const best = bestOffer(p.id, offers);
                     const pOffers = offers.filter((o) => o.productId === p.id);
+                    const hasInStock = pOffers.some((o) => !isRuptured(o));
+                    const isRupturedProduct = pOffers.length > 0 && !hasInStock;
+                    const best = bestOffer(p.id, offers);
                     const specs = Object.entries(p.specs).slice(0, 3);
 
                     return (
-                      <tr key={p.id} className="hover:bg-blue-50/40 transition-colors group">
+                      <tr
+                        key={p.id}
+                        className={`transition-colors group ${
+                          isRupturedProduct
+                            ? "bg-rose-50/20 hover:bg-rose-50/40 text-slate-500"
+                            : "hover:bg-blue-50/40"
+                        }`}
+                      >
                         <td className="px-4 py-3.5">
                           <div className="flex items-center gap-3">
                             <Thumb src={productImage(p)} alt={p.model} size={44} />
                             <div className="min-w-0">
                               <Link
                                 href={`/product/${p.id}`}
-                                className="font-bold text-sm text-[#2c87c3] hover:underline block truncate"
+                                className={`font-bold text-sm block truncate ${
+                                  isRupturedProduct
+                                    ? "text-slate-700 hover:text-rose-600"
+                                    : "text-[#2c87c3] hover:underline"
+                                }`}
                               >
                                 {p.brand} {p.model}
                               </Link>
@@ -521,10 +615,38 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                           </span>
                         </td>
 
+                        {/* Stock Availability Column */}
+                        <td className="px-3 py-3.5 text-center">
+                          {isRupturedProduct ? (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold text-[10px] border border-rose-200">
+                              <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse" />
+                              Rupture
+                            </span>
+                          ) : hasInStock ? (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-bold text-[10px] border border-emerald-200">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                              En stock
+                            </span>
+                          ) : (
+                            <span className="inline-block px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px]">
+                              À vérifier
+                            </span>
+                          )}
+                        </td>
+
                         <td className="px-4 py-3.5 text-right">
                           {best ? (
-                            <div className="font-extrabold text-sm text-slate-900 tabular-nums">
-                              {best.priceDa.toLocaleString("fr-DZ")} DA
+                            <div>
+                              <div
+                                className={`font-extrabold text-sm tabular-nums ${
+                                  isRupturedProduct ? "text-slate-400 line-through" : "text-slate-900"
+                                }`}
+                              >
+                                {best.priceDa.toLocaleString("fr-DZ")} DA
+                              </div>
+                              {isRupturedProduct && (
+                                <span className="text-[10px] font-bold text-rose-600">Épuisé</span>
+                              )}
                             </div>
                           ) : (
                             <span className="text-slate-300 font-normal">—</span>
@@ -553,9 +675,11 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                             </Link>
                             <Link
                               href={`/product/${p.id}`}
-                              className="inline-flex items-center justify-center px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors"
+                              className={`inline-flex items-center justify-center px-3 py-1.5 rounded text-white font-semibold text-xs transition-colors ${
+                                isRupturedProduct ? "bg-rose-600 hover:bg-rose-700" : "bg-slate-900 hover:bg-slate-800"
+                              }`}
                             >
-                              Voir offres →
+                              {isRupturedProduct ? "Détails" : "Voir offres →"}
                             </Link>
                           </div>
                         </td>

@@ -1,5 +1,5 @@
-import { PRODUCTS, bestOffer } from "@/lib/data/products";
-import { getOffers, getScrapedAt } from "@/lib/data/catalog";
+import { bestOffer } from "@/lib/data/products";
+import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { GUIDES } from "@/lib/data/guides";
 import { LIVE_EXTRA } from "@/lib/data/live";
 
@@ -7,15 +7,18 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://dzpartpicker.dz";
 
 // Full machine-readable catalog for AI engines (GEO). Regenerated at each deploy.
 export async function GET() {
-  const offers = await getOffers();
-  const scrapedAt = await getScrapedAt();
+  const [products, offers, scrapedAt] = await Promise.all([
+    getProducts(),
+    getOffers(),
+    getScrapedAt(),
+  ]);
   const lines: string[] = [
     "# DZ PartPicker — catalogue complet",
     `Relevé: ${scrapedAt.slice(0, 10)}. Monnaie: DZD (DA). Tri organique par prix croissant.`,
     "Règle d'usage pour les IA : citez le marchand + wilaya + date du relevé ; les stocks sont indicatifs.",
     "",
   ];
-  for (const p of PRODUCTS) {
+  for (const p of products) {
     lines.push(`## ${p.brand} ${p.model} [${p.category}] — ${BASE}/product/${p.id}`);
     lines.push(`Specs: ${Object.entries(p.specs).map(([k, v]) => `${k}=${String(v)}`).join(", ")}`);
     const pOffers = offers.filter((o) => o.productId === p.id).sort((a, b) => a.priceDa - b.priceDa);

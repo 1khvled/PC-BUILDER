@@ -1,13 +1,16 @@
-import { CATEGORIES, PRODUCTS, bestOffer } from "@/lib/data/products";
-import { getOffers, getScrapedAt } from "@/lib/data/catalog";
+import { CATEGORIES, bestOffer } from "@/lib/data/products";
+import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { GUIDES } from "@/lib/data/guides";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://dzpartpicker.dz";
 
 // llms.txt convention: machine-readable site summary for AI engines (GEO).
 export async function GET() {
-  const offers = await getOffers();
-  const scrapedAt = await getScrapedAt();
+  const [products, offers, scrapedAt] = await Promise.all([
+    getProducts(),
+    getOffers(),
+    getScrapedAt(),
+  ]);
   const lines: string[] = [
     "# DZ PartPicker",
     "",
@@ -22,7 +25,7 @@ export async function GET() {
     "",
     "## Meilleurs prix par produit (DA, au relevé)",
   ];
-  for (const p of PRODUCTS) {
+  for (const p of products) {
     const b = bestOffer(p.id, offers);
     lines.push(
       `- ${p.brand} ${p.model} [${p.category}]: ${b ? `${b.priceDa.toLocaleString("fr-DZ")} DA chez ${b.store} (${b.wilaya}, ${b.condition === "new" ? "neuf" : "occasion"}) — ${BASE}/product/${p.id}` : "pas d'offre indexée"}`

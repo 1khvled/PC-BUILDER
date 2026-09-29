@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PRODUCTS, bestOffer, isRuptured, productImage } from "@/lib/data/products";
-import { getOffers, getPriceHistory, getScrapedAt } from "@/lib/data/catalog";
+import { bestOffer, isRuptured, productImage } from "@/lib/data/products";
+import { getOffers, getPriceHistory, getProduct, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import ProductOffersTable from "@/components/ProductOffersTable";
 import PriceChart from "@/components/PriceChart";
@@ -9,19 +9,22 @@ import FbResolveForm from "@/components/FbResolveForm";
 
 export const dynamic = "force-dynamic";
 
-export function generateStaticParams() {
-  return PRODUCTS.map((p) => ({ id: p.id }));
+export async function generateStaticParams() {
+  const prods = await getProducts();
+  return prods.map((p) => ({ id: p.id }));
 }
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
-  const product = PRODUCTS.find((p) => p.id === params.id);
+  const [product, allOffers, history, scrapedAt] = await Promise.all([
+    getProduct(params.id),
+    getOffers(),
+    getPriceHistory(params.id),
+    getScrapedAt(),
+  ]);
+
   if (!product) {
     notFound();
   }
-
-  const allOffers = await getOffers();
-  const history = await getPriceHistory(product.id);
-  const scrapedAt = await getScrapedAt();
   const offers = allOffers.filter((o) => o.productId === product.id).sort((a, b) => a.priceDa - b.priceDa);
   // Hero = best NEW + available offer, never a dead/used listing while a live one exists
   const best = bestOffer(product.id, allOffers) ?? offers[0];
@@ -51,6 +54,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
   // Stats ignore ruptures: a dead listing must never set the min/max or the "savings".
   // offers is already sorted ascending, filter preserves that order.
   const liveOffers = offers.filter((o) => !isRuptured(o));
+  const allRuptured = offers.length > 0 && liveOffers.length === 0;
   const statsPool = liveOffers.length > 0 ? liveOffers : offers;
   const priceStats = statsPool.length > 0 ? {
     min: statsPool[0].priceDa,
@@ -91,16 +95,38 @@ export default async function ProductPage({ params }: { params: { id: string } }
               <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
                 Réf : {product.id}
               </span>
-              {best && (
+              {allRuptured ? (
+                <span className="text-xs font-bold px-3 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-200 flex items-center gap-1.5 shadow-sm">
+                  <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
+                  <span>Rupture de stock globale</span>
+                </span>
+              ) : best ? (
                 <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-500" />
                   <span>Meilleur prix : {best.priceDa.toLocaleString("fr-DZ")} DA</span>
                 </span>
-              )}
+              ) : null}
               <span className="text-xs font-semibold px-3 py-1 rounded-full bg-slate-50 text-slate-600 border border-slate-200">
                 📦 {offers.length} boutique{offers.length > 1 ? "s" : ""} indexée{offers.length > 1 ? "s" : ""}
               </span>
             </div>
+
+            {/* Global Rupture Alert Banner */}
+            {allRuptured && (
+              <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-rose-200 text-rose-800 flex items-center justify-center font-extrabold text-xs shrink-0 mt-0.5">
+                  ✕
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-sm text-rose-950">
+                    Composant actuellement en rupture de stock chez toutes les boutiques
+                  </h3>
+                  <p className="text-xs text-rose-800/90 mt-0.5 leading-relaxed">
+                    Aucun marchand n&apos;a ce produit en stock pour le moment. Les offres listées ci-dessous correspondent aux derniers prix relevés avant rupture.
+                  </p>
+                </div>
+              </div>
+            )}
 
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8">
               {/* Image Container with Badges */}
@@ -252,11 +278,15 @@ export default async function ProductPage({ params }: { params: { id: string } }
             {/* Header / Price */}
             <div>
               <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                Meilleur tarif constaté
+                {allRuptured ? "Dernier tarif constaté (Épuisé)" : "Meilleur tarif constaté"}
               </div>
               {best ? (
                 <>
-                  <div className="text-3xl sm:text-4xl font-extrabold text-emerald-700 tracking-tight mt-1">
+                  <div
+                    className={`text-3xl sm:text-4xl font-extrabold tracking-tight mt-1 ${
+                      allRuptured ? "text-slate-400 line-through" : "text-emerald-700"
+                    }`}
+                  >
                     {best.priceDa.toLocaleString("fr-DZ")} DA
                   </div>
                   <div className="text-xs text-slate-600 mt-1 flex flex-wrap items-center gap-1.5">
@@ -266,13 +296,14 @@ export default async function ProductPage({ params }: { params: { id: string } }
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${best.condition === "new" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"}`}>
                       {best.condition === "new" ? "Neuf" : "Occasion"}
                     </span>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${/rupture/i.test(best.stock) ? "bg-red-100 text-red-700" : "bg-slate-100 text-slate-600"}`}>
-                      {best.stock}
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${isRuptured(best) ? "bg-rose-100 text-rose-800 border border-rose-200" : "bg-emerald-100 text-emerald-800 border border-emerald-200"}`}>
+                      {isRuptured(best) ? "✕ Rupture" : "✓ En stock"}
                     </span>
                   </div>
-                  {/rupture/i.test(best.stock) && (
-                    <div className="text-xs text-red-600 font-semibold mt-1.5">
-                      Rupture constatée au dernier relevé — vérifiez avant de commander.
+                  {isRuptured(best) && (
+                    <div className="text-xs text-rose-700 font-bold mt-2 bg-rose-50 border border-rose-200 rounded p-2.5 flex items-start gap-1.5">
+                      <span className="shrink-0">✕</span>
+                      <span>Offre constatée en rupture de stock par le marchand.</span>
                     </div>
                   )}
                   {best.condition === "used" && (
@@ -285,7 +316,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   </div>
                 </>
               ) : (
-                <div className="text-sm text-slate-500 italic mt-2">
+                <div className="text-sm text-rose-600 font-bold mt-2">
                   Aucun marchand actuellement en stock
                 </div>
               )}
@@ -300,10 +331,10 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   rel="noreferrer"
                   aria-label={isRuptured(best) ? `Voir quand même l'offre en rupture chez ${best.store}` : `Commander sur ${best.store}`}
                   className={`w-full text-center py-3 px-4 rounded text-white font-bold text-sm shadow-md transition-colors flex items-center justify-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isRuptured(best)
-                    ? "bg-red-600 hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500"
+                    ? "bg-rose-600 hover:bg-rose-700 active:bg-rose-800 focus-visible:ring-rose-500"
                     : "bg-[#2c87c3] hover:bg-[#1e5c85] active:bg-[#153f5b] focus-visible:ring-[#2c87c3]"}`}
                 >
-                  <span>{isRuptured(best) ? `Voir quand même chez ${best.store}` : `Commander sur ${best.store}`}</span>
+                  <span>{isRuptured(best) ? `Voir l'offre sur ${best.store} (En rupture)` : `Commander sur ${best.store}`}</span>
                   <span>↗</span>
                 </a>
 

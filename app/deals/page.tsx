@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { PRODUCTS, isRuptured, productImage, type Offer } from "@/lib/data/products";
-import { getOffers, getScrapedAt } from "@/lib/data/catalog";
+import { isRuptured, productImage, type Offer, type Product } from "@/lib/data/products";
+import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 
 interface Deal {
@@ -17,9 +17,9 @@ interface Deal {
   n: number;
 }
 
-function deals(offers: Offer[]): Deal[] {
+function deals(products: Product[], offers: Offer[]): Deal[] {
   const out: Deal[] = [];
-  for (const p of PRODUCTS) {
+  for (const p of products) {
     const fresh = offers.filter((o) => o.productId === p.id && o.condition === "new" && !isRuptured(o));
     if (fresh.length < 3) continue;
     const prices = fresh.map((o) => o.priceDa).sort((a, b) => a - b);
@@ -41,9 +41,13 @@ function deals(offers: Offer[]): Deal[] {
 export const dynamic = "force-dynamic";
 
 export default async function DealsPage() {
-  const offers = await getOffers();
-  const scrapedAt = await getScrapedAt();
-  const list = deals(offers);
+  const [products, offers, scrapedAt] = await Promise.all([
+    getProducts(),
+    getOffers(),
+    getScrapedAt(),
+  ]);
+  const list = deals(products, offers);
+  const productsMap = new Map(products.map((p) => [p.id, p]));
   return (
     <main className="max-w-6xl mx-auto px-4 py-6">
       <h1 className="text-2xl font-extrabold tracking-tight">Bons plans</h1>
@@ -53,7 +57,7 @@ export default async function DealsPage() {
       <div className="grid md:grid-cols-2 gap-3 mt-4">
         {list.map((d, i) => (
           <Link key={d.id} href={`/product/${d.id}`} className="bg-white rounded p-4 shadow-sm border flex gap-3 items-center">
-            <Thumb src={productImage(PRODUCTS.find((p) => p.id === d.id)!)} alt={d.model} size={56} />
+            <Thumb src={productImage(productsMap.get(d.id)!)} alt={d.model} size={56} />
             <div className="min-w-0 flex-1">
               <div className="font-bold text-sm truncate">{d.brand} {d.model}</div>
               <div className="text-xs text-slate-400">médiane {d.avg.toLocaleString("fr-DZ")} DA • {d.n} offres • {d.store}{d.wilaya ? ` (${d.wilaya})` : ""}</div>

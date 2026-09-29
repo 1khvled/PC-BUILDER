@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 import Link from "next/link";
-import { PRODUCTS, type Product } from "@/lib/data/products";
-import { getOffers, getScrapedAt } from "@/lib/data/catalog";
+import { type Product } from "@/lib/data/products";
+import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { isDbConfigured } from "@/lib/supabase";
 import { LIVE_EXTRA } from "@/lib/data/live";
 import { STORE_CATS, STORE_NAMES, STORE_WILAYA } from "@/lib/scrapers/stores";
@@ -58,8 +58,11 @@ export default async function AdminPage({ searchParams }: { searchParams: { key?
     );
   }
 
-  const OFFERS = await getOffers();
-  const scrapedAt = await getScrapedAt();
+  const [PRODUCTS, OFFERS, scrapedAt] = await Promise.all([
+    getProducts(),
+    getOffers(),
+    getScrapedAt(),
+  ]);
   const dbLive = isDbConfigured();
   const checks = selfCheck();
   const allChecksPass = checks.every((c) => c.ok);

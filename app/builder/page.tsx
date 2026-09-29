@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { CATEGORIES, PRODUCTS, bestOffer, productImage, type Product } from "@/lib/data/products";
-import { useOffers } from "@/lib/data/use-offers";
+import { CATEGORIES, PRODUCTS, bestOffer, isRuptured, productImage, type Product } from "@/lib/data/products";
+import { useCatalog } from "@/lib/data/use-offers";
 import { checkCompat } from "@/lib/compat/check";
 import { recommendedPsu } from "@/lib/compat/watt";
 import Thumb from "@/components/Thumb";
@@ -163,7 +163,7 @@ function parsePicks(raw: string | null): Record<string, string> | null {
       if (idx < 0) continue;
       const cat = part.slice(0, idx);
       const id = part.slice(idx + 1);
-      if (cat && id && PRODUCTS.some((x) => x.id === id && x.category === cat)) parsed[cat] = id;
+      if (cat && id) parsed[cat] = id;
     }
     return Object.keys(parsed).length ? parsed : null;
   } catch {
@@ -172,7 +172,7 @@ function parsePicks(raw: string | null): Record<string, string> | null {
 }
 
 export default function BuilderPage() {
-  const offers = useOffers();
+  const { products, offers } = useCatalog();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   // Row that just changed — drives the row-flash micro-animation.
   const [flashCat, setFlashCat] = useState<string | null>(null);
@@ -203,17 +203,17 @@ export default function BuilderPage() {
           cat = addParam.slice(0, idx);
           id = addParam.slice(idx + 1);
         } else {
-          const prod = PRODUCTS.find((x) => x.id === addParam);
+          const prod = products.find((x) => x.id === addParam) || PRODUCTS.find((x) => x.id === addParam);
           if (prod) {
             cat = prod.category;
             id = prod.id;
           }
         }
-        if (cat && id && PRODUCTS.some((x) => x.id === id && x.category === cat)) {
+        if (cat && id && (products.some((x) => x.id === id) || PRODUCTS.some((x) => x.id === id))) {
           const next = { ...saved, [cat]: id };
           setPicks(next);
           triggerFlash(cat);
-          const found = PRODUCTS.find((x) => x.id === id);
+          const found = products.find((x) => x.id === id) || PRODUCTS.find((x) => x.id === id);
           if (found) {
             showToast(`✓ ${found.brand} ${found.model} ajouté au configurateur !`);
           }
@@ -264,12 +264,12 @@ export default function BuilderPage() {
     const b: Record<string, Product> = {};
     for (const [cat, id] of Object.entries(picks)) {
       if (id) {
-        const p = PRODUCTS.find((x) => x.id === id);
+        const p = products.find((x) => x.id === id) || PRODUCTS.find((x) => x.id === id);
         if (p) b[cat] = p;
       }
     }
     return b;
-  }, [picks]);
+  }, [picks, products]);
 
   const result = useMemo(() => checkCompat(build), [build]);
 
@@ -713,7 +713,7 @@ export default function BuilderPage() {
             {/* Modal Quick Catalog Link */}
             <div className="px-4 py-2 bg-slate-50 border-b border-slate-200/80 flex items-center justify-between text-xs">
               <span className="text-slate-500 font-medium">
-                {PRODUCTS.filter((p) => p.category === activeModalCat).length} modèles indexés
+                {(products.length ? products : PRODUCTS).filter((p) => p.category === activeModalCat).length} modèles indexés
               </span>
               <Link
                 href={`/category/${activeModalCat}`}
@@ -739,13 +739,16 @@ export default function BuilderPage() {
 
             {/* Modal Product List */}
             <div className="flex-1 overflow-y-auto divide-y divide-slate-100 p-2">
-              {PRODUCTS.filter((p) => p.category === activeModalCat)
+              {(products.length ? products : PRODUCTS).filter((p) => p.category === activeModalCat)
                 .filter((p) => {
                   if (!modalSearch.trim()) return true;
                   const q = modalSearch.toLowerCase();
                   return `${p.brand} ${p.model}`.toLowerCase().includes(q);
                 })
                 .map((product) => {
+                  const pOffers = offers.filter((o) => o.productId === product.id);
+                  const hasInStock = pOffers.some((o) => !isRuptured(o));
+                  const isRupturedProduct = pOffers.length > 0 && !hasInStock;
                   const best = bestOffer(product.id, offers);
                   const isCurrent = picks[activeModalCat] === product.id;
 
@@ -753,20 +756,52 @@ export default function BuilderPage() {
                     <div
                       key={product.id}
                       className={`p-3 rounded flex items-center gap-3 transition-colors ${
-                        isCurrent ? "bg-blue-50/80 border border-blue-200" : "hover:bg-slate-50"
+                        isCurrent
+                          ? "bg-blue-50/80 border border-blue-200"
+                          : isRupturedProduct
+                          ? "bg-slate-50/70 hover:bg-rose-50/30"
+                          : "hover:bg-slate-50"
                       }`}
                     >
-                      <Thumb src={productImage(product)} alt={product.model} size={52} />
+                      <div className="relative shrink-0">
+                        <Thumb src={productImage(product)} alt={product.model} size={52} />
+                        {isRupturedProduct && (
+                          <div className="absolute inset-0 bg-white/60 flex items-center justify-center rounded">
+                            <span className="bg-rose-600 text-white text-[8px] font-black uppercase px-1 py-0.5 rounded shadow">
+                              Épuisé
+                            </span>
+                          </div>
+                        )}
+                      </div>
                       <div className="min-w-0 flex-1">
-                        <div className="font-bold text-sm text-slate-900">
-                          {product.brand} {product.model}
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-sm text-slate-900">
+                            {product.brand} {product.model}
+                          </span>
+                          {isRupturedProduct && (
+                            <span className="px-1.5 py-0.5 rounded bg-rose-100 text-rose-800 text-[10px] font-bold border border-rose-200">
+                              ✕ Rupture
+                            </span>
+                          )}
+                          {!isRupturedProduct && hasInStock && (
+                            <span className="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200">
+                              ✓ En stock
+                            </span>
+                          )}
                         </div>
                         <SpecPills product={product} />
                         <div className="text-xs text-slate-500 mt-1">
                           {best ? (
-                            <span>
-                              dès <b className="text-emerald-700 font-bold">{best.priceDa.toLocaleString("fr-DZ")} DA</b> chez {best.store} ({best.wilaya})
-                            </span>
+                            isRupturedProduct ? (
+                              <span>
+                                Dernier prix : <span className="line-through text-slate-400">{best.priceDa.toLocaleString("fr-DZ")} DA</span>{" "}
+                                <b className="text-rose-600 font-semibold">(Rupture chez {best.store})</b>
+                              </span>
+                            ) : (
+                              <span>
+                                dès <b className="text-emerald-700 font-bold">{best.priceDa.toLocaleString("fr-DZ")} DA</b> chez {best.store} ({best.wilaya})
+                              </span>
+                            )
                           ) : (
                             <span className="text-slate-400 italic">Pas d&apos;offre indexée</span>
                           )}
@@ -777,10 +812,12 @@ export default function BuilderPage() {
                         className={`px-3.5 py-1.5 rounded text-xs font-bold shrink-0 transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
                           isCurrent
                             ? "bg-slate-200 text-slate-700 cursor-default"
+                            : isRupturedProduct
+                            ? "bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200"
                             : "bg-[#2c87c3] hover:bg-[#1e5c85] text-white"
                         }`}
                       >
-                        {isCurrent ? "Sélectionné" : "Choisir"}
+                        {isCurrent ? "Sélectionné" : isRupturedProduct ? "Choisir (Rupture)" : "Choisir"}
                       </button>
                     </div>
                   );

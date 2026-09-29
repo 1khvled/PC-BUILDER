@@ -5,7 +5,7 @@
 // the env is not configured (local dev without .env.local), every helper falls
 // back to the static bake in ./products + ./live so the site keeps rendering.
 import { supabase, isDbConfigured } from "@/lib/supabase";
-import { OFFERS, priceHistory, type Offer, type PricePoint } from "./products";
+import { OFFERS, PRODUCTS, priceHistory, type Offer, type PricePoint, type Product, type Category } from "./products";
 import { SCRAPED_AT } from "./live";
 
 const PAGE = 1000; // PostgREST max-rows: paginate past the 1000-row cap
@@ -44,6 +44,15 @@ function storeOf(s: { name: string; wilaya: string } | { name: string; wilaya: s
 
 function toOffer(r: DbOfferRow): Offer {
   const s = storeOf(r.stores);
+  const rawStock = (r.stock || "").toLowerCase();
+  const stock =
+    rawStock === "out" || /rupture|epuis|out.of.stock/i.test(rawStock)
+      ? "Rupture"
+      : rawStock === "in" || /en.stock|in.stock/i.test(rawStock)
+      ? "En stock"
+      : rawStock === "ouedkniss"
+      ? "Ouedkniss"
+      : "À vérifier";
   return {
     productId: r.product_id,
     store: s?.name ?? "—",
@@ -52,9 +61,7 @@ function toOffer(r: DbOfferRow): Offer {
     priceDa: r.price_da,
     url: r.url,
     image: r.image || undefined,
-    // Honest labels from the DB stock flag ('in' / 'out' / '' unknown).
-    // Unconfirmed offers rank below confirmed ones (see offerRank).
-    stock: r.stock === "in" ? "En stock" : r.stock === "out" ? "Rupture" : "Prix constaté",
+    stock,
     condition: r.cond === 1 ? "new" : "used",
     scrapedAt: r.day,
   };
@@ -130,3 +137,60 @@ export async function getPriceHistory(productId: string): Promise<PricePoint[]> 
     return priceHistory(productId);
   }
 }
+
+interface DbProductRow {
+  id: string;
+  category: string;
+  brand: string;
+  model: string;
+}
+
+/** All products directly from Supabase canonical_products table. */
+export async function getProducts(): Promise<Product[]> {
+  try {
+    if (!isDbConfigured()) return PRODUCTS;
+    const client = supabase();
+    const rows = await fetchAll<DbProductRow>((from, to) =>
+      client
+        .from("canonical_products")
+        .select("id, category, brand, model")
+        .order("id", { ascending: true })
+        .range(from, to)
+    );
+    if (!rows || rows.length === 0) return PRODUCTS;
+    const specsMap = new Map(PRODUCTS.map((p) => [p.id, p.specs]));
+    return rows.map((r) => ({
+      id: r.id,
+      category: r.category as Category,
+      brand: r.brand,
+      model: r.model,
+      specs: specsMap.get(r.id) ?? {},
+    }));
+  } catch {
+    return PRODUCTS;
+  }
+}
+
+/** Single product directly from Supabase canonical_products table. */
+export async function getProduct(id: string): Promise<Product | undefined> {
+  try {
+    if (!isDbConfigured()) return PRODUCTS.find((p) => p.id === id);
+    const { data } = await supabase()
+      .from("canonical_products")
+      .select("id, category, brand, model")
+      .eq("id", id)
+      .maybeSingle();
+    if (!data) return PRODUCTS.find((p) => p.id === id);
+    const staticP = PRODUCTS.find((p) => p.id === id);
+    return {
+      id: data.id,
+      category: data.category as Category,
+      brand: data.brand,
+      model: data.model,
+      specs: staticP?.specs ?? {},
+    };
+  } catch {
+    return PRODUCTS.find((p) => p.id === id);
+  }
+}
+

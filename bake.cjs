@@ -1255,6 +1255,7 @@ const seed = {
   offers: capped.map((o) => ({
     p: o.productId, s: o.store, d: o.priceDa, c: o.condition === "used" ? 0 : 1,
     u: o.url.slice(0, 160), t: o.titleRaw.slice(0, 90),
+    w: o.stock === "Rupture" ? "out" : o.stock === "En stock" ? "in" : o.stock === "Ouedkniss" ? "ouedkniss" : (o.stock || ""),
   })),
 };
 fs.writeFileSync("supabase-seed.json", JSON.stringify(seed));

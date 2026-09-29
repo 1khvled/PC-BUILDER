@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GUIDES } from "@/lib/data/guides";
-import { PRODUCTS, bestOffer, productImage } from "@/lib/data/products";
-import { getOffers, getScrapedAt } from "@/lib/data/catalog";
+import { bestOffer, productImage } from "@/lib/data/products";
+import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 
 export function generateStaticParams() {
@@ -10,13 +10,16 @@ export function generateStaticParams() {
 }
 
 export default async function GuidePage({ params }: { params: { slug: string } }) {
-  const offers = await getOffers();
-  const scrapedAt = await getScrapedAt();
+  const [products, offers, scrapedAt] = await Promise.all([
+    getProducts(),
+    getOffers(),
+    getScrapedAt(),
+  ]);
   const guide = GUIDES.find((g) => g.slug === params.slug);
   if (!guide) notFound();
 
   const rows = guide.parts
-    .map((id) => ({ p: PRODUCTS.find((x) => x.id === id), best: bestOffer(id, offers) }))
+    .map((id) => ({ p: products.find((x) => x.id === id), best: bestOffer(id, offers) }))
     .filter((x) => x.p);
 
   const total = rows.reduce((s, r) => s + (r.best?.priceDa ?? 0), 0);

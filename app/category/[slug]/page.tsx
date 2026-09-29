@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CATEGORIES } from "@/lib/data/products";
-import { getOffers } from "@/lib/data/catalog";
+import { getOffers, getProducts } from "@/lib/data/catalog";
 import CategoryCatalogClient from "@/components/CategoryCatalogClient";
 
 export const dynamic = "force-dynamic";
@@ -15,8 +15,11 @@ export default async function CategoryPage({ params }: { params: { slug: string 
   if (!currentCat) {
     notFound();
   }
-  // Live offers from Supabase (static bake fallback inside getOffers).
-  const offers = await getOffers();
+  // Live products and offers directly from Supabase
+  const [products, offers] = await Promise.all([
+    getProducts(),
+    getOffers(),
+  ]);
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-6">
@@ -32,7 +35,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
       </nav>
 
       {/* Interactive Client Catalog with Toolbar & Denser Cards */}
-      <CategoryCatalogClient slug={params.slug} catLabel={currentCat.label} offers={offers} />
+      <CategoryCatalogClient slug={params.slug} catLabel={currentCat.label} offers={offers} products={products} />
     </main>
   );
 }
