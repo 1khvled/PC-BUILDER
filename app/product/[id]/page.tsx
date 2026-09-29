@@ -5,6 +5,7 @@ import { getOffers, getPriceHistory, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import ProductOffersTable from "@/components/ProductOffersTable";
 import PriceChart from "@/components/PriceChart";
+import FbResolveForm from "@/components/FbResolveForm";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ id: p.id }));
@@ -239,19 +240,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
             <p className="text-xs text-slate-500 mt-1 leading-relaxed">
               Collez le lien d&apos;une annonce Facebook Marketplace pour vérifier son tarif et son historique face aux prix neufs du marché algérien (résolution à la demande, sans scraper permanent).
             </p>
-            <form action="/api/fb-resolve" method="get" className="flex flex-wrap gap-2 mt-4">
-              <input
-                name="url"
-                placeholder="https://www.facebook.com/marketplace/item/..."
-                className="flex-1 min-w-[260px] border border-slate-200 rounded px-3.5 py-2 text-xs bg-slate-50 focus:bg-white focus:border-[#2c87c3] outline-none transition-colors"
-              />
-              <button
-                type="submit"
-                className="px-4 py-2 rounded bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors"
-              >
-                Résoudre le prix
-              </button>
-            </form>
+            <FbResolveForm />
           </div>
         </div>
 
@@ -317,7 +306,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                 </a>
 
                 <Link
-                  href={`/builder?p=${product.category}:${product.id}`}
+                  href={`/builder?add=${product.category}:${product.id}`}
                   className="w-full text-center py-2.5 px-4 rounded border border-slate-200 hover:border-[#2c87c3] hover:bg-blue-50/50 text-slate-800 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
                 >
                   <span>+ Ajouter au System Builder</span>

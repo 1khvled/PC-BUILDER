@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "sync:smart": "node scripts/smart-sync.mjs",
+    "sync:smart:force": "node scripts/smart-sync.mjs --force",
+    "sync:smart:dry": "node scripts/smart-sync.mjs --dry-run"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",

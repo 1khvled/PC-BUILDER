@@ -22,8 +22,15 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
   const [sortField, setSortField] = useState<SortField>("price");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
   const [conditionFilter, setConditionFilter] = useState<"all" | "new" | "used">("all");
+  const [selectedWilaya, setSelectedWilaya] = useState("all");
   const [search, setSearch] = useState("");
   const [hideRuptured, setHideRuptured] = useState(true);
+
+  const availableWilayas = useMemo(() => {
+    const s = new Set<string>();
+    offers.forEach((o) => { if (o.wilaya) s.add(o.wilaya.trim()); });
+    return Array.from(s).sort();
+  }, [offers]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -43,6 +50,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
   const filteredAndSortedOffers = useMemo(() => {
     const list = visibleOffers.filter((o) => {
       if (conditionFilter !== "all" && o.condition !== conditionFilter) return false;
+      if (selectedWilaya !== "all" && (!o.wilaya || !o.wilaya.toLowerCase().includes(selectedWilaya.toLowerCase()))) return false;
       if (search.trim()) {
         const q = search.toLowerCase();
         const match =
@@ -71,7 +79,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
     });
 
     return list;
-  }, [visibleOffers, conditionFilter, search, sortField, sortDir]);
+  }, [visibleOffers, conditionFilter, selectedWilaya, search, sortField, sortDir]);
 
   const newCount = useMemo(() => visibleOffers.filter((o) => o.condition === "new").length, [visibleOffers]);
   const usedCount = useMemo(() => visibleOffers.filter((o) => o.condition === "used").length, [visibleOffers]);
@@ -133,6 +141,22 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
               </button>
             )}
           </div>
+          {availableWilayas.length > 1 && (
+            <select
+              value={selectedWilaya}
+              onChange={(e) => setSelectedWilaya(e.target.value)}
+              aria-label="Filtrer les offres par wilaya"
+              className="border border-slate-200 rounded px-2.5 py-1 bg-white text-slate-700 text-xs font-semibold outline-none cursor-pointer hover:border-slate-300 transition-colors"
+            >
+              <option value="all">Toutes wilayas ({availableWilayas.length})</option>
+              {availableWilayas.map((w) => (
+                <option key={w} value={w}>
+                  📍 {w}
+                </option>
+              ))}
+            </select>
+          )}
+
           {rupturedCount > 0 && (
             <button
               onClick={() => setHideRuptured((v) => !v)}
@@ -351,6 +375,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
             actionText="Réinitialiser les filtres"
             onAction={() => {
               setConditionFilter("all");
+              setSelectedWilaya("all");
               setSearch("");
               setHideRuptured(false);
             }}

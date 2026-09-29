@@ -90,18 +90,247 @@ async function main() {
     // query stamped; bake dedups via seenOkUrl. Skip laptop sellers (their
     // inventory vetoes to extras anyway).
     const OKSTORES = [
-      ["31418", "TECHMATE DZ"],
-      ["17937", "IT DEVICE"],
-      ["30409", "FUTURE CITY INFORMATIQUE"],
-      ["1059", "ADMIN Informatique"],
-      ["12489", "Informatics"],
-      ["24255", "AT-informatics"],
-      ["5162", "A&Y Info Tech"],
-      ["2227", "WELTINFO"],
-      ["16056", "IFTA COMPUTER"],
-      ["26086", "PROMOTECH IT"],
-      ["37907", "FAIZ TECH"],
-    ];
+      [
+            "30409",
+            "FUTURE CITY INFORMATIQUE"
+      ],
+      [
+            "30580",
+            "LICB+"
+      ],
+      [
+            "17937",
+            "IT DEVICE"
+      ],
+      [
+            "1059",
+            "ADMIN Informatique"
+      ],
+      [
+            "16056",
+            "IFTA COMPUTER"
+      ],
+      [
+            "26086",
+            "PROMOTECH IT"
+      ],
+      [
+            "3408",
+            "DKTIQUE COMPUTER"
+      ],
+      [
+            "12489",
+            "Informatics"
+      ],
+      [
+            "17106",
+            "Technal Computer"
+      ],
+      [
+            "31849",
+            "TKI TEC"
+      ],
+      [
+            "19321",
+            "MBA INFO"
+      ],
+      [
+            "3667",
+            "ORANGE HASSIBA"
+      ],
+      [
+            "9192",
+            "BUYMORE"
+      ],
+      [
+            "25851",
+            "الأثير للإعلام الآلي"
+      ],
+      [
+            "14143",
+            "MDI informatique"
+      ],
+      [
+            "31418",
+            "TECHMATE DZ"
+      ],
+      [
+            "35481",
+            "AN-TECH"
+      ],
+      [
+            "30983",
+            "Agora Global"
+      ],
+      [
+            "18611",
+            "Microsoft  pro dz"
+      ],
+      [
+            "14615",
+            "ICT Informatique"
+      ],
+      [
+            "24086",
+            "GAMING ONE"
+      ],
+      [
+            "24553",
+            "mark computer"
+      ],
+      [
+            "10233",
+            "EL ASSIL Informaique"
+      ],
+      [
+            "18357",
+            "ShiftTech Store"
+      ],
+      [
+            "28111",
+            "MYCROW.DZ"
+      ],
+      [
+            "17238",
+            "ISSER TECH"
+      ],
+      [
+            "31810",
+            "KPC SOLUTIONS"
+      ],
+      [
+            "19409",
+            "V2 TECH"
+      ],
+      [
+            "5975",
+            "PC PRO DZ"
+      ],
+      [
+            "17356",
+            "AMROUNE-TECH"
+      ],
+      [
+            "16395",
+            "Gigastore"
+      ],
+      [
+            "13949",
+            "Oceanic computer"
+      ],
+      [
+            "39421",
+            "Best Buy DZ"
+      ],
+      [
+            "40172",
+            "MC HARDEC"
+      ],
+      [
+            "38815",
+            "GamingZone BY Divatech"
+      ],
+      [
+            "22056",
+            "PC DZ"
+      ],
+      [
+            "23397",
+            "Techno Pro"
+      ],
+      [
+            "5382",
+            "Micro PC Algérie KOUBA"
+      ],
+      [
+            "32587",
+            "INI VOLT"
+      ],
+      [
+            "14033",
+            "E K Service Informatique"
+      ],
+      [
+            "3327",
+            "GCB INFORMATIQUE"
+      ],
+      [
+            "4143",
+            "AGYN TECH DZ"
+      ],
+      [
+            "31499",
+            "Khalil Technologie"
+      ],
+      [
+            "12902",
+            "Akram Informatique"
+      ],
+      [
+            "4244",
+            "MN COMPUTER BLIDA"
+      ],
+      [
+            "21375",
+            "Tizainformatique"
+      ],
+      [
+            "2227",
+            "WELTINFO"
+      ],
+      [
+            "24937",
+            "BREAKER TECH"
+      ],
+      [
+            "9366",
+            "EL HOUDHOUD Informatique & Bureautique"
+      ],
+      [
+            "8832",
+            "TRETEC"
+      ],
+      [
+            "31100",
+            "PM Tech"
+      ],
+      [
+            "36944",
+            "ULTRA TECH ALG"
+      ],
+      [
+            "39334",
+            "Media plaza dz"
+      ],
+      [
+            "24255",
+            "AT-informatics"
+      ],
+      [
+            "2711",
+            "ITEC"
+      ],
+      [
+            "26391",
+            "Inytex"
+      ],
+      [
+            "26245",
+            "KOTEK Informatique"
+      ],
+      [
+            "22523",
+            "Global Network's"
+      ],
+      [
+            "15140",
+            "CDSINFORMATIQUE"
+      ],
+      [
+            "19077",
+            "PC&Phone"
+      ]
+];
     if (!SKIP_OK) {
       for (const [sid] of OKSTORES) for (const q of queries) jobs.push({ kind: "oks", store: sid, q, key: `ouedkniss-store:${sid}:${q}` });
     }

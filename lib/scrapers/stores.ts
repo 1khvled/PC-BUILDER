@@ -489,6 +489,21 @@ const STORES: Record<string, StoreCfg> = {
       monitor: ["monitor"],
     },
   },
+  BlidaComputer: {
+    wilaya: "Blida",
+    item: [".product"],
+    title: [".product-title", "h2", "h3"],
+    price: WOO_PRICE,
+    wooApi: {
+      base: "https://blidacomputer.dz",
+      cats: {
+        monitor: 101,
+      },
+    },
+    cats: {
+      monitor: ["https://blidacomputer.dz/product-category/monitors/"],
+    },
+  },
 };
 
 // JSON-LD offers.availability — the most reliable stock signal on WooCommerce/Shopify

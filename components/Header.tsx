@@ -463,28 +463,47 @@ export default function Header() {
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-2 text-xs font-semibold">
+          <div className="grid grid-cols-3 gap-2 text-xs font-semibold">
             <Link
               href="/builder"
               onClick={() => setMobileMenuOpen(false)}
-              className="btn-blue p-2.5 text-center text-xs"
+              className="btn-blue p-2 text-center text-xs"
             >
               System Builder
             </Link>
             <Link
-              href="/category/cpu"
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-2.5 rounded bg-[#26293b] text-slate-200 text-center"
-            >
-              Tous les Produits
-            </Link>
-            <Link
               href="/guides"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2.5 rounded bg-[#26293b] text-slate-200 text-center"
+              className="p-2 rounded bg-[#26293b] text-slate-200 text-center hover:bg-slate-700 transition-colors"
             >
               Guides d&apos;achat
             </Link>
+            <Link
+              href="/deals"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 rounded bg-[#26293b] text-slate-200 text-center hover:bg-slate-700 transition-colors"
+            >
+              Bons plans
+            </Link>
+          </div>
+
+          {/* Mobile All Categories Grid */}
+          <div className="pt-2 border-t border-slate-800">
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+              Composants PC
+            </div>
+            <div className="grid grid-cols-3 gap-1.5 text-[11px] font-medium">
+              {CATEGORIES.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  href={`/category/${cat.slug}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-2 py-1.5 rounded bg-[#1a1c2c] hover:bg-[#26293b] text-slate-300 hover:text-white transition-colors truncate text-center border border-slate-800/80"
+                >
+                  {cat.label.replace(/\s*\(.*\)/, "")}
+                </Link>
+              ))}
+            </div>
           </div>
 
           <div className="pt-2 border-t border-slate-700 flex items-center justify-between text-xs">

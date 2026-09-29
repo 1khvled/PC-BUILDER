@@ -24,13 +24,42 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
   const [sort, setSort] = useState<SortOption>("price-asc");
   const [condition, setCondition] = useState<ConditionOption>("all");
   const [store, setStore] = useState<string>("all");
+  const [wilaya, setWilaya] = useState<string>("all");
   const [search, setSearch] = useState<string>("");
   const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
+
+  // Load saved viewMode and preferred wilaya from localStorage
+  useState(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const savedMode = localStorage.getItem("dz_view_mode");
+      if (savedMode === "cards" || savedMode === "table") {
+        setViewMode(savedMode);
+      }
+      const savedW = localStorage.getItem("dz_wilaya_pref");
+      if (savedW && savedW !== "Toute l'Algérie (58)") {
+        const clean = savedW.replace(/^\d+\s*-\s*/, "").trim();
+        // check if any offer in catalog has this wilaya
+        setWilaya(clean);
+      }
+    } catch {
+      /* ignore */
+    }
+  });
+
+  const handleViewModeChange = (mode: "cards" | "table") => {
+    setViewMode(mode);
+    try {
+      localStorage.setItem("dz_view_mode", mode);
+    } catch {
+      /* ignore */
+    }
+  };
 
   const rawProducts = useMemo(() => PRODUCTS.filter((p) => p.category === slug), [slug]);
   const rawExtras = useMemo(() => LIVE_EXTRA.filter((e) => e.category === slug), [slug]);
 
-  // Extract unique stores that exist in this category's offers and extras
+  // Extract unique stores and wilayas that exist in this category's offers and extras
   const availableStores = useMemo(() => {
     const storeSet = new Set<string>();
     const catProductIds = new Set(rawProducts.map((p) => p.id));
@@ -43,6 +72,20 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
       if (e.store) storeSet.add(e.store);
     }
     return Array.from(storeSet).sort();
+  }, [rawProducts, rawExtras, offers]);
+
+  const availableWilayas = useMemo(() => {
+    const wSet = new Set<string>();
+    const catProductIds = new Set(rawProducts.map((p) => p.id));
+    for (const o of offers) {
+      if (catProductIds.has(o.productId) && o.wilaya) {
+        wSet.add(o.wilaya.trim());
+      }
+    }
+    for (const e of rawExtras) {
+      if (e.wilaya) wSet.add(e.wilaya.trim());
+    }
+    return Array.from(wSet).sort();
   }, [rawProducts, rawExtras, offers]);
 
   // Filter and sort canonical products
@@ -71,6 +114,12 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
         if (!hasMatchingStore) return false;
       }
 
+      // Wilaya filter
+      if (wilaya !== "all") {
+        const hasMatchingWilaya = pOffers.some((o) => o.wilaya && o.wilaya.toLowerCase().includes(wilaya.toLowerCase()));
+        if (!hasMatchingWilaya) return false;
+      }
+
       return true;
     });
 
@@ -88,7 +137,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
     });
 
     return list;
-  }, [rawProducts, search, condition, store, sort, offers]);
+  }, [rawProducts, search, condition, store, wilaya, sort, offers]);
 
   // Filter extras according to toolbar state
   const filteredExtras = useMemo(() => {
@@ -101,22 +150,24 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
       }
       if (condition !== "all" && e.condition !== condition) return false;
       if (store !== "all" && e.store !== store) return false;
+      if (wilaya !== "all" && !e.wilaya.toLowerCase().includes(wilaya.toLowerCase())) return false;
       return true;
     }).sort((a, b) => {
       if (sort === "price-asc") return a.priceDa - b.priceDa;
       if (sort === "price-desc") return b.priceDa - a.priceDa;
       return 0;
     });
-  }, [rawExtras, search, condition, store, sort]);
+  }, [rawExtras, search, condition, store, wilaya, sort]);
 
   const resetFilters = () => {
     setSort("price-asc");
     setCondition("all");
     setStore("all");
+    setWilaya("all");
     setSearch("");
   };
 
-  const isFiltered = search !== "" || condition !== "all" || store !== "all" || sort !== "price-asc";
+  const isFiltered = search !== "" || condition !== "all" || store !== "all" || wilaya !== "all" || sort !== "price-asc";
 
   return (
     <div className="space-y-6">
@@ -177,7 +228,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
           {/* View mode toggle: Dense Cards vs Dense Table */}
           <div className="inline-flex rounded border border-slate-200 p-0.5 bg-slate-50 text-xs">
             <button
-              onClick={() => setViewMode("cards")}
+              onClick={() => handleViewModeChange("cards")}
               className={`px-3 py-1.5 rounded font-semibold transition-colors flex items-center gap-1.5 ${
                 viewMode === "cards" ? "bg-white text-slate-900" : "text-slate-600 hover:text-slate-900"
               }`}
@@ -192,7 +243,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               <span>Fiches</span>
             </button>
             <button
-              onClick={() => setViewMode("table")}
+              onClick={() => handleViewModeChange("table")}
               className={`px-3 py-1.5 rounded font-semibold transition-colors flex items-center gap-1.5 ${
                 viewMode === "table" ? "bg-white text-slate-900" : "text-slate-600 hover:text-slate-900"
               }`}
@@ -245,12 +296,32 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                 <select
                   value={store}
                   onChange={(e) => setStore(e.target.value)}
+                  aria-label="Filtrer par boutique"
                   className="border border-slate-200 rounded px-2.5 py-1 bg-slate-50 text-slate-700 font-medium outline-none cursor-pointer hover:bg-white transition-colors"
                 >
                   <option value="all">Toutes les boutiques ({availableStores.length})</option>
                   {availableStores.map((s) => (
                     <option key={s} value={s}>
                       {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Wilaya Filter Dropdown */}
+            {availableWilayas.length > 0 && (
+              <div className="relative flex items-center">
+                <select
+                  value={wilaya}
+                  onChange={(e) => setWilaya(e.target.value)}
+                  aria-label="Filtrer par wilaya"
+                  className="border border-slate-200 rounded px-2.5 py-1 bg-slate-50 text-slate-700 font-medium outline-none cursor-pointer hover:bg-white transition-colors"
+                >
+                  <option value="all">Toutes les wilayas ({availableWilayas.length})</option>
+                  {availableWilayas.map((w) => (
+                    <option key={w} value={w}>
+                      📍 {w}
                     </option>
                   ))}
                 </select>
@@ -373,13 +444,22 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                       )}
                     </div>
 
-                    <Link
-                      href={`/product/${p.id}`}
-                      className="px-3 py-1.5 rounded bg-slate-900 hover:bg-[#2c87c3] text-white font-semibold text-xs transition-colors shrink-0 flex items-center gap-1"
-                    >
-                      <span>Voir offres</span>
-                      <span>→</span>
-                    </Link>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <Link
+                        href={`/builder?add=${p.category}:${p.id}`}
+                        className="px-2.5 py-1.5 rounded border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-700 font-semibold text-xs transition-colors"
+                        title="Ajouter au configurateur"
+                      >
+                        + Config
+                      </Link>
+                      <Link
+                        href={`/product/${p.id}`}
+                        className="px-3 py-1.5 rounded bg-slate-900 hover:bg-[#2c87c3] text-white font-semibold text-xs transition-colors flex items-center gap-1"
+                      >
+                        <span>Voir offres</span>
+                        <span>→</span>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               );
@@ -463,12 +543,21 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                         </td>
 
                         <td className="px-4 py-3.5 text-right">
-                          <Link
-                            href={`/product/${p.id}`}
-                            className="inline-flex items-center justify-center px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors"
-                          >
-                            Voir offres →
-                          </Link>
+                          <div className="inline-flex items-center justify-end gap-1.5">
+                            <Link
+                              href={`/builder?add=${p.category}:${p.id}`}
+                              className="inline-flex items-center justify-center px-2 py-1.5 rounded border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] text-slate-700 font-semibold text-xs transition-colors"
+                              title="Ajouter au configurateur"
+                            >
+                              + Config
+                            </Link>
+                            <Link
+                              href={`/product/${p.id}`}
+                              className="inline-flex items-center justify-center px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-colors"
+                            >
+                              Voir offres →
+                            </Link>
+                          </div>
                         </td>
                       </tr>
                     );

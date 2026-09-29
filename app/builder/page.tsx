@@ -187,16 +187,47 @@ export default function BuilderPage() {
   // then the saved local build — is applied in an effect below.
   const [picks, setPicks] = useState<Record<string, string>>(DEFAULT_BUILD);
 
-  // Restore once on mount: shared link wins, then localStorage, then default.
+  // Restore once on mount: handle ?add=..., then ?p=..., then localStorage, then default.
   useEffect(() => {
     try {
-      const fromUrl = parsePicks(new URLSearchParams(window.location.search).get("p"));
+      const params = new URLSearchParams(window.location.search);
+      const addParam = params.get("add");
+      const fromUrl = parsePicks(params.get("p"));
+      const saved = parsePicks(window.localStorage.getItem("dz_builder_picks")) || DEFAULT_BUILD;
+
+      if (addParam) {
+        let cat = "";
+        let id = "";
+        if (addParam.includes(":")) {
+          const idx = addParam.indexOf(":");
+          cat = addParam.slice(0, idx);
+          id = addParam.slice(idx + 1);
+        } else {
+          const prod = PRODUCTS.find((x) => x.id === addParam);
+          if (prod) {
+            cat = prod.category;
+            id = prod.id;
+          }
+        }
+        if (cat && id && PRODUCTS.some((x) => x.id === id && x.category === cat)) {
+          const next = { ...saved, [cat]: id };
+          setPicks(next);
+          triggerFlash(cat);
+          const found = PRODUCTS.find((x) => x.id === id);
+          if (found) {
+            showToast(`✓ ${found.brand} ${found.model} ajouté au configurateur !`);
+          }
+          return;
+        }
+      }
+
       if (fromUrl) {
         setPicks(fromUrl);
         return;
       }
-      const saved = parsePicks(window.localStorage.getItem("dz_builder_picks"));
-      if (saved) setPicks(saved);
+
+      const localSaved = parsePicks(window.localStorage.getItem("dz_builder_picks"));
+      if (localSaved) setPicks(localSaved);
     } catch {
       /* private mode etc. — stay on default */
     }
@@ -261,7 +292,29 @@ export default function BuilderPage() {
     try {
       const s = serializePicks(picks);
       const link = window.location.origin + "/builder" + (s ? `?p=${encodeURIComponent(s)}` : "");
-      navigator.clipboard?.writeText(link);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link)
+          .then(() => showToast("✓ Permalien copié — il restaure ce build exact !"))
+          .catch(() => fallbackCopy(link));
+      } else {
+        fallbackCopy(link);
+      }
+    } catch {
+      fallbackCopy(window.location.href);
+    }
+  };
+
+  const fallbackCopy = (text: string) => {
+    try {
+      const el = document.createElement("textarea");
+      el.value = text;
+      el.style.position = "fixed";
+      el.style.left = "-999999px";
+      document.body.appendChild(el);
+      el.focus();
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
       showToast("✓ Permalien copié — il restaure ce build exact !");
     } catch {
       showToast("Copie impossible dans ce navigateur.");
@@ -655,6 +708,21 @@ export default function BuilderPage() {
               >
                 ✕
               </button>
+            </div>
+
+            {/* Modal Quick Catalog Link */}
+            <div className="px-4 py-2 bg-slate-50 border-b border-slate-200/80 flex items-center justify-between text-xs">
+              <span className="text-slate-500 font-medium">
+                {PRODUCTS.filter((p) => p.category === activeModalCat).length} modèles indexés
+              </span>
+              <Link
+                href={`/category/${activeModalCat}`}
+                onClick={() => setActiveModalCat(null)}
+                className="text-[#2c87c3] hover:underline font-semibold flex items-center gap-1"
+              >
+                <span>Explorer tout le catalogue avec filtres</span>
+                <span>→</span>
+              </Link>
             </div>
 
             {/* Modal Search Bar */}

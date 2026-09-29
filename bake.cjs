@@ -514,19 +514,18 @@ const RULES = [
   { id: "psu-1000-gold", cat: "psu", all: ["a1000gl"] },
   { id: "psu-850-gold", cat: "psu", all: ["a850gs"] },
   { id: "psu-500-b", cat: "psu", all: ["a500n"] },
-  { id: "psu-750-b", cat: "psu", all: ["750w"], any: ["bronze", "m1 750", "a750"] },
   { id: "psu-600-b", cat: "psu", all: ["600w"] },
-  { id: "psu-650-b", cat: "psu", all: ["650w"], any: ["bronze"] },
-  { id: "psu-650-gold", cat: "psu", all: ["650w"], any: ["gold"] },
+  { id: "psu-650-gold", cat: "psu", all: ["650w"], any: ["gold", "rm650", "gx650", "ud650", "focus 650", "80 plus gold", "80plus gold", "80+ gold"], none: ["bronze", "white"] },
   { id: "psu-650-b", cat: "psu", all: ["650w"], none: ["gold"] },
   { id: "psu-700-b", cat: "psu", all: ["700w"] },
-  { id: "psu-750-b", cat: "psu", all: ["750w"], any: ["bronze"] },
-  { id: "psu-750-gold", cat: "psu", all: ["750w"] },
-  { id: "psu-800-gold", cat: "psu", all: ["800w"] },
-  { id: "psu-850-b", cat: "psu", all: ["850w"], any: ["bronze"] },
-  { id: "psu-850-gold", cat: "psu", all: ["850w"] },
-  { id: "psu-850-gold", cat: "psu", all: ["850g"] },
-  { id: "psu-1000-gold", cat: "psu", all: ["1000w"] },
+  { id: "psu-750-gold", cat: "psu", all: ["750w"], any: ["gold", "rm750", "rm750e", "rm750x", "gx750", "ud750", "pq750", "a750gl", "focus 750", "80 plus gold", "80plus gold", "80+ gold"], none: ["bronze", "white"] },
+  { id: "psu-750-b", cat: "psu", all: ["750w"], any: ["bronze", "m1 750", "a750", "80+", "80 plus", "80plus"], none: ["gold"] },
+  { id: "psu-750-b", cat: "psu", all: ["750w"], none: ["gold"] },
+  { id: "psu-800-gold", cat: "psu", all: ["800w"], any: ["gold", "vortex", "rx 800", "rx-800", "80 plus gold", "80plus gold", "80+ gold"] },
+  { id: "psu-850-gold", cat: "psu", all: ["850w"], any: ["gold", "rm850", "rm850e", "rm850x", "gx850", "ud850", "pq850", "a850gl", "focus 850", "80 plus gold", "80plus gold", "80+ gold"], none: ["bronze", "white"] },
+  { id: "psu-850-b", cat: "psu", all: ["850w"], any: ["bronze", "80+", "80 plus", "80plus"], none: ["gold"] },
+  { id: "psu-850-b", cat: "psu", all: ["850w"], none: ["gold"] },
+  { id: "psu-1000-gold", cat: "psu", all: ["1000w"], any: ["gold", "rm1000", "gx1000", "ud1000", "a1000", "focus 1000", "80 plus gold", "80plus gold", "80+ gold"], none: ["bronze", "white"] },
   { id: "psu-1050-gold", cat: "psu", any: ["1050w", "1050"] },
   { id: "psu-1200-gold", cat: "psu", all: ["1200w"] },
   { id: "psu-1250-gold", cat: "psu", all: ["1250w"] },
@@ -600,23 +599,44 @@ const RULES = [
 ];
 
 const OK_CAT = {
-  "ryzen 5 5600": "cpu", "ryzen 5 5600x": "cpu", "ryzen 7 5700x": "cpu", "ryzen 5 7500f": "cpu", "ryzen 5 7600": "cpu",
+  // CPU
+  "ryzen 5 3600": "cpu", "ryzen 5 5600": "cpu", "ryzen 5 5600x": "cpu", "ryzen 5 5600g": "cpu", "ryzen 7 5700x": "cpu",
+  "ryzen 7 5700x3d": "cpu", "ryzen 7 5800x3d": "cpu", "ryzen 5 7500f": "cpu", "ryzen 5 7600": "cpu",
   "ryzen 7 7700": "cpu", "ryzen 7 7800x3d": "cpu", "ryzen 7 9800x3d": "cpu", "ryzen 9 7900x": "cpu", "ryzen 9 7950x": "cpu",
-  "i5 12400": "cpu", "i5 13400": "cpu", "i5 14400": "cpu", "i7 13700": "cpu", "i7 14700": "cpu", "i9 14900": "cpu", "i3 12100": "cpu",
-  "rtx 3060": "gpu", "rtx 4060": "gpu", "rtx 4060 ti": "gpu", "rtx 4070": "gpu", "rtx 4070 super": "gpu", "rtx 3070": "gpu",
-  "rtx 3080": "gpu", "rtx 5060": "gpu", "rtx 5060 ti": "gpu", "rtx 5070": "gpu", "rx 580": "gpu", "rx 6600": "gpu",
-  "rx 6700 xt": "gpu", "rx 6800": "gpu", "rx 7600": "gpu", "rx 7700 xt": "gpu", "rx 7800 xt": "gpu", "rx 7900 xt": "gpu",
-  "rx 9070": "gpu", "rx 9060": "gpu", "gtx 1660 super": "gpu",
-  b550: "motherboard", b650: "motherboard", b660: "motherboard", b760: "motherboard", h610: "motherboard", z790: "motherboard", a620: "motherboard",
-  "ak400": "cooler", "ak620": "cooler", "watercooling 240": "cooler", "watercooling 360": "cooler",
-  "16gb ddr4": "ram", "32gb ddr4": "ram", "ddr5 16gb": "ram", "ddr5 32gb": "ram",
-  "980 pro": "ssd", "nvme 1tb": "ssd", "nvme 512gb": "ssd", "nvme 2tb": "ssd",
-  "650w": "psu", "750w": "psu", "850w": "psu",
-  "boitier atx": "case", "boitier gaming": "case",
-  "ecran 144hz": "monitor", "ecran 165hz": "monitor", "ecran 27": "monitor", "moniteur gaming": "monitor",
+  "ryzen 5 8400f": "cpu", "ryzen 5 8500g": "cpu", "ryzen 5 9600x": "cpu", "ryzen 7 9700x": "cpu", "ryzen 9 9900x": "cpu", "ryzen 9 9950x": "cpu",
+  "i3 12100": "cpu", "i5 12400": "cpu", "i5 12600k": "cpu", "i5 13400": "cpu", "i5 13600k": "cpu", "i5 14400": "cpu", "i5 14600k": "cpu",
+  "i7 12700": "cpu", "i7 13700": "cpu", "i7 14700": "cpu", "i7 14700k": "cpu", "i9 13900k": "cpu", "i9 14900": "cpu",
+  "ultra 7 265k": "cpu", "ultra 9 285k": "cpu",
+  // GPU
+  "rtx 3050": "gpu", "rtx 3060": "gpu", "rtx 3060 ti": "gpu", "rtx 3070": "gpu", "rtx 3080": "gpu",
+  "rtx 4060": "gpu", "rtx 4060 ti": "gpu", "rtx 4070": "gpu", "rtx 4070 super": "gpu", "rtx 4070 ti": "gpu", "rtx 4080": "gpu", "rtx 4090": "gpu",
+  "rtx 5060": "gpu", "rtx 5060 ti": "gpu", "rtx 5070": "gpu", "gtx 1660 super": "gpu",
+  "rx 580": "gpu", "rx 6600": "gpu", "rx 6650 xt": "gpu", "rx 6700 xt": "gpu", "rx 6800": "gpu",
+  "rx 7600": "gpu", "rx 7700 xt": "gpu", "rx 7800 xt": "gpu", "rx 7900 xt": "gpu", "rx 7900 xtx": "gpu", "rx 9070": "gpu", "rx 9060": "gpu",
+  // Motherboard
+  b450: "motherboard", a520: "motherboard", b550: "motherboard", b650: "motherboard", b650m: "motherboard",
+  b660: "motherboard", b760: "motherboard", b760m: "motherboard", h610: "motherboard", z790: "motherboard",
+  a620: "motherboard", x670: "motherboard", b850: "motherboard", x870: "motherboard", z890: "motherboard",
+  // Coolers
+  ak400: "cooler", ak620: "cooler", ak500: "cooler", ag400: "cooler", ag620: "cooler",
+  "peerless assassin": "cooler", "phantom spirit": "cooler", "liquid freezer": "cooler",
+  "watercooling 240": "cooler", "watercooling 360": "cooler",
+  // RAM
+  "16gb ddr4": "ram", "32gb ddr4": "ram", "ddr4 3200": "ram", "ddr5 16gb": "ram", "ddr5 32gb": "ram", "ddr5 6000": "ram",
+  // SSD
+  "980 pro": "ssd", "990 pro": "ssd", "sn850x": "ssd", "sn770": "ssd", "kc3000": "ssd",
+  "legend 710": "ssd", "legend 850": "ssd", "nv3 1tb": "ssd", "nvme 1tb": "ssd", "nvme 512gb": "ssd", "nvme 2tb": "ssd",
+  // PSU
+  "550w": "psu", "600w": "psu", "650w": "psu", "750w": "psu", "850w": "psu", "1000w": "psu",
+  "alimentation 550w": "psu", "alimentation 600w": "psu", "alimentation 650w": "psu", "alimentation 750w": "psu", "alimentation 850w": "psu", "alimentation 1000w": "psu",
+  // Cases
+  "boitier atx": "case", "boitier gaming": "case", "boitier aquarium": "case",
+  // Monitors
+  "ecran 144hz": "monitor", "ecran 165hz": "monitor", "ecran 180hz": "monitor", "ecran 240hz": "monitor",
+  "ecran 24": "monitor", "ecran 27": "monitor", "ecran 32": "monitor", "moniteur gaming": "monitor",
 };
 // non-parts never stored as extras (keeps DB + bundle lean)
-const EXTRA_JUNK = /laptop|notebook|macbook|printer|imprimante|scanner|projecteur|datashow|webcam|tablet|smartphone|console|manette|pate thermique|pad thermique|thermal pad|thermal paste|thermal grizzly|mastergel|tube (magma|watercooling)|ventilateur boitier|case fan|masterfan|sickleflow|mf120|fd12|pack (ventilo|fans)|support (carte|ecran)|monitor stand|vortex|graphics card support|gpu holder|support gpu|herculx|back plate|waterblock|cold series|radiator with thermal|kit .\volution|en configuration|sleeve|power extension|cable (mars|first)|8-pin male|4-pin female|zenscreen|monitor arm|ergo aas|carte pci|ddr2|controleur|controller|fan hub|riser|snowman h9|tf120|chroma|at120|wraith spire|cooling amd|ventill?ateur.*original|original.*fan|ventil+o original|ubisoft|steam key|jeu pc|elgato|capture|12pci|btc|mining|kit .\volution|en configuration|accessoire boitier|pixel|24pin|smart plug|transfo|ddr2|televiseur|television|smart tv|souris|mouse|clavier|keyboard|casque|headset|chaise|chair|gaming desk|bureau gamer|portal|facebook/i;
+const EXTRA_JUNK = /laptop|notebook|macbook|printer|imprimante|scanner|projecteur|datashow|webcam|tablet|smartphone|console|manette|pate thermique|pad thermique|thermal pad|thermal paste|thermal grizzly|mastergel|tube (magma|watercooling)|ventilateur boitier|case fan|masterfan|sickleflow|mf120|fd12|pack (ventilo|fans)|support (carte|ecran)|monitor stand|vortex|graphics card support|gpu holder|support gpu|herculx|back plate|waterblock|cold series|radiator with thermal|kit .\volution|en configuration|sleeve|power extension|cable (mars|first)|8-pin male|4-pin female|zenscreen|monitor arm|ergo aas|carte pci|ddr2|controleur|controller|fan hub|riser|snowman h9|tf120|chroma|at120|wraith spire|cooling amd|ventill?ateur.*original|original.*fan|ventil+o original|ubisoft|steam key|jeu pc|elgato|capture|12pci|btc|mining|kit .\volution|en configuration|accessoire boitier|pixel|24pin|smart plug|transfo|ddr2|televiseur|television|smart tv|souris|mouse|clavier|keyboard|casque|headset|chaise|chair|gaming desk|bureau gamer|portal|facebook|tron[cç][oe]n|troncen|meuleuse|disqueuse|\bscie\b|panineuse|gaufrier|plaque\s+de\s+cuisson|grille[\s-]pain|moulinex|multismart|brandmann|perceuse|visseuse|boulonneuse|perforateur|marteau\s*piqueur|ponceuse|soudeur|soudeuse|poste\s*[aà]\s*souder|aspirateur|tondeuse|\brabot\b|compresseur|[ée]lectrog[eè]ne|onduleur|multiprise|rallonge|cuisine|kitchen|cuisson|four\b|micro[\s-]ondes|hachoir|presse[\s-]agrumes|taille[\s-]haie|d[ée]broussailleuse|fer\s+[aà]\s+repasser|s[eè]che[\s-]cheveux|marmite|cocotte|115mm|125mm|makita|dewalt|ingco|crown\b|dwt\b|total\s*tools/i;
 // ---- multi-item veto (bundle/pack/combo): tested BEFORE matchRule ----
 // A price framed as several parts together ("CPU AMD RYZEN 5 3400G BOX ...
 // BUNDLE ... B550", "Pack Ryzen 5 5600 + B450M") is never a standalone offer
@@ -629,21 +649,29 @@ const BUNDLE_VETO = /\bbundle\b|\bpack\b|\bcombo\b|\blot de\b/i;
 // Requires full-PC markers (bare "AVEC CONFIG"/"EN CONFIGURATION" single-part
 // rows carry none and still match). The R in GAMER is required so "ECRAN PC
 // GAME REVOLUTION" monitors survive.
-const FULLPC_VETO = /config\s+pc|pc\s+(gammer|gamers?|gaming)|pc\s+complet|unit[eé]s?\s+centrale?s?|setup\s+(gamer|complet|gaming)|config\s+i\d|avec.{0,40}(ram|nvme|ddr)/i;
+const FULLPC_VETO = /config\s+pc|pc\s+(gammer|gamers?|gaming)|pc\s+complet|unit[eé]s?\s+centrale?s?|setup\s+(gamer|complet|gaming)|config\s+i\d|config(\w*)\s+(gaming|intel|amd|ryzen|r\d|i\d|gamer)|unite\s+montage|\bconfig\b.{0,30}\/|avec.{0,40}(ram|nvme|ddr)/i;
 // ---- laptop/prebuilt veto (gpu/cpu/ram/ssd rows only) ----
 // Bare "nitro"/"tuf gaming" are NOT vetoed (Sapphire Nitro GPUs, ASUS TUF
 // boards survive); screen sizes need a separator ([,.\s]+ not *) so "136" in
 // "i5-13600K" and "1733" RAM speeds don't friendly-fire.
-const LAPTOP_VETO = /laptop|notebook|macbook|latitude|optiplex|thinkpad|ideapad|thinkcentre|ideacentre|vivobook|pavilion|victus|omen|legion|zephyrus|tuf\s*[af]\d{2}|acer.{0,10}nitro|nitro.{0,10}acer|nitro\s*\d|pouce|1[357][,.\s]+6|17[,.\s]+3|all\s*in\s*one/i;
+const LAPTOP_VETO = /laptop|notebook|macbook|latitude|optiplex|thinkpad|ideapad|thinkcentre|ideacentre|vivobook|zenbook|elitebook|probook|thinkbook|yoga\b|surface\s*pro|pavilion|victus|omen|legion|zephyrus|tuf\s*[af]\d{2}|acer.{0,10}nitro|nitro.{0,10}acer|nitro\s*\d|inspiron|predator|helios|razer\s*blade|blade\s*\d|\bkatana\b|\bgf\s*\d{2}\b|pulse\s*\d|cyborg\s*\d|stealth\s*\d|sword\s*\d|loq\b|\b\d{4,5}(?:hx|hs|h|u)\b|pouce|1[34567][,.\s]+[0-9]|all\s*in\s*one/i;
 // ---- power-tool/appliance veto (GLOBAL, all categories) ----
-// A/B on full.json: 10 hits, all inside psu rows, 0 outside -> safe globally.
-// Kills "Meuleuse 650W", "Machine à café 650W", "Multiprise 2500W" etc. that
-// match PSU wattage rules.
-const TOOL_VETO = /tron[cç]on|meuleuse|\bscie\b|mixeur|gaufre|sandwich|\bcaf[eé]\b|perceuse|ponceuse|soudeur|soudeuse|aspirateur|tondeuse|\brabot\b|compresseur|[ée]lectrog[eè]ne|onduleur|multiprise|rallonge|cuisine|kitchen|taille-haie|d[ée]broussailleuse|fer à repasser|s[eè]che-cheveux|marmite|cocotte/i;
+// Catches tronçonneuses (all spellings including tronceneuse), meuleuses, grills, toasters, etc.
+const TOOL_VETO = /tron[cç][oe]n|troncen|meuleuse|disqueuse|\bscie\b|scie\s*sauteuse|scie\s*circulaire|mixeur|gaufre|gaufrier|panineuse|panini|plaque\s+de\s+cuisson|sandwich|\bcaf[eé]\b|cafeti[eè]re|bouilloire|grille[\s-]pain|moulinex|multismart|brandmann|perceuse|visseuse|boulonneuse|perforateur|marteau\s*piqueur|ponceuse|soudeur|soudeuse|poste\s*[aà]\s*souder|aspirateur|tondeuse|\brabot\b|compresseur|[ée]lectrog[eè]ne|onduleur|multiprise|rallonge|cuisine|kitchen|cuisson|four\b|micro[\s-]ondes|hachoir|presse[\s-]agrumes|taille[\s-]haie|d[ée]broussailleuse|fer\s+[aà]\s+repasser|s[eè]che[\s-]cheveux|marmite|cocotte|115mm|125mm|makita|dewalt|ingco|crown\b|dwt\b|total\s*tools/i;
+// Non-PC category slugs from Ouedkniss announcement URLs
+const NON_PC_SLUG_VETO = /materiel-electrique|grills-panineuses|electromenager|grille-pain|outillage|bricolage|art-table|cuisine|vaisselle|jardin|auto|moto|vetement|chaussures|bebe|sport/i;
+// Strict computer power supply identification
+const PSU_KEYWORDS = /alimentation|allimentation|\balim\b|\bpsu\b|power\s*supply|bloc\s*d\s*alim|boite\s*d\s*alim|alimentations-boitiers|80\s*plus|80plus|80\+|\bmodulaire\b|\bmodular\b|bronze|gold|platinum|titanium|\batx\b|\bsfx\b/i;
+const PSU_BRANDS = /corsair|seasonic|cooler\s*master|deepcool|thermaltake|be\s*quiet|msi|asus|gigabyte|antec|fsp|aerocool|kolink|mars\s*gaming|gamemax|redragon|silverstone|nzxt|enermax|huntkey|cougar|zalman|xigmatek|sama|1stplayer|darkflash|aigo|hybrok|raidmax|segotep|inwin|chieftec|super\s*flower|evga|gamdias/i;
+function isLegitPsu(title, url = "") {
+  const t = String(title || "");
+  const u = String(url || "");
+  return PSU_KEYWORDS.test(t) || PSU_KEYWORDS.test(u) || PSU_BRANDS.test(t);
+}
 // ---- PSU-into-motherboard veto (motherboard rows only) ----
 // Moves exactly the ANTEC ATOM B650W rows (matched via "b650") to extras.
 const MOBOPSU_VETO = /psu|\balimentation\b|80\s*plus|modulaire|bronze|gold|antec|seasonic|\bfsp\b|corsair/i;
-// ---- tower-prebuilt veto (cpu/gpu/ram/ssd/motherboard rows) ----
+// ---- tower-prebuilt veto (all component categories) ----
 // Whole towers booked as one part ("UNITE ASUS G10DK 5600X … 1660TI",
 // "KIT UPGRADE 7600+B840M", "PC DE BUREAU LENOVO i5-13400"). Anchored to
 // prebuilt markers so "Desktop Processor" CPU singles and "configurable"
@@ -651,12 +679,13 @@ const MOBOPSU_VETO = /psu|\balimentation\b|80\s*plus|modulaire|bronze|gold|antec
 const PREBUILT_VETO = /unite\s+(gamer|asus|gaming)|kit\s+upgrade|forssa|\(.*configu|configu\w*\s+(uniquement|only)|desktop\s+(hp|lenovo|dell|asus|tower|sff|neo|think|pro\b)|pc\s+(high-tech|de\s+bureau)|tour\s+gamer/i;
 // Single gate, run on the RAW cleaned title BEFORE matchRule. Vetoed rows
 // bypass extras caps exactly like bundles (replaces BUNDLE_VETO at call-sites).
-function isVetoed(category, title) {
+function isVetoed(category, title, url = "") {
+  if (url && NON_PC_SLUG_VETO.test(url)) return true;
   if (BUNDLE_VETO.test(title) || TOOL_VETO.test(title)) return true;
-  if ((category === "gpu" || category === "cpu") && (FULLPC_VETO.test(title) || LAPTOP_VETO.test(title))) return true;
-  if ((category === "ram" || category === "ssd") && LAPTOP_VETO.test(title)) return true;
-  if ((category === "gpu" || category === "cpu" || category === "ram" || category === "ssd" || category === "motherboard") && PREBUILT_VETO.test(title)) return true;
+  if (FULLPC_VETO.test(title) || PREBUILT_VETO.test(title)) return true;
+  if (LAPTOP_VETO.test(title)) return true;
   if (category === "motherboard" && MOBOPSU_VETO.test(title)) return true;
+  if (category === "psu" && !isLegitPsu(title, url)) return true;
   return false;
 }
 
@@ -671,12 +700,14 @@ function capTokenGB(tok) {
   const m = /^(\d+)(gb|tb)$/.exec(tok);
   return m ? (+m[1] * (m[2] === "tb" ? 1024 : 1)) : null;
 }
-function titleCapacities(title) {
+function titleCapacities(title, category) {
   // Kit multipliers must be read from the RAW title: norm() destroys x/×/*
   // separators ("2×16 Go" -> "2 16go"), losing which number is per-stick.
   // Decimal "capacities" are speeds, never drives ("7.3GB par Sec" -> phantom
   // 3GB): strip them. Counts above 8 sticks are model numbers, not kits
   // ("SN850X 2TB" reads as 850 x 2TB without the guard).
+  // IMPORTANT: Kits only apply to RAM! For GPUs ("Ventus 2X 8GB"), 2X is fan count, not kit multiplication.
+  const isRam = category === "ram" || (!category && /ddr|ram|dimm|kit\b/i.test(title));
   const decRe = /\d+\s*[.,]\s*\d+\s*(tb|gb|go|to)/gi;
   const raw = " " + String(title || "").toLowerCase().replace(decRe, " ") + " ";
   const kre = /(\d+)\s*[x×*]\s*(\d+)\s*(tb|gb|go|to)|(\d+)\s*(tb|gb|go|to)\s*[x×*]\s*(\d+)/gi;
@@ -685,7 +716,7 @@ function titleCapacities(title) {
   let km;
   const frUnit = (u) => (u === "tb" || u === "to" ? 1024 : 1);
   const kitOk = (n, size) => n >= 1 && n <= 8 && size > 0 && size <= 8192;
-  while ((km = kre.exec(raw))) {
+  while (isRam && (km = kre.exec(raw))) {
     if (km[1]) {
       const size = +km[2] * frUnit(km[3]);
       if (kitOk(+km[1], size)) {
@@ -708,9 +739,11 @@ function titleCapacities(title) {
   let m;
   while ((m = re.exec(t))) {
     if (m[1]) {
-      if (kitOk(+m[1], gb(m[2], m[3]))) out.push(+m[1] * gb(m[2], m[3]));
+      if (isRam && kitOk(+m[1], gb(m[2], m[3]))) out.push(+m[1] * gb(m[2], m[3]));
+      else out.push(gb(m[2], m[3]));
     } else if (m[4]) {
-      if (kitOk(+m[6], gb(m[4], m[5]))) out.push(gb(m[4], m[5]) * +m[6]);
+      if (isRam && kitOk(+m[6], gb(m[4], m[5]))) out.push(gb(m[4], m[5]) * +m[6]);
+      else out.push(gb(m[4], m[5]));
     } else out.push(gb(m[7], m[8]));
   }
   const sane = (v) => v > 0 && v <= 32768; // absurd values (7200tb RPM fallout) are never capacities
@@ -729,7 +762,7 @@ function isSignalTok(x) {
 }
 function variantRedirect(category, title, matched, has) {
   if (category !== "ssd" && category !== "ram" && category !== "gpu") return matched;
-  const caps = titleCapacities(title);
+  const caps = titleCapacities(title, category);
   if (caps.length === 0) return matched;
   if (caps.length === 1) {
     const idm = /(\d+)(tb|gb)/.exec(matched);
@@ -879,17 +912,58 @@ function hasDigitTokOn(s, tok) {
 // single-capacity check, but for W and Hz units. Redirects to a
 // unit-correct rule when one exists, keeps the match otherwise.
 function unitRedirect(category, title, matched, has) {
-  const unit = category === "psu" ? "w" : category === "monitor" ? "hz" : null;
+  if (category === "gpu") {
+    const idVramMatch = matched.match(/-(\d+)gb$/);
+    if (idVramMatch) {
+      const idVram = parseInt(idVramMatch[1], 10);
+      const caps = titleCapacities(title, "gpu");
+      if (caps.length === 1 && caps[0] !== idVram) {
+        const wantVram = caps[0];
+        for (const r of RULES) {
+          if (r.cat !== "gpu" || !r.id.endsWith(`-${wantVram}gb`)) continue;
+          if (!(r.all || []).every(has)) continue;
+          if (r.any && !r.any.some(has)) continue;
+          if ((r.none || []).some(has)) continue;
+          return r.id;
+        }
+        return null;
+      }
+    }
+    return matched;
+  }
+  if (category === "motherboard") {
+    const chipsets = ["b450", "b550", "b650", "b660", "b760", "b840", "b850", "b860", "a520", "a620", "h510", "h610", "h810", "z490", "z590", "z690", "z790", "z890", "x570", "x670", "x870"];
+    const foundChips = chipsets.filter((c) => has(c));
+    if (foundChips.length === 1) {
+      const wantChip = foundChips[0];
+      if (matched.includes(wantChip)) return matched;
+      for (const r of RULES) {
+        if (r.cat !== "motherboard" || !r.id.includes(wantChip)) continue;
+        if (!(r.all || []).every(has)) continue;
+        if (r.any && !r.any.some(has)) continue;
+        if ((r.none || []).some(has)) continue;
+        return r.id;
+      }
+      return null;
+    }
+    return matched;
+  }
+  const unit = category === "psu" ? "w" : category === "monitor" ? "hz" : category === "cooler" ? "rad" : null;
   if (!unit) return matched;
   const t = " " + norm(title) + " ";
-  const re = unit === "w" ? /(\d{3,4})\s*w\b/g : /(\d{2,3})\s*hz\b/g;
-  const units = [...new Set([...t.matchAll(re)].map((m) => +m[1]))];
+  let re;
+  if (unit === "w") re = /(\d{3,4})\s*w\b/g;
+  else if (unit === "hz") re = /(\d{2,3})\s*hz\b/g;
+  else if (unit === "rad") re = /(\d{3})\s*mm\b|\b(120|240|280|360|420)\b/g;
+
+  const matches = [...t.matchAll(re)];
+  const units = [...new Set(matches.map((m) => +(m[1] || m[2])))].filter(u => {
+    if (unit === "rad") return [120, 240, 280, 360, 420].includes(u);
+    return true;
+  });
+
   let want = units.length === 1 ? units[0] : null;
   if (want === null && unit === "w" && units.length > 1) {
-    // Variant list ("650W | 750W", "750W/850W/1000W"): stores show the
-    // cheapest variant price (same convention as SSD capacity ranges), so
-    // the smallest listed wattage wins. Scattered wattages ("850W PSU with
-    // 600W cable") are specs, not variants -> keep.
     const raw = " " + String(title || "") + " ";
     const listed = new Set(
       [...raw.matchAll(/(\d{3,4})\s*w\s*[/|,]/gi)].map((m) => +m[1])
@@ -897,9 +971,11 @@ function unitRedirect(category, title, matched, has) {
     );
     const inList = units.filter((u) => listed.has(u));
     if (inList.length >= 2) want = Math.min(...inList);
+    else if (/native\s*\d+w\s*pcie|pcie\s*5|12v/i.test(raw)) want = units[0]; // first wattage is PSU, second is cable
   }
-  if (want === null) return matched; // 0 ou ambigu : keep
   const idm = matched.match(/(\d{3,4})/);
+  if (unit === "hz" && units.length > 0 && idm && !units.includes(+idm[1])) return null;
+  if (want === null) return matched; // 0 ou ambigu : keep
   if (idm && +idm[1] === want) return matched; // accord : keep
   for (const r of RULES) {
     if (r.cat !== category) continue;
@@ -910,6 +986,8 @@ function unitRedirect(category, title, matched, has) {
     if ((r.none || []).some(has)) continue;
     return r.id;
   }
+  // Hard conflict: if matched product id explicitly had a unit and title wanted a different unit, ditch to avoid polluting
+  if (idm && +idm[1] !== want) return null;
   return matched;
 }
 
@@ -937,7 +1015,7 @@ function matchRule(category, title) {
 // ---- price-sanity gates (ditch total, never extras) ----
 // Bands mirror lib/scrapers/validate.ts CATEGORY_BANDS so scrape-time and
 // bake-time agree. Per-product band = seed median x[0.4, 2.5].
-const CAT_BANDS = { cpu: [1000, 250000], cooler: [500, 90000], motherboard: [4000, 200000], ram: [1000, 300000], ssd: [800, 160000], gpu: [2000, 1500000], case: [1000, 130000], psu: [800, 150000], monitor: [3000, 400000] };
+const CAT_BANDS = { cpu: [1000, 250000], cooler: [500, 90000], motherboard: [4000, 200000], ram: [1000, 300000], ssd: [800, 160000], gpu: [2000, 1500000], case: [1000, 130000], psu: [3500, 150000], monitor: [3000, 400000] };
 // Stable reference: lib/data/price-meds.json (frozen medians, versioned).
 // Reading them from the regenerating seed made bake oscillate (medians lag
 // one bake behind and borderline rows flip-flop forever). Refresh the file
@@ -1033,7 +1111,7 @@ for (const [key, val] of Object.entries(report)) {
     const title = clean(o.title);
     if (!title || !o.priceDa) continue;
     const cond = /\bused\b|occasion|r[eé]cup[eé]ration/i.test(title) ? "used" : "new";
-    const isVeto = isVetoed(category, title);
+    const isVeto = isVetoed(category, title, o.url);
     if (isBundle(title, o.description)) {
       let split = false;
       for (const part of splitDescriptionPrices(o.description)) {
@@ -1052,8 +1130,8 @@ for (const [key, val] of Object.entries(report)) {
     if (pid) {
       if (seedPairs.has(pid + "|" + store)) continue; // seed wins
       matched.push({ productId: pid, store, wilaya: WILAYA[store], titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: o.stock || "En stock", condition: cond, image: o.image || "", scrapedAt: NOW });
-    } else if (!EXTRA_JUNK.test(title) && (isVeto || extraCount < 12)) {
-      if (!isVeto) extraCount++;
+    } else if (!isVeto && !EXTRA_JUNK.test(title) && extraCount < 12) {
+      extraCount++;
       pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store, wilaya: WILAYA[store], url: o.url, image: o.image || "", condition: cond });
     }
   }
@@ -1067,20 +1145,18 @@ for (const o of report["ouedkniss:all"] || []) {
   const category = OK_CAT[o.query] || "gpu";
   const title = clean(o.title);
   if (!title || !o.priceDa) continue;
-  // Tier 3 (particulier, isFromStore === false — NOT undefined: legacy HTML
-  // rows without the flag keep store treatment): visible in extras only,
-  // never a price reference. Own cap so they can't crowd out store extras.
+  // Tier 3 (particulier, isFromStore === false): visible in extras only,
+  // never a price reference. Skip entirely if non-PC tool, non-PC slug or non-legit PSU.
   if (o.isFromStore === false) {
-    if (!EXTRA_JUNK.test(title) && okiExtra < 150) {
+    if (!isVetoed(category, title, o.url) && !EXTRA_JUNK.test(title) && okiExtra < 150) {
       okiExtra++;
       pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: "Ouedkniss", wilaya: o.wilaya || "DZ", url: o.url, image: o.image || "", condition: /neuf|new|blister|jamais|scell/i.test(title) ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: 0 });
     }
     continue;
   }
   const isNew = /neuf|new|blister|jamais|scell/i.test(title);
-  // canonical match only — bundles/laptops/unknown VRAM go to extras, never canonical
-  // vetoed bundle rows bypass the 150-cap so combo ads stay visible as raw extras
-  const isVeto = isVetoed(category, title);
+  // canonical match only — tools/laptops/appliances are completely vetoed
+  const isVeto = isVetoed(category, title, o.url);
   if (isBundle(title, o.description)) {
     let split = false;
     for (const part of splitDescriptionPrices(o.description)) {
@@ -1101,8 +1177,8 @@ for (const o of report["ouedkniss:all"] || []) {
     if (seenOkUrl.has(o.url)) continue; // same ad twice in feed: keep first assignment
     seenOkUrl.add(o.url);
     matched.push({ productId: pid, store: "Ouedkniss", wilaya: o.wilaya || "DZ", titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: "Ouedkniss", condition: isNew ? "new" : "used", image: o.image || "", scrapedAt: NOW });
-  } else if (!EXTRA_JUNK.test(title) && (isVeto || okExtra < 150)) {
-    if (!isVeto) okExtra++;
+  } else if (!isVeto && !EXTRA_JUNK.test(title) && okExtra < 150) {
+    okExtra++;
     pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: "Ouedkniss", wilaya: o.wilaya || "DZ", url: o.url, image: o.image || "", condition: isNew ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: o.isFromStore ? 1 : 0 });
   }
 }

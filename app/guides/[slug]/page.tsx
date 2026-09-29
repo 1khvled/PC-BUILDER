@@ -20,6 +20,7 @@ export default async function GuidePage({ params }: { params: { slug: string } }
     .filter((x) => x.p);
 
   const total = rows.reduce((s, r) => s + (r.best?.priceDa ?? 0), 0);
+  const builderQuery = rows.map((r) => `${r.p!.category}:${r.p!.id}`).join(",");
   const missing = rows.filter((r) => !r.best).length;
 
   return (
@@ -88,7 +89,7 @@ export default async function GuidePage({ params }: { params: { slug: string } }
             </div>
           </div>
           <Link
-            href="/builder"
+            href={`/builder?p=${encodeURIComponent(builderQuery)}`}
             className="px-5 py-3 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white font-bold text-xs sm:text-sm shadow-md transition-colors flex items-center gap-2 shrink-0"
           >
             <span>Ouvrir dans le Builder</span>
@@ -221,7 +222,7 @@ export default async function GuidePage({ params }: { params: { slug: string } }
       {/* Footer Navigation Buttons */}
       <div className="flex flex-wrap gap-3 pt-2">
         <Link
-          href="/builder"
+          href={`/builder?p=${encodeURIComponent(builderQuery)}`}
           className="px-6 py-3 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white font-bold text-sm transition-colors"
         >
           Adapter ce build dans le configurateur →

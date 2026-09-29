@@ -41,7 +41,7 @@ export default function Footer() {
               </svg>
             </div>
             <div>
-              <div className="text-white font-bold text-xs">12 boutiques + Ouedkniss</div>
+              <div className="text-white font-bold text-xs">15 sites web + Ouedkniss (60+ stores)</div>
               <div className="text-[11px] text-slate-400">Vitrines en ligne suivies chaque jour</div>
             </div>
           </div>
@@ -83,7 +83,7 @@ export default function Footer() {
                 Prix live en DA
               </span>
               <span className="px-2 py-0.5 rounded bg-white/10 text-slate-200 font-medium text-[10px]">
-                12 boutiques + Ouedkniss
+                15 sites web + 60 stores Ouedkniss
               </span>
               <span className="px-2 py-0.5 rounded bg-white/10 text-blue-300 font-medium text-[10px]">
                 Neuf / Occasion séparés
@@ -138,7 +138,7 @@ export default function Footer() {
           <div className="space-y-2.5">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider">Transparence</h4>
             <p className="text-[11px] leading-relaxed text-slate-400">
-              Boutiques indexées : LICB+, Digitec, Click-DZ, WifiDjelfa, GamingDZ, KOTEK, Ouedkniss, GigaStore, Informatics, Lahlou, HardSoft, Campus.
+              Boutiques indexées : LICB+, Digitec, Click-DZ, WifiDjelfa, GamingDZ, KOTEK, Blida Computer, NextGen, KhabirTech, DeskCom, GigaStore, Informatics, Lahlou, HardSoft, Campus + 60 boutiques vérifiées sur Ouedkniss couvrant 23 wilayas.
             </p>
             <p className="text-[11px] leading-relaxed text-slate-400">
               Prix indicatifs en Dinars Algériens (DA), toujours vérifiés sur le site marchand avant commande. Occasion et neuf strictement différenciés. Tri 100% organique par prix croissant.
