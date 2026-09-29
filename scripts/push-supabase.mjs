@@ -45,7 +45,15 @@ async function main() {
   await api(`offers?day=lte.${seed.day}`, "DELETE");
   console.log("purged offers up to", seed.day);
   // 1. stores upsert -> id map
-  await api("stores?on_conflict=name", "POST", seed.stores, { Prefer: "resolution=merge-duplicates" });
+  const cleanStores = [];
+  const seenStores = new Set();
+  for (const s of seed.stores) {
+    const name = s.name.trim();
+    if (!name || seenStores.has(name)) continue;
+    seenStores.add(name);
+    cleanStores.push({ name, wilaya: s.wilaya || "Alger" });
+  }
+  await api("stores?on_conflict=name", "POST", cleanStores, { Prefer: "resolution=merge-duplicates" });
   const storeRows = await api(`stores?select=id,name`, "GET");
   const sid = Object.fromEntries(storeRows.map((s) => [s.name, s.id]));
   console.log("stores mapped:", Object.keys(sid).length);

@@ -1257,7 +1257,7 @@ const prodSrc = fs.readFileSync("lib/data/products.ts", "utf8");
 const seedProducts = [...prodSrc.matchAll(/id:\s*"([^"]+)",\s*category:\s*"([^"]+)",\s*brand:\s*"([^"]+)",\s*model:\s*"([^"]+)"/g)]
   .map((m) => ({ id: m[1], category: m[2], brand: m[3], model: m[4] }));
 const storeWilayaMap = new Map();
-for (const o of capped) {
+for (const o of matched) {
   if (!storeWilayaMap.has(o.store) || storeWilayaMap.get(o.store) === "Alger") {
     storeWilayaMap.set(o.store, o.wilaya || WILAYA[o.store] || "Alger");
   }
@@ -1268,7 +1268,7 @@ const seed = {
   day: NOW.slice(0, 10),
   products: seedProducts,
   stores: seedStores,
-  offers: capped.map((o) => ({
+  offers: matched.map((o) => ({
     p: o.productId, s: o.store, d: o.priceDa, c: o.condition === "used" ? 0 : 1,
     u: o.url.slice(0, 160), t: o.titleRaw.slice(0, 90),
     w: o.stock === "Rupture" ? "out" : o.stock === "En stock" ? "in" : o.stock === "Ouedkniss" ? "ouedkniss" : (o.stock || "in"),
