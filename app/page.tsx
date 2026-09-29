@@ -5,6 +5,8 @@ import { LIVE_EXTRA } from "@/lib/data/live";
 import { GUIDES } from "@/lib/data/guides";
 import Thumb from "@/components/Thumb";
 
+export const dynamic = "force-dynamic";
+
 function fmt(n: number) {
   return n.toLocaleString("fr-DZ") + " DA";
 }

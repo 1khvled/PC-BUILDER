@@ -38,6 +38,8 @@ function deals(offers: Offer[]): Deal[] {
   return out.sort((a, b) => b.saving - a.saving);
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function DealsPage() {
   const offers = await getOffers();
   const scrapedAt = await getScrapedAt();

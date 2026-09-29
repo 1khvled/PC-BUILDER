@@ -4,6 +4,8 @@ import { CATEGORIES } from "@/lib/data/products";
 import { getOffers } from "@/lib/data/catalog";
 import CategoryCatalogClient from "@/components/CategoryCatalogClient";
 
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
   return CATEGORIES.map((c) => ({ slug: c.slug }));
 }

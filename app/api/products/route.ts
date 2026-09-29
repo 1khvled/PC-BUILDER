@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { PRODUCTS, bestOffer } from "@/lib/data/products";
 import { getOffers, getScrapedAt } from "@/lib/data/catalog";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const q = (searchParams.get("q") ?? "").toLowerCase();

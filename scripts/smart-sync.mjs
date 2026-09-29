@@ -14,10 +14,25 @@
 
 import fs from "fs";
 
+// Automatically load .env.local if credentials are not in process.env
+const envLocalPath = ".env.local";
+if (fs.existsSync(envLocalPath)) {
+  const lines = fs.readFileSync(envLocalPath, "utf8").split(/\r?\n/);
+  for (const line of lines) {
+    const m = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+    if (m && !process.env[m[1]]) {
+      let val = (m[2] || "").trim();
+      if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+      if (val.startsWith("'") && val.endsWith("'")) val = val.slice(1, -1);
+      process.env[m[1]] = val;
+    }
+  }
+}
+
 const DRY = process.argv.includes("--dry-run");
 const FORCE = process.argv.includes("--force");
-const URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+const URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/[\r\n]/g, "").trim();
+const KEY = (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").replace(/[\r\n]/g, "").trim();
 
 const CHUNK_SIZE = 60;
 
@@ -135,10 +150,20 @@ export async function smartSync() {
   const historyToAppend = [];
   let unchangedCount = 0;
 
+  // Deduplicate seed offers by primary key (product_id, store_id, cond), keeping the cheapest
+  const uniqueSeedOffers = new Map();
   for (const o of seed.offers) {
     const sId = storeIdMap[o.s];
     if (!sId) continue;
+    const key = `${o.p}|${sId}|${o.c}`;
+    const prev = uniqueSeedOffers.get(key);
+    if (!prev || o.d < prev.d) {
+      uniqueSeedOffers.set(key, { ...o, sId });
+    }
+  }
 
+  for (const o of uniqueSeedOffers.values()) {
+    const sId = o.sId;
     const key = `${o.p}|${sId}|${o.c}`;
     const existing = existingMap.get(key);
 
@@ -171,6 +196,20 @@ export async function smartSync() {
         }
       } else {
         unchangedCount++;
+      }
+    }
+  }
+
+  // 5b. Prune obsolete offers from database (offers in DB not present in seed)
+  const seedKeys = new Set(seed.offers.map((o) => `${o.p}|${storeIdMap[o.s]}|${o.c}`));
+  const obsoleteOffers = existingOffers.filter((o) => !seedKeys.has(`${o.product_id}|${o.store_id}|${o.cond}`));
+  if (obsoleteOffers.length > 0) {
+    console.log(`[SmartSync] Pruning ${obsoleteOffers.length} stale/invalid offers from database...`);
+    for (const obs of obsoleteOffers) {
+      try {
+        await api(`offers?product_id=eq.${obs.product_id}&store_id=eq.${obs.store_id}&cond=eq.${obs.cond}`, "DELETE");
+      } catch (e) {
+        console.log(`[SmartSync] Failed to delete obsolete offer ${obs.product_id}:`, e.message);
       }
     }
   }

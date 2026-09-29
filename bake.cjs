@@ -1245,7 +1245,7 @@ for (const m of ordered) {
 fs.writeFileSync("lib/data/live-images-src.json", JSON.stringify(imgSrc, null, 1));
 // compact Supabase seed (offers + one history snapshot; extras are re-scraped, never stored)
 const prodSrc = fs.readFileSync("lib/data/products.ts", "utf8");
-const seedProducts = [...prodSrc.matchAll(/\{ id: "([^"]+)", category: "([^"]+)", brand: "([^"]+)", model: "([^"]+)" }/g)]
+const seedProducts = [...prodSrc.matchAll(/id:\s*"([^"]+)",\s*category:\s*"([^"]+)",\s*brand:\s*"([^"]+)",\s*model:\s*"([^"]+)"/g)]
   .map((m) => ({ id: m[1], category: m[2], brand: m[3], model: m[4] }));
 const seed = {
   scraped_at: NOW,

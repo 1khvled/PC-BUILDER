@@ -7,6 +7,8 @@ import ProductOffersTable from "@/components/ProductOffersTable";
 import PriceChart from "@/components/PriceChart";
 import FbResolveForm from "@/components/FbResolveForm";
 
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ id: p.id }));
 }
