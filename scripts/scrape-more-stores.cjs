@@ -26,6 +26,7 @@ const QUERY = `query SearchQuery($q: String, $filter: SearchFilterInput) {
         pricePreview
         description
         slug
+        status
         refreshedAt
         cities {
           name
@@ -117,17 +118,45 @@ async function queryOuedkniss(q, storeId = null) {
     const json = await res.json();
     const items = json?.data?.search?.announcements?.data || [];
     return items.map((a) => {
-      const p = a.price || (a.pricePreview ? parseInt(String(a.pricePreview).replace(/\D/g, ""), 10) : null);
-      if (!p || p < 500 || p > 5000000) return null;
+      if (!a || !a.id) return null;
+
+      // 1. Status check: only active/published/edited listings
+      const st = String(a.status || "").toUpperCase();
+      if (st && st !== "PUBLISHED" && st !== "ACTIVE" && st !== "EDITED") return null;
+
+      // 2. Freshness check: reject dead/expired listings older than 90 days
+      const postDate = a.refreshedAt;
+      if (!postDate) return null;
+      const ageDays = (Date.now() - new Date(postDate).getTime()) / (1000 * 864e5);
+      if (isNaN(ageDays) || ageDays > 90) return null;
+
+      // 3. Price validation: clean numeric price, reject placeholders
+      let p = a.price;
+      if (!p && a.pricePreview) {
+        const cleaned = String(a.pricePreview).replace(/\s/g, "");
+        const m = cleaned.match(/^(\d{4,8})(?:DA|DZD)?$/i);
+        if (m) p = parseInt(m[1], 10);
+      }
+      if (!p || p < 1500 || p > 5000000) return null;
+      if (/^(?:1000|1111|1234|12345|123456|9999|99999|1000000)$/.test(String(p))) return null;
+
+      const title = (a.title || "").replace(/\s+/g, " ").trim();
+      if (!title || title.length < 10) return null;
+
+      // 4. Exclude broken, empty box, accessories, or entire PC units
+      const titleLower = title.toLowerCase();
+      if (/\b(?:hs\b|en panne|pour pi[eè]ces?|bo[iî]te vide|carton seul|ventirad seul|support seul|c[aâ]ble seul)\b/i.test(titleLower)) return null;
+      if (/\b(?:pc complet|pc gamer complet|unit[eé] gamer|unit[eé] centrale|configuration compl[eè]te|setup gamer)\b/i.test(titleLower)) return null;
+
       const wilaya = a.cities?.[0]?.region?.name || "Alger";
-      const storeName = a.store?.name || a.user?.username || "Ouedkniss";
+      const storeName = (a.store?.name || a.user?.username || "Ouedkniss").trim();
       const url = `https://www.ouedkniss.com/${a.slug}-d${a.id}`;
       const img = a.defaultMedia?.mediaUrl || "";
       const desc = (a.description || "") + " " + a.title;
       const isNew = /neuf|sous emballage|jamais servi|scell/i.test(desc) && !/occasion|utilis|bon etat/i.test(desc);
       return {
         id: String(a.id),
-        title: a.title,
+        title,
         priceDa: p,
         url,
         image: img,
@@ -135,7 +164,7 @@ async function queryOuedkniss(q, storeId = null) {
         store: storeName,
         stock: "En stock",
         condition: isNew ? "new" : "used",
-        postedAt: a.refreshedAt || new Date().toISOString(),
+        postedAt: postDate,
         isStore: Boolean(a.store),
         isFromStore: Boolean(a.store),
         query: q

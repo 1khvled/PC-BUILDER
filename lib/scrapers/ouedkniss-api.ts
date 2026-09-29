@@ -235,6 +235,7 @@ export async function searchOuedknissFull(
       body: JSON.stringify({
         query: SEARCH_QUERY,
         variables: {
+          q: keywords,
           filter: {
             page,
             count: 48,
@@ -264,16 +265,35 @@ export async function searchOuedknissFull(
       // STORE-ONLY by default: individuals have no warranty/invoice.
       // Opt-in via includeIndividuals (tier-3 source: extras-only in bake).
       if (!item.isFromStore && !includeIndividuals) continue;
-      // Availability first: only live listings carry trustworthy prices.
-      // Search normally returns PUBLISHED; absent status (HTML fallback era)
-      // keeps the row — never punish missing data.
-      if (item.status && String(item.status).toUpperCase() !== "PUBLISHED") continue;
 
-      const price = item.price ?? item.pricePreview ?? null;
-      if (price === null || price < 500 || price > 5_000_000) continue;
+      // 1. Status check: only live published/active/edited announcements
+      const st = String(item.status || "").toUpperCase();
+      if (st && st !== "PUBLISHED" && st !== "ACTIVE" && st !== "EDITED") continue;
+
+      // 2. Freshness check: reject dead/expired listings older than 90 days
+      const postDate = item.refreshedAt;
+      if (postDate) {
+        const ageDays = (Date.now() - new Date(postDate).getTime()) / (1000 * 864e5);
+        if (!isNaN(ageDays) && ageDays > 90) continue;
+      }
+
+      // 3. Price validation: clean numeric price, reject placeholders
+      let price = item.price;
+      if (!price && item.pricePreview) {
+        const cleaned = String(item.pricePreview).replace(/\s/g, "");
+        const m = cleaned.match(/^(\d{4,8})(?:DA|DZD)?$/i);
+        if (m) price = parseInt(m[1], 10);
+      }
+      if (!price || price < 1500 || price > 5_000_000) continue;
+      if (/^(?:1000|1111|1234|12345|123456|9999|99999|1000000)$/.test(String(price))) continue;
 
       const title = (item.title || "").replace(/\s+/g, " ").trim();
-      if (!title) continue;
+      if (!title || title.length < 10) continue;
+
+      // 4. Reject broken, empty boxes, accessories, or entire PC units
+      const titleLower = title.toLowerCase();
+      if (/\b(?:hs\b|en panne|pour pi[eè]ces?|bo[iî]te vide|carton seul|ventirad seul|support seul|c[aâ]ble seul)\b/i.test(titleLower)) continue;
+      if (/\b(?:pc complet|pc gamer complet|unit[eé] gamer|unit[eé] centrale|configuration compl[eè]te|setup gamer)\b/i.test(titleLower)) continue;
 
       const slug = item.slug || "annonce";
       const url = `https://www.ouedkniss.com/${slug}-d${item.id}`;

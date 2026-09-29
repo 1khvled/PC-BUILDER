@@ -1044,12 +1044,14 @@ const SEED_MEDS = (() => {
   } catch { return new Map(); }
 })();
 function isAbsurd(category, pid, price) {
+  if (!price || price < 1500) return true;
+  if (/^(?:1000|1111|1234|12345|123456|9999|99999|1000000)$/.test(String(price))) return true;
   const b = CAT_BANDS[category];
   if (!b) return false;
   if (price < b[0] || price > b[1]) return true;
   const m = SEED_MEDS.get(pid);
   if (!m) return false;
-  return price < m * 0.4 || price > m * 2.5;
+  return price < m * 0.55 || price > m * 1.6;
 }
 
 const BUNDLE_CATS = ["cpu", "gpu", "motherboard", "ram", "ssd"];
