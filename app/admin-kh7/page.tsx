@@ -40,6 +40,9 @@ function schemaTables(): string[] {
  * and served to anybody who requests /admin-kh7 with no key at all.
  */
 export const dynamic = "force-dynamic";
+// Pinned: this route uses node:crypto via lib/admin/auth. Edge would fail to
+// resolve the module and throw a server-side exception on every request.
+export const runtime = "nodejs";
 
 /** Revokes the session cookie. The old shared-key design had no equivalent:
     a leaked key stayed valid forever, with no way to end a session early. */

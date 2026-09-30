@@ -4,6 +4,7 @@ import {
   isAdminConfigured,
   isAuthenticated,
   loginAllowed,
+  clientKey,
   loginSucceeded,
   retryAfterMs,
   startSession,
@@ -12,12 +13,15 @@ import {
 
 export const metadata = { robots: "noindex", title: "Admin - Sign in" };
 export const dynamic = "force-dynamic";
+// Pinned explicitly: this route uses node:crypto (HMAC session signing). If it is ever
+// bundled for the Edge runtime the import fails at module load and the whole page
+// throws a server-side exception, which is exactly the failure being fixed here.
+export const runtime = "nodejs";
 
 async function signIn(formData: FormData) {
   "use server";
 
-  const h = await headers();
-  const key = (await import("@/lib/admin/auth")).clientKey(h);
+  const key = clientKey(await headers());
 
   if (!loginAllowed(key)) {
     // Redirect with a flag rather than rendering the error here, so the server
