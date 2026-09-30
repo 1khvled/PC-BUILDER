@@ -519,6 +519,15 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             </div>
 
             <Link
+              href="/prebuilds"
+              aria-current={pathname.startsWith("/prebuilds") ? "page" : undefined}
+              className={navLinkClass(pathname.startsWith("/prebuilds"))}
+            >
+              <span>PC Montés</span>
+              <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 ml-1">Nouveau</span>
+            </Link>
+
+            <Link
               href="/guides"
               aria-current={pathname.startsWith("/guides") ? "page" : undefined}
               className={navLinkClass(pathname.startsWith("/guides"))}
@@ -576,13 +585,20 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             )}
           </div>
 
-          <div className="grid grid-cols-3 gap-2 text-xs font-semibold">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-semibold">
             <Link
               href="/builder"
               onClick={() => setMobileMenuOpen(false)}
               className="btn-blue p-2.5 text-center text-xs"
             >
               System Builder
+            </Link>
+            <Link
+              href="/prebuilds"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/40 text-emerald-300 text-center transition-colors border border-emerald-500/30 font-bold"
+            >
+              PC Montés
             </Link>
             <Link
               href="/guides"
