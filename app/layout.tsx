@@ -143,7 +143,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <TopProgressBar />
         </Suspense>
         <Header />
-        <div className="flex-1 pb-16 md:pb-0">{children}</div>
+        <div id="main" className="flex-1 pb-16 md:pb-0">{children}</div>
         <Footer />
         <MobileBottomNav />
         <BackToTop />

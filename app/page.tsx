@@ -203,16 +203,18 @@ export default async function Home() {
             <tbody className="divide-y divide-slate-100">
               {trending.map(({ p, best }, i) => (
                 <tr key={p.id} className="group transition-colors hover:bg-blue-50/40">
-                  <td className="pl-4 py-2.5 w-12">
+                  {/* Rank is the first thing to go on narrow screens: the
+                      product name and price matter more than its position. */}
+                  <td className="pl-4 py-2.5 w-12 hidden sm:table-cell">
                     <span className="w-6 h-6 rounded-lg bg-slate-100 group-hover:bg-[#2c87c3] group-hover:text-white text-slate-500 text-[11px] font-extrabold flex items-center justify-center transition-colors tabular-nums">
                       {i + 1}
                     </span>
                   </td>
-                  <td className="px-2 py-2.5 w-14">
+                  <td className="pl-4 py-2.5 w-12 sm:pl-4">
                     <Thumb src={productImage(p)} alt={p.model} size={44} />
                   </td>
-                  <td className="px-2 py-2.5">
-                    <Link href={`/product/${p.id}`} className="pcpp-link font-bold text-sm">
+                  <td className="px-2 py-2.5 min-w-0">
+                    <Link href={`/product/${p.id}`} className="pcpp-link font-bold text-sm dz-break leading-snug">
                       {p.brand} {p.model}
                     </Link>
                     <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5 flex-wrap">

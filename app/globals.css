@@ -6,6 +6,9 @@
   html {
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
+    /* The sticky header is two stacked bars (~104px). Without this, anything
+       scrolled to programmatically or via an anchor lands hidden underneath. */
+    scroll-padding-top: 7rem;
   }
   body {
     font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -14,6 +17,21 @@
   }
   .tabular-nums {
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Balanced headline wrapping stops short last lines (a single orphaned word
+     on its own line is the classic giveaway of an unstyled heading). */
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Long model names ("Gigabyte B650M Aorus Elite AX ICE") must never widen a
+     grid or table past its container. */
+  .dz-break {
+    overflow-wrap: anywhere;
   }
 
   /* Accessible focus rings */
@@ -368,6 +386,34 @@ html.dark ::-webkit-scrollbar-thumb {
 .dark .dz-hero-grid {
   background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
+
+/* --- Platform widgets that ignore the cascade ---
+   Chrome/Safari autofill paints its own light background, and <option> menus
+   are rendered by the OS, so both need explicit dark values or they flash
+   white over the dark UI. */
+.dark ::selection {
+  background: rgba(93, 178, 232, 0.28);
+}
+.dark ::-moz-selection {
+  background: rgba(93, 178, 232, 0.28);
+}
+.dark option {
+  background-color: #161922;
+  color: #e6e9ef;
+}
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #e8ebf1;
+  -webkit-box-shadow: 0 0 0 1000px #161922 inset;
+  caret-color: #e8ebf1;
+  transition: background-color 9999s ease-in-out 0s;
+}
+.dark textarea:-webkit-autofill {
+  -webkit-text-fill-color: #e8ebf1;
+  -webkit-box-shadow: 0 0 0 1000px #161922 inset;
+}
+
 .dark a.pcpp-link,
 .dark .pcpp-link { color: #5db2e8; }
 .dark a.pcpp-link:hover,

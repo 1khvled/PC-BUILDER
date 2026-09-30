@@ -236,6 +236,20 @@ const headerSearchCache = new Map<string, ProductResult[]>();
         setCatDropdownOpen(false);
         setIsOpen(false);
       }
+      // "/" focuses search from anywhere, the convention on shopping and docs
+      // sites. Skipped while typing so it still types a literal slash.
+      if (
+        e.key === "/" &&
+        !mobileMenuOpen &&
+        !(e.target instanceof HTMLElement &&
+          (e.target.tagName === "INPUT" ||
+            e.target.tagName === "TEXTAREA" ||
+            e.target.tagName === "SELECT" ||
+            e.target.isContentEditable))
+      ) {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKey);
@@ -243,6 +257,16 @@ const headerSearchCache = new Map<string, ProductResult[]>();
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKey);
     };
+  }, [mobileMenuOpen]);
+
+  // Distinguishes "pinned at the top" from "scrolled over content", so the
+  // header only grows a shadow once there is actually something behind it.
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Keyboard navigation for search dropdown
@@ -282,7 +306,20 @@ const headerSearchCache = new Map<string, ProductResult[]>();
     }`;
 
   return (
-    <header className="sticky top-0 z-40 no-print">
+    <>
+      {/* Keyboard-only shortcut past the nav. Hidden until focused, then it
+          slides in — without it, tabbing to the search means 8 stops. */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[70] focus:rounded-lg focus:bg-[#2c87c3] focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-white"
+      >
+        Aller au contenu principal
+      </a>
+      <header
+        className={`sticky top-0 z-40 no-print transition-shadow duration-200 ${
+          scrolled ? "shadow-[0_6px_24px_-8px_rgba(17,17,28,0.35)]" : ""
+        }`}
+      >
       {/* Top Header Row — navy glass bar */}
       <div className="bg-[#11111c] border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
@@ -658,6 +695,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
           </div>
         </div>
       )}
-    </header>
+      </header>
+    </>
   );
 }

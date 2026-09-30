@@ -77,10 +77,11 @@ export default function MobileBottomNav() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex flex-col items-center justify-center gap-1 py-1 px-1 text-center transition-all relative touch-manipulation ${
+            aria-current={item.active ? "page" : undefined}
+            className={`flex flex-col items-center justify-center gap-1 py-1 px-1 text-center transition-colors relative touch-manipulation ${
               item.active
                 ? "text-[#5db2e8] font-bold"
-                : "text-slate-400 hover:text-slate-200"
+                : "text-slate-400 active:text-slate-200"
             }`}
           >
             <div className="relative">
@@ -95,7 +96,9 @@ export default function MobileBottomNav() {
               {item.label}
             </span>
             {item.active && (
-              <span className="absolute bottom-0 w-8 h-0.5 rounded-full bg-[#5db2e8] shadow-[0_0_8px_#5db2e8]" />
+              /* Solid tab, no glow: the glow read as neon glass next to the
+                 flat surfaces used everywhere else. */
+              <span className="absolute bottom-0 w-7 h-[3px] rounded-t-full bg-[#5db2e8]" />
             )}
           </Link>
         ))}

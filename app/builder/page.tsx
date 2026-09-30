@@ -496,9 +496,12 @@ export default function BuilderPage() {
       </div>
 
       {/* Main PCPartPicker System Builder Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-card mt-4 overflow-hidden print:border-slate-300 print:shadow-none">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-card mt-4 print:border-slate-300 print:shadow-none">
         {/* Mobile View: High-Density Ergonomic Component Cards */}
-        <div className="block md:hidden divide-y divide-slate-100 p-3 space-y-3 print:hidden">
+        {/* overflow-hidden moved here (was on the outer wrapper) so the total
+            bar below can be position:sticky — an overflow-hidden ancestor is a
+            scroll container and would trap the total inside the card stack. */}
+        <div className="block md:hidden divide-y divide-slate-100 p-3 space-y-3 print:hidden overflow-hidden rounded-t-xl">
           {CATEGORIES.map((cat, catIdx) => {
             const product = build[cat.slug];
             const best = product ? bestOffer(product.id, offers) : undefined;
@@ -619,7 +622,7 @@ export default function BuilderPage() {
         </div>
 
         {/* Desktop View: Main PCPartPicker System Builder Table */}
-        <div className="hidden md:block overflow-x-auto print:block">
+        <div className="hidden md:block overflow-x-auto overflow-y-hidden rounded-t-xl print:block">
           <table className="w-full text-sm min-w-[860px] border-collapse">
             <thead className="bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200 select-none print:bg-slate-100 print:text-slate-700">
               <tr>
@@ -732,14 +735,14 @@ export default function BuilderPage() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setActiveModalCat(cat.slug)}
-                            className="px-2.5 py-1 text-[11px] font-semibold text-slate-600 hover:text-[#2c87c3] hover:bg-blue-50 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors btn-press"
+                            className="px-2.5 py-1.5 sm:py-1 text-[11px] font-semibold text-slate-600 hover:text-[#2c87c3] hover:bg-blue-50 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors btn-press"
                             title="Changer de composant"
                           >
                             Changer
                           </button>
                           <button
                             onClick={() => handleRemovePart(cat.slug)}
-                            className="w-7 h-7 rounded-md text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                            className="w-8 h-8 sm:w-7 sm:h-7 rounded-md text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                             title="Retirer de la configuration"
                             aria-label={`Retirer ${cat.label}`}
                           >
@@ -763,7 +766,10 @@ export default function BuilderPage() {
         </div>
 
         {/* Sticky Total Bar (Styled like PCPartPicker System Total) */}
-        <div className="relative overflow-hidden flex flex-wrap items-center justify-between gap-4 px-5 py-4 bg-gradient-to-r from-[#11111c] via-[#181a2e] to-[#11111c] text-white rounded-b-xl border-t border-slate-800 print:bg-slate-100 print:bg-none print:text-slate-900 print:border-slate-300 print:rounded-none">
+        {/* Mobile: sticks 64px up (clear of the fixed bottom nav) so the running
+            total stays visible while scrolling a ~4000px card stack.
+            Desktop: plain static bar, as before. Print: forced static. */}
+        <div className="sticky bottom-16 md:static z-10 relative overflow-hidden flex flex-wrap items-center justify-between gap-4 px-5 py-4 bg-gradient-to-r from-[#11111c] via-[#181a2e] to-[#11111c] text-white rounded-b-xl border-t border-slate-800 print:static print:bg-slate-100 print:bg-none print:text-slate-900 print:border-slate-300 print:rounded-none">
           <div className="absolute inset-0 dz-hero-grid opacity-40 pointer-events-none print:hidden" aria-hidden="true" />
           <div className="relative flex items-baseline gap-3 flex-wrap text-sm">
             <span className="text-slate-400 print:text-slate-600 font-medium">
