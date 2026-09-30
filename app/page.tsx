@@ -5,8 +5,7 @@ import { LIVE_EXTRA } from "@/lib/data/live";
 import { GUIDES } from "@/lib/data/guides";
 import Thumb from "@/components/Thumb";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 function fmt(n: number) {
   return n.toLocaleString("fr-DZ") + " DA";

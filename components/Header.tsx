@@ -164,7 +164,10 @@ export default function Header() {
     }
   };
 
-  // Debounced search query
+// In-memory instant search cache (0ms keystroke responses)
+const headerSearchCache = new Map<string, ProductResult[]>();
+
+  // Debounced search query with instant memory caching
   useEffect(() => {
     const trimmed = query.trim();
     if (!trimmed) {
@@ -174,13 +177,24 @@ export default function Header() {
       return;
     }
 
+    const lower = trimmed.toLowerCase();
+    if (headerSearchCache.has(lower)) {
+      setResults(headerSearchCache.get(lower)!);
+      setIsOpen(true);
+      setSelectedIndex(-1);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     const timer = setTimeout(async () => {
       try {
         const res = await fetch(`/api/products?q=${encodeURIComponent(trimmed)}`);
         if (res.ok) {
           const data = await res.json();
-          setResults(data.items || []);
+          const items = data.items || [];
+          headerSearchCache.set(lower, items);
+          setResults(items);
           setIsOpen(true);
           setSelectedIndex(-1);
         }
@@ -189,7 +203,7 @@ export default function Header() {
       } finally {
         setLoading(false);
       }
-    }, 200);
+    }, 150);
 
     return () => clearTimeout(timer);
   }, [query]);

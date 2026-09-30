@@ -14,7 +14,14 @@ const PAGE = 1000; // PostgREST max-rows: paginate past the 1000-row cap
 let cachedOffers: { data: Offer[]; timestamp: number } | null = null;
 let cachedProducts: { data: Product[]; timestamp: number } | null = null;
 let cachedScrapedAt: { data: string; timestamp: number } | null = null;
+const cachedHistory = new Map<string, { data: PricePoint[]; timestamp: number }>();
 const CACHE_TTL_MS = 60 * 1000; // 1 minute in-memory cache
+
+// Single-flight promise deduplication to prevent concurrent hammering of Supabase
+let inFlightOffers: Promise<Offer[]> | null = null;
+let inFlightProducts: Promise<Product[]> | null = null;
+let inFlightScrapedAt: Promise<string> | null = null;
+const inFlightHistory = new Map<string, Promise<PricePoint[]>>();
 
 interface DbStore {
   id: number;
@@ -93,17 +100,27 @@ export async function getOffers(): Promise<Offer[]> {
     if (cachedOffers && now - cachedOffers.timestamp < CACHE_TTL_MS) {
       return cachedOffers.data;
     }
-    const client = supabase();
-    const rows = await fetchAll<DbOfferRow>((from, to) =>
-      client
-        .from("offers")
-        .select("product_id, price_da, cond, url, title, day, image, stock, stores!inner(name, wilaya)")
-        .range(from, to)
-    );
-    if (rows.length === 0) return OFFERS;
-    const mapped = rows.map(toOffer);
-    cachedOffers = { data: mapped, timestamp: now };
-    return mapped;
+    if (inFlightOffers) {
+      return inFlightOffers;
+    }
+    inFlightOffers = (async () => {
+      try {
+        const client = supabase();
+        const rows = await fetchAll<DbOfferRow>((from, to) =>
+          client
+            .from("offers")
+            .select("product_id, price_da, cond, url, title, day, image, stock, stores!inner(name, wilaya)")
+            .range(from, to)
+        );
+        if (rows.length === 0) return OFFERS;
+        const mapped = rows.map(toOffer);
+        cachedOffers = { data: mapped, timestamp: Date.now() };
+        return mapped;
+      } finally {
+        inFlightOffers = null;
+      }
+    })();
+    return inFlightOffers;
   } catch {
     return OFFERS;
   }
@@ -117,16 +134,26 @@ export async function getScrapedAt(): Promise<string> {
     if (cachedScrapedAt && now - cachedScrapedAt.timestamp < CACHE_TTL_MS) {
       return cachedScrapedAt.data;
     }
-    const { data } = await supabase()
-      .from("offers")
-      .select("day")
-      .order("day", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    const day = (data as { day?: string } | null)?.day;
-    const res = day ? `${day}T00:00:00.000Z` : SCRAPED_AT;
-    cachedScrapedAt = { data: res, timestamp: now };
-    return res;
+    if (inFlightScrapedAt) {
+      return inFlightScrapedAt;
+    }
+    inFlightScrapedAt = (async () => {
+      try {
+        const { data } = await supabase()
+          .from("offers")
+          .select("day")
+          .order("day", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        const day = (data as { day?: string } | null)?.day;
+        const res = day ? `${day}T00:00:00.000Z` : SCRAPED_AT;
+        cachedScrapedAt = { data: res, timestamp: Date.now() };
+        return res;
+      } finally {
+        inFlightScrapedAt = null;
+      }
+    })();
+    return inFlightScrapedAt;
   } catch {
     return SCRAPED_AT;
   }
@@ -136,21 +163,40 @@ export async function getScrapedAt(): Promise<string> {
 export async function getPriceHistory(productId: string): Promise<PricePoint[]> {
   try {
     if (!isDbConfigured()) return priceHistory(productId);
-    const client = supabase();
-    const [rows, stores] = await Promise.all([
-      fetchAll<DbHistoryRow>((from, to) =>
-        client
-          .from("price_history")
-          .select("day, price_da, store_id")
-          .eq("product_id", productId)
-          .order("day", { ascending: true })
-          .range(from, to)
-      ),
-      fetchAll<DbStore>((from, to) => client.from("stores").select("id, name, wilaya").range(from, to)),
-    ]);
-    if (rows.length === 0) return priceHistory(productId);
-    const names = new Map(stores.map((s) => [s.id, s.name]));
-    return rows.map((r) => ({ day: r.day, store: names.get(r.store_id) ?? "—", price: r.price_da }));
+    const now = Date.now();
+    const hit = cachedHistory.get(productId);
+    if (hit && now - hit.timestamp < CACHE_TTL_MS) {
+      return hit.data;
+    }
+    const inFlight = inFlightHistory.get(productId);
+    if (inFlight) {
+      return inFlight;
+    }
+    const p = (async () => {
+      try {
+        const client = supabase();
+        const [rows, stores] = await Promise.all([
+          fetchAll<DbHistoryRow>((from, to) =>
+            client
+              .from("price_history")
+              .select("day, price_da, store_id")
+              .eq("product_id", productId)
+              .order("day", { ascending: true })
+              .range(from, to)
+          ),
+          fetchAll<DbStore>((from, to) => client.from("stores").select("id, name, wilaya").range(from, to)),
+        ]);
+        if (rows.length === 0) return priceHistory(productId);
+        const names = new Map(stores.map((s) => [s.id, s.name]));
+        const result = rows.map((r) => ({ day: r.day, store: names.get(r.store_id) ?? "—", price: r.price_da }));
+        cachedHistory.set(productId, { data: result, timestamp: Date.now() });
+        return result;
+      } finally {
+        inFlightHistory.delete(productId);
+      }
+    })();
+    inFlightHistory.set(productId, p);
+    return p;
   } catch {
     return priceHistory(productId);
   }
@@ -171,33 +217,48 @@ export async function getProducts(): Promise<Product[]> {
     if (cachedProducts && now - cachedProducts.timestamp < CACHE_TTL_MS) {
       return cachedProducts.data;
     }
-    const client = supabase();
-    const rows = await fetchAll<DbProductRow>((from, to) =>
-      client
-        .from("canonical_products")
-        .select("id, category, brand, model")
-        .order("id", { ascending: true })
-        .range(from, to)
-    );
-    if (!rows || rows.length === 0) return PRODUCTS;
-    const specsMap = new Map(PRODUCTS.map((p) => [p.id, p.specs]));
-    const mapped = rows.map((r) => ({
-      id: r.id,
-      category: r.category as Category,
-      brand: r.brand,
-      model: r.model,
-      specs: specsMap.get(r.id) ?? {},
-    }));
-    cachedProducts = { data: mapped, timestamp: now };
-    return mapped;
+    if (inFlightProducts) {
+      return inFlightProducts;
+    }
+    inFlightProducts = (async () => {
+      try {
+        const client = supabase();
+        const rows = await fetchAll<DbProductRow>((from, to) =>
+          client
+            .from("canonical_products")
+            .select("id, category, brand, model")
+            .order("id", { ascending: true })
+            .range(from, to)
+        );
+        if (!rows || rows.length === 0) return PRODUCTS;
+        const specsMap = new Map(PRODUCTS.map((p) => [p.id, p.specs]));
+        const mapped = rows.map((r) => ({
+          id: r.id,
+          category: r.category as Category,
+          brand: r.brand,
+          model: r.model,
+          specs: specsMap.get(r.id) ?? {},
+        }));
+        cachedProducts = { data: mapped, timestamp: Date.now() };
+        return mapped;
+      } finally {
+        inFlightProducts = null;
+      }
+    })();
+    return inFlightProducts;
   } catch {
     return PRODUCTS;
   }
 }
 
-/** Single product directly from Supabase canonical_products table. */
+/** Single product directly from cache or Supabase canonical_products table. */
 export async function getProduct(id: string): Promise<Product | undefined> {
   try {
+    // 1. Fast in-memory check if products are already cached
+    if (cachedProducts) {
+      const match = cachedProducts.data.find((p) => p.id === id);
+      if (match) return match;
+    }
     if (!isDbConfigured()) return PRODUCTS.find((p) => p.id === id);
     const { data } = await supabase()
       .from("canonical_products")

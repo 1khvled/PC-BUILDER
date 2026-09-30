@@ -7,8 +7,7 @@ import ProductOffersTable from "@/components/ProductOffersTable";
 import PriceChart from "@/components/PriceChart";
 import FbResolveForm from "@/components/FbResolveForm";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
   const [product, allOffers, history, scrapedAt] = await Promise.all([

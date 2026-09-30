@@ -9,5 +9,12 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
   const offers = (await getOffers())
     .filter((o) => o.productId === params.id)
     .sort((a, b) => a.priceDa - b.priceDa);
-  return NextResponse.json({ count: offers.length, offers });
+  return NextResponse.json(
+    { count: offers.length, offers },
+    {
+      headers: {
+        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+      },
+    }
+  );
 }

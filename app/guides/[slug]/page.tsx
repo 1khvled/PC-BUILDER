@@ -5,8 +5,7 @@ import { bestOffer, productImage } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export default async function GuidePage({ params }: { params: { slug: string } }) {
   const [products, offers, scrapedAt] = await Promise.all([
