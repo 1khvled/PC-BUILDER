@@ -317,8 +317,8 @@ const RULES = [
   { id: "gpu-rtx4060-8gb", cat: "gpu", all: ["4060"], none: ["4060ti", "laptop", "notebook", "portable", "ti", "super"] },
   { id: "gpu-rtx4070-12gb", cat: "gpu", all: ["4070"], none: ["4070ti", "laptop", "notebook", "portable", "ti", "super"] },
   { id: "gpu-rtx5070-12gb", cat: "gpu", all: ["5070"], none: ["laptop", "notebook", "portable", "ti"] },
-  { id: "gpu-rx580-4gb", cat: "gpu", any: ["rx 580", "rx580", "580 4gb", "580 4g"], none: ["8gb", "8g", "laptop", "notebook", "portable"] },
-  { id: "gpu-rx580-8gb", cat: "gpu", any: ["rx 580", "rx580", "580 8gb", "580 8g", "2048sp"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-rx580-4gb", cat: "gpu", all: ["580"], any: ["4gb", "4g", "4go"], none: ["8gb", "8g", "8go", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx580-8gb", cat: "gpu", any: ["rx 580", "rx580", "580 8gb", "580 8g", "580 8go", "2048sp"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7900xtx-24gb", cat: "gpu", all: ["7900xtx"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7900xt-20gb", cat: "gpu", all: ["7900xt"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7800xt-16gb", cat: "gpu", all: ["7800xt"], none: ["laptop", "notebook", "portable"] },
@@ -1528,12 +1528,13 @@ for (const o of report["ouedkniss:all"] || []) {
   let category = (qCat === "gpu" && tCat) ? tCat : (tCat || qCat);
   if (!title || !o.priceDa) continue;
 
-  // Filter out ancient dead listings: reject deals older than 90 days (or before 2025-10-01)
+    // Filter out dead/expired listings: reject deals older than 45 days or invalid URLs
+  if (!o.url || !/-d\d+/.test(o.url)) continue;
   const postDate = o.postedAt || o.day || "";
   if (postDate) {
     if (postDate < "2025-10-01") continue;
-    const ageDays = (Date.now() - new Date(postDate).getTime()) / (1000 * 864e5);
-    if (!isNaN(ageDays) && ageDays > 90) continue;
+    const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
+    if (!isNaN(ageDays) && ageDays > 45) continue;
   }
 
   // Query-title relevance: reject if title has nothing to do with the search query
@@ -1655,7 +1656,7 @@ const seed = {
   stores: seedStores,
   offers: matched.map((o) => ({
     p: o.productId, s: o.store, d: o.priceDa, c: o.condition === "used" ? 0 : 1,
-    u: o.url.slice(0, 160), t: o.titleRaw.slice(0, 90),
+    u: o.url, t: o.titleRaw.slice(0, 160),
     w: o.stock === "Rupture" ? "out" : o.stock === "En stock" ? "in" : o.stock === "Ouedkniss" ? "ouedkniss" : (o.stock || "in"),
   })),
 };

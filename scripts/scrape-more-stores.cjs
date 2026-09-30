@@ -127,8 +127,8 @@ async function queryOuedkniss(q, storeId = null) {
       // 2. Freshness check: reject dead/expired listings older than 90 days
       const postDate = a.refreshedAt;
       if (!postDate) return null;
-      const ageDays = (Date.now() - new Date(postDate).getTime()) / (1000 * 864e5);
-      if (isNaN(ageDays) || ageDays > 90) return null;
+      const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
+      if (isNaN(ageDays) || ageDays > 45) return null;
 
       // 3. Price validation: clean numeric price, reject placeholders
       let p = a.price;

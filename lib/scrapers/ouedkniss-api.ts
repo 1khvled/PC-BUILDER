@@ -85,7 +85,8 @@ const SEARCH_QUERY = `
           id
           title
           slug
-          refreshedAt: createdAt
+          createdAt
+          refreshedAt
           isFromStore
           price
           pricePreview
@@ -125,6 +126,7 @@ interface GraphQLAnnouncementItem {
   id: string;
   title: string;
   slug?: string;
+  createdAt?: string;
   refreshedAt?: string;
   isFromStore?: boolean;
   price?: number | null;
@@ -271,9 +273,9 @@ export async function searchOuedknissFull(
       if (st && st !== "PUBLISHED" && st !== "ACTIVE" && st !== "EDITED") continue;
 
       // 2. Freshness check: reject dead/expired listings older than 45 days
-      const postDate = item.refreshedAt;
+      const postDate = item.refreshedAt || item.createdAt;
       if (postDate) {
-        const ageDays = (Date.now() - new Date(postDate).getTime()) / (1000 * 864e5);
+        const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
         if (!isNaN(ageDays) && ageDays > 45) continue;
       }
 
@@ -306,7 +308,7 @@ export async function searchOuedknissFull(
       const seller = item.store?.name?.trim() || item.user?.username?.trim() || undefined;
 
       // Relative or ISO date
-      const postedAt = item.refreshedAt || undefined;
+      const postedAt = item.refreshedAt || item.createdAt || undefined;
 
       // Condition
       const condition = extractCondition(item.description, item.title);

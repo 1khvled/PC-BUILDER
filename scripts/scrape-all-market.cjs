@@ -27,6 +27,7 @@ const QUERY = `query SearchQuery($q: String, $filter: SearchFilterInput) {
         description
         slug
         status
+        createdAt
         refreshedAt
         isFromStore
         cities {
@@ -133,9 +134,9 @@ async function scrapeOuedknissQuery(q, maxPages = 2) {
         if (st && st !== "PUBLISHED" && st !== "ACTIVE" && st !== "EDITED") continue;
 
         // Freshness: reject listings older than 45 days
-        const postDate = item.refreshedAt;
+        const postDate = item.refreshedAt || item.createdAt;
         if (postDate) {
-          const ageDays = (Date.now() - new Date(postDate).getTime()) / (1000 * 864e5);
+          const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
           if (!isNaN(ageDays) && ageDays > 45) continue;
         }
 
@@ -166,7 +167,7 @@ async function scrapeOuedknissQuery(q, maxPages = 2) {
           image: item.defaultMedia?.mediaUrl || "",
           wilaya,
           seller,
-          postedAt: item.refreshedAt || "",
+          postedAt: item.refreshedAt || item.createdAt || "",
           isFromStore: true,
           storeSlug: item.store?.slug || undefined,
           storeId: item.store?.id || undefined,
