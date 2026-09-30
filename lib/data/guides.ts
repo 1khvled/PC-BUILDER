@@ -321,41 +321,40 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "bureautique-etudes-90k",
-    title: "PC bureautique et études : ce qu'il faut vraiment payer",
-    hook: "Le fameux « PC bureautique à 90 000 DA » ne tient plus dès qu'on y ajoute une carte graphique et un SSD corrects. Voici la configuration réellement raisonnable, et les deux postes où il faut aller chercher l'économie.",
+    title: "PC bureautique et études : ce que 90 000 DA achètent vraiment",
+    hook: "Un PC pour bureautique, rédaction et révisions tient toujours dans les 90 000 DA, à une condition : un processeur avec graphique intégré, et aucune carte graphique. Voici la config exacte, et où vont les quelques milliers de dinars si vous en avez plus.",
     kind: "build",
     topic: { fr: "Build complet", en: "Full build" },
     readMin: 5,
     parts: [
-      "cpu-i5-12400f",
-      "cooler-h212-v3",
-      "mobo-h610m",
+      "cpu-r3-3200g",
+      "cooler-am1204",
+      "mobo-a520m",
       "ram-vengeance-16-d4",
       "ssd-nvme-512gb",
-      "gpu-rx580-8gb",
       "case-nx400",
-      "psu-550-b",
+      "psu-450-b",
     ],
     blocks: [
       {
-        h: "Pourquoi le budget de 90 000 DA ne sort plus",
+        h: "Les 90 000 DA tiennent, à condition de ne pas acheter de carte graphique",
         p: [
           "Faites l'addition poste par poste avec les prix du tableau ci-dessus et la situation apparaît : le processeur, la mémoire et le SSD coûtent à eux trois plus cher que ce que couvrent la plupart des annonces « 90 000 DA ». Ces annonces sont souvent une tour SANS carte graphique, ou avec une carte d'occasion dont plus personne ne garantira rien dans six mois.",
-          "Le vrai problème du budget bureautique n'est pas le prix de la tour : c'est celui de l'écran. Si vous avez déjà un écran, cette config est honnête. Si vous devez tout acheter, ajoutez un 24 pouces et le budget double.",
+          "Le vrai problème du budget bureautique reste l'écran. Si vous en avez déjà un, cette config est honnête. Si vous devez tout acheter, ajoutez un 24 pouces et le budget double.",
         ],
       },
       {
-        h: "Le piège du suffixe F",
+        h: "Pourquoi un processeur AVEC graphique intégré",
         p: [
-          "Un i5-12400F n'a pas de graphique intégré. Sans carte graphique, il ne sort rien du tout : écran noir, pas même le BIOS. C'est un excellent processeur, mais c'est un processeur pour machine qui possède déjà une carte graphique.",
-          "Trois contournements, par ordre de coût : une carte d'occasion saine, un processeur avec iGPU, ou n'acheter la carte graphique qu'après avoir vérifié si votre filière l'exige. Sur cette config on part sur une RX 580 8 Go d'occasion, qui est aussi le poste à tester le plus sérieusement avant de payer.",
+          "La plupart des processeurs récents existent en deux variantes, et la lettre F signifie « sans graphique intégré ». Une telle puce ne sort rien du tout sans carte : écran noir, pas même le BIOS. C'est exactement pour cela qu'on choisit ici un APU comme le Ryzen 3 3200G : son GPU Vega intégré sort le signal vidéo et suffit largement à un poste de travail.",
+          "Un i5-12400F à 33 900 DA aurait exigé une carte graphique à 32 900 DA de plus pour seulement fonctionner. Ce raccourci coûte 66 800 DA de plus que le 3200G seul, pour un gain de performance qui n'existe pas en bureautique. C'est de loin le premier poste où il faut économiser.",
         ],
       },
       {
         h: "Où faire les économies, et où ne pas les faire",
         p: [
           "Deux postes absorbent une économie légitime. Le boîtier : un Antec NX400 coûte nettement moins cher qu'un Corsair 4000D et fait le même travail pour cette taille de carte. Et la mémoire : 16 Go est le minimum acceptable, mais un seul kit suffit, pas 2 x 16 Go.",
-          "Un poste ne doit pas être économisé, c'est l'alimentation. Le 12400F (65 W) plus une RX 580 (185 W) plus 150 W de base, cela fait 400 W en pointe, avec des pics de tension à l'allumage. Une 450 W fonctionne, mais à 90 % de charge permanente elle chauffe, elle devient bruyante et elle n'a aucune marge. Une 550 W coûte quelques milliers de dinars de plus et vous enlève le risque.",
+          "Un poste ne doit pas être économisé, c'est le SSD. Un 512 Go NVMe à 14 500 DA coûte 5 600 DA de plus qu'un 240 Go SATA à 8 900 DA, et c'est la différence la plus visible de toute la machine : démarrage, ouverture d'un navigateur, mise à jour de Windows. Sur un poste bureautique, le SSD est roi, la mémoire vient ensuite, et le CPU est largement suffisant.",
         ],
       },
       {
@@ -367,11 +366,11 @@ export const GUIDES: Guide[] = [
       },
     ],
     pitfalls: [
-      "Le suffixe F signifie « sans iGPU ». Un 12400F sans carte graphique ne donne aucune image, pas même au BIOS.",
-      "450 W avec un GPU de 185 W, c'est limite. Visez 550 W et vous ne regretterez pas les quelques milliers de dinars supplémentaires.",
+      "La lettre F signifie « sans iGPU ». Une puce F sans carte graphique ne donne aucune image, pas même au BIOS : choisissez un APU.",
+      "Ne surdimensionnez pas l'alimentation : 450 W suffit ici, précisément parce qu'il n'y a pas de carte graphique. Le jour où vous en ajoutez une, il faut 550 W.",
       "8 Go de RAM en 2026, c'est fini : un navigateur à quelques onglets suffit à ramer la machine. 16 Go, c'est le plancher.",
       "Un 256 Go de SSD est une fausse économie : Windows et ses mises à jour consomment déjà une centaine de gigaoctets, et la capacité est pleine avant la fin de l'année.",
-      "Vérifiez que le boîtier choisi accepte la longueur de votre carte d'occasion : les RX 580 font 240 mm, c'est standard mais pas universel.",
+      "Si votre filière exige une carte graphique, vérifiez alors la longueur acceptée par le boîtier : c'est standard, mais pas universel.",
     ],
   },
   {

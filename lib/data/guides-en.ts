@@ -251,14 +251,13 @@ export const GUIDES_EN: Guide[] = [
     topic: { fr: "Build complet", en: "Full build" },
     readMin: 5,
     parts: [
-      "cpu-i5-12400f",
-      "cooler-h212-v3",
-      "mobo-h610m",
+      "cpu-r3-3200g",
+      "cooler-am1204",
+      "mobo-a520m",
       "ram-vengeance-16-d4",
       "ssd-nvme-512gb",
-      "gpu-rx580-8gb",
       "case-nx400",
-      "psu-550-b",
+      "psu-450-b",
     ],
     blocks: [
       {
