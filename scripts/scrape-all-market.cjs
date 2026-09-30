@@ -79,10 +79,28 @@ const MARKET_QUERIES = [
   // SSD
   "1tb nvme", "512gb nvme", "2tb nvme", "256gb nvme", "ssd sata",
   "sn580", "sn770", "sn850x", "980 pro", "990 pro", "kc3000", "legend 710", "nv3 1tb",
-  
   // PSU
   "alimentation 550w", "alimentation 600w", "alimentation 650w", "alimentation 750w", "alimentation 850w", "alimentation 1000w",
-  "deepcool pk", "cooler master mwe", "msi mag a650bn",
+  "deepcool pk", "deepcool pk550d", "deepcool pk650d", "deepcool pk750d",
+  "deepcool pn", "deepcool pn750m", "deepcool pn850m", "deepcool pn1200m",
+  "cooler master mwe", "mwe 650", "mwe 750",
+  "msi mag a650bn", "msi mag a750bn", "msi mag a850gl",
+  "seasonic focus", "seasonic 650w", "seasonic 750w",
+  "antec atom", "antec atom 550", "antec atom 650",
+  "mars gaming mpb", "mars gaming 650w", "mars gaming 750w",
+  "cougar vte", "cougar xtc", "1stplayer ngdp", "redragon rgps",
+  
+  // Monitors — Algeria popular models & brands
+  "ecran gamer", "ecran 144hz", "ecran 165hz", "ecran 180hz", "ecran 240hz",
+  "ecran 24", "ecran 27", "ecran 32", "ecran 4k", "ecran 2k", "ecran oled",
+  "ecran matos", "matos katana", "katana 24", "katana 27", "matos msg", "msg 24", "msg 27",
+  "ecran aoc", "aoc 24g4", "aoc 27g4", "aoc 24g2",
+  "samsung odyssey", "odyssey g3", "odyssey g5",
+  "lg ultragear", "ultragear 24", "ultragear 27",
+  "asus vg249", "asus vg279", "asus tuf ecran",
+  "zowie xl2411", "benq zowie", "dahua lm24", "dahua lm27",
+  "xiaomi g24i", "xiaomi g27i", "redmi g24", "koorui 24e4",
+  "viewsonic omni", "viewsonic vx24", "titan army", "gamemax ecran",
   
   // Cases
   "boitier gamer", "boitier aquarium", "boitier atx",

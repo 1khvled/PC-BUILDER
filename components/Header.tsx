@@ -1,10 +1,13 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Thumb from "./Thumb";
 import ThemeToggle from "./ThemeToggle";
+import LocaleSwitcher from "./LocaleSwitcher";
+import { useI18n } from "@/lib/i18n/client";
+import { categoryLabel } from "@/lib/i18n/categories";
 
 interface ProductResult {
   id: string;
@@ -18,8 +21,9 @@ interface ProductResult {
   } | null;
 }
 
-const WILAYAS = [
-  "Toute l'Algérie (58)",
+// Wilaya codes and names are proper nouns: identical in both languages. Only the
+// "all Algeria" aggregate entry is localized (see `allAlgeria` below).
+const WILAYA_CODES = [
   "16 - Alger",
   "19 - Sétif",
   "31 - Oran",
@@ -33,6 +37,8 @@ const WILAYAS = [
   "13 - Tlemcen",
   "06 - Béjaïa",
 ];
+
+const ALGERIA_WILAYA_COUNT = 58;
 
 const CATEGORIES = [
   { slug: "cpu", label: "Processeurs (CPU)" },
@@ -132,6 +138,14 @@ function CatIcon({ slug, className = "w-4 h-4" }: { slug: string; className?: st
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
+  // The header is rendered by the ROOT layout, i.e. outside the /en provider, so
+  // useI18n() resolves the locale from the pre-paint `data-locale` attribute that
+  // app/en/layout.tsx writes. Server HTML stays French (matching the root
+  // <html lang>), then the chrome swaps to English right after mount.
+  const { locale, t } = useI18n();
+
+  const allAlgeria = t("header.allAlgeria", { count: ALGERIA_WILAYA_COUNT });
+  const wilayas = [allAlgeria, ...WILAYA_CODES];
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<ProductResult[]>([]);
@@ -139,7 +153,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [wilaya, setWilaya] = useState("Toute l'Algérie (58)");
+  const [wilaya, setWilaya] = useState(allAlgeria);
   const [catDropdownOpen, setCatDropdownOpen] = useState(false);
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -158,6 +172,26 @@ export default function Header() {
       /* ignore */
     }
   }, []);
+
+  // The "All Algeria" label is localized, so a stored selection of it has to be
+  // re-pointed at the new locale wording instead of showing the stale one.
+  useEffect(() => {
+    setWilaya((current) => {
+      const saved = (() => {
+        try {
+          return localStorage.getItem("dz_wilaya_pref");
+        } catch {
+          return null;
+        }
+      })();
+      const isAggregate =
+        !saved ||
+        saved.startsWith("Toute l''Alg") ||
+        saved.startsWith("All Algeria") ||
+        saved === allAlgeria;
+      return isAggregate ? allAlgeria : saved;
+    });
+  }, [locale, allAlgeria]);
 
   const handleWilayaChange = (val: string) => {
     setWilaya(val);
@@ -330,7 +364,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[70] focus:rounded-lg focus:bg-[#2c87c3] focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-white"
       >
-        Aller au contenu principal
+        {t("header.skipToContent")}
       </a>
       <header
         className={`sticky top-0 z-40 no-print transition-shadow duration-200 ${
@@ -350,7 +384,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 <span>DZ PartPicker</span>
               </div>
               <div className="text-[11px] text-slate-400 -mt-0.5 hidden sm:block">
-                Pick parts • Build your PC • Compare in DA
+                {t("header.tagline")}
               </div>
             </div>
           </Link>
@@ -364,13 +398,13 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 role="combobox"
                 aria-expanded={isOpen && results.length > 0}
                 aria-controls="dz-search-results"
-                aria-label="Rechercher un composant (ex : RTX 4060, Ryzen 5 5600)"
+                aria-label={t("search.aria")}
                 autoComplete="off"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => query.trim() && setIsOpen(true)}
                 onKeyDown={handleKeyDown}
-                placeholder="Rechercher RTX 4060, Ryzen 5 5600, B550, DDR4..."
+                placeholder={t("search.placeholder")}
                 className="w-full bg-white border border-white/20 rounded-full pl-10 pr-9 py-2 text-sm text-[#191b2a] outline-none placeholder:text-slate-400 shadow-[0_2px_10px_rgba(0,0,0,0.25)] transition-shadow focus:border-[#2c87c3] focus:shadow-[0_0_0_3px_rgba(44,135,195,0.25)]"
               />
               <svg
@@ -394,7 +428,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                     setQuery("");
                     setIsOpen(false);
                   }}
-                  aria-label="Effacer la recherche"
+                  aria-label={t("search.clear")}
                   className="absolute right-3 text-slate-400 hover:text-slate-600 p-0.5 rounded-full"
                 >
                   ✕
@@ -408,8 +442,8 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 {results.length > 0 ? (
                   <>
                     <div className="px-4 py-2.5 bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 flex justify-between items-center rounded-t-2xl">
-                      <span>Résultats ({results.length})</span>
-                      <span className="text-[10px] font-semibold text-slate-400">↑↓ pour naviguer • ↵ pour ouvrir</span>
+                      <span>{t("search.results", { count: results.length })}</span>
+                      <span className="text-[10px] font-semibold text-slate-400">{t("search.keyboardHint")}</span>
                     </div>
                     {results.map((p, idx) => (
                       <div
@@ -435,19 +469,19 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                                 dès <b className="text-emerald-700 font-semibold">{p.best.priceDa.toLocaleString("fr-DZ")} DA</b> chez {p.best.store} ({p.best.wilaya})
                               </span>
                             ) : (
-                              <span className="text-slate-400 italic">Voir la fiche produit</span>
+                              <span className="text-slate-400 italic">{t("search.viewProduct")}</span>
                             )}
                           </div>
                         </div>
-                        <span className="text-[#2c87c3] text-xs font-semibold shrink-0">Voir →</span>
+                        <span className="text-[#2c87c3] text-xs font-semibold shrink-0">{t("search.viewLink")}</span>
                       </div>
                     ))}
                   </>
                 ) : (
                   <div className="p-8 text-center text-sm text-slate-500">
                     <div className="text-2xl mb-2">🔍</div>
-                    <div className="mb-1 font-semibold text-slate-700">Aucun composant trouvé pour "{query}"</div>
-                    <div className="text-xs text-slate-400">Essayez avec une référence (ex: RTX 3060, Ryzen 5, B550)</div>
+                    <div className="mb-1 font-semibold text-slate-700">{t("search.empty", { query })}</div>
+                    <div className="text-xs text-slate-400">{t("search.emptyHint")}</div>
                   </div>
                 )}
               </div>
@@ -471,10 +505,10 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               <select
                 value={wilaya}
                 onChange={(e) => handleWilayaChange(e.target.value)}
-                aria-label="Sélectionner votre wilaya"
+                aria-label={t("header.wilayaLabel")}
                 className="border border-white/15 rounded-full pl-8 pr-8 py-1.5 text-xs bg-white/10 hover:bg-white/15 text-slate-100 font-medium outline-none cursor-pointer appearance-none transition-colors"
               >
-                {WILAYAS.map((w) => (
+                {wilayas.map((w) => (
                   <option key={w} value={w} className="text-slate-900">
                     {w}
                   </option>
@@ -486,13 +520,13 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             {/* Pas de comptes utilisateurs — aucun bouton login/register. */}
 
             {/* Light / dark theme switch */}
+            <LocaleSwitcher tone="dark" />
             <ThemeToggle />
-
             {/* Mobile hamburger menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 rounded-lg border border-white/15 text-slate-200 hover:bg-white/10 transition-colors"
-              aria-label="Menu"
+              aria-label={t("header.menu")}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {mobileMenuOpen ? (
@@ -524,7 +558,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 <rect x="4" y="4" width="16" height="16" rx="2" />
                 <path d="M9 9h6v6H9z" />
               </svg>
-              <span>System Builder</span>
+              <span>{t("common.builder")}</span>
             </Link>
 
             {/* Products Dropdown
@@ -555,7 +589,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 aria-controls="dz-cat-menu"
                 className={navLinkClass(pathname.startsWith("/category"))}
               >
-                <span>Produits</span>
+                <span>{t("header.products")}</span>
                 <span className={`text-[10px] text-slate-400 transition-transform duration-200 ${catDropdownOpen ? "rotate-180" : ""}`}>▾</span>
               </button>
 
@@ -567,7 +601,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 >
                   <div className="bg-white border border-slate-200/80 rounded-2xl shadow-dropdown overflow-hidden">
                     <div className="px-4 py-2.5 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest bg-slate-50/80 border-b border-slate-100">
-                      Catégories Composants ({CATEGORIES.length})
+                      {t("header.productCategories", { count: CATEGORIES.length })}
                     </div>
                     <div className="py-1.5">
                       {CATEGORIES.map((cat) => (
@@ -581,7 +615,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                           <span className="w-6 h-6 rounded-md bg-slate-100 group-hover/item:bg-[#2c87c3] group-hover/item:text-white text-slate-500 flex items-center justify-center transition-colors shrink-0">
                             <CatIcon slug={cat.slug} className="w-3.5 h-3.5" />
                           </span>
-                          <span className="flex-1">{cat.label}</span>
+                          <span className="flex-1">{categoryLabel(cat.slug, t)}</span>
                           <span className="text-[10px] text-slate-300 group-hover/item:text-[#2c87c3] group-hover/item:translate-x-0.5 transition-transform">→</span>
                         </Link>
                       ))}
@@ -596,8 +630,8 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               aria-current={pathname.startsWith("/prebuilds") ? "page" : undefined}
               className={navLinkClass(pathname.startsWith("/prebuilds"))}
             >
-              <span>PC Montés</span>
-              <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 ml-1">Nouveau</span>
+              <span>{t("common.prebuilds")}</span>
+              <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 ml-1">{t("nav.new")}</span>
             </Link>
 
             <Link
@@ -605,7 +639,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               aria-current={pathname.startsWith("/guides") ? "page" : undefined}
               className={navLinkClass(pathname.startsWith("/guides"))}
             >
-              Guides d'achat
+              {t("nav.buyingGuides")}
             </Link>
 
             <Link
@@ -613,7 +647,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               aria-current={pathname.startsWith("/deals") ? "page" : undefined}
               className={navLinkClass(pathname.startsWith("/deals"))}
             >
-              Bons plans
+              {t("common.deals")}
             </Link>
           </nav>
 
@@ -622,7 +656,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
-            <span>Prix live Algérie (DA)</span>
+            <span>{t("header.livePrices")}</span>
           </div>
         </div>
       </div>
@@ -664,28 +698,28 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               onClick={() => setMobileMenuOpen(false)}
               className="btn-blue p-2.5 text-center text-xs"
             >
-              System Builder
+              {t("common.builder")}
             </Link>
             <Link
               href="/prebuilds"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/40 text-emerald-300 text-center transition-colors border border-emerald-500/30 font-bold"
             >
-              PC Montés
+              {t("common.prebuilds")}
             </Link>
             <Link
               href="/guides"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-slate-200 text-center transition-colors border border-white/10"
             >
-              Guides d'achat
+              {t("nav.buyingGuides")}
             </Link>
             <Link
               href="/deals"
               onClick={() => setMobileMenuOpen(false)}
               className="p-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-slate-200 text-center transition-colors border border-white/10"
             >
-              Bons plans
+              {t("common.deals")}
             </Link>
           </div>
 
@@ -718,7 +752,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               onChange={(e) => handleWilayaChange(e.target.value)}
               className="border border-white/15 rounded-lg px-2.5 py-1.5 text-xs bg-white/10 text-slate-200"
             >
-              {WILAYAS.map((w) => (
+              {wilayas.map((w) => (
                 <option key={w} value={w} className="text-slate-900">
                   {w}
                 </option>

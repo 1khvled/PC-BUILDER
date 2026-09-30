@@ -2,35 +2,42 @@ import type { MetadataRoute } from "next";
 import { GUIDES } from "@/lib/data/guides";
 import { CATEGORIES } from "@/lib/data/products";
 import { getProducts } from "@/lib/data/catalog";
+import { absoluteUrl, localizedPath } from "@/lib/i18n/config";
 
-const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://dzpartpicker.dz";
+/**
+ * Every French URL now ships the full hreflang set, so each page is
+ * reciprocally paired with its English mirror:
+ *   fr-DZ     -> unprefixed URL (this one)
+ *   en-DZ     -> /en/... mirror
+ *   x-default -> the unprefixed French URL (historical root of the domain)
+ *
+ * The English URLs themselves are listed in app/en/sitemap.ts (/en/sitemap.xml).
+ */
+function entry(frPath: string, priority: number, changeFrequency: "daily" | "weekly" = "daily") {
+  const fr = absoluteUrl(localizedPath(frPath, "fr"));
+  const en = absoluteUrl(localizedPath(frPath, "en"));
+  return {
+    url: fr,
+    lastModified: new Date(),
+    changeFrequency,
+    priority,
+    alternates: {
+      languages: {
+        "fr-DZ": fr,
+        "en-DZ": en,
+        "x-default": fr,
+      },
+    },
+  };
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = new Date();
   const prods = await getProducts();
-  const staticRoutes = ["", "/builder", "/prebuilds", "/guides", "/deals"].map((r) => ({
-    url: `${BASE}${r || "/"}`,
-    lastModified: now,
-    changeFrequency: "daily" as const,
-    priority: r === "" ? 1 : r === "/prebuilds" ? 0.9 : 0.8,
-  }));
-  const cats = CATEGORIES.map((c) => ({
-    url: `${BASE}/category/${c.slug}`,
-    lastModified: now,
-    changeFrequency: "daily" as const,
-    priority: 0.9,
-  }));
-  const products = prods.map((p) => ({
-    url: `${BASE}/product/${p.id}`,
-    lastModified: now,
-    changeFrequency: "daily" as const,
-    priority: 0.9,
-  }));
-  const guides = GUIDES.map((g) => ({
-    url: `${BASE}/guides/${g.slug}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-  }));
+  const staticRoutes = ["", "/builder", "/prebuilds", "/guides", "/deals"].map((r) =>
+    entry(r, r === "" ? 1 : r === "/prebuilds" ? 0.9 : 0.8),
+  );
+  const cats = CATEGORIES.map((c) => entry(`/category/${c.slug}`, 0.9));
+  const products = prods.map((p) => entry(`/product/${p.id}`, 0.9));
+  const guides = GUIDES.map((g) => entry(`/guides/${g.slug}`, 0.7, "weekly"));
   return [...staticRoutes, ...cats, ...products, ...guides];
 }

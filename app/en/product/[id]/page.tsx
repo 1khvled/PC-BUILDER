@@ -6,15 +6,14 @@ import { getOffers, getPriceHistory, getProduct, getProducts, getScrapedAt } fro
 import Thumb from "@/components/Thumb";
 import ProductOffersTable from "@/components/ProductOffersTable";
 import PriceChart from "@/components/PriceChart";
-import FbResolveForm from "@/components/FbResolveForm";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
-import { OG_LOCALE, formatNumber, languageAlternates } from "@/lib/i18n/config";
+import { OG_LOCALE, SITE_URL, formatNumber, formatPrice, languageAlternates } from "@/lib/i18n/config";
 import { categoryLabel } from "@/lib/i18n/categories";
 import { getT } from "@/lib/i18n/server";
 
 export const revalidate = 60;
 
-const LOCALE = "fr" as const;
+const LOCALE = "en" as const;
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const t = await getT(LOCALE);
@@ -25,6 +24,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   const offers = allOffers.filter((o) => o.productId === product.id && !isRuptured(o));
   const minPrice = offers.length > 0 ? Math.min(...offers.map((o) => o.priceDa)) : null;
 
+  const name = `${product.brand} ${product.model}`;
   const title = minPrice
     ? t("product.metaTitlePrice", { brand: product.brand, model: product.model, price: formatNumber(minPrice, LOCALE) })
     : t("product.metaTitle", { brand: product.brand, model: product.model });
@@ -39,14 +39,15 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
       model: product.model,
       category: product.category,
     }).split(",").map((k) => k.trim()),
+    alternates: languageAlternates(`/product/${product.id}`, "en"),
     openGraph: {
       title,
       description: t("product.metaOgDescription", { brand: product.brand, model: product.model }),
-      url: `/product/${product.id}`,
+      url: `/en/product/${product.id}`,
       type: "article",
-      locale: OG_LOCALE.fr,
+      locale: OG_LOCALE.en,
       siteName: "DZ PartPicker",
-      images: imgUrl ? [{ url: imgUrl, alt: `${product.brand} ${product.model}` }] : undefined,
+      images: imgUrl ? [{ url: imgUrl, alt: name }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
@@ -54,11 +55,11 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
       description: t("product.metaOgDescription", { brand: product.brand, model: product.model }),
       images: imgUrl ? [imgUrl] : undefined,
     },
-    alternates: languageAlternates(`/product/${product.id}`),
   };
 }
 
-export default async function ProductPage({ params }: { params: { id: string } }) {
+export default async function EnglishProductPage({ params }: { params: { id: string } }) {
+  const t = await getT(LOCALE);
   const [product, allOffers, history, scrapedAt] = await Promise.all([
     getProduct(params.id),
     getOffers(),
@@ -72,12 +73,16 @@ export default async function ProductPage({ params }: { params: { id: string } }
   const offers = allOffers.filter((o) => o.productId === product.id).sort((a, b) => a.priceDa - b.priceDa);
   // Hero = best NEW + available offer, never a dead/used listing while a live one exists
   const best = bestOffer(product.id, allOffers) ?? offers[0];
+  const name = `${product.brand} ${product.model}`;
+  const catLabel = categoryLabel(product.category, t);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: `${product.brand} ${product.model}`,
+    name,
     brand: product.brand,
-    category: product.category,
+    category: catLabel,
+    inLanguage: "en-DZ",
     image: productImage(product),
     offers: offers.slice(0, 20).map((o) => ({
       "@type": "Offer",
@@ -96,10 +101,11 @@ export default async function ProductPage({ params }: { params: { id: string } }
   const breadcrumbsJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    inLanguage: "en-DZ",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Accueil", item: "https://dzpartpicker.dz/" },
-      { "@type": "ListItem", position: 2, name: product.category, item: `https://dzpartpicker.dz/category/${product.category}` },
-      { "@type": "ListItem", position: 3, name: `${product.brand} ${product.model}`, item: `https://dzpartpicker.dz/product/${product.id}` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/en` },
+      { "@type": "ListItem", position: 2, name: catLabel, item: `${SITE_URL}/en/category/${product.category}` },
+      { "@type": "ListItem", position: 3, name, item: `${SITE_URL}/en/product/${product.id}` },
     ],
   };
 
@@ -117,25 +123,27 @@ export default async function ProductPage({ params }: { params: { id: string } }
     live: liveOffers.length > 0,
   } : null;
 
+  const day = scrapedAt.slice(0, 10);
+
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsJsonLd) }} />
       {/* Breadcrumbs */}
-      <nav aria-label="Fil d'Ariane" className="flex items-center gap-2 text-xs text-slate-500">
-        <Link href="/" className="hover:text-slate-900 transition-colors">
-          Accueil
+      <nav aria-label={t("common.breadcrumb")} className="flex items-center gap-2 text-xs text-slate-500">
+        <Link href="/en" className="hover:text-slate-900 transition-colors">
+          {t("common.home")}
         </Link>
         <span>/</span>
-        <Link href={`/category/${product.category}`} className="hover:text-slate-900 capitalize transition-colors">
-          {product.category}
+        <Link href={`/en/category/${product.category}`} className="hover:text-slate-900 transition-colors">
+          {catLabel}
         </Link>
         <span>/</span>
         <span className="text-slate-900 font-semibold truncate">
-          {product.brand} {product.model}
+          {name}
         </span>
         <span className="ml-auto shrink-0">
-          <LocaleSwitcher pathname={`/product/${product.id}`} />
+          <LocaleSwitcher pathname={`/en/product/${product.id}`} />
         </span>
       </nav>
 
@@ -148,28 +156,28 @@ export default async function ProductPage({ params }: { params: { id: string } }
             {/* Top Badges Row */}
             <div className="flex flex-wrap items-center gap-2 mb-6">
               <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-50 text-[#2c87c3] border border-blue-100">
-                {product.category}
+                {catLabel}
               </span>
               <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
-                Réf : {product.id}
+                {t("product.ref", { id: product.id })}
               </span>
               {allRuptured ? (
                 <span className="text-xs font-bold px-3 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-200 flex items-center gap-1.5 shadow-sm">
                   <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
-                  <span>Rupture de stock globale</span>
+                  <span>{t("product.allRuptured")}</span>
                 </span>
               ) : best ? (
                 <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span>Meilleur prix : {best.priceDa.toLocaleString("fr-DZ")} DA</span>
+                  <span>{t("product.bestPrice", { price: formatPrice(best.priceDa, LOCALE) })}</span>
                 </span>
               ) : null}
               <span className="text-xs font-semibold px-3 py-1 rounded-full bg-slate-50 text-slate-600 border border-slate-200">
-                📦 {offers.length} boutique{offers.length > 1 ? "s" : ""} indexée{offers.length > 1 ? "s" : ""}
+                📦 {t("common.storesIndexed", { count: offers.length, plural: offers.length > 1 ? "s" : "" })}
               </span>
             </div>
 
-            {/* Global Rupture Alert Banner */}
+            {/* Global Out-of-stock Alert Banner */}
             {allRuptured && (
               <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 flex items-start gap-3">
                 <div className="w-6 h-6 rounded-full bg-rose-200 text-rose-800 flex items-center justify-center font-extrabold text-xs shrink-0 mt-0.5">
@@ -177,10 +185,10 @@ export default async function ProductPage({ params }: { params: { id: string } }
                 </div>
                 <div>
                   <h3 className="font-extrabold text-sm text-rose-950">
-                    Composant actuellement en rupture de stock chez toutes les boutiques
+                    {t("product.ruptureAlertTitle")}
                   </h3>
                   <p className="text-xs text-rose-800/90 mt-0.5 leading-relaxed">
-                    Aucun marchand n&apos;a ce produit en stock pour le moment. Les offres listées ci-dessous correspondent aux derniers prix relevés avant rupture.
+                    {t("product.ruptureAlertText")}
                   </p>
                 </div>
               </div>
@@ -194,7 +202,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                 </div>
                 {best && (
                   <div className="absolute -bottom-2 -right-2 bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-md border border-slate-700">
-                    Prix vérifiés DA
+                    {t("common.verifiedPrices")}
                   </div>
                 )}
               </div>
@@ -205,11 +213,11 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   {product.brand}
                 </div>
                 <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 mt-0.5 leading-tight">
-                  {product.brand} {product.model}
+                  {name}
                 </h1>
 
                 <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
-                  Prix relevés en Algérie, triés par prix croissant.
+                  {t("common.organicSort")}
                 </p>
 
                 {/* Highlight Specs Chips */}
@@ -238,31 +246,31 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   <line x1="4" y1="10" x2="20" y2="10" />
                 </svg>
                 <h2 className="font-extrabold text-base text-slate-900 tracking-tight">
-                  Fiche Technique Détaillée
+                  {t("product.specsTitle")}
                 </h2>
               </div>
-              <span className="text-xs text-slate-400 font-medium">Données constructeur</span>
+              <span className="text-xs text-slate-400 font-medium">{t("product.specsSource")}</span>
             </div>
 
             <div className="divide-y divide-slate-100">
               <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 text-xs sm:text-sm">
                 <div className="p-4 flex items-center justify-between bg-white hover:bg-slate-50/60 transition-colors">
-                  <span className="text-slate-500 font-medium">Catégorie</span>
-                  <span className="font-bold text-slate-900 capitalize">{product.category}</span>
+                  <span className="text-slate-500 font-medium">{t("product.specCategory")}</span>
+                  <span className="font-bold text-slate-900">{catLabel}</span>
                 </div>
                 <div className="p-4 flex items-center justify-between bg-white hover:bg-slate-50/60 transition-colors">
-                  <span className="text-slate-500 font-medium">Fabricant / Marque</span>
+                  <span className="text-slate-500 font-medium">{t("product.specManufacturer")}</span>
                   <span className="font-bold text-slate-900">{product.brand}</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 text-xs sm:text-sm">
                 <div className="p-4 flex items-center justify-between bg-slate-50/40 hover:bg-slate-50 transition-colors">
-                  <span className="text-slate-500 font-medium">Modèle exact</span>
+                  <span className="text-slate-500 font-medium">{t("product.specModel")}</span>
                   <span className="font-bold text-slate-900">{product.model}</span>
                 </div>
                 <div className="p-4 flex items-center justify-between bg-slate-50/40 hover:bg-slate-50 transition-colors">
-                  <span className="text-slate-500 font-medium">Identifiant interne</span>
+                  <span className="text-slate-500 font-medium">{t("product.specInternalId")}</span>
                   <span className="text-xs font-semibold text-slate-700 bg-slate-200/70 px-2 py-0.5 rounded">
                     {product.id}
                   </span>
@@ -291,43 +299,30 @@ export default async function ProductPage({ params }: { params: { id: string } }
           <section className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-lg font-bold text-slate-900 tracking-tight">
-                Comparatif des prix marchands en Algérie
+                {t("product.compareTitle")}
               </h2>
               <span className="text-xs text-slate-400">
-                Relevé le {scrapedAt.slice(0, 10)} • Tri organique par prix croissant
+                {t("product.compareMeta", { date: day })}
               </span>
             </div>
-            <ProductOffersTable offers={offers} />
+            <ProductOffersTable offers={offers} locale={LOCALE} />
           </section>
 
           {/* Price History (PCPartPicker signature) */}
           <section className="bg-white rounded border border-slate-200 p-4 sm:p-5 space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="font-extrabold text-base text-slate-900 tracking-tight">
-                Historique des prix
+                {t("product.historyTitle")}
               </h2>
               <span className="text-xs text-slate-400">
-                {history.length} relevé{history.length > 1 ? "s" : ""} • toutes boutiques
+                {t("product.historyMeta", { count: history.length, plural: history.length > 1 ? "s" : "" })}
               </span>
             </div>
+            {/* NOTE: components/PriceChart.tsx is out of scope for this change
+                set — its internal labels stay in French. */}
             <PriceChart points={history} currentOffers={offers} />
           </section>
 
-          {/* Facebook Marketplace Paste Box */}
-          <div className="bg-white rounded border border-slate-200 p-5 sm:p-6">
-            <div className="flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
-                f
-              </span>
-              <h3 className="font-bold text-sm text-slate-900">
-                Résoudre une annonce Facebook Marketplace à la demande
-              </h3>
-            </div>
-            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-              Collez le lien d&apos;une annonce Facebook Marketplace pour vérifier son tarif et son historique face aux prix neufs du marché algérien (résolution à la demande, sans scraper permanent).
-            </p>
-            <FbResolveForm />
-          </div>
         </div>
 
         {/* Right Column: Sticky Buy Box (4 cols) */}
@@ -336,7 +331,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
             {/* Header / Price */}
             <div>
               <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                {allRuptured ? "Dernier tarif constaté (Épuisé)" : "Meilleur tarif constaté"}
+                {allRuptured ? t("product.lastPriceLabel") : t("product.bestLabel")}
               </div>
               {best ? (
                 <>
@@ -345,37 +340,37 @@ export default async function ProductPage({ params }: { params: { id: string } }
                       allRuptured ? "text-slate-400 line-through" : "text-emerald-700"
                     }`}
                   >
-                    {best.priceDa.toLocaleString("fr-DZ")} DA
+                    {formatPrice(best.priceDa, LOCALE)}
                   </div>
                   <div className="text-xs text-slate-600 mt-1 flex flex-wrap items-center gap-1.5">
-                    <span>chez</span>
+                    <span>{t("common.at")}</span>
                     <b className="text-slate-900 font-bold">{best.store}</b>
                     <span className="text-slate-400">({best.wilaya})</span>
                     <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${best.condition === "new" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"}`}>
-                      {best.condition === "new" ? "Neuf" : "Occasion"}
+                      {best.condition === "new" ? t("common.new") : t("common.used")}
                     </span>
                     <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${isRuptured(best) ? "bg-rose-100 text-rose-800 border border-rose-200" : "bg-emerald-100 text-emerald-800 border border-emerald-200"}`}>
-                      {isRuptured(best) ? "✕ Rupture" : "✓ En stock"}
+                      {isRuptured(best) ? `✕ ${t("common.outOfStock")}` : `✓ ${t("common.inStock")}`}
                     </span>
                   </div>
                   {isRuptured(best) && (
                     <div className="text-xs text-rose-700 font-bold mt-2 bg-rose-50 border border-rose-200 rounded p-2.5 flex items-start gap-1.5">
                       <span className="shrink-0">✕</span>
-                      <span>Offre constatée en rupture de stock par le marchand.</span>
+                      <span>{t("product.ruptureNote")}</span>
                     </div>
                   )}
                   {best.condition === "used" && (
                     <div className="text-xs text-amber-700 font-semibold mt-1.5">
-                      Offre d'occasion — exigez test + facture (voir guide Ouedkniss).
+                      {t("product.usedNote")}
                     </div>
                   )}
                   <div className="text-[11px] text-slate-400 mt-1">
-                    Stock relevé le {scrapedAt.slice(0, 10)} — confirmez toujours sur la boutique.
+                    {t("product.stockCheckedOn", { date: day })}
                   </div>
                 </>
               ) : (
                 <div className="text-sm text-rose-600 font-bold mt-2">
-                  Aucun marchand actuellement en stock
+                  {t("product.noStoreInStock")}
                 </div>
               )}
             </div>
@@ -387,20 +382,20 @@ export default async function ProductPage({ params }: { params: { id: string } }
                   href={best.url}
                   target="_blank"
                   rel="noreferrer"
-                  aria-label={isRuptured(best) ? `Voir quand même l'offre en rupture chez ${best.store}` : `Commander sur ${best.store}`}
+                  aria-label={isRuptured(best) ? t("product.seeOutOfStockOnAria", { store: best.store }) : t("product.orderOnAria", { store: best.store })}
                   className={`w-full text-center py-3 px-4 rounded text-white font-bold text-sm shadow-md transition-colors flex items-center justify-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isRuptured(best)
                     ? "bg-rose-600 hover:bg-rose-700 active:bg-rose-800 focus-visible:ring-rose-500"
                     : "bg-[#2c87c3] hover:bg-[#1e5c85] active:bg-[#153f5b] focus-visible:ring-[#2c87c3]"}`}
                 >
-                  <span>{isRuptured(best) ? `Voir l'offre sur ${best.store} (En rupture)` : `Commander sur ${best.store}`}</span>
+                  <span>{isRuptured(best) ? t("product.seeOutOfStockOn", { store: best.store }) : t("product.orderOn", { store: best.store })}</span>
                   <span>↗</span>
                 </a>
 
                 <Link
-                  href={`/builder?add=${product.category}:${product.id}`}
+                  href={`/en/builder?add=${product.category}:${product.id}`}
                   className="w-full text-center py-2.5 px-4 rounded border border-slate-200 hover:border-[#2c87c3] hover:bg-blue-50/50 text-slate-800 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
                 >
-                  <span>+ Ajouter au System Builder</span>
+                  <span>{t("product.addToBuilder")}</span>
                 </Link>
               </div>
             )}
@@ -409,27 +404,27 @@ export default async function ProductPage({ params }: { params: { id: string } }
             {priceStats && priceStats.diff > 0 && (
               <div className="p-3.5 rounded bg-slate-50 border border-slate-200/80 text-xs space-y-1.5">
                 <div className="flex justify-between text-slate-600">
-                  <span>Prix le plus bas :</span>
-                  <b className="text-emerald-700">{priceStats.min.toLocaleString("fr-DZ")} DA</b>
+                  <span>{t("product.rangeLow")}</span>
+                  <b className="text-emerald-700">{formatPrice(priceStats.min, LOCALE)}</b>
                 </div>
                 <div className="flex justify-between text-slate-600">
-                  <span>Prix le plus haut :</span>
-                  <b className="text-slate-800">{priceStats.max.toLocaleString("fr-DZ")} DA</b>
+                  <span>{t("product.rangeHigh")}</span>
+                  <b className="text-slate-800">{formatPrice(priceStats.max, LOCALE)}</b>
                 </div>
                 <div className="flex justify-between text-slate-800 font-bold pt-1 border-t border-slate-200">
-                  <span>Économie possible :</span>
-                  <span className="text-emerald-700">+{priceStats.diff.toLocaleString("fr-DZ")} DA</span>
+                  <span>{t("product.rangeSavings")}</span>
+                  <span className="text-emerald-700">+{formatPrice(priceStats.diff, LOCALE)}</span>
                 </div>
                 {!priceStats.live && (
                   <div className="text-[11px] text-red-600 font-semibold">
-                    Toutes les offres sont en rupture — prix à titre indicatif.
+                    {t("product.rangeAllOutOfStock")}
                   </div>
                 )}
               </div>
             )}
 
             <p className="pt-2 border-t border-slate-100 text-xs text-slate-500">
-              ✓ Indépendant, sans commission • Relevé le {scrapedAt.slice(0, 10)}
+              {t("product.footNote", { date: day })}
             </p>
           </div>
         </div>

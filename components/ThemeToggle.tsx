@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useI18n } from "@/lib/i18n/client";
 
 /**
  * Light/dark switch.
@@ -42,6 +43,7 @@ function applyTheme(theme: Theme) {
 }
 
 export default function ThemeToggle() {
+  const { t } = useI18n();
   const [theme, setTheme] = useState<Theme>("system");
   const [mounted, setMounted] = useState(false);
 
@@ -68,12 +70,12 @@ export default function ThemeToggle() {
   };
 
   const label = !mounted
-    ? "Changer de thème"
+    ? t("theme.toggle")
     : theme === "dark"
-    ? "Passer en thème clair"
+    ? t("theme.toLight")
     : theme === "light"
-    ? "Passer en thème sombre"
-    : "Suivre le thème du système";
+    ? t("theme.toDark")
+    : t("theme.system");
 
   return (
     <button

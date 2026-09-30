@@ -1,15 +1,17 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useI18n } from "@/lib/i18n/client";
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
+  const { t } = useI18n();
 
   const navItems = [
     {
       href: "/builder",
-      label: "Builder",
+      label: t("common.builder"),
       icon: (
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="4" y="4" width="16" height="16" rx="2" />
@@ -20,7 +22,7 @@ export default function MobileBottomNav() {
     },
     {
       href: "/prebuilds",
-      label: "PC Montés",
+      label: t("common.prebuilds"),
       badge: "DZ",
       icon: (
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -33,7 +35,7 @@ export default function MobileBottomNav() {
     },
     {
       href: "/deals",
-      label: "Bons Plans",
+      label: t("common.deals"),
       icon: (
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
@@ -43,7 +45,7 @@ export default function MobileBottomNav() {
     },
     {
       href: "/category/gpu",
-      label: "Composants",
+      label: t("common.components"),
       icon: (
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -56,7 +58,7 @@ export default function MobileBottomNav() {
     },
     {
       href: "/guides",
-      label: "Guides",
+      label: t("common.guides"),
       icon: (
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
@@ -69,7 +71,7 @@ export default function MobileBottomNav() {
 
   return (
     <nav
-      aria-label="Navigation mobile"
+      aria-label={t("nav.mobile")}
       className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#11111c] border-t border-white/10 safe-area-bottom shadow-[0_-4px_20px_rgba(0,0,0,0.4)] no-print"
     >
       <div className="grid grid-cols-5 h-14 items-center px-1">

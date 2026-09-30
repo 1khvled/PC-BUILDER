@@ -1,10 +1,18 @@
-import Link from "next/link";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
+import { makeT } from "@/lib/i18n/runtime";
 
 interface BytekAdProps {
   variant?: "banner" | "compact" | "card";
+  /**
+   * UI locale, passed as a prop by the server page so the first paint is already
+   * translated. Defaults to French for the unprefixed routes.
+   */
+  locale?: Locale;
 }
 
-export default function BytekAd({ variant = "banner" }: BytekAdProps) {
+export default function BytekAd({ variant = "banner", locale = DEFAULT_LOCALE }: BytekAdProps) {
+  const t = makeT(locale);
+
   if (variant === "compact") {
     return (
       <a
@@ -16,10 +24,10 @@ export default function BytekAd({ variant = "banner" }: BytekAdProps) {
         <div className="flex items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2 min-w-0">
             <span className="px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 font-extrabold text-[10px] uppercase tracking-wider border border-indigo-500/40">
-              Sponsor
+              {t("ad.sponsor")}
             </span>
             <span className="font-bold text-slate-100 truncate">
-              Bytek Store • Souris & Périphériques Esport en Algérie
+              {t("ad.compact")}
             </span>
           </div>
           <span className="font-extrabold text-indigo-300 group-hover:text-white flex items-center gap-1 shrink-0 text-[11px]">
@@ -42,20 +50,19 @@ export default function BytekAd({ variant = "banner" }: BytekAdProps) {
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-extrabold uppercase tracking-widest border border-indigo-500/40">
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-              Partenaire Officiel Esport DZ
+              {t("ad.partner")}
             </span>
             <span className="text-[11px] font-semibold text-slate-400">
-              Powered by <strong className="text-white font-extrabold">bytekstore.shop</strong>
+              {t("ad.poweredBy")} <strong className="text-white font-extrabold">bytekstore.shop</strong>
             </span>
           </div>
 
           <h3 className="text-lg sm:text-2xl font-black tracking-tight text-white leading-snug">
-            Bytek Store — Périphériques Esport & Matériel Gaming Pro
+            {t("ad.title")}
           </h3>
 
           <p className="text-xs sm:text-sm text-slate-300/90 leading-relaxed">
-            Souris gamer ultra-légères, claviers mécaniques custom, tapis de souris esport, patins PTFE & accessoires pro.
-            Stock réel en Algérie, expédition express <strong>58 Wilayas</strong> & paiement à la livraison.
+            {t("ad.text")}
           </p>
         </div>
 
@@ -66,11 +73,11 @@ export default function BytekAd({ variant = "banner" }: BytekAdProps) {
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-extrabold text-sm shadow-lg shadow-indigo-600/30 hover:shadow-indigo-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all text-center"
           >
-            <span>Découvrir Bytek Store</span>
+            <span>{t("ad.cta")}</span>
             <span className="text-base">→</span>
           </a>
           <span className="text-[11px] text-slate-400 font-medium text-center md:text-right">
-            boutique officielle vérifiée
+            {t("ad.verified")}
           </span>
         </div>
       </div>

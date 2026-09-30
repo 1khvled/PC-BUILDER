@@ -124,6 +124,7 @@ export const PRODUCTS: Product[] = [
   { id: "ssd-sn850-1tb", category: "ssd", brand: "WD", model: "Black SN850 1TB NVMe", specs: { interface: "NVME" } },
   { id: "ssd-nvme-500gb", category: "ssd", brand: "Crucial", model: "P3 500GB NVMe", specs: { interface: "NVME" } },
   { id: "gpu-rtx3050-6gb", category: "gpu", brand: "NVIDIA", model: "RTX 3050 6GB", specs: { length_mm: 200, tdp_w: 70, pins: "none" } },
+  { id: "gpu-rtx3050-8gb", category: "gpu", brand: "NVIDIA", model: "RTX 3050 8GB", specs: { length_mm: 242, tdp_w: 130, pins: "1x8" } },
   { id: "gpu-rtx4080s-16gb", category: "gpu", brand: "NVIDIA", model: "RTX 4080 SUPER 16GB", specs: { length_mm: 310, tdp_w: 320, pins: "16-pin" } },
   { id: "gpu-rtx4090-24gb", category: "gpu", brand: "NVIDIA", model: "RTX 4090 24GB", specs: { length_mm: 336, tdp_w: 450, pins: "16-pin" } },
   { id: "gpu-rtx5090-32gb", category: "gpu", brand: "NVIDIA", model: "RTX 5090 32GB", specs: { length_mm: 336, tdp_w: 575, pins: "16-pin" } },

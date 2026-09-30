@@ -45,39 +45,39 @@ function deals(products: Product[], offers: Offer[]): Deal[] {
 
 export const revalidate = 60;
 
-const LOCALE = "fr" as const;
+const LOCALE = "en" as const;
 
 export const metadata: Metadata = {
-  title: "Bons Plans Composants PC en Algérie (DA)",
+  title: "PC Component Deals in Algeria (DA)",
   description:
-    "Découvrez les meilleures promotions et réductions sur les processeurs, cartes graphiques, SSD et RAM en Algérie. Économies réelles calculées face à la médiane du marché.",
+    "Discover the best promotions and price drops on processors, graphics cards, SSD and RAM in Algeria. Real savings measured against each product's market median.",
   keywords: [
-    "bons plans pc algerie",
-    "promotion composants pc algerie",
-    "carte graphique pas cher algerie",
-    "prix ssd algerie",
-    "composants pc algerie da",
-    "offres pc algerie",
+    "pc deals algeria",
+    "pc component promotions algeria",
+    "cheap gpu algeria",
+    "ssd price drop algeria",
+    "pc parts discount da",
+    "algeria pc deals",
   ],
-  alternates: languageAlternates("/deals"),
+  alternates: languageAlternates("/deals", "en"),
   openGraph: {
-    title: "Bons Plans Composants PC en Algérie (DA)",
+    title: "PC Component Deals in Algeria (DA)",
     description:
-      "Offres neuves ≥8% sous la médiane du marché, relevées en direct en Dinars Algériens (DA).",
-    url: "/deals",
+      "New offers at least 8% below their product's market median, measured live in Algerian Dinars (DA).",
+    url: "/en/deals",
     type: "website",
-    locale: OG_LOCALE.fr,
+    locale: OG_LOCALE.en,
     siteName: "DZ PartPicker",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bons Plans Composants PC en Algérie (DA)",
+    title: "PC Component Deals in Algeria (DA)",
     description:
-      "Offres neuves ≥8% sous la médiane du marché, relevées en direct en Dinars Algériens (DA).",
+      "New offers at least 8% below their product's market median, measured live in Algerian Dinars (DA).",
   },
 };
 
-export default async function DealsPage() {
+export default async function EnglishDealsPage() {
   const t = await getT(LOCALE);
   const [products, offers, scrapedAt] = await Promise.all([
     getProducts(),
@@ -89,18 +89,20 @@ export default async function DealsPage() {
   return (
     <main className="max-w-6xl mx-auto px-4 py-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <h1 className="text-2xl font-extrabold tracking-tight">{t("deals.h1")}</h1>
-        <LocaleSwitcher pathname="/deals" />
+        <div>
+          <h1 className="text-2xl font-extrabold tracking-tight">{t("deals.h1")}</h1>
+          <p className="text-xs text-slate-400">
+            {t("deals.subtitle", { date: scrapedAt.slice(0, 10) })}
+          </p>
+        </div>
+        <LocaleSwitcher pathname="/en/deals" />
       </div>
-      <p className="text-xs text-slate-400">
-        {t("deals.subtitle", { date: scrapedAt.slice(0, 10) })}
-      </p>
       <div className="mt-4 mb-4">
-        <BytekAd variant="compact" />
+        <BytekAd variant="compact" locale={LOCALE} />
       </div>
       <div className="grid md:grid-cols-2 gap-3 mt-2">
         {list.map((d) => (
-          <Link key={d.id} href={`/product/${d.id}`} className="bg-white rounded p-4 shadow-sm border flex gap-3 items-center">
+          <Link key={d.id} href={`/en/product/${d.id}`} className="bg-white rounded p-4 shadow-sm border flex gap-3 items-center">
             <Thumb src={productImage(productsMap.get(d.id)!)} alt={d.model} size={56} />
             <div className="min-w-0 flex-1">
               <div className="font-bold text-sm truncate">{d.brand} {d.model}</div>

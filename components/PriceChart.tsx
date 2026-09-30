@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Offer, PricePoint } from "@/lib/data/products";
 import StoreLogo from "./StoreLogo";
+import { useI18n } from "@/lib/i18n/client";
 
 const STORE_COLORS = [
   "#2c87c3", // Brand Blue
@@ -21,6 +22,9 @@ interface PriceChartProps {
 }
 
 export default function PriceChart({ points, currentOffers = [] }: PriceChartProps) {
+  // Shared chrome lives outside the /en provider, so the locale resolves from the
+  // pre-paint data-locale attribute (see components/Header.tsx).
+  const { t } = useI18n();
   const [hoveredPoint, setHoveredPoint] = useState<{
     store: string;
     day: string;
@@ -111,19 +115,19 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
         <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
           <div>
             <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
-              <span>📊 Baromètre des Prix du Marché</span>
+              <span>{t("chart.barometer")}</span>
               <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                Temps Réel
+                {t("chart.realtime")}
               </span>
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Historique en constitution ({points.length > 0 ? `${points.length} relevé` : "relevés en direct"}). Comparatif immédiat entre boutiques :
+              {points.length > 0 ? t("chart.historyBuilding", { count: points.length, plural: Math.abs(points.length) > 1 ? "s" : "" }) : t("chart.historyBuildingLive")}
             </p>
           </div>
 
           {diff > 0 && (
             <div className="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5 shadow-sm">
-              <span>💡 Économie potentielle :</span>
+              <span>{t("chart.potentialSaving")}</span>
               <span className="text-sm font-extrabold text-emerald-700">+{diff.toLocaleString("fr-DZ")} DA</span>
             </div>
           )}
@@ -133,35 +137,35 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
         {stats && (
           <div className="grid grid-cols-3 gap-3">
             <div className="p-3 rounded-lg bg-emerald-50/70 border border-emerald-100 text-center">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">Meilleur Prix</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">{t("chart.bestPrice")}</div>
               <div className="text-base sm:text-lg font-black text-emerald-800 mt-0.5">
                 {stats.min.toLocaleString("fr-DZ")} <span className="text-xs font-bold">DA</span>
               </div>
               {minOffer && (
                 <div className="text-[11px] text-emerald-700 flex items-center justify-center gap-1.5 mt-1 font-semibold truncate">
                   <StoreLogo store={minOffer.store} size={16} />
-                  <span>chez {minOffer.store}</span>
+                  <span>{t("common.atStore", { store: minOffer.store })}</span>
                 </div>
               )}
             </div>
 
             <div className="p-3 rounded-lg bg-slate-50 border border-slate-200/80 text-center">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Prix Moyen</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">{t("chart.avgPrice")}</div>
               <div className="text-base sm:text-lg font-black text-slate-800 mt-0.5">
                 {stats.avg.toLocaleString("fr-DZ")} <span className="text-xs font-bold">DA</span>
               </div>
-              <div className="text-[11px] text-slate-500 mt-1 font-semibold">{sortedOffers.length} boutiques indexées</div>
+              <div className="text-[11px] text-slate-500 mt-1 font-semibold">{t("chart.indexedStores", { count: sortedOffers.length, plural: Math.abs(sortedOffers.length) > 1 ? "s" : "" })}</div>
             </div>
 
             <div className="p-3 rounded-lg bg-rose-50/70 border border-rose-100 text-center">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-rose-600">Prix Maximum</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-rose-600">{t("chart.maxPrice")}</div>
               <div className="text-base sm:text-lg font-black text-rose-800 mt-0.5">
                 {stats.max.toLocaleString("fr-DZ")} <span className="text-xs font-bold">DA</span>
               </div>
               {maxOffer && (
                 <div className="text-[11px] text-rose-700 flex items-center justify-center gap-1.5 mt-1 font-semibold truncate">
                   <StoreLogo store={maxOffer.store} size={16} />
-                  <span>chez {maxOffer.store}</span>
+                  <span>{t("common.atStore", { store: maxOffer.store })}</span>
                 </div>
               )}
             </div>
@@ -172,14 +176,14 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
         {sortedOffers.length > 1 && stats && stats.spread > 0 && (
           <div className="pt-2">
             <div className="flex justify-between text-[11px] font-bold text-slate-500 mb-1.5">
-              <span>Échelle de dispersion des prix</span>
-              <span>Écart : {stats.spread.toLocaleString("fr-DZ")} DA</span>
+              <span>{t("chart.spreadScale")}</span>
+              <span>{t("chart.spreadValue", { value: stats.spread.toLocaleString("fr-DZ") + " DA" })}</span>
             </div>
             <div className="relative w-full h-3 bg-gradient-to-r from-emerald-400 via-amber-300 to-rose-400 rounded-full shadow-inner overflow-hidden" />
             <div className="flex justify-between text-[10px] text-slate-400 mt-1">
-              <span>{stats.min.toLocaleString("fr-DZ")} DA (Min)</span>
-              <span>{stats.avg.toLocaleString("fr-DZ")} DA (Moyenne)</span>
-              <span>{stats.max.toLocaleString("fr-DZ")} DA (Max)</span>
+              <span>{stats.min.toLocaleString("fr-DZ")} DA ({t("chart.min")})</span>
+              <span>{stats.avg.toLocaleString("fr-DZ")} DA ({t("chart.avg")})</span>
+              <span>{stats.max.toLocaleString("fr-DZ")} DA ({t("chart.max")})</span>
             </div>
           </div>
         )}
@@ -187,7 +191,7 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
         {/* Store Quotes Chips */}
         <div className="pt-2">
           <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">
-            Tarifs relevés aujourd&apos;hui par boutique :
+            {t("chart.storesHeading")}
           </div>
           <div className="flex flex-wrap gap-2">
             {sortedOffers.map((o, idx) => {
@@ -207,9 +211,7 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
                     {o.priceDa.toLocaleString("fr-DZ")} DA
                   </span>
                   {isBest && (
-                    <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.5 rounded uppercase">
-                      Top Deal
-                    </span>
+                    <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.5 rounded uppercase">{t("chart.topDeal")}</span>
                   )}
                 </div>
               );
@@ -258,27 +260,25 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
       <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="text-base font-extrabold text-slate-900">
-              Évolution Historique des Prix
-            </h3>
+            <h3 className="text-base font-extrabold text-slate-900">{t("chart.evolution")}</h3>
             {stats && stats.trend === "down" && (
               <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
-                📉 En baisse (-{stats.trendPct}%)
+                {t("chart.falling", { pct: stats.trendPct })}
               </span>
             )}
             {stats && stats.trend === "up" && (
               <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200 flex items-center gap-1">
-                📈 En hausse (+{stats.trendPct}%)
+                {t("chart.rising", { pct: stats.trendPct })}
               </span>
             )}
             {stats && stats.trend === "stable" && (
               <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 flex items-center gap-1">
-                ⚖️ Prix stable
+                {t("chart.stable")}
               </span>
             )}
           </div>
           <p className="text-xs text-slate-500 mt-1">
-            Relevés quotidiens automatiques depuis {days[0]} ({days.length} dates indexées)
+            {t("chart.dailySince", { date: days[0], count: days.length })}
           </p>
         </div>
 
@@ -286,21 +286,21 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
         {stats && (
           <div className="flex items-center gap-4 text-right">
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Plancher</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{t("chart.floor")}</div>
               <div className="text-sm sm:text-base font-extrabold text-emerald-600">
                 {stats.min.toLocaleString("fr-DZ")} DA
               </div>
             </div>
             <div className="w-px h-8 bg-slate-200" />
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Moyenne</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{t("chart.average")}</div>
               <div className="text-sm sm:text-base font-extrabold text-slate-700">
                 {stats.avg.toLocaleString("fr-DZ")} DA
               </div>
             </div>
             <div className="w-px h-8 bg-slate-200" />
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Plafond</div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400">{t("chart.ceiling")}</div>
               <div className="text-sm sm:text-base font-extrabold text-slate-800">
                 {stats.max.toLocaleString("fr-DZ")} DA
               </div>
@@ -325,7 +325,7 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
               {hoveredPoint.price.toLocaleString("fr-DZ")} DA
             </div>
             <div className="text-[11px] text-slate-200 truncate mt-0.5 font-medium">
-              chez {hoveredPoint.store}
+              {t("common.atStore", { store: hoveredPoint.store })}
             </div>
           </div>
         )}
@@ -334,7 +334,7 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
           viewBox={`0 0 ${W} ${H}`}
           className="w-full h-auto select-none"
           role="img"
-          aria-label="Courbe historique des prix"
+          aria-label={t("chart.aria")}
         >
           {/* Horizontal Grid lines */}
           {[0, 0.25, 0.5, 0.75, 1].map((f) => {
@@ -411,7 +411,7 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
       {/* Legend & Store Indicators */}
       <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Boutiques :</span>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">{t("chart.stores")}</span>
           {sortedStores.slice(0, 5).map(({ store, pts }, i) => (
             <span key={store} className="text-xs text-slate-700 flex items-center gap-1.5 font-medium bg-slate-50 px-2 py-1 rounded-md border border-slate-200/60">
               <span
@@ -428,7 +428,7 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
         </div>
 
         <div className="text-[11px] text-slate-400 italic">
-          Survolez un point pour voir le détail de l&apos;offre.
+          {t("chart.hoverHint")}
         </div>
       </div>
     </div>
