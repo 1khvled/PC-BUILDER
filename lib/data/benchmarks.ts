@@ -332,7 +332,81 @@ export const SSD_BENCH: Record<
   "ssd-budget": { seqRead: 500, seqWrite: 450, random4k: 60, interface: "SATA III" },
 };
 
+/* ----------------------------------------------------------------- coolers */
+
+export interface CoolerBenchmark {
+  /**
+   * Rated heat dissipation in watts - the manufacturer's own TDP class for the
+   * cooler, i.e. the CPU heat it is specified to remove. It is an objective
+   * spec figure, not a measured result: a 120 mm single tower is a 120-150 W
+   * part, a dual tower ~250 W, a 240 mm AIO ~250 W, a 360 mm AIO ~300-320 W.
+   */
+  tdpRating: number;
+  /** Air tower or liquid cooler. Decided by geometry: the AIOs are 55 mm. */
+  kind: "air" | "aio";
+  /** Radiator size in mm for an AIO, null for air. */
+  radiator?: 120 | 240 | 360;
+}
+
+export const COOLER_BENCH: Record<string, CoolerBenchmark> = {
+  // --- 120 mm single tower ---
+  "cooler-ag200": { tdpRating: 120, kind: "air" },
+  "cooler-a30": { tdpRating: 130, kind: "air" },
+  "cooler-ag400": { tdpRating: 130, kind: "air" },
+  "cooler-ocypus": { tdpRating: 135, kind: "air" },
+  "cooler-boreas-m2": { tdpRating: 135, kind: "air" },
+  "cooler-am1204": { tdpRating: 135, kind: "air" },
+  "cooler-ma421a": { tdpRating: 140, kind: "air" },
+  "cooler-mars": { tdpRating: 140, kind: "air" },
+  "cooler-f2005": { tdpRating: 140, kind: "air" },
+  "cooler-f2002-360": { tdpRating: 320, kind: "aio", radiator: 360 },
+
+  // --- 120 mm single tower with more pipes ---
+  "cooler-h212-v3": { tdpRating: 150, kind: "air" },
+  "cooler-ak500": { tdpRating: 150, kind: "air" },
+  "cooler-ak400": { tdpRating: 155, kind: "air" },
+  "cooler-ak500-g2": { tdpRating: 160, kind: "air" },
+  "cooler-corefrozr": { tdpRating: 160, kind: "air" },
+  "cooler-phantom": { tdpRating: 230, kind: "air" },
+
+  // --- dual tower ---
+  "cooler-ak620": { tdpRating: 250, kind: "air" },
+  "cooler-ag620": { tdpRating: 250, kind: "air" },
+  "cooler-ak700": { tdpRating: 250, kind: "air" },
+  "cooler-ma621c": { tdpRating: 260, kind: "air" },
+  "cooler-assassin4": { tdpRating: 260, kind: "air" },
+  "cooler-hyper622": { tdpRating: 260, kind: "air" },
+
+  // --- 120 mm AIO ---
+  "cooler-gl120": { tdpRating: 150, kind: "aio", radiator: 120 },
+  "cooler-tt120": { tdpRating: 150, kind: "aio", radiator: 120 },
+
+  // --- 240 mm AIO ---
+  "cooler-lt240": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-le520": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-lt520": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-ml240-core": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-aura-gl240": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-prime-lc240": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-mag240": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-wl240ft": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-hl240": { tdpRating: 250, kind: "aio", radiator: 240 },
+
+  // --- 360 mm AIO ---
+  "cooler-lt360": { tdpRating: 320, kind: "aio", radiator: 360 },
+  "cooler-lt720": { tdpRating: 320, kind: "aio", radiator: 360 },
+  "cooler-lq360": { tdpRating: 320, kind: "aio", radiator: 360 },
+  "cooler-wl360ft": { tdpRating: 320, kind: "aio", radiator: 360 },
+  "cooler-proart360": { tdpRating: 320, kind: "aio", radiator: 360 },
+  "cooler-ml360": { tdpRating: 320, kind: "aio", radiator: 360 },
+  "cooler-kraken": { tdpRating: 320, kind: "aio", radiator: 360 },
+};
+
 /* ------------------------------------------------------------- accessors */
+
+export function coolerBench(productId: string): CoolerBenchmark | null {
+  return COOLER_BENCH[productId] ?? null;
+}
 
 export function cpuBench(productId: string): CpuBenchmark | null {
   return CPU_BENCH[productId] ?? null;

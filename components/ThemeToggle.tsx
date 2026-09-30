@@ -83,7 +83,7 @@ export default function ThemeToggle() {
       onClick={toggle}
       title={label}
       aria-label={label}
-      className="p-2 rounded-lg border border-white/15 text-slate-200 hover:bg-white/10 hover:border-white/25 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
+      className="p-2 rounded-lg border border-white/15 text-slate-200 hover:bg-white/10 hover:border-white/25 hover:text-white transition-colors focus-visible:ring-2 focus-visible:ring-[#2c87c3] min-h-[40px] min-w-[40px] inline-flex items-center justify-center"
     >
       {/* Sun (light mode target) / moon (dark mode target) — both kept in the
           DOM and swapped with CSS so there is no hydration mismatch. */}

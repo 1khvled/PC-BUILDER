@@ -8,6 +8,7 @@ import ThemeToggle from "./ThemeToggle";
 import LocaleSwitcher from "./LocaleSwitcher";
 import { useI18n } from "@/lib/i18n/client";
 import { categoryLabel } from "@/lib/i18n/categories";
+import { formatPrice, localizedHref, stripLocalePrefix } from "@/lib/i18n/config";
 
 interface ProductResult {
   id: string;
@@ -140,7 +141,7 @@ export default function Header() {
   const router = useRouter();
   // The header is rendered by the ROOT layout, i.e. outside the /en provider, so
   // useI18n() resolves the locale from the pre-paint `data-locale` attribute that
-  // app/en/layout.tsx writes. Server HTML stays French (matching the root
+  // app/fr/layout.tsx writes. Server HTML stays French (matching the root
   // <html lang>), then the chrome swaps to English right after mount.
   const { locale, t } = useI18n();
 
@@ -201,6 +202,17 @@ export default function Header() {
       /* ignore */
     }
   };
+
+  // The header is rendered by the root layout, so it has no locale prop: the
+  // locale comes from `data-locale` (see useI18n). Every internal link therefore
+  // has to go through `href()` for the same reason — the search used to push
+  // "/product/<id>" literally, which dropped a French visitor on the English
+  // twin of the page they searched for.
+  const href = (path: string) => localizedHref(path, locale);
+  // Active-state helpers that ignore the locale prefix, so /fr/builder lights up
+  // the same tab as /builder did.
+  const isActive = (path: string) => stripLocalePrefix(pathname || "/") === stripLocalePrefix(path);
+  const isSection = (path: string) => stripLocalePrefix(pathname || "/").startsWith(path);
 
 // In-memory instant search cache (0ms keystroke responses)
 const headerSearchCache = new Map<string, ProductResult[]>();
@@ -272,6 +284,9 @@ const headerSearchCache = new Map<string, ProductResult[]>();
       if (e.key === "Escape") {
         setCatDropdownOpen(false);
         setIsOpen(false);
+        // The drawer is a disclosure, not a modal: it has to close on Escape too,
+        // otherwise a keyboard user is left inside it with no way out.
+        setMobileMenuOpen(false);
       }
       // "/" focuses search from anywhere, the convention on shopping and docs
       // sites. Skipped while typing so it still types a literal slash.
@@ -334,7 +349,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
       e.preventDefault();
       const selected = results[selectedIndex];
       if (selected) {
-        router.push(`/product/${selected.id}`);
+        router.push(href(`/product/${selected.id}`));
         setIsOpen(false);
         setQuery("");
       }
@@ -344,13 +359,13 @@ const headerSearchCache = new Map<string, ProductResult[]>();
   };
 
   const selectProduct = (id: string) => {
-    router.push(`/product/${id}`);
+    router.push(href(`/product/${id}`));
     setIsOpen(false);
     setQuery("");
   };
 
   const navLinkClass = (active: boolean) =>
-    `relative px-3.5 py-2 rounded-lg transition-colors flex items-center gap-1.5 ${
+    `relative px-3.5 py-2.5 rounded-lg transition-colors flex items-center gap-1.5 min-h-[40px] ${
       active
         ? "text-[#2c87c3] font-bold bg-blue-50"
         : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
@@ -429,7 +444,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                     setIsOpen(false);
                   }}
                   aria-label={t("search.clear")}
-                  className="absolute right-3 text-slate-400 hover:text-slate-600 p-0.5 rounded-full"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-2 rounded-full"
                 >
                   ✕
                 </button>
@@ -438,7 +453,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
 
             {/* Search Dropdown Results */}
             {isOpen && (
-              <div id="dz-search-results" role="listbox" aria-label="Suggestions de composants" className="absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200/80 rounded-2xl max-h-96 overflow-y-auto z-50 divide-y divide-slate-100 shadow-dropdown animate-modal-pop">
+              <div id="dz-search-results" role="listbox" aria-label={t("common.products")} className="absolute left-0 right-0 top-full mt-2 bg-white border border-slate-200/80 rounded-2xl max-h-96 overflow-y-auto z-50 divide-y divide-slate-100 shadow-dropdown animate-modal-pop">
                 {results.length > 0 ? (
                   <>
                     <div className="px-4 py-2.5 bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 flex justify-between items-center rounded-t-2xl">
@@ -466,7 +481,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                           <div className="text-xs text-slate-500 mt-0.5">
                             {p.best ? (
                               <span>
-                                dès <b className="text-emerald-700 font-semibold">{p.best.priceDa.toLocaleString("fr-DZ")} DA</b> chez {p.best.store} ({p.best.wilaya})
+                                {t("common.from")} <b className="text-emerald-700 font-semibold">{formatPrice(p.best.priceDa, locale)}</b> {t("common.atStore", { store: p.best.store })} ({p.best.wilaya})
                               </span>
                             ) : (
                               <span className="text-slate-400 italic">{t("search.viewProduct")}</span>
@@ -506,7 +521,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 value={wilaya}
                 onChange={(e) => handleWilayaChange(e.target.value)}
                 aria-label={t("header.wilayaLabel")}
-                className="border border-white/15 rounded-full pl-8 pr-8 py-1.5 text-xs bg-white/10 hover:bg-white/15 text-slate-100 font-medium outline-none cursor-pointer appearance-none transition-colors"
+                className="border border-white/15 rounded-full pl-8 pr-8 py-1.5 text-xs bg-white/10 hover:bg-white/15 text-slate-100 font-medium outline-none cursor-pointer appearance-none transition-colors min-h-[32px]"
               >
                 {wilayas.map((w) => (
                   <option key={w} value={w} className="text-slate-900">
@@ -525,8 +540,10 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             {/* Mobile hamburger menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg border border-white/15 text-slate-200 hover:bg-white/10 transition-colors"
+              className="md:hidden p-2 rounded-lg border border-white/15 text-slate-200 hover:bg-white/10 transition-colors min-h-[40px] min-w-[40px] inline-flex items-center justify-center"
               aria-label={t("header.menu")}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="dz-mobile-drawer"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {mobileMenuOpen ? (
@@ -541,18 +558,18 @@ const headerSearchCache = new Map<string, ProductResult[]>();
       </div>
 
       {/* Sub-Navigation Bar (PCPartPicker signature 2nd tier menu) */}
-      <div className="border-b border-slate-200/80 bg-white relative z-30 shadow-sm">
+      <div className="hidden sm:block border-b border-slate-200/80 bg-white relative z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-600">
           {/* NOTE: deliberately no overflow-x-auto here. A non-visible
               overflow-x forces overflow-y to auto as well, which turns this nav
               into a ~40px-tall clip box; the "Produits" panel is 421px and was
               being cut off entirely (it opened, but nothing was ever painted).
               Links wrap onto a second row on narrow screens instead. */}
-          <nav aria-label="Navigation principale" className="flex flex-wrap items-center gap-1 sm:gap-1.5 py-1.5 -mx-4 px-4 sm:mx-0 sm:px-0 touch-manipulation">
+          <nav aria-label={t("nav.main")} className="flex flex-wrap items-center gap-1 sm:gap-1.5 py-1.5 -mx-4 px-4 sm:mx-0 sm:px-0 touch-manipulation">
             <Link
-              href="/builder"
-              aria-current={pathname === "/builder" ? "page" : undefined}
-              className={navLinkClass(pathname === "/builder")}
+              href={href("/builder")}
+              aria-current={isActive("/builder") ? "page" : undefined}
+              className={navLinkClass(isActive("/builder"))}
             >
               <svg className="w-4 h-4 text-[#2c87c3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="4" y="4" width="16" height="16" rx="2" />
@@ -587,7 +604,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 aria-expanded={catDropdownOpen}
                 aria-haspopup="menu"
                 aria-controls="dz-cat-menu"
-                className={navLinkClass(pathname.startsWith("/category"))}
+                className={navLinkClass(isSection("/category"))}
               >
                 <span>{t("header.products")}</span>
                 <span className={`text-[10px] text-slate-400 transition-transform duration-200 ${catDropdownOpen ? "rotate-180" : ""}`}>▾</span>
@@ -608,7 +625,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                         <Link
                           key={cat.slug}
                           role="menuitem"
-                          href={`/category/${cat.slug}`}
+                          href={href(`/category/${cat.slug}`)}
                           onClick={() => setCatDropdownOpen(false)}
                           className="flex items-center gap-3 px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-[#2c87c3] font-medium transition-colors group/item"
                         >
@@ -626,26 +643,26 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             </div>
 
             <Link
-              href="/prebuilds"
-              aria-current={pathname.startsWith("/prebuilds") ? "page" : undefined}
-              className={navLinkClass(pathname.startsWith("/prebuilds"))}
+              href={href("/prebuilds")}
+              aria-current={isSection("/prebuilds") ? "page" : undefined}
+              className={navLinkClass(isSection("/prebuilds"))}
             >
               <span>{t("common.prebuilds")}</span>
               <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 ml-1">{t("nav.new")}</span>
             </Link>
 
             <Link
-              href="/guides"
-              aria-current={pathname.startsWith("/guides") ? "page" : undefined}
-              className={navLinkClass(pathname.startsWith("/guides"))}
+              href={href("/guides")}
+              aria-current={isSection("/guides") ? "page" : undefined}
+              className={navLinkClass(isSection("/guides"))}
             >
               {t("nav.buyingGuides")}
             </Link>
 
             <Link
-              href="/deals"
-              aria-current={pathname.startsWith("/deals") ? "page" : undefined}
-              className={navLinkClass(pathname.startsWith("/deals"))}
+              href={href("/deals")}
+              aria-current={isSection("/deals") ? "page" : undefined}
+              className={navLinkClass(isSection("/deals"))}
             >
               {t("common.deals")}
             </Link>
@@ -661,63 +678,95 @@ const headerSearchCache = new Map<string, ProductResult[]>();
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer
+
+          Reached only below `sm`, where the sub-nav bar is hidden. Everything in
+          it is a real <Link> (the previous version used click-handling <div>s,
+          so none of it was reachable by keyboard) and every tile is at least a
+          44px touch target, because this is the primary navigation on a phone. */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-white/10 bg-[#11111c] px-4 py-4 space-y-4 animate-backdrop-fade">
+        <div
+          id="dz-mobile-drawer"
+          className="md:hidden border-b border-white/10 bg-[#11111c] px-4 py-4 space-y-4 animate-backdrop-fade"
+        >
           {/* Mobile Search input */}
-          <div className="relative">
+          <div className="relative" role="search">
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Rechercher un composant…"
+              aria-label={t("search.aria")}
+              placeholder={t("search.placeholder")}
               className="w-full bg-white border border-white/20 rounded-full px-4 py-2.5 text-sm outline-none focus:border-[#2c87c3] focus:shadow-[0_0_0_3px_rgba(44,135,195,0.25)]"
             />
             {query && (
               <div className="mt-2 bg-white border border-slate-200 rounded-2xl p-2 max-h-52 overflow-y-auto divide-y divide-slate-100 shadow-dropdown">
-                {results.map((p) => (
-                  <div
-                    key={p.id}
-                    onClick={() => {
-                      selectProduct(p.id);
-                      setMobileMenuOpen(false);
-                    }}
-                    className="py-2 text-xs font-semibold text-slate-800 flex justify-between items-center cursor-pointer hover:bg-slate-50 px-2 rounded-lg"
-                  >
-                    <span>{p.brand} {p.model}</span>
-                    <span className="text-emerald-700 tabular-nums font-bold">{p.best ? `${p.best.priceDa.toLocaleString("fr-DZ")} DA` : ""}</span>
+                {results.length === 0 ? (
+                  <div className="px-2 py-3 text-center text-xs text-slate-500">
+                    <div className="font-semibold text-slate-700">{t("search.empty", { query })}</div>
+                    <div className="mt-0.5 text-[11px] text-slate-400">{t("search.emptyHint")}</div>
                   </div>
-                ))}
+                ) : (
+                  results.map((p) => (
+                    <Link
+                      key={p.id}
+                      href={href(`/product/${p.id}`)}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="py-2.5 text-xs font-semibold text-slate-800 flex justify-between items-center gap-2 hover:bg-slate-50 px-2 rounded-lg min-h-[44px] focus-visible:bg-slate-100"
+                    >
+                      <span className="truncate">{p.brand} {p.model}</span>
+                      <span className="text-emerald-700 tabular-nums font-bold shrink-0">
+                        {p.best ? formatPrice(p.best.priceDa, locale) : ""}
+                      </span>
+                    </Link>
+                  ))
+                )}
               </div>
             )}
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-semibold">
             <Link
-              href="/builder"
+              href={href("/builder")}
+              aria-current={isSection("/builder") ? "page" : undefined}
               onClick={() => setMobileMenuOpen(false)}
-              className="btn-blue p-2.5 text-center text-xs"
+              className="btn-blue py-3 px-2 text-center text-xs min-h-[44px] flex items-center justify-center"
             >
               {t("common.builder")}
             </Link>
             <Link
-              href="/prebuilds"
+              href={href("/prebuilds")}
+              aria-current={isSection("/prebuilds") ? "page" : undefined}
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/40 text-emerald-300 text-center transition-colors border border-emerald-500/30 font-bold"
+              className={`py-3 px-2 rounded-lg text-center transition-colors border font-bold min-h-[44px] flex items-center justify-center ${
+                isSection("/prebuilds")
+                  ? "bg-emerald-600/40 text-white border-emerald-400/50"
+                  : "bg-emerald-600/30 hover:bg-emerald-600/40 text-emerald-300 border-emerald-500/30"
+              }`}
             >
               {t("common.prebuilds")}
             </Link>
             <Link
-              href="/guides"
+              href={href("/guides")}
+              aria-current={isSection("/guides") ? "page" : undefined}
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-slate-200 text-center transition-colors border border-white/10"
+              className={`py-3 px-2 rounded-lg text-center transition-colors border min-h-[44px] flex items-center justify-center ${
+                isSection("/guides")
+                  ? "bg-white/20 text-white border-white/25"
+                  : "bg-white/10 hover:bg-white/15 text-slate-200 border-white/10"
+              }`}
             >
               {t("nav.buyingGuides")}
             </Link>
             <Link
-              href="/deals"
+              href={href("/deals")}
+              aria-current={isSection("/deals") ? "page" : undefined}
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-slate-200 text-center transition-colors border border-white/10"
+              className={`py-3 px-2 rounded-lg text-center transition-colors border min-h-[44px] flex items-center justify-center ${
+                isSection("/deals")
+                  ? "bg-white/20 text-white border-white/25"
+                  : "bg-white/10 hover:bg-white/15 text-slate-200 border-white/10"
+              }`}
             >
               {t("common.deals")}
             </Link>
@@ -726,31 +775,34 @@ const headerSearchCache = new Map<string, ProductResult[]>();
           {/* Mobile All Categories Grid */}
           <div className="pt-3 border-t border-white/10">
             <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2.5">
-              Composants PC
+              {t("nav.componentsPc")}
             </div>
             <div className="grid grid-cols-3 gap-1.5 text-[11px] font-medium">
               {CATEGORIES.map((cat) => (
                 <Link
                   key={cat.slug}
-                  href={`/category/${cat.slug}`}
+                  href={href(`/category/${cat.slug}`)}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="px-2 py-2 rounded-lg bg-white/[0.08] hover:bg-[#2c87c3] text-slate-300 hover:text-white transition-colors truncate text-center border border-white/10 flex flex-col items-center gap-1.5"
+                  className="px-2 py-2.5 rounded-lg bg-white/[0.08] hover:bg-[#2c87c3] text-slate-300 hover:text-white transition-colors text-center border border-white/10 flex flex-col items-center justify-center gap-1.5 min-h-[60px]"
                 >
-                  <span className="w-5 h-5 text-slate-400 flex items-center justify-center">
+                  <span className="w-5 h-5 text-slate-400 flex items-center justify-center" aria-hidden="true">
                     <CatIcon slug={cat.slug} className="w-4 h-4" />
                   </span>
-                  {cat.label.replace(/\s*\(.*\)/, "")}
+                  <span className="leading-tight">{categoryLabel(cat.slug, t)}</span>
                 </Link>
               ))}
             </div>
           </div>
 
-          <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs">
-            <label className="text-slate-400 font-medium">Wilaya :</label>
+          <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-3 text-xs">
+            <label htmlFor="dz-drawer-wilaya" className="text-slate-400 font-medium shrink-0">
+              {t("common.wilaya")}
+            </label>
             <select
+              id="dz-drawer-wilaya"
               value={wilaya}
               onChange={(e) => handleWilayaChange(e.target.value)}
-              className="border border-white/15 rounded-lg px-2.5 py-1.5 text-xs bg-white/10 text-slate-200"
+              className="flex-1 min-w-0 border border-white/15 rounded-lg px-2.5 py-2 text-xs bg-white/10 text-slate-200 min-h-[40px]"
             >
               {wilayas.map((w) => (
                 <option key={w} value={w} className="text-slate-900">
@@ -760,8 +812,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             </select>
           </div>
         </div>
-      )}
-      </header>
+      )}      </header>
     </>
   );
 }

@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+const t = makeT("fr");
+
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { CATEGORIES, PRODUCTS, bestOffer, isRuptured, productImage, type Product } from "@/lib/data/products";
 import { useCatalog } from "@/lib/data/use-offers";
 import { checkCompat } from "@/lib/compat/check";
+import { makeT } from "@/lib/i18n/runtime";
 import BuildPerformanceCard from "@/components/BuildPerformanceCard";
 import { recommendedPsu } from "@/lib/compat/watt";
 import Thumb from "@/components/Thumb";
@@ -236,13 +239,50 @@ export default function BuilderPage() {
   const [activeModalCat, setActiveModalCat] = useState<string | null>(null);
   const [modalSearch, setModalSearch] = useState("");
 
-  // Fermer le modal avec Échap pour une navigation clavier claire
+  // Vrai dialogue modal : Échap ferme, Tab reste piégé à l'intérieur, et le
+  // focus revient sur le bouton d'origine. Il déclarait aria-modal="true" sans
+  // rien de tout cela, donc au clavier on sortait dans la page derriere et la
+  // fermeture laissait le focus perdu.
+  const modalRef = useRef<HTMLDivElement>(null);
+  const lastTriggerRef = useRef<HTMLElement | null>(null);
+
+  const openModal = (cat: string, trigger?: HTMLElement) => {
+    lastTriggerRef.current = trigger ?? null;
+    setActiveModalCat(cat);
+  };
+
+  const closeModal = () => {
+    setActiveModalCat(null);
+    setModalSearch("");
+    lastTriggerRef.current?.focus?.();
+    lastTriggerRef.current = null;
+  };
+
   useEffect(() => {
     if (!activeModalCat) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setActiveModalCat(null);
-        setModalSearch("");
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const root = modalRef.current;
+      if (!root) return;
+      const focusables = Array.from(
+        root.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((el) => el.offsetParent !== null || el === document.activeElement);
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
       }
     };
     document.addEventListener("keydown", onKey);
@@ -254,7 +294,7 @@ export default function BuilderPage() {
   useEffect(() => {
     try {
       const s = serializePicks(picks);
-      window.history.replaceState(null, "", s ? `/builder?p=${encodeURIComponent(s)}` : "/fr/builder");
+      window.history.replaceState(null, "", s ? `/fr/builder?p=${encodeURIComponent(s)}` : "/fr/builder");
       window.localStorage.setItem("dz_builder_picks", s);
     } catch {
       /* noop */
@@ -336,8 +376,7 @@ export default function BuilderPage() {
 
   const handleSelectPart = (category: string, productId: string) => {
     setPicks((prev) => ({ ...prev, [category]: productId }));
-    setActiveModalCat(null);
-    setModalSearch("");
+    closeModal();
     triggerFlash(category);
     showToast(`Composant mis à jour.`);
   };
@@ -474,7 +513,7 @@ export default function BuilderPage() {
               {result.ok ? "✓" : "!"}
             </span>
             <span>
-              {result.ok
+              {result.warnings.length === 0
                 ? "Compatibilité : Aucun problème ni incompatibilité détecté."
                 : `Incompatibilités détectées (${result.warnings.length} avertissement${result.warnings.length > 1 ? "s" : ""})`}
             </span>
@@ -488,9 +527,23 @@ export default function BuilderPage() {
         </div>
 
         {result.warnings.length > 0 && (
-          <ul className="mt-3 text-xs bg-red-100/60 border border-red-200 rounded-lg p-3 list-disc pl-6 space-y-1 text-red-900 font-medium print:bg-white">
-            {result.warnings.map((w, i) => (
-              <li key={i}>{w}</li>
+          <ul className="mt-3 space-y-1.5 text-xs font-medium print:bg-white">
+            {result.warnings.map((w) => (
+              <li
+                key={w.key}
+                className={
+                  w.severity === "block"
+                    ? "flex gap-2 rounded-lg border border-red-200 bg-red-100/60 p-2.5 text-red-900"
+                    : w.severity === "warn"
+                      ? "flex gap-2 rounded-lg border border-amber-200 bg-amber-100/60 p-2.5 text-amber-900"
+                      : "flex gap-2 rounded-lg border border-slate-200 bg-slate-100/70 p-2.5 text-slate-700"
+                }
+              >
+                <span aria-hidden="true" className="shrink-0 font-black">
+                  {w.severity === "block" ? "✕" : w.severity === "warn" ? "!" : "i"}
+                </span>
+                <span>{t(w.key, w.vars ?? {})}</span>
+              </li>
             ))}
           </ul>
         )}
@@ -600,7 +653,7 @@ export default function BuilderPage() {
                           <span className="text-slate-300 font-normal">—</span>
                         )}
                         <button
-                          onClick={() => setActiveModalCat(cat.slug)}
+                          onClick={(e) => openModal(cat.slug, e.currentTarget)}
                           className="text-xs text-[#2c87c3] hover:underline font-bold mt-0.5 block"
                         >
                           Changer
@@ -614,7 +667,7 @@ export default function BuilderPage() {
                       Aucun composant sélectionné
                     </span>
                     <button
-                      onClick={() => setActiveModalCat(cat.slug)}
+                      onClick={(e) => openModal(cat.slug, e.currentTarget)}
                       className="btn-blue px-4 py-2 text-xs font-bold min-h-[38px] touch-manipulation"
                     >
                       + Choisir
@@ -726,7 +779,7 @@ export default function BuilderPage() {
                         </div>
                       ) : (
                         <button
-                          onClick={() => setActiveModalCat(cat.slug)}
+                          onClick={(e) => openModal(cat.slug, e.currentTarget)}
                           className="btn-blue px-3.5 py-1.5 text-xs print:hidden"
                         >
                           + Choisir
@@ -739,7 +792,7 @@ export default function BuilderPage() {
                       {product ? (
                         <div className="flex items-center justify-end gap-1.5">
                           <button
-                            onClick={() => setActiveModalCat(cat.slug)}
+                            onClick={(e) => openModal(cat.slug, e.currentTarget)}
                             className="px-2.5 py-1.5 sm:py-1 text-[11px] font-semibold text-slate-600 hover:text-[#2c87c3] hover:bg-blue-50 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors btn-press"
                             title="Changer de composant"
                           >
@@ -756,7 +809,7 @@ export default function BuilderPage() {
                         </div>
                       ) : (
                         <button
-                          onClick={() => setActiveModalCat(cat.slug)}
+                          onClick={(e) => openModal(cat.slug, e.currentTarget)}
                           className="text-[#2c87c3] hover:text-[#1e5c85] hover:underline underline-offset-4 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] rounded btn-press"
                         >
                           + Ajouter
@@ -827,8 +880,8 @@ export default function BuilderPage() {
 
       {/* Component Picker Modal */}
       {activeModalCat && (
-        <div className="fixed inset-0 bg-slate-950/75 flex items-center justify-center p-4 z-50 print:hidden animate-backdrop-fade" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
-          <div role="dialog" aria-modal="true" aria-label={`Choisir un composant : ${CATEGORIES.find((c) => c.slug === activeModalCat)?.label ?? activeModalCat}`} className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-pop border border-slate-200/80 overflow-hidden animate-modal-pop" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-slate-950/75 flex items-center justify-center p-4 z-50 print:hidden animate-backdrop-fade" onClick={closeModal}>
+          <div ref={modalRef} role="dialog" aria-modal="true" aria-label={`Choisir un composant : ${CATEGORIES.find((c) => c.slug === activeModalCat)?.label ?? activeModalCat}`} className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-pop border border-slate-200/80 overflow-hidden animate-modal-pop" onClick={(e) => e.stopPropagation()}>
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-gradient-to-b from-slate-50 to-white">
               <div className="flex items-center gap-3">
@@ -845,13 +898,11 @@ export default function BuilderPage() {
                 </div>
               </div>
               <button
-                onClick={() => {
-                  setActiveModalCat(null);
-                  setModalSearch("");
-                }}
-                className="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold btn-press transition-colors"
+                onClick={closeModal}
+                aria-label="Changer de composant"
+                className="w-10 h-10 shrink-0 rounded-lg hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold btn-press transition-colors"
               >
-                ✕
+                <span aria-hidden="true">✕</span>
               </button>
             </div>
 
@@ -862,7 +913,7 @@ export default function BuilderPage() {
               </span>
               <Link
                 href={`/fr/category/${activeModalCat}`}
-                onClick={() => setActiveModalCat(null)}
+                onClick={closeModal}
                 className="text-[#2c87c3] hover:underline font-semibold flex items-center gap-1"
               >
                 <span>Explorer tout le catalogue avec filtres</span>

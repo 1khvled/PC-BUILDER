@@ -19,13 +19,13 @@ export async function GET(req: Request) {
     "",
     "## Categories",
     ...["cpu", "cooler", "motherboard", "ram", "ssd", "gpu", "case", "psu", "monitor"].map(
-      (s) => `- ${s}: ${base}/en/category/${s}`,
+      (s) => `- ${s}: ${base}/category/${s}`,
     ),
     "",
   ];
 
   for (const p of products) {
-    lines.push(`## ${p.brand} ${p.model} [${p.category}] - ${base}/en/product/${p.id}`);
+    lines.push(`## ${p.brand} ${p.model} [${p.category}] - ${base}/product/${p.id}`);
     lines.push(`Specs: ${Object.entries(p.specs).map(([k, v]) => `${k}=${String(v)}`).join(", ")}`);
     const pOffers = offers.filter((o) => o.productId === p.id).sort((a, b) => a.priceDa - b.priceDa);
     if (!pOffers.length) lines.push("No indexed offer.");
@@ -41,14 +41,14 @@ export async function GET(req: Request) {
   if (guides.length) {
     lines.push("## Buying guides");
     for (const g of guides) {
-      lines.push(`- ${g.title}: ${base}/en/guides/${g.slug} (${g.readMin} min read)`);
+      lines.push(`- ${g.title}: ${base}/guides/${g.slug} (${g.readMin} min read)`);
     }
     lines.push("");
   }
 
   lines.push(
-    `Summary index: ${base}/en/llms.txt`,
-    `French full dataset: ${base}/llms-full.txt`,
+    `Summary index: ${base}/llms.txt`,
+    `French full dataset: ${base}/fr/llms-full.txt`,
   );
 
   return new Response(lines.join("\n"), {

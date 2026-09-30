@@ -9,6 +9,7 @@ import BackToTop from "@/components/BackToTop";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import { I18nProvider } from "@/lib/i18n/client";
 import { HTML_LANG, OG_LOCALE, SITE_URL, languageAlternates } from "@/lib/i18n/config";
+import { safeJsonLd } from "@/lib/seo/jsonld";
 
 // Inter everywhere: one neutral face, tabular-friendly figures for DA prices.
 const sans = Inter({
@@ -146,7 +147,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <script
               key={i}
               type="application/ld+json"
-              dangerouslySetInnerHTML={{ __html: JSON.stringify(node) }}
+              dangerouslySetInnerHTML={{ __html: safeJsonLd(node) }}
             />
           ))}
           <Suspense fallback={null}>

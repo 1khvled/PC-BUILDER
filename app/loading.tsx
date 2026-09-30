@@ -2,7 +2,7 @@ export default function EnglishLoading() {
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-4">
       {/* Breadcrumb Skeleton */}
-      <div className="dz-skeleton rounded-md h-4 w-56" />
+      <div className="dz-skeleton rounded-md h-4 w-56" aria-hidden="true" />
 
       {/* Title Skeleton */}
       <div className="panel p-6 space-y-3.5">
@@ -25,8 +25,8 @@ export default function EnglishLoading() {
         ))}
       </div>
 
-      <div className="flex items-center gap-2 text-xs text-slate-400">
-        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+      <div className="flex items-center gap-2 text-xs text-slate-400" role="status" aria-live="polite">
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
         <span>Loading the page…</span>
       </div>
     </main>

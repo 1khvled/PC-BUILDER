@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     title: "DZ PartPicker — Lowest PC part prices in Algeria (DA)",
     description:
       "CPU, GPU, RAM, SSD, motherboards and monitors compared in Algerian Dinars (DA) across 180+ Algerian stores. Delivery to all 58 wilayas.",
-    url: "/en",
+    url: "/",
     siteName: "DZ PartPicker",
     images: [{ url: "/brand/og-hero.webp", width: 1200, height: 630, alt: "DZ PartPicker — PC price comparison Algeria" }],
   },
@@ -59,13 +59,13 @@ function homeJsonLd(liveCount: number) {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "DZ PartPicker",
-    url: `${SITE_URL}/en`,
+    url: `${SITE_URL}`,
     inLanguage: "en-DZ",
     description:
       "Independent comparison of PC part prices in Algeria, in Algerian Dinars (DA).",
     potentialAction: {
       "@type": "SearchAction",
-      target: `${SITE_URL}/en/?q={search_term_string}`,
+      target: `${SITE_URL}/?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
     mainEntity: {
@@ -144,12 +144,12 @@ export default async function EnglishHome() {
                 {t("home.sub")}
               </p>
               <div className="flex flex-wrap items-center gap-3 mt-7">
-                <Link href="//builder" className="btn-blue px-6 py-3 text-sm">
+                <Link href="/builder" className="btn-blue px-6 py-3 text-sm">
                   {t("home.ctaBuilder")}
                   <span aria-hidden="true">→</span>
                 </Link>
                 <Link
-                  href="//deals"
+                  href="/deals"
                   className="px-6 py-3 rounded-[10px] text-sm font-bold border border-white/20 text-white hover:bg-white/10 transition-colors"
                 >
                   {t("home.ctaDeals")}
@@ -157,7 +157,7 @@ export default async function EnglishHome() {
               </div>
             </div>
 
-            <LocaleSwitcher pathname="/en" tone="dark" />
+            <LocaleSwitcher pathname="/" tone="dark" />
           </div>
 
           {/* Stats chips */}
@@ -190,7 +190,7 @@ export default async function EnglishHome() {
               <span className="w-1.5 h-1.5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
               {t("home.lowestPrices")}
             </span>
-            <Link href="//deals" className="pcpp-link font-bold normal-case tracking-normal">
+            <Link href="/deals" className="pcpp-link font-bold normal-case tracking-normal">
               {t("home.allDeals")}
             </Link>
           </div>
@@ -208,7 +208,7 @@ export default async function EnglishHome() {
                     <Thumb src={productImage(p)} alt={p.model} size={44} />
                   </td>
                   <td className="px-2 py-2.5">
-                    <Link href={`//product/${p.id}`} className="pcpp-link font-bold text-sm">
+                    <Link href={`/product/${p.id}`} className="pcpp-link font-bold text-sm">
                       {p.brand} {p.model}
                     </Link>
                     <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5 flex-wrap">
@@ -276,7 +276,7 @@ export default async function EnglishHome() {
               return (
                 <Link
                   key={c.slug}
-                  href={`//category/${c.slug}`}
+                  href={`/category/${c.slug}`}
                   className="panel p-4 flex items-center gap-4 group hover:border-[#2c87c3]/60 hover:shadow-card-hover transition-all"
                 >
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-b from-[#3a94d2] to-[#2c87c3] text-white flex items-center justify-center shrink-0 shadow-[0_4px_12px_-4px_rgba(44,135,195,0.5)] group-hover:scale-105 transition-transform">
@@ -312,13 +312,13 @@ export default async function EnglishHome() {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
                 {t("home.guidesTitle")}
               </span>
-              <Link href="//guides" className="pcpp-link font-bold normal-case tracking-normal">
+              <Link href="/guides" className="pcpp-link font-bold normal-case tracking-normal">
                 {t("home.allGuides")}
               </Link>
             </div>
             <div className="divide-y divide-slate-100">
               {popularGuides.map((g) => (
-                <Link key={g.slug} href={`//guides/${g.slug}`} className="block px-4 py-3.5 hover:bg-blue-50/40 transition-colors group">
+                <Link key={g.slug} href={`/guides/${g.slug}`} className="block px-4 py-3.5 hover:bg-blue-50/40 transition-colors group">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-bold text-sm pcpp-link">{g.title}</span>
                     <span className="text-[11px] text-slate-400 shrink-0 bg-slate-100 px-2 py-0.5 rounded-full">⏱ {t("common.minRead", { min: g.readMin })}</span>
@@ -344,7 +344,7 @@ export default async function EnglishHome() {
                 {t("home.builderText")}
               </p>
             </div>
-            <Link href="//builder" className="relative btn-blue px-5 py-2.5 text-sm self-start mt-5">
+            <Link href="/builder" className="relative btn-blue px-5 py-2.5 text-sm self-start mt-5">
               {t("home.builderCta")}
               <span aria-hidden="true">→</span>
             </Link>

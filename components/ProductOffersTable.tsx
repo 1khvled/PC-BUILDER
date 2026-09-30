@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { isRuptured, type Offer } from "@/lib/data/products";
 import { DEFAULT_LOCALE, formatNumber, formatPrice, type Locale } from "@/lib/i18n/config";
-import { makeT, stockLabel } from "@/lib/i18n/runtime";
+import { makeT, stockLabel, type TKey } from "@/lib/i18n/runtime";
 import Thumb from "./Thumb";
 import StoreLogo from "./StoreLogo";
 import EmptyState from "./EmptyState";
@@ -46,7 +46,15 @@ export default function ProductOffersTable({ offers, locale = DEFAULT_LOCALE }: 
     return Array.from(s).sort();
   }, [offers]);
 
-  const handleSort = (field: SortField) => {
+  const SORT_OPTIONS: { value: SortField; labelKey: TKey }[] = [
+  { value: "price", labelKey: "offers.thPrice" },
+  { value: "store", labelKey: "offers.thStore" },
+  { value: "wilaya", labelKey: "offers.thWilaya" },
+  { value: "condition", labelKey: "offers.thCondition" },
+  { value: "stock", labelKey: "offers.thAvailability" },
+];
+
+const handleSort = (field: SortField) => {
     if (sortField === field) {
       setSortDir(sortDir === "asc" ? "desc" : "asc");
     } else {
@@ -121,14 +129,18 @@ export default function ProductOffersTable({ offers, locale = DEFAULT_LOCALE }: 
       {/* Table Header Controls */}
       <div className="p-4 border-b border-slate-200 bg-slate-50/80 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-600 mr-1">
+          <span
+            className="text-xs font-bold uppercase tracking-wider text-slate-600 mr-1"
+            role="status"
+            aria-live="polite"
+          >
             {t("offers.title", { count: filteredAndSortedOffers.length })}
           </span>
           <div className="inline-flex rounded border border-slate-200 bg-white p-0.5 text-xs" role="group" aria-label={t("offers.filterByState")}>
             <button
               onClick={() => setConditionFilter("all")}
               aria-pressed={conditionFilter === "all"}
-              className={`px-3 py-1.5 rounded font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
+              className={`px-3 py-2 min-h-[40px] inline-flex items-center rounded font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
                 conditionFilter === "all" ? "bg-slate-900 text-white" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
@@ -137,7 +149,7 @@ export default function ProductOffersTable({ offers, locale = DEFAULT_LOCALE }: 
             <button
               onClick={() => setConditionFilter("new")}
               aria-pressed={conditionFilter === "new"}
-              className={`px-3 py-1.5 rounded font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 ${
+              className={`px-3 py-2 min-h-[40px] inline-flex items-center rounded font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 ${
                 conditionFilter === "new" ? "bg-emerald-600 text-white" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
@@ -147,7 +159,7 @@ export default function ProductOffersTable({ offers, locale = DEFAULT_LOCALE }: 
               <button
                 onClick={() => setConditionFilter("used")}
                 aria-pressed={conditionFilter === "used"}
-                className={`px-3 py-1.5 rounded font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 ${
+                className={`px-3 py-2 min-h-[40px] inline-flex items-center rounded font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 ${
                   conditionFilter === "used" ? "bg-amber-600 text-white" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
                 }`}
               >
@@ -160,7 +172,7 @@ export default function ProductOffersTable({ offers, locale = DEFAULT_LOCALE }: 
               value={selectedWilaya}
               onChange={(e) => setSelectedWilaya(e.target.value)}
               aria-label={t("offers.filterWilayaAria")}
-              className="border border-slate-200 rounded px-2.5 py-1 bg-white text-slate-700 text-xs font-semibold outline-none cursor-pointer hover:border-slate-300 transition-colors"
+              className="border border-slate-200 rounded-lg px-2.5 py-2 min-h-[40px] bg-white text-slate-700 text-xs font-semibold outline-none cursor-pointer hover:border-slate-300 transition-colors"
             >
               <option value="all">{t("offers.allWilayas", { count: availableWilayas.length })}</option>
               {availableWilayas.map((w) => (
@@ -176,7 +188,7 @@ export default function ProductOffersTable({ offers, locale = DEFAULT_LOCALE }: 
               onClick={() => setHideRuptured((v) => !v)}
               aria-pressed={hideRuptured}
               title={t("offers.hideRupturesTitle")}
-              className={`ml-1 inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-[11px] font-semibold border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
+              className={`ml-1 inline-flex items-center gap-1.5 px-2.5 py-2 min-h-[40px] rounded text-[11px] font-semibold border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
                 hideRuptured ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
               }`}
             >
@@ -194,17 +206,43 @@ export default function ProductOffersTable({ offers, locale = DEFAULT_LOCALE }: 
               <span>{t("common.spread")}: <b>{formatNumber(stats.max - stats.min, locale)} DA</b></span>
             </div>
           )}
-          <div className="relative">
+        {/* Sort. Below `md` the offers render as cards and the sortable
+            <th> headers do not exist, so without this the table order was
+            fixed at "price ascending" on every phone. */}
+        <div className="flex items-center gap-2 md:hidden">
+          <span className="sr-only">{t("category.sortBy")}</span>
+          <select
+            value={sortField}
+            onChange={(e) => handleSort(e.target.value as SortField)}
+            className="border border-slate-200 rounded-lg px-2.5 py-2 min-h-[40px] bg-white text-slate-700 text-xs font-semibold outline-none cursor-pointer"
+          >
+            {SORT_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>
+                {t(o.labelKey)}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={() => setSortDir(sortDir === "asc" ? "desc" : "asc")}
+            aria-label={t("category.sortBy")}
+            className="px-2.5 py-2 min-h-[40px] min-w-[40px] inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 text-xs font-bold"
+          >
+            {sortDir === "asc" ? "\u2191" : "\u2193"}
+          </button>
+        </div>
+
+          <div className="relative w-full sm:w-56">
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("offers.searchPlaceholder")}
               aria-label={t("offers.searchAria")}
-              className="border border-slate-200 rounded pl-8 pr-3 py-2 text-xs bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#2c87c3] focus:ring-2 focus:ring-[#2c87c3]/25 w-48 sm:w-56"
+              className="border border-slate-200 rounded-lg pl-8 pr-3 py-2 min-h-[40px] text-xs bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-[#2c87c3] focus:ring-2 focus:ring-[#2c87c3]/25 w-full sm:w-56"
             />
             <svg
-              className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2 pointer-events-none"
+              className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -284,7 +322,7 @@ export default function ProductOffersTable({ offers, locale = DEFAULT_LOCALE }: 
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={t("common.viewOffer")}
-                      className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2c87c3] hover:bg-[#1e5c85] text-white text-xs font-bold transition-colors touch-manipulation min-h-[36px]"
+                      className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[#2c87c3] hover:bg-[#1e5c85] text-white text-xs font-bold transition-colors touch-manipulation min-h-[44px]"
                     >
                       <span>{t("common.viewOffer")}</span>
                       <span>→</span>
@@ -296,75 +334,93 @@ export default function ProductOffersTable({ offers, locale = DEFAULT_LOCALE }: 
           </div>
 
           {/* Desktop View: Sortable Table */}
-          <div className="hidden md:block overflow-x-auto">
+          <div className="hidden md:block max-h-[70vh] overflow-auto">
             <table className="w-full text-sm min-w-[640px]">
               <caption className="sr-only">{t("offers.caption")}</caption>
-            <thead className="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200 select-none sticky top-0">
+            <thead className="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200 select-none sticky top-0 z-10">
               <tr>
                 <th
                   scope="col"
                   aria-sort={sortField === "store" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                  onClick={() => handleSort("store")}
-                  className="text-left px-4 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors focus-visible:outline-none focus-visible:bg-blue-50"
+                  className="text-left px-4 py-0"
                 >
-                  <div className="flex items-center gap-1.5">
+                  {/* A real <button>, not a click handler on the <th>: the old
+                      markup was reachable by mouse only - no tab stop, no
+                      Enter/Space, and nothing announced as a control. */}
+                  <button
+                    type="button"
+                    onClick={() => handleSort("store")}
+                    className="w-full min-h-[40px] flex items-center gap-1.5 py-2.5 text-left uppercase tracking-wider text-[11px] font-bold hover:text-slate-900 transition-colors rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2c87c3]"
+                  >
                     <span>{t("offers.thStore")}</span>
-                    <span className="text-[10px] text-slate-400">
+                    <span className="text-[10px] text-slate-400" aria-hidden="true">
                       {sortField === "store" ? (sortDir === "asc" ? "▲" : "▼") : "↕"}
                     </span>
-                  </div>
+                  </button>
                 </th>
                 <th
                   scope="col"
                   aria-sort={sortField === "wilaya" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                  onClick={() => handleSort("wilaya")}
-                  className="text-left px-3 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors focus-visible:outline-none focus-visible:bg-blue-50"
+                  className="text-left px-3 py-0"
                 >
-                  <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleSort("wilaya")}
+                    className="w-full min-h-[40px] flex items-center gap-1.5 py-2.5 text-left uppercase tracking-wider text-[11px] font-bold hover:text-slate-900 transition-colors rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2c87c3]"
+                  >
                     <span>{t("offers.thWilaya")}</span>
-                    <span className="text-[10px] text-slate-400">
+                    <span className="text-[10px] text-slate-400" aria-hidden="true">
                       {sortField === "wilaya" ? (sortDir === "asc" ? "▲" : "▼") : "↕"}
                     </span>
-                  </div>
+                  </button>
                 </th>
                 <th
                   scope="col"
                   aria-sort={sortField === "condition" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                  onClick={() => handleSort("condition")}
-                  className="text-center px-3 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors focus-visible:outline-none focus-visible:bg-blue-50"
+                  className="text-center px-3 py-0"
                 >
-                  <div className="flex items-center justify-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleSort("condition")}
+                    className="w-full min-h-[40px] flex items-center justify-center gap-1.5 py-2.5 text-center uppercase tracking-wider text-[11px] font-bold hover:text-slate-900 transition-colors rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2c87c3]"
+                  >
                     <span>{t("offers.thCondition")}</span>
-                    <span className="text-[10px] text-slate-400">
+                    <span className="text-[10px] text-slate-400" aria-hidden="true">
                       {sortField === "condition" ? (sortDir === "asc" ? "▲" : "▼") : "↕"}
                     </span>
-                  </div>
+                  </button>
                 </th>
                 <th
                   scope="col"
                   aria-sort={sortField === "stock" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                  onClick={() => handleSort("stock")}
-                  className="text-left px-3 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors focus-visible:outline-none focus-visible:bg-blue-50"
+                  className="text-left px-3 py-0"
                 >
-                  <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleSort("stock")}
+                    className="w-full min-h-[40px] flex items-center gap-1.5 py-2.5 text-left uppercase tracking-wider text-[11px] font-bold hover:text-slate-900 transition-colors rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2c87c3]"
+                  >
                     <span>{t("offers.thAvailability")}</span>
-                    <span className="text-[10px] text-slate-400">
+                    <span className="text-[10px] text-slate-400" aria-hidden="true">
                       {sortField === "stock" ? (sortDir === "asc" ? "▲" : "▼") : "↕"}
                     </span>
-                  </div>
+                  </button>
                 </th>
                 <th
                   scope="col"
                   aria-sort={sortField === "price" ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
-                  onClick={() => handleSort("price")}
-                  className="text-right px-4 py-3 cursor-pointer hover:text-slate-900 hover:bg-slate-100/70 transition-colors focus-visible:outline-none focus-visible:bg-blue-50"
+                  className="text-right px-4 py-0"
                 >
-                  <div className="flex items-center justify-end gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => handleSort("price")}
+                    className="w-full min-h-[40px] flex items-center justify-end gap-1.5 py-2.5 text-right uppercase tracking-wider text-[11px] font-bold hover:text-slate-900 transition-colors rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2c87c3]"
+                  >
                     <span>{t("offers.thPrice")}</span>
-                    <span className="text-[10px] text-slate-400">
+                    <span className="text-[10px] text-slate-400" aria-hidden="true">
                       {sortField === "price" ? (sortDir === "asc" ? "▲" : "▼") : "↕"}
                     </span>
-                  </div>
+                  </button>
                 </th>
                 <th scope="col" className="text-right px-4 py-3 w-32">{t("offers.thAction")}</th>
               </tr>
@@ -445,7 +501,7 @@ export default function ProductOffersTable({ offers, locale = DEFAULT_LOCALE }: 
                       aria-label={ruptured
                         ? t("offers.viewOutOfStockAria", { store: o.store, price: formatPrice(o.priceDa, locale) })
                         : t("offers.buyAtAria", { store: o.store, price: formatPrice(o.priceDa, locale) })}
-                      className={`inline-flex items-center justify-center px-3.5 py-2 rounded text-white font-bold text-xs transition-colors shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${ruptured
+                      className={`inline-flex items-center justify-center px-3.5 py-2 min-h-[40px] rounded text-white font-bold text-xs transition-colors shadow-sm hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${ruptured
                         ? "bg-red-600 hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500"
                         : "bg-[#2c87c3] hover:bg-[#1e5c85] active:bg-[#153f5b] focus-visible:ring-[#2c87c3]"}`}
                     >

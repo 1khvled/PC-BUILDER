@@ -1,178 +1,1117 @@
 import type { Guide } from "./guides";
-import { GUIDES } from "./guides";
+import { GUIDES as GUIDES_FR } from "./guides";
 import type { Locale } from "@/lib/i18n/config";
 
 /**
  * English edition of the buying-guide editorial content.
  *
- * Same shape as the French `GUIDES` array (same slugs, same `parts` ids, same
- * `readMin`) so both locales share every page template and every price lookup:
- * `/en/guides/[slug]` simply picks the English object and keeps pricing, the
- * recommended-parts table and the builder permalink identical.
+ * Same shape as the French `GUIDES` array - same slugs in the same order, same
+ * `parts` ids, same `readMin` - so both locales share every page template, the
+ * builder permalink and the price lookups. The prose is written as English
+ * rather than translated word-for-word: the arguments are the same, the phrasing
+ * is not.
  */
 export const GUIDES_EN: Guide[] = [
   {
     slug: "gaming-1080p-algerie",
-    title: "1080p Gaming PC in Algeria: the build that actually makes sense",
-    hook: "Ryzen 5 5600 + RTX 3060 12GB: 144Hz at 1080p without throwing money away. Prices collected live from stores in Algiers, Sétif and Oran.",
-    readMin: 6,
-    parts: ["cpu-r5-5600", "cooler-ak400", "mobo-b550m-a-pro", "ram-vengeance-16-d4", "ssd-nvme-1tb-g4", "gpu-rtx3060-12gb", "case-4000d", "psu-550-b"],
+    title: "1080p gaming PC: the build that does the job without waste",
+    hook: "A Ryzen 5 5600, 8GB of VRAM and a 180Hz monitor: the 1080p combination that still holds up in 2026. The total at the top of this page recalculates on every price snapshot, and that is the number to budget from.",
+    kind: "build",
+    topic: { fr: "Build complet", en: "Full build" },
+    readMin: 5,
+    parts: [
+      "cpu-r5-5600",
+      "cooler-ak400",
+      "mobo-b550m-a-pro",
+      "ram-vengeance-16-d4",
+      "ssd-nvme-1tb-g4",
+      "gpu-rx6650xt-8gb",
+      "case-4000d",
+      "psu-650-b",
+      "mon-24-180",
+    ],
     blocks: [
       {
-        h: "Why this combination",
+        h: "Why six cores, not eight",
         p: [
-          "The Ryzen 5 5600 remains the king of the performance-per-dinar in Algiers: 6 cores that never bottleneck an RTX 3060 at 1080p, and because it sits on the AM4 socket, B550 motherboards stay cheap and DDR4 is priced at rock bottom.",
-          "The RTX 3060 12GB (not the 8GB one): 12GB of VRAM absorbs 2025-2026 textures where 8GB saturates. Used on Ouedkniss it trades under 90,000 DA — always check it has not been mined (see our used-hardware guide).",
+          "At 1080p the graphics card is your bottleneck, not the CPU. Moving from a Ryzen 5 5600 to a Ryzen 7 5700X3D barely changes average frame rate. What it changes is 1% low performance, which is where the micro-stutters come from when several units animate the same scene. On a 1080p budget, those dinars buy more as VRAM or as a monitor.",
+          "The 5600 has a second advantage that matters just as much: it is an AM4 part, so B450 and B550 boards and DDR4 stay the cheapest things in the catalogue. The whole platform can be restocked part by part for years.",
         ],
       },
       {
-        h: "Power supply: do not improvise",
+        h: "The card: 8GB is a floor, not a choice",
         p: [
-          "5600 (65W) + 3060 (170W) + 150W for the rest = roughly 385W at peak. A branded 650W Bronze unit (Cooler Master, MSI, DeepCool) leaves about 260W of headroom: quiet, cool and long-lived.",
-          "With the cuts and micro-blackouts on the Algerian grid, add a 1000VA UPS if you are in an unstable area — a decent PSU plus a UPS costs less than one fried motherboard.",
+          "Eight gigabytes of VRAM in 2026 is the bare minimum for 1080p without the game engine thrashing between allocations. 2025-2026 textures, ray tracing and especially frame generation all eat considerably more than they used to. An 8GB card will hold a steady 60 fps in esports titles, and will hitch the moment a big AAA release lands in 1440p.",
+          "Two options are close here: the RX 6650 XT 8GB, which is the fastest in pure raster for a 1080p budget, or an RTX 4060 8GB if you want ray tracing, NVENC encoding and DLSS doing part of the work for you. Both are in the price table below: compare them at today's numbers.",
         ],
       },
       {
-        h: "New versus used, in DA",
+        h: "The monitor is the most under-budgeted part",
         p: [
-          "New from a store: you pay the full price but get a 12-month warranty and cash on delivery nationwide (all 58 wilayas via Yalidine/Maystro).",
-          "Used on Ouedkniss: a 3060 12GB negotiates in the 75,000–90,000 DA range. Ask for a benchmark video (10 minutes of FurMark with the temperature on screen), the original invoice, and test it in person when the seller is in Algiers, Sétif or Oran.",
+          "The real trap in Algeria is not the CPU or the card, it is the monitor. Plenty of 200,000 DA builds end up driving a 24-inch 75Hz office TN panel bought separately. The entire compute budget is then wasted, because the GPU is waiting on the panel to refresh.",
+          "A 24-inch 180Hz IPS panel is the best dinar-per-image on this build. IPS is not a luxury: it is what keeps you away from the vertical banding and washed-out colours of an entry-level TN. If you want more frequency, a 24-inch 200Hz is in the catalogue for almost the same money.",
+        ],
+      },
+      {
+        h: "Power supply: 650W, and why not 750",
+        p: [
+          "The 5600 draws 65W, an RX 6650 XT around 180W, and everything else (board, RAM, SSD, fans) about 150W. That puts you just under 400W at peak. The usual rule is to stay at 30-40% load, which lands here on 650W: the most widely sold tier and the cheapest per watt.",
+          "Buying 750W just in case costs money and does nothing while the card stays the same. If you genuinely plan to drop in a 250W card later, 750W is justified, and that is the day to buy it, not today.",
+        ],
+      },
+      {
+        h: "What is left after this build",
+        p: [
+          "There is room for two upgrades without touching the motherboard: moving to 32GB of DDR4, and adding a secondary SSD. Both use slots that already exist on the B550M-A Pro, which has two M.2 connectors. That is what a good first PC is: a base that is happy to age, not a sealed assembly.",
         ],
       },
     ],
     pitfalls: [
-      "B550 + Ryzen 5600: no BIOS trouble at all (native support). Be careful with older used B450 boards, they demand a BIOS update.",
-      "Case: check the GPU length (the Ventus is 235mm, it fits everywhere — a 330mm Gaming Trio does not).",
-      "DDR4 3200 CL16 is enough; 3600 brings almost nothing extra on AM4 for what it costs in DA.",
+      "B550 plus a Ryzen 5 5600 needs no BIOS update at all, support is native. Used B450 boards, on the other hand, often demand one.",
+      "Graphics card length: check the figure in the product sheet against your case limit. A 330mm board such as an RTX 5080 does not fit everywhere; a 235-240mm card fits everywhere.",
+      "DDR4-3200 CL16 is enough. Going to 3600 costs more in DA for one or two percent on AM4, which is not worth the gap.",
+      "Two identical sticks (2x8GB) beat a mismatched 2x8GB plus 4GB: mixing capacities loses dual channel.",
+    ],
+  },
+  {
+    slug: "carte-graphique-prix-2026",
+    title: "Picking a graphics card: VRAM is now the number one criterion",
+    hook: "An 8GB card is already being paged out by game engines where a 16GB card still holds. How to read a spec sheet, when VRAM stops being negotiable, and where the real bargains sit.",
+    kind: "guide",
+    topic: { fr: "Carte graphique", en: "Graphics card" },
+    readMin: 5,
+    parts: [
+      "gpu-rx580-8gb",
+      "gpu-rx6600-8gb",
+      "gpu-rx6650xt-8gb",
+      "gpu-rtx4060-8gb",
+      "gpu-rx7600xt-16gb",
+      "gpu-rx9060xt-16gb",
+      "gpu-rx9070xt-16gb",
+      "gpu-rtx5070ti-16gb",
+      "gpu-rx7900xtx-24gb",
+    ],
+    blocks: [
+      {
+        h: "Why 8GB is now a trap rather than an entry point",
+        p: [
+          "Three years ago 8GB of VRAM was comfortable. It no longer is, and the reason is mechanical rather than marketing. Higher-detail 4K textures, ray tracing with shadows and reflections, and above all frame generation, which outputs a final image at a higher resolution than the internal one: the engine has to hold the internal image, the motion data and the final result at the same time. When that stops fitting you do not get a smooth slowdown, you get hitching.",
+          "The practical consequence: 8GB cards keep selling because they are cheaper, and they are already tight for 2026 releases in 1440p. Under 25,000 DA that is a defensible choice for what you will actually do with it: office work, video editing, older games, esports. Above that, you are buying a card that will need replacing within two years.",
+        ],
+      },
+      {
+        h: "The VRAM tiers that actually matter",
+        list: [
+          "8GB: office work, video editing, older games and high-refresh esports. The RX 6600, RX 6650 XT, RTX 4060 and RTX 5060 make up this market; compare them at today's prices in the table.",
+          "12GB: the honest minimum for 1080p and 1440p gaming in 2026. The RX 6700 XT and RTX 5070 cost more than their 8GB siblings for exactly that reason, and it is often the best-value money on the whole card.",
+          "16GB: the mid-range norm, and the tier I recommend to anyone gaming at 1440p or 4K because it holds for at least five years.",
+          "24GB and above: 4K ultra, rendering, streaming, or a used card from the previous generation. An RX 7900 XTX 24GB is the textbook example.",
+        ],
+      },
+      {
+        h: "The teaser-price trap",
+        p: [
+          "On Ouedkniss the first listing in a category is almost always a trap: a teaser price that is not the real price, a defective card with no mention of it, or a keyboard, a case and a GPU in the same ad. Our product pages show offers from verified shops sorted organically by price. That is the page to read, not the top result of a search.",
+          "The other trap is comparing a used offer against a new one without checking who is selling. An RX 580 at half the new price is not a bargain if the seller has no invoice and no warranty, because your risk is 100% and your cover is 0%.",
+        ],
+      },
+      {
+        h: "AMD or NVIDIA, in one paragraph",
+        p: [
+          "In pure raster, AMD's 16GB cards give the most frames per dinar, and the VRAM gap has become their main argument against NVIDIA rivals that sit at 12GB in the mid-range. NVIDIA keeps the edge on ray tracing, video encoding and a broader upscaling ecosystem. For a pure gamer, take the best price per frame with at least 12GB. If you edit video on the side, the NVIDIA encoder is sometimes worth the premium.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "Never compare two used listings without looking at how many offers exist. A card with a single listing and no HD photos is rarely a good deal.",
+      "A cheap 8GB card is not the same card for less money. It is a machine that will be out of date in two years.",
+      "Card length is a physical constraint, not a preference: compare the millimetres in the spec sheet with your case limit before you commit.",
+      "A card needing a 16-pin connector requires a compatible PSU, and only the cable it shipped with should ever be used.",
+      "Two-fan cards run hotter than three-fan ones. At equal price in 1080p two fans remain a fine compromise; at 1440p, favour the cooling.",
+    ],
+  },
+  {
+    slug: "config-pc-170k-da",
+    title: "First new gaming PC: the budget split that buys the most",
+    hook: "Pay the graphics card first, save on the case and the chipset, do not touch the power supply. The reasoning part by part, plus the four places people quietly overspend.",
+    kind: "build",
+    topic: { fr: "Build complet", en: "Full build" },
+    readMin: 5,
+    parts: [
+      "cpu-r5-5600",
+      "cooler-ak400",
+      "mobo-b450m",
+      "ram-vengeance-16-d4",
+      "ssd-nvme-512gb",
+      "gpu-rx6600-8gb",
+      "case-nx400",
+      "psu-550-b",
+    ],
+    blocks: [
+      {
+        h: "The split rule",
+        p: [
+          "A first PC divides roughly like this: 45-55% for the graphics card, 15-18% for the processor, 10-12% for memory and storage, and the remainder for motherboard, case, cooling and power supply. A balanced 1080p budget puts the graphics card above everything else combined.",
+          "On this page's table the graphics card alone is more than a third of the total. That is normal, and it is the only line item whose cost you can see directly in your frame rate.",
+        ],
+      },
+      {
+        h: "Where saving is legitimate",
+        p: [
+          "The chipset: a B450 does the same job as a B550 with a Ryzen 5 5600. The B550 adds PCIe 4.0 for the SSD and overclocking, neither of which changes a single frame. Just make sure the B450 you buy actually supports the 5600, or you will be flashing a BIOS before you install anything.",
+          "The case: with a 242mm card such as the RX 6600, any mid-range ATX tower will do. There is no reason to buy the most expensive case in the list.",
+          "The cooler: a decent 120mm tower heatsink costs half what an AIO costs and handles a 65W part without argument. A water cooler only earns its place above 105W.",
+        ],
+      },
+      {
+        h: "Where saving is a mistake",
+        p: [
+          "The power supply. Dropping to a no-name 400W or 450W gains you nothing: the 5600 and RX 6600 pull around 350W at peak, plus the voltage spikes modern cards ask for at startup. A decent branded 550W is the reasonable minimum.",
+          "The memory. 16GB of DDR4-3200 is the floor. 8GB is a PC that stutters before the year is out. Do not go there.",
+          "The graphics card. This is where the budget must be maximal. An RX 6600 8GB is the coherent choice here: the card that plays high-refresh 1080p without putting the budget at risk.",
+        ],
+      },
+      {
+        h: "What this build will not do",
+        p: [
+          "Let's be clear about the limits: this machine will not game at 4K, and it has no margin for a quality 1440p monitor. The 512GB drive is the accepted weak point, and an entry-level case is not an expandable one.",
+          "What it does well: high-refresh 1080p for years, with enough power headroom to add memory later. That is the definition of a successful first PC, not a final one.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "512GB is this build's weak point. If you install a lot of games, go straight to 1TB and save on the case instead.",
+      "A B450 must support the Ryzen 5 5600 without a BIOS update. Ask for the board revision or just take the B550; the gap is small.",
+      "Do not drop to 8GB of RAM to save a few thousand dinars. It is the most profitable upgrade you will ever make.",
+      "A no-name 450W on this configuration risks frying the motherboard to save a few thousand dinars.",
+      "Do not buy a water cooler for this build. The heatsink is enough and it will not fail.",
+    ],
+  },
+  {
+    slug: "config-pc-250k-da",
+    title: "The 250,000 DA tier: 1080p with no compromises left",
+    hook: "A 12GB card, 32GB of memory and a 180Hz monitor. At this budget the question is no longer how to hit 60 fps but how much headroom to keep for 2027.",
+    kind: "build",
+    topic: { fr: "Build complet", en: "Full build" },
+    readMin: 4,
+    parts: [
+      "cpu-r5-5600",
+      "cooler-ak620",
+      "mobo-b550m-a-pro",
+      "ram-vengeance-32-d4",
+      "ssd-nvme-1tb-g4",
+      "gpu-rx6700xt-12gb",
+      "case-4000d",
+      "psu-650-b",
+      "mon-24-180",
+    ],
+    blocks: [
+      {
+        h: "Where the extra money goes",
+        p: [
+          "Three things change compared with an entry build: the card moves to 12GB of VRAM, memory moves to 32GB, and the monitor moves to 180Hz. Those are precisely the three parts that hold back a 1080p machine.",
+          "Everything else is deliberately identical. A B550 rather than a B450 for the SSD's PCIe 4.0, a real tower heatsink rather than the cheap one, and a decent case. This is a budget you can see in the parts rather than in the marketing.",
+        ],
+      },
+      {
+        h: "Why 12GB of VRAM changes the picture",
+        p: [
+          "At 1080p the card runs out first when VRAM runs out. Recent background textures, ray tracing and frame generation all consume considerably more than they did two years ago, and an 8GB card starts showing hitches even at 1080p.",
+          "An RX 6700 XT 12GB or an RTX 5070 12GB buys you comfortable headroom. The step up from a previous-generation 8GB card is the best-value money on this whole tier.",
+        ],
+      },
+      {
+        h: "32GB, not 16",
+        p: [
+          "16GB is still enough to play. But at 32GB you can leave a game running, keep a browser with a lot of tabs open, plus Discord and a capture tool, and nothing slows down. On a machine meant to last five years that is an investment that avoids frustration in 2029.",
+          "The 32GB kit in the table is DDR4-3200, which is the sensible ceiling for AM4. Do not pay more for a faster kit: the gain on AM4 is one to two percent.",
+        ],
+      },
+      {
+        h: "Power supply and room to grow",
+        p: [
+          "The 5600 (65W) plus an RX 6700 XT (230W) plus about 150W for the rest comes to roughly 445W at peak. 650W is the right tier: a comfortable load ratio means it runs quietly, and it leaves room for a bigger card in two years.",
+          "The 4000D case has real airflow, two 2.5-inch bays and clearance for a second tower cooler. That is not a detail: a cheap case that limits heatsink height will still be limiting you in five years.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "Do not buy a DDR4 kit more expensive or faster than the one in the table: on AM4 the gain is negligible.",
+      "A budget case limits heatsink height and graphics card length. Check both figures before ordering.",
+      "The 180Hz panel in the table is half the display budget. Do not swap it for a 75Hz office monitor to save money.",
+      "650W is enough for this build. 750W only makes sense if you already know you will change the card.",
+      "If the budget is tight, cut the case before cutting memory or the power supply.",
     ],
   },
   {
     slug: "bureautique-etudes-90k",
-    title: "Office and study PC under 95,000 DA",
-    hook: "i5-12400F + a used RX 580: office work, studies, light video editing and even 1080p gaming. The smart student budget.",
-    readMin: 4,
-    parts: ["cpu-i5-12400f", "mobo-h610m", "ram-vengeance-16-d4", "ssd-nvme-512gb", "gpu-rx580-8gb", "case-4000d", "psu-450-b"],
+    title: "Office and study PC: what it actually costs now",
+    hook: "The 90,000 DA office PC everyone quotes no longer adds up once you include a graphics card and a decent SSD. Here is the configuration that is genuinely reasonable, and the two places to save.",
+    kind: "build",
+    topic: { fr: "Build complet", en: "Full build" },
+    readMin: 5,
+    parts: [
+      "cpu-i5-12400f",
+      "cooler-h212-v3",
+      "mobo-h610m",
+      "ram-vengeance-16-d4",
+      "ssd-nvme-512gb",
+      "gpu-rx580-8gb",
+      "case-nx400",
+      "psu-550-b",
+    ],
     blocks: [
       {
-        h: "The reasoning",
+        h: "Why the 90,000 DA budget no longer works",
         p: [
-          "The i5-12400F (6 performance cores, no iGPU — the F means no integrated graphics) is available at a good price and demolishes everything in office workloads. You therefore need a graphics card, even a small one.",
-          "A used RX 580 8GB (25,000–35,000 DA on Ouedkniss) is enough for Windows, Office, 1080p editing and 1080p esports games. It has been the small-budget card for years — there is a huge amount of used stock in Algiers.",
+          "Add up the table line by line and the picture is obvious: the processor, the memory and the SSD together now cost more than most 90,000 DA listings actually cover. Those listings are usually a tower with no graphics card, or with a used card nobody will stand behind six months from now.",
+          "The real problem with an office budget is not the tower, it is the monitor. If you already own a screen, this build is honest. If you are buying everything, add a 24-inch panel and the budget doubles.",
         ],
       },
       {
-        h: "Upgrade path",
+        h: "The F suffix trap",
         p: [
-          "LGA1700 + B660 + 650W: in two years you drop in a used RTX 4060 without changing anything else. That is what a good budget build means — an upgrade path, not a dead end.",
+          "An i5-12400F has no integrated graphics. Without a graphics card it outputs nothing at all: black screen, not even the BIOS. It is an excellent processor, but it is a processor for a machine that already has a graphics card.",
+          "There are three workarounds, cheapest first: a healthy used card, a processor with an iGPU, or buying the card only after checking whether your course actually requires one. This build goes with a used RX 580 8GB, which is also the part you should test most carefully before paying.",
+        ],
+      },
+      {
+        h: "Where to save, and where not to",
+        p: [
+          "Two parts absorb a legitimate saving. The case: an Antec NX400 costs noticeably less than a Corsair 4000D and does the same job for this card size. And memory: 16GB is the acceptable minimum, but a single kit is enough, not 2x16GB.",
+          "One part should not be economised on, and it is the power supply. The 12400F (65W) plus an RX 580 (185W) plus 150W for the rest is 400W at peak, with voltage spikes at startup. A 450W unit works, but at a permanent 90% load it runs hot, it gets loud, and it has no margin at all. A 550W costs a few thousand dinars more and removes the risk.",
+        ],
+      },
+      {
+        h: "Study: what actually matters",
+        p: [
+          "For study (Word, Excel, PDF, a browser with forty tabs, Visio, code) the ranking of parts by importance is inverted compared with gaming: the SSD rules, memory comes next, the CPU has plenty of slack, and the graphics card is almost irrelevant. A 512GB NVMe is the minimum, and a mechanical drive alongside it for archives is perfectly fine.",
+          "The one real trap specific to students: buying a tower with no graphics card on the promise that you will add one later. The day you want to play, you also have to buy the card, the power supply and sometimes a case that no longer fits. A complete tower at this level lets you play tonight.",
         ],
       },
     ],
     pitfalls: [
-      "The 12400F outputs no picture without a graphics card. If the RX 580 dies you get a black screen — plan for it.",
-      "Used RX 580: 90% of them have been mined. Run FurMark and make sure the fans are not screaming.",
-      "Go straight for a 1TB NVMe SSD: 256GB models are a false economy — Windows plus two games and it is full.",
+      "The F suffix means no iGPU. A 12400F with no graphics card produces no image, not even at the BIOS.",
+      "450W with a 185W GPU is borderline. Go to 550W and you will not regret the few extra thousand dinars.",
+      "8GB of RAM is finished in 2026: a browser with a handful of tabs is enough to choke it. 16GB is the floor.",
+      "A 256GB SSD is a false economy: Windows and its updates already take a hundred-odd gigabytes, and the drive is full before the year ends.",
+      "Check that your chosen case accepts the length of your used card. RX 580s are 240mm, which is standard but not universal.",
+    ],
+  },
+  {
+    slug: "carte-mere-am4-ou-am5",
+    title: "Motherboard: B450, B550 or AM5, and what you are really paying for",
+    hook: "The chipset does not make the machine. What each one actually gives you, when AM4 is still the right call, and the three mistakes that make people overpay for a board.",
+    kind: "guide",
+    topic: { fr: "Plateforme", en: "Platform" },
+    readMin: 4,
+    parts: [
+      "mobo-h610m",
+      "mobo-a520m",
+      "mobo-b450m",
+      "mobo-b550m-a-pro",
+      "mobo-b560m",
+      "mobo-b760m",
+      "mobo-a620m",
+      "mobo-b650m",
+      "mobo-b650e",
+      "mobo-x870e",
+    ],
+    blocks: [
+      {
+        h: "The chipset does not make the machine",
+        p: [
+          "What makes the machine is the processor, the memory and the graphics card. The chipset is the equipment around them: port count, M.2 slots, PCIe generation, connectivity. None of that changes a frame per second.",
+          "Concretely, a B450 and a B550 deliver identical performance with the same CPU and the same card. The B550 adds PCIe 4.0 for the SSD and overclocking. That is useful, not decisive.",
+        ],
+      },
+      {
+        h: "AM4: a platform with years left",
+        p: [
+          "AM4 launched in 2019 and is not finished. The catalogue still shows B450 and B550 boards at prices with no relation to their AM5 equivalents, and a 5600 is excellent in 1080p on them. For a PC that should last three years, that is the rational choice.",
+          "The trap is elsewhere: an old used B450 may not boot a 5600 without a BIOS update. A board that does not power on is a return ticket. Buy a B450 that explicitly supports your CPU, or take the B550, where the price gap is small.",
+        ],
+      },
+      {
+        h: "AM5: what the premium buys",
+        p: [
+          "On AM5 the real argument is socket longevity, not speed. AM5 keeps receiving processors for years, so a board bought in 2026 still gives you upgrades well into the next decade.",
+          "Between B650, B850 and X870, look at what you will actually use: two M.2 slots, Wi-Fi, a decent VRM. The X870E in the table is built for overclocking and PCIe 5.0, two things the majority of players never touch.",
+        ],
+      },
+      {
+        h: "mATX is enough almost always",
+        p: [
+          "A micro-ATX board covers nearly every build: two to four RAM slots, one or two M.2 connectors, four SATA. The ATX format only adds two things, more expansion slots and more rear connectors.",
+          "So only buy ATX if you know why: three graphics cards (pointless), four extra drives (rare), or a large heatsink on the top.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "An old B450 may not boot a Ryzen 5 5600 without a BIOS update, and the update may be impossible before you even have a display.",
+      "Check the memory type before buying: a DDR5 board will not take DDR4, and the reverse is equally true. This is the most common and least recoverable mistake.",
+      "Not every M.2 is a real M.2. On some boards the second slot shares PCIe lanes with SATA ports, and one of them silently disables.",
+      "SATA port count and M.2 count depend on the exact model, not on the chipset. Read the product sheet, not the chipset list.",
+      "A used board with a single M.2 slot and no Wi-Fi forces you to buy PCIe adapters, which often costs more than a new board.",
+    ],
+  },
+  {
+    slug: "memoire-ddr4-ou-ddr5",
+    title: "DDR4 or DDR5: the calculation that settles it in Algeria",
+    hook: "The price gap between the two generations is the only criterion that matters, and it is far wider in DA than elsewhere. 16GB or 32GB, 6000 or 6400, RGB or not: all four answered.",
+    kind: "guide",
+    topic: { fr: "Mémoire", en: "Memory" },
+    readMin: 5,
+    parts: [
+      "ram-value-8-d4",
+      "ram-vengeance-16-d4",
+      "ram-vengeance-32-d4",
+      "ram-16gb-d5-5600",
+      "ram-delta-32-d5",
+      "ram-32gb-d5-6400",
+      "ram-48gb-d5-6000",
+    ],
+    blocks: [
+      {
+        h: "The simple rule: platform first, price second",
+        p: [
+          "There is no AM5 motherboard that takes DDR4, and no AM4 or LGA1700 board that takes DDR5. So the question has no independent answer: it follows from the processor you picked.",
+          "Once that is settled the calculation is purely economic. Put the 32GB DDR4 kit and the 32GB DDR5 kit from the table side by side: the price gap runs to tens of thousands of dinars. In games the difference between the two generations is a few percentage points, and only visible when the CPU is the bottleneck, which is rare at 1080p and 1440p.",
+          "Conclusion: if you are not looking for a processor upgrade in four years, spend that gap on a better graphics card. At present it is the only rational trade.",
+        ],
+      },
+      {
+        h: "16GB or 32GB",
+        p: [
+          "16GB in 2026 is correct for gaming. It is the standard, not the minimum any more. 8GB is dead: a browser with a few tabs is enough to choke it, before Discord in the background.",
+          "32GB becomes justified when you do something else at the same time: streaming with the encoder, video editing, virtual machines, or simply leaving a game running while you work. The 48GB kit in the table only makes sense for those precise uses.",
+          "The one case where 32GB is mandatory for gaming: if you do not expect to stop gaming before 2030. In that case, buy the 32GB in one go.",
+        ],
+      },
+      {
+        h: "DDR5-6000, and no higher",
+        p: [
+          "On Ryzen the memory clock has to stay tied to the memory controller clock, otherwise moving data takes more cycles than it saves and performance drops. DDR5-6000 with sane timings is the balance point, and it is what AMD itself recommends.",
+          "Above that you pay more for two things: less stability with four sticks, and a need to tune timings by hand. Compare the 6400 kit in the table with the 6000: if the price gap is wide, DDR5-6000 is the right buy.",
+        ],
+      },
+      {
+        h: "Never pay for the RGB",
+        p: [
+          "A memory heat spreader with RGB lighting reliably costs more than a bare one for the same speed and the same timings. The price difference buys no performance, it buys diodes.",
+          "One exception: a kit without LEDs can have a rougher PCB and taller sticks that foul a big heatsink. Check the height in the spec sheet if your cooler is bulky.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "Memory type is tied to the motherboard, not to your preference. DDR5 on a B450 or B550 will not boot, and DDR4 on a B650 will not either.",
+      "Two sticks beat one: a 2x16GB kit runs in dual channel, a single 1x32GB stick does not. The price gap is small and the 1080p gain is real.",
+      "Mixing two different kits (say 16GB plus 8GB) loses dual channel and is not guaranteed by the manufacturers.",
+      "XMP or EXPO is not on by default in the BIOS. Without it, memory runs at its base speed, well below what you paid for.",
+      "16GB is fine. 8GB is finished. Do not go under 16GB to save a few thousand dinars.",
+    ],
+  },
+  {
+    slug: "stockage-nvme-vs-sata",
+    title: "NVMe or SATA: the cheap-storage trap",
+    hook: "A 256GB SATA SSD costs a third of an NVMe of the same size, and the whole PC feels the difference. Where the real line sits, and how much capacity you actually need.",
+    kind: "guide",
+    topic: { fr: "Stockage", en: "Storage" },
+    readMin: 4,
+    parts: [
+      "ssd-sata-256gb",
+      "ssd-sata-512gb",
+      "ssd-sata-1tb",
+      "ssd-nvme-256gb",
+      "ssd-nvme-512gb",
+      "ssd-nvme-1tb-g4",
+      "ssd-nvme-2tb",
+      "ssd-980pro-1tb",
+      "ssd-gen5-1tb",
+    ],
+    blocks: [
+      {
+        h: "SATA is not wrong, it is misplaced",
+        p: [
+          "A SATA SSD is roughly two to three times slower than an NVMe on sequential reads, and the difference shows on anything that loads a lot of files: Windows boot, opening a game, loading an edit project. Compared with a mechanical drive the jump to SATA is enormous; between SATA and NVMe it is real but does not justify paying double for a secondary drive.",
+          "The rule: system drive in NVMe, games in SATA if you want to expand, archives wherever you like. A 512GB NVMe for Windows and the two current games, plus a 1TB SATA drive for the rest, is smarter than a single 1TB drive.",
+        ],
+      },
+      {
+        h: "Capacity matters more than the brand",
+        p: [
+          "A triple-A game occupies between 80 and 150GB. Windows and its updates alone eat around a hundred gigabytes before you install anything. On a 256GB drive you are full before the year ends, and you start uninstalling.",
+          "In 2026, 512GB is the reasonable minimum and 1TB is the comfort point. The price gap between 512GB and 1TB is smaller than the gap between new and used for the same model, which makes it often the best value in an entire build.",
+        ],
+      },
+      {
+        h: "Gen 3, Gen 4, Gen 5: what actually counts",
+        p: [
+          "The PCIe interface is a lane count, not a stick speed. A Gen 4 NVMe at 7000 MB/s is always faster than a Gen 3 at 3500 MB/s, but on a system drive the difference becomes small once you are past the point where the filesystem waits.",
+          "The Gen 5 drive in the table only makes sense if your motherboard has a Gen 5 M.2 slot and an SSD heatsink. Most B650 and X870E models do not. That is money thrown out of the window.",
+        ],
+      },
+      {
+        h: "The M.2 that is not really an M.2",
+        p: [
+          "On some motherboards the second M.2 slot shares its PCIe lanes with two SATA ports. Fit an SSD in the secondary M.2 and two SATA ports silently disappear. The manual says so, the product sheet often does not.",
+          "Before buying several drives, count your slots: real M.2 connectors, available SATA ports, and USB ports for a backup external drive. An external drive over USB 3.2 is better value than an internal drive that kills your SATA.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "A SATA system drive is felt, especially at boot and when loading games. It is the first upgrade to make on an old PC.",
+      "256GB is a false economy: the drive fills up before the warranty runs out.",
+      "Form factor matters: a shorter M.2 2242 does not fit every 2280 slot. Match it to the connector.",
+      "Do not delete the recovery partition to save space: you will have no quick fix left if Windows breaks.",
+      "An SSD with no warranty is a disk with no warranty. A used listing price often includes no protection at all.",
+    ],
+  },
+  {
+    slug: "choisir-alimentation-pc",
+    title: "Power supply: why wattage is not the thing to optimise",
+    hook: "Once the wattage is calculated, only one real variable is left: build quality. What the 80+ label genuinely changes, what a modular cable is for, and what ATX 3.x brings with the new cards.",
+    kind: "guide",
+    topic: { fr: "Alimentation", en: "Power supply" },
+    readMin: 4,
+    parts: [
+      "psu-400-b",
+      "psu-450-b",
+      "psu-550-b",
+      "psu-650-b",
+      "psu-650-gold",
+      "psu-800-gold",
+      "psu-750-gold",
+      "psu-mwe650-b",
+      "psu-1000-gold",
+    ],
+    blocks: [
+      {
+        h: "Wattage is not a variable to optimise",
+        p: [
+          "Wattage gets calculated, not optimised: add your processor and graphics card consumption, add roughly 150W for everything else, and take the standard tier above the result. Once that number is fixed, the rest of the decision is about something else.",
+          "One important detail: look at the power actually available on the 12V rail, not the number on the label. Almost all consumption happens there, as a graphics card pulls 200 to 350W in 12V. On older multi-rail units that number is often below the advertised total. Modern single-rail designs have removed the problem.",
+        ],
+      },
+      {
+        h: "The 80+ label: what it really changes",
+        p: [
+          "The 80+ label measures efficiency under load. It is not a quality score, it is an energy-saving score, and it has three concrete effects: less waste heat, less current drawn from the socket, and a fan that spins slower because the interior is cooler.",
+          "Bronze is neither a luxury nor a scam. It is enough. Gold becomes interesting when the machine runs at high load for long stretches, and Gold Plus above that is rarely justified for a gaming PC. Compare price per real watt across the models in the table rather than reading the label.",
+        ],
+      },
+      {
+        h: "Modular, semi-modular, non-modular",
+        p: [
+          "A non-modular PSU has every cable fixed, including the ones you will never use. Semi-modular detaches the peripheral cables (drives, USB); modular detaches them all. The benefit is tidiness and airflow, not electrical: unused cables clutter and block intake vents.",
+          "The safety point: never use a modular cable from a different power supply. The connectors have the same shape and not the same pinout. That is the number one cause of short circuits on a brand new machine.",
+        ],
+      },
+      {
+        h: "ATX 3.x and the 16-pin connector",
+        p: [
+          "Recent graphics cards use a single 16-pin connector, more compact and able to carry more current. ATX 3.0 and 3.1 power supplies are designed for it, with transient tolerance the older standard does not have.",
+          "If your card has a 16-pin connector, use an ATX 3.x unit or the 12V-2x6 cable supplied with the card. An adapter on an older supply is the most common cause of melted connectors.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "Never buy the cheapest power supply in the catalogue. It is a small share of the budget and it is the one that pays for all the others if it fails.",
+      "A bad label is not a bad number: a branded 650W Bronze is a better buy than an unbranded Gold.",
+      "A modular cable from another brand can melt. Never do it, even when the connectors look identical.",
+      "A power supply run by prolonged undervoltage dies within months. On an unstable grid, a UPS is real protection.",
+      "Third-party 8-pin to 16-pin adapters are the leading cause of melted connectors. Use the card's own cable or a true ATX 3.x unit.",
+    ],
+  },
+  {
+    slug: "refroidissement-pc-algerie",
+    title: "Cooling: does a PC throttle in an Algerian summer?",
+    hook: "Yes, but less than you have been told, and not for the reason you think. Air versus AIO, thermal paste, dust: what actually matters when ambient temperature climbs.",
+    kind: "guide",
+    topic: { fr: "Refroidissement", en: "Cooling" },
+    readMin: 4,
+    parts: [
+      "cooler-h212-v3",
+      "cooler-ak400",
+      "cooler-ak620",
+      "cooler-assassin4",
+      "cooler-ma621c",
+      "cooler-gl120",
+      "cooler-lt240",
+      "cooler-wl240ft",
+    ],
+    blocks: [
+      {
+        h: "Yes, and by how much",
+        p: [
+          "A gaming PC at 45°C ambient in an unconditioned office loses a few percent of performance in turbo mode, not half of it. The Ryzen drops its clock by a few percent, the graphics card by a few percent. That is not the disaster sold on forums, but it is not free either.",
+          "The real risk is not lost performance, it is wear. A processor held at 95°C for months ages faster than one held at 70°C. That is safety margin, not an emergency.",
+        ],
+      },
+      {
+        h: "Air or AIO: when each one wins",
+        p: [
+          "A tall tower heatsink such as the Assassin IV or the dual-tower in the table cools a 65W to 105W processor with no moving liquid and no risk at all. For most builds, it is the best cost-to-durability ratio on the market.",
+          "A water cooler has exactly one strong argument: a 120W-or-more processor, or a compact case where a tower will not fit. In that case a 240mm unit like those in the table buys 10-15°C. The cost is a pump, which is a mechanical failure point, and a warranty that is often shorter than a good heatsink's.",
+        ],
+      },
+      {
+        h: "Thermal paste: leave it alone",
+        p: [
+          "The paste shipped with a cooler is already applied and it is adequate. It does not dry out in two years, it does not burn, and it does not need replacing out of necessity. A PC that cools well out of the box will still cool well three years later.",
+          "Only two situations justify opening it up: a machine over three years old, or one assembled with an absurdly generous blob. Toothpaste, cooking oil and thermal pastes made of oil are not options.",
+        ],
+      },
+      {
+        h: "Dust is the real Algerian problem",
+        p: [
+          "An Algerian summer is dust as much as heat. A heatsink packed with dust loses much of its surface area, and the temperature gap shows up quickly. A full clean-out every twelve to eighteen months is the only maintenance a PC actually needs.",
+          "The case matters as much as the cooler: a tower with filtered intakes, clear space at the rear and an exhaust fan does more for summer temperatures than moving from a decent heatsink to a water cooler.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "A water cooler is not more durable than a good heatsink: the pump is the failure point, and it is often worse warranted.",
+      "A cooler that is too tall for the case does not fit. Check the maximum height in the case spec sheet before ordering; it is the most common mistake.",
+      "The stock cooler on a Ryzen 7 or 9 is rarely enough in summer. An entry-level 120mm tower changes a lot.",
+      "Never cover the case intakes with cloth or a curtain. Front airflow is what cools the processor.",
+      "Never add a second layer of thermal paste over an existing one without removing it: two layers insulate.",
+    ],
+  },
+  {
+    slug: "choisir-son-ecran",
+    title: "Monitors: 1080p or 1440p, panel and refresh rate, what counts",
+    hook: "This is the part where money is both misspent and most visible. Resolution, IPS, refresh rate, size: the order in which to decide, and the trap of the 75Hz office panel.",
+    kind: "guide",
+    topic: { fr: "Écran", en: "Display" },
+    readMin: 5,
+    parts: [
+      "mon-office-24",
+      "mon-22-100",
+      "mon-24-120",
+      "mon-24-144",
+      "mon-24-180",
+      "mon-mag255f",
+      "mon-27-qhd165",
+      "mon-32-qhd180",
+      "mon-27-4k",
+    ],
+    blocks: [
+      {
+        h: "The office monitor trap",
+        p: [
+          "The first instinct of many buyers is a 24-inch 75Hz office TN panel, because it costs half what a real gaming display costs. The result is a 200,000 DA machine stuck at 75 frames per second in games where it would do 150, with washed-out colours and narrow viewing angles.",
+          "A decent gaming panel starts with an IPS matrix and at least 144Hz. The premium over an office screen is small, and it is the difference between a machine you game on and a machine that computes images nobody sees.",
+        ],
+      },
+      {
+        h: "Resolution first",
+        p: [
+          "24-inch at 1080p and 27-inch at 1440p are the two native formats on the market. They give the best sharpness for their size, and they are the cheapest at comparable screen sizes.",
+          "Moving to 1440p requires a card that genuinely feeds that resolution at high refresh. An entry-level card doing 60 fps at 1080p may manage only 40 at 1440p: the resolution doubles the load. Check that the card listed in the table sustains the refresh rate of the panel you are choosing.",
+        ],
+      },
+      {
+        h: "TN, VA, IPS: the only criterion that really matters",
+        p: [
+          "TN is fast but has poor viewing angles and dull colours: that is the panel of cheap office monitors and models from a decade ago. VA gives perfect blacks but shows visible haze on bright content, which is tiring on a white background. IPS is the safe middle: correct angles, accurate colours, a slight black glow you will not notice.",
+          "Across the panels in the table, choose IPS without hesitating. The 100-144Hz models may be VA or TN: read the spec sheet, the price alone tells you nothing.",
+        ],
+      },
+      {
+        h: "Refresh rate: do not pay for frames your card cannot feed",
+        p: [
+          "A 240Hz panel on a machine managing 90 fps shows you nothing extra. The highest useful refresh rate is the one your build sustains stably, plus a little margin for the 1% lows.",
+          "In practice: at 1080p on a mid-range card, target 144 to 180Hz. At 1440p, target 165Hz. 240Hz and above are for high-end cards, or for esports where every frame counts.",
+        ],
+      },
+      {
+        h: "Size",
+        p: [
+          "Do not buy a 32-inch at 1080p: the pixels are too large and the image looks visibly stretched. If you want 32 inches, 1440p is the minimum and the price nearly doubles.",
+          "The 24-inch 1080p format is the most comfortable on a desk 1.4m or narrower. 27-inch 1440p is the best compromise on a normal desk. A 34-inch ultrawide is a pleasure for gaming and a nuisance for everything else.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "A 75Hz office monitor is the first thing to replace on a gaming PC. The gain is immediate and needs no settings.",
+      "Check for FreeSync or G-Sync Compatible: without it, tearing is visible and it hurts comfort.",
+      "The advertised brightness says nothing about how it handles a bright room. Too dim to use is wasted money.",
+      "A screen with no physical controls and no OSD menu is usually an entry-level model: check the dead pixel policy before buying.",
+      "A 1440p 165Hz panel that costs barely more than a 1080p 180Hz is almost always the better buy: the price gap is small and the gain lasts longer.",
+    ],
+  },
+  {
+    slug: "config-pc-300k-da",
+    title: "1440p while staying on AM4: often the right call",
+    hook: "The same budget in DDR5 and AM5 buys less gaming than AM4 does. Here is the full argument, with the snapshot numbers behind it, and the exact point at which the investment becomes justified.",
+    kind: "build",
+    topic: { fr: "Build complet", en: "Full build" },
+    readMin: 4,
+    parts: [
+      "cpu-r7-5700x",
+      "cooler-ak620",
+      "mobo-b550m-a-pro",
+      "ram-vengeance-32-d4",
+      "ssd-nvme-1tb-g4",
+      "gpu-rx7800xt-16gb",
+      "case-4000d",
+      "psu-650-gold",
+    ],
+    blocks: [
+      {
+        h: "The argument in one sentence",
+        p: [
+          "A 32GB DDR5 kit costs tens of thousands of dinars more than a 32GB DDR4 kit for the same frames per dinar, and the gaming gain is a few percentage points rather than a resolution tier. On a machine that will render at 1440p, the graphics card is the part that matters, not the memory generation.",
+          "In other words: at equal budget, AM4 buys you a better card. That is the only criterion that should decide it.",
+        ],
+      },
+      {
+        h: "What AM4 gives you, and what AM5 gives you",
+        p: [
+          "AM4 gives you price. Cheap B450 and B550 boards, DDR4 at rock bottom, and a Ryzen 7 5700X with more than enough power to drive a 16GB card at 1440p. No 1440p card needs a more expensive processor.",
+          "AM5 gives you duration. The AM5 socket will keep taking processors for years, so an AM5 board bought today is an investment. But that duration is paid for up front, and it is invisible on screen.",
+        ],
+      },
+      {
+        h: "The decision threshold",
+        p: [
+          "The question is not AM4 or AM5, it is how long this machine has to last. If the answer is three years, AM4 wins without argument. If the answer is five years or more and you plan to fit an X3D or a 9800X3D later, AM5 starts to defend itself.",
+          "The trap is buying AM4 in 2026 while telling yourself you will upgrade the processor later. The day you want to, AM4 processors will be dearer than they are today because production is stopping. And no B550 board will ever take a 3D chip.",
+        ],
+      },
+      {
+        h: "The configuration",
+        p: [
+          "The Ryzen 7 5700X is the last AM4 chip that makes sense for gaming: eight cores, 65W, and it will not choke a 7800 XT. The AK620 tower cooler in the table is more than enough, the B550 gives you two M.2 slots, and 650W Gold leaves room for a stronger card later.",
+          "The result is a machine that renders 1440p at high refresh today, with a 16GB card that will last five years, and you never pay the DDR5 premium. That is a trade-off, not a compromise.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "Do not buy AM4 planning to fit an X3D later: AM4 processors get scarce and expensive, and no B550 board supports them.",
+      "A DDR4 kit faster than 3600 is pointless on AM4: the limit is physical, and beyond it the memory controller cannot keep up.",
+      "If you go this route, take a B550 rather than a B450: it supports every AM4 CPU natively, including the 5700X, with no BIOS update.",
+      "Do not cut the power supply to fund the graphics card: it is the mistake that kills the most machines at this budget.",
+      "The tower cooler in the table takes more room than a low-profile one. Check the case's maximum height.",
     ],
   },
   {
     slug: "gaming-1440p-300k",
-    title: "1440p gaming: AM5 + RTX 4070/5070",
-    hook: "When 1080p is no longer enough: a Ryzen 9600X, DDR5 and an x70-class card. The enthusiast tier, costed in DA.",
-    readMin: 6,
-    parts: ["cpu-r5-9600x", "cooler-ak620", "mobo-b650m", "ram-delta-32-d5", "ssd-nvme-1tb-g4", "gpu-rtx4070-12gb", "case-4000d", "psu-750-gold"],
+    title: "1440p: the build that stays valid for years",
+    hook: "A 7600X, B650, DDR5 and a 16GB card: 1440p 165Hz without sinking the rest of the budget into the motherboard. The reasoning behind each line item.",
+    kind: "build",
+    topic: { fr: "Build complet", en: "Full build" },
+    readMin: 4,
+    parts: [
+      "cpu-r5-7600x",
+      "cooler-ak620",
+      "mobo-b650m",
+      "ram-delta-32-d5",
+      "ssd-nvme-1tb-g4",
+      "gpu-rx7800xt-16gb",
+      "case-4000d",
+      "psu-750-gold",
+      "mon-27-qhd165",
+    ],
     blocks: [
       {
-        h: "Why AM5, and why now",
+        h: "Why AM5 here but not on the lower tiers",
         p: [
-          "AM4 is a dead end for brand-new builds in 2026: DDR4 prices have stagnated and new CPUs are getting scarce. AM5 (9600X + B650 + DDR5) costs more today, but on the CPU side it will live until around 2028.",
-          "32GB DDR5-6000: the Ryzen sweet spot (a 1:1 ratio with the memory controller). Below 5600 MT/s you lose free FPS.",
+          "A 1440p PC lasts five years or more: the graphics card gets replaced, the processor much less often. AM5 is the only socket in the catalogue that still guarantees you processors in four years, against two for AM4 and one for LGA1700. The platform premium pays for itself precisely because the machine lasts.",
+          "The corollary matters: if the PC will last three years, the same money in AM4 plays exactly the same today. The platform is not visible on screen, it is paid in age.",
         ],
       },
       {
-        h: "4070 versus 5070",
+        h: "The GPU: 16GB is the 1440p threshold",
         p: [
-          "Compare both spec sheets on the site: the 5070 brings roughly 15-20% more plus DLSS 4, while the 4070 is easier to find cheap on the used market. At a similar price take the new 5070 with its warranty; at -25% or more, the used 4070 wins.",
+          "At 1440p, 8GB is already short: it is the resolution where 4K background textures and ray tracing start to make the limit felt. 16GB is not a luxury premium, it is the service life of the card.",
+          "Compare the RX 7600 XT 16GB and the RX 7800 XT 16GB in the table. The price gap is visible, and it buys a card you will not be replacing in three years.",
+        ],
+      },
+      {
+        h: "DDR5-6000, not 6400",
+        p: [
+          "On Ryzen the memory clock has to stay tied to the controller clock or the latency penalty eats the bandwidth gain. DDR5-6000 with sensible timings is the balance point: above it you pay more for less stability, and you have to tune timings by hand.",
+          "Put the two DDR5 kits in the table side by side. If the price gap is small, take the slower one. 6400 brings nothing in a 1440p game.",
+        ],
+      },
+      {
+        h: "Power supply and case: do not cut corners here",
+        p: [
+          "A 7600X (105W) plus an RX 7800 XT (250W) plus 150W for the rest is a little over 500W. A 750W Gold leaves real headroom, runs cool, and stays quiet at partial load, which is the most common case.",
+          "On the case, the only real constraint is graphics card length. An RX 7800 XT is 287mm; the longest cards in the catalogue reach 330mm. Compare the length in the spec sheet with the case limit before you order: that is the one mistake that kills an order.",
         ],
       },
     ],
     pitfalls: [
-      "Case limited to 350mm (V217): dual-fan x70-class cards (~240mm) fit, big 330mm triple-fan cards do not.",
-      "650W is enough for a 9600X (65W) + 4070 (200W) ≈ 480W estimated — but if you might want a 5080 one day, take 750W straight away.",
-      "Update the BIOS before installing Windows: early B650 boards had DDR5 bugs that have since been fixed.",
+      "DDR5-6400 CL32 kits cost more than 6000 CL30 and are less stable with four sticks. Do not pay for the frequency bump.",
+      "Update the BIOS before installing Windows: early B650 boards had memory compatibility bugs that have since been fixed.",
+      "A case limited to 300mm takes a 7800 XT (287mm) but not a 5070 Ti (305mm). Check before you pay.",
+      "The 7600X is a 105W part: the stock cooler barely holds it. A real heatsink, even an entry-level one, changes temperatures and noise.",
+    ],
+  },
+  {
+    slug: "config-pc-550k-da",
+    title: "Moving to 4K: the AM5 build, monitor included",
+    hook: "A 7800X3D, 16GB of VRAM and a 4K panel. At this level you stop optimising and start building something that stays valid to the end of the decade.",
+    kind: "build",
+    topic: { fr: "Build complet", en: "Full build" },
+    readMin: 4,
+    parts: [
+      "cpu-r7-7800x3d",
+      "cooler-assassin4",
+      "mobo-b650m",
+      "ram-delta-32-d5",
+      "ssd-nvme-2tb",
+      "gpu-rx9070xt-16gb",
+      "case-velox",
+      "psu-750-gold",
+      "mon-27-4k",
+    ],
+    blocks: [
+      {
+        h: "Why an X3D here",
+        p: [
+          "At 4K the graphics card is the bottleneck, not the CPU. An X3D changes almost nothing in average frame rate at this resolution. It changes a lot if you also want to game at 1080p on a fast panel, where the CPU becomes the limit again.",
+          "If you will only ever game at 4K, a regular Ryzen 5 or 7 is enough and costs less. The X3D buys versatility, not 4K performance.",
+        ],
+      },
+      {
+        h: "The card: 16GB is the minimum",
+        p: [
+          "At 4K, VRAM is the criterion. Textures load at full resolution, ray tracing adds its own data, and supersampling layers take even more. A 16GB card is the absolute minimum at 4K with recent titles.",
+          "Compare the 16GB cards in the table. The choice comes down to price per frame and to physical length: a 305mm triple-fan model does not fit every case.",
+        ],
+      },
+      {
+        h: "Storage and memory at this level",
+        p: [
+          "2TB is not a luxury here: a single 4K game with high-resolution textures takes 150GB and more. 1TB fills up with four big titles. The 32GB DDR5-6000 kit is the balance point, and 6000 pairs well with an X3D.",
+          "Do not buy 64GB of DDR5 to game. That money only makes sense if you edit video or run virtual machines, and even then 48GB is enough.",
+        ],
+      },
+      {
+        h: "Power supply: the one part not to negotiate",
+        p: [
+          "A 7800X3D plus a 16GB card of this generation plus the rest is 500 to 600W depending on the card. 750W Gold is the reasonable minimum and leaves room for a bigger card later. Do not jump to 850W on principle: past 750W you gain nothing and the price climbs.",
+          "The 4K panel in the table is the last thing to check: a 27-inch 4K display is the sweet spot for this resolution. A 32-inch 4K is beautiful but costs much more for the same desk comfort.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "Graphics card length: the longest triple-fan cards in the catalogue reach 330mm. The case in the table fits, but check the sheet if you change cards.",
+      "The 16-pin connector on recent cards needs an ATX 3.x supply. An adapter on an older unit can melt.",
+      "Do not overspend on memory: 64GB of DDR5 costs more than a mid-range graphics card and does nothing for games.",
+      "A 4K panel at 60Hz wastes half the machine. Check the refresh rate in the spec sheet before ordering.",
+      "2TB of storage is a real need at this level, not a gadget. 1TB fills fast in 4K.",
+    ],
+  },
+  {
+    slug: "pc-monte-vs-montage",
+    title: "Shop-built PC or self-assembled: the real economics",
+    hook: "Warranty, availability and no assembly risk against freedom of choice. What a shop build really costs, and how to read its spec sheet in sixty seconds.",
+    kind: "guide",
+    topic: { fr: "Conseil", en: "Advice" },
+    readMin: 4,
+    parts: [
+      "cpu-i5-12400f",
+      "cooler-h212-v3",
+      "mobo-b560m",
+      "ram-vengeance-16-d4",
+      "ssd-nvme-512gb",
+      "gpu-rx6600-8gb",
+      "psu-450-b",
+    ],
+    blocks: [
+      {
+        h: "What a shop build really gives you",
+        p: [
+          "Three things, and they matter: the warranty covering the assembled system, immediate availability, and the ability to try the machine before you leave. That last one is the most underrated. In store you power it on, launch a game, and see with your own eyes whether it holds 60 fps or whether the fans are screaming.",
+          "For someone who has never built a PC and does not want to risk bending a CPU while seating it, that is a service worth paying for. Shop assembly is not a scam, it is labour.",
+        ],
+      },
+      {
+        h: "Where a shop build loses money",
+        p: [
+          "Shop builds are often unbalanced: an undersized 450W supply, an entry-level motherboard, 8GB of RAM, or a 256GB hard drive. None of those four show up in a photo and all of them show up in a spec sheet.",
+          "The countermeasure is simple: before signing, ask for the exact component list (processor, motherboard, graphics card model, RAM amount and speed, storage type, power supply model). A seller who refuses to name the power supply is a seller with something to hide.",
+        ],
+      },
+      {
+        h: "The economic calculation",
+        p: [
+          "Our prebuilt page automatically prices the equivalent separate parts and shows the gap against the assembled PC. That is the most honest calculation available: a small gap means the build is sound and you are paying for the service. A 30% gap means you are paying for an unbalanced configuration.",
+          "The parts table on this page shows the configuration shops assemble most often. Compare it line by line against the prebuilt being offered to you and you will immediately see where the difference comes from.",
+        ],
+      },
+      {
+        h: "The part people forget",
+        p: [
+          "A shop build's warranty almost always covers the complete PC. If your graphics card dies in six months you go back to the shop, not to the card manufacturer. That is a drawback, but it is also protection: somebody stands behind the result.",
+          "If you build it yourself, each part keeps its own full warranty and you know exactly what you bought. The flip side is that the warranty covers neither the assembly, nor compatibility mistakes, nor the BIOS. Accept that difference: it is a trade in risk, not in money.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "Always ask for the exact power supply model. It is the part nobody looks at and the one that decides how long the machine lives.",
+      "A shop build with 8GB of RAM and 256GB of storage at a fair price is a PC that is obsolete in two years.",
+      "A shop build with an unlocked or boosted processor means it was overclocked, and often under-cooled. Ask whether the warranty covers overclocking.",
+      "A seller who refuses to detail the configuration is not a trustworthy seller, it is a seller hiding a part.",
+      "Never pay a brand premium on a prebuilt without checking the real configuration: the brand does not guarantee the balance.",
     ],
   },
   {
     slug: "ouedkniss-occasion-survie",
     title: "Ouedkniss: buying used hardware without getting scammed",
-    hook: "60% of the country's best GPU deals go through Ouedkniss. Survival rules, classic scams and a test checklist.",
-    readMin: 7,
-    parts: ["gpu-rtx3060-12gb", "gpu-rx580-8gb", "cpu-r5-5600"],
+    hook: "The used market carries most of the new GPU price in Algeria. Reference prices, the classic scams, and the test checklist to run before you pay.",
+    kind: "guide",
+    topic: { fr: "Occasion", en: "Used market" },
+    readMin: 4,
+    parts: [
+      "gpu-rx580-8gb",
+      "gpu-rx6600-8gb",
+      "gpu-rtx3060-12gb",
+      "gpu-rtx4060-8gb",
+      "gpu-rx6700xt-12gb",
+      "cpu-r5-5600",
+      "ram-vengeance-16-d4",
+      "ssd-sata-1tb",
+    ],
     blocks: [
       {
-        h: "Reference prices (recorded from the site)",
+        h: "How to read a listing before you negotiate",
         p: [
-          "A healthy used RTX 3060 12GB sells for 75,000–95,000 DA. Below 65,000 DA, get suspicious: a worn-out mined card, a dying fan, or plain fraud (stolen photos, teaser prices).",
-          "Always compare with the lowest new price shown on our product pages before you negotiate — your negotiating margin is exactly that gap.",
+          "The advertised price is not the real price, and the gap between them is often the only information available about the machine's condition. An honest listing gives a firm price, recent photos of the card out of the case, and a place you can collect from.",
+          "A vague listing gives a struck-through price, catalogue photos, no location, and a seller who answers only by private message. That is not a bargain, it is a disguised auction.",
         ],
       },
       {
         h: "Checklist before you pay",
         list: [
-          "Ask for a video: 10 minutes of FurMark or of a game, with the temperature visible (HWInfo). +85°C means dead thermal paste or a clogged heatsink.",
-          "Photos of the card out of the case, front and back: rust marks, tape, missing screws = heavy mining.",
-          "Original invoice, blister pack ideally. Without an invoice, halve your maximum price.",
-          "Test it in person if you can (Algiers, Sétif, Oran: serious sellers accept). Never wire a CCP/BaridiMob deposit to a stranger.",
-          "1 DA listings or absurd crossed-out prices: bait. Walk away.",
+          "Ask for video: ten minutes of gaming or FurMark with the temperature on screen. A card that climbs past 85°C has dead thermal paste or a clogged heatsink.",
+          "Front and back photos of the card out of the case: rust, signs of disassembly, a peeled sticker, missing screws all mean the card has been opened.",
+          "The original invoice, or at least a verifiable serial number. Without an invoice, halve your maximum price.",
+          "Test it in person if you can. In Algiers, Oran, Sétif and Blida most serious sellers agree. A refusal is a signal.",
+          "Never send a deposit by transfer or BaridiMob to someone you have not met.",
+        ],
+      },
+      {
+        h: "The tests that actually matter",
+        p: [
+          "Ten minutes of a real game reveals what a thirty-second menu test does not: stability under sustained load, fan noise, and visual artefacts. A card that buzzes or that makes the image shimmer is a card on its way out.",
+          "A complete used PC has a different classic scam: a nameless power supply and a case with no airflow. Neither shows in a front-on photo, and that is exactly where the expensive failure is.",
+        ],
+      },
+      {
+        h: "Using the comparison tool to negotiate",
+        p: [
+          "The simplest lever: before negotiating, open the product page on this site and note the lowest new price from a verified shop delivering to all 58 wilayas. That gap is your margin. If a used card is within 15% of a new one with a warranty, it is not worth the risk.",
+          "Simple rule: below 50% of the new price, used becomes interesting. Above that, you are paying for the risk with your own money for a saving that does not justify it.",
         ],
       },
     ],
     pitfalls: [
-      "\"Never mined, warranty\" without proof = mined. Miners sell in batches: same photos, several listings.",
-      "Used complete builds often hide a no-name PSU: ask for the exact PSU brand.",
-      "Factor in the trip: a \"bargain\" 300km away stops being one once you pay for the transport.",
+      "\"Never mined, three months warranty\" with no video and no invoice means it was mined. Miners sell in batches with the same photos across several listings.",
+      "A complete used build often hides a nameless power supply. Ask for the exact PSU model before agreeing.",
+      "Travel costs money. A bargain 300km away, plus transport, plus the trip, is no longer a bargain.",
+      "An RX 580 advertised as good as new at close to the new price has been mined. The price is the tell.",
+      "Never pay the full amount before testing. A reasonable deposit plus a test appointment is the norm.",
+    ],
+  },
+  {
+    slug: "erreurs-premier-pc",
+    title: "First-build mistakes, part by part",
+    hook: "Most disappointing machines are not built from bad components but from one undersized line item. The ten most common mistakes and what each one really costs.",
+    kind: "guide",
+    topic: { fr: "Conseil", en: "Advice" },
+    readMin: 5,
+    parts: [
+      "gpu-gtx1650-4gb",
+      "ram-value-8-d4",
+      "ssd-sata-256gb",
+      "psu-450-b",
+      "mobo-a520m",
+      "gpu-rx6600-8gb",
+      "ram-vengeance-16-d4",
+      "ssd-nvme-512gb",
+      "psu-650-b",
+      "mobo-b550m-a-pro",
+    ],
+    blocks: [
+      {
+        h: "The five expensive mistakes",
+        list: [
+          "An undersized power supply. A 450W with a 185W card works, but at a permanent 90% load and with voltage spikes at startup. The motherboard or the graphics card pays for the mistake. It is 5% of the budget and it protects the other 95%.",
+          "8GB of RAM. A browser with a few tabs fills it. The PC slows before you understand why, and the only fix is replacing everything.",
+          "A graphics card with 4GB of VRAM. This is the worst value in the catalogue: slower than an 8GB card, weaker than an 8GB card, and obsolete before the year ends. Never buy a 4GB card at any price.",
+          "A 256GB SSD. Windows and its updates take a hundred-odd gigabytes. You will be uninstalling before the year is out.",
+          "An entry-level chipset in a case with no airflow. The machine will never hold up under load and you will not know why.",
+        ],
+      },
+      {
+        h: "The five mistakes that cost time",
+        list: [
+          "An out-of-date BIOS. If the board does not natively support your processor, it will not boot. That is the first thing to check when a new PC will not start.",
+          "XMP or EXPO not enabled. Memory runs at its base speed: you paid for 3200 and you have 2133. The gain is real and free once switched on.",
+          "No Windows licence. An unlicensed PC runs, but with a watermark and some features limited. Budget for the licence.",
+          "No USB boot drive prepared. Make an installation key before the first power-on, or an empty or dead drive leaves you stuck.",
+          "Thermal paste applied badly or in an absurdly generous amount. If the machine is hot on day one, open it and redo it properly.",
+        ],
+      },
+      {
+        h: "The reasoning mistakes",
+        p: [
+          "The most common: buying a powerful PC on the promise that a graphics card will be added later. The day you want to play, you have to buy the card, the power supply and possibly a new case. That is three parts instead of one.",
+          "The second: overinvesting in the processor. On a fixed budget, every dinar spent on a high-end chip instead of a graphics card is a dinar wasted. At 1080p, the card is the limit.",
+          "The third: paying the premium for RGB, a tempered glass case and a water cooler on a machine that renders at 1080p. None of those change a single frame.",
+        ],
+      },
+      {
+        h: "Checklist before the first power-on",
+        list: [
+          "The CPU is in the right socket: the triangle on the chip and the triangle on the board must line up. Check before clipping the cooler.",
+          "Memory is in the two alternating slots (A2 and B2) for dual channel.",
+          "The power supply is plugged in, including the 4 or 8-pin CPU connector, which is the most commonly forgotten one.",
+          "The SATA data cable is connected, and so is the SATA power cable.",
+          "The heatsink is secured and the fan spins when you open the case.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "The most expensive mistake on this list is the power supply. It stays invisible until the motherboard will not boot.",
+      "Do not skimp on the case: a cheap case limits heatsink height, drive count and graphics card length. It is the part that constrains you for five years.",
+      "A 4GB card is not good value, it is a trap. The low price does not compensate.",
+      "Do not assume a PC that will not boot is defective. The first move is to check the CPU and the BIOS version.",
+      "Noise at startup that then stops is normal. Constant noise is a case with no airflow.",
     ],
   },
   {
     slug: "alim-onduleur-algerie",
     title: "Power supply and UPS: the anti-blackout guide",
-    hook: "Algerian mains electricity kills more PCs than heat does. Size your PSU and pick your UPS, with the actual numbers.",
-    readMin: 5,
-    parts: ["psu-750-gold", "cpu-r5-5600", "gpu-rtx3060-12gb"],
+    hook: "On the Algerian grid it is not heat that kills PCs, it is undervoltage. How to size a power supply, what a UPS genuinely protects against, and what it does not protect against at all.",
+    kind: "guide",
+    topic: { fr: "Alimentation", en: "Power supply" },
+    readMin: 4,
+    parts: [
+      "psu-400-b",
+      "psu-450-b",
+      "psu-550-b",
+      "psu-650-b",
+      "psu-650-gold",
+      "psu-750-gold",
+      "psu-1000-gold",
+      "psu-mwe650-b",
+      "cpu-r5-5600",
+      "gpu-rx6600-8gb",
+    ],
     blocks: [
       {
-        h: "Sizing: the x1.3 rule",
+        h: "The printed wattage is not the delivered wattage",
         p: [
-          "Add up CPU + GPU + 150W (motherboard, RAM, SSD, fans), then multiply by 1.3. Example from the site: 65 + 170 + 150 = 385W → 500W theoretical → take 650W (a standard tier, quiet and efficient).",
-          "80+ Bronze is the bare minimum, not a luxury: at the same load a budget PSU runs hotter, makes more noise and protects less (overvoltage = dead motherboard).",
+          "Read the label, not the product name. What matters is the power available on the 12V rail, because that is where almost all consumption happens: a graphics card pulls 200 to 350W in 12V. On older multi-rail units that number is often below the advertised total.",
+          "A second point: the connector count. A 750W supply with two 8-pin connectors cannot feed a card that needs three. Check the card's sheet before the supply, not the other way round.",
         ],
       },
       {
-        h: "UPS: which one to buy",
+        h: "The sizing rule",
         p: [
-          "For a 400-500W gaming PC plus a monitor: a 1000-1500VA line-interactive UPS. It absorbs micro-blackouts and gives you 5-10 minutes to save your work and shut down.",
-          "Plug into it: the tower and the monitor only. Not the laser printer (its power spike kills the UPS), not the heater.",
-          "Replace the battery every 2-3 years: a UPS with a dead battery protects nothing and gives false confidence.",
+          "Add the processor and graphics card ratings, add about 150W for the rest of the machine, and you have peak consumption. Once you have that number, take the commercial tier just above it: there is always a 50 to 100W gap between tiers, and it is almost always free in price per watt.",
+          "Do not oversize. Above that tier you pay more for nothing, the fan runs continuously at light load (which is where supplies are noisiest), and you sit at a mediocre efficiency point in a load range you will never use.",
+        ],
+      },
+      {
+        h: "The UPS: what it does",
+        p: [
+          "A line-interactive UPS does three things: it detects the outage, it takes over on battery for a few minutes, and it stabilises the voltage when it fluctuates. On the Algerian grid the second function matters most: prolonged undervoltage kills power supplies without anyone noticing a visible cut.",
+          "Sizing is in VA, not W. For a 450W tower plus a 30W monitor, budget 800 to 1000 VA minimum. Real runtime depends on load: at full load a 1000 VA UPS holds for about five minutes, which is just enough to save your work and shut down cleanly.",
+        ],
+      },
+      {
+        h: "The UPS: what it does not do",
+        p: [
+          "A surge-protected power strip does nothing about a blackout. It protects against brief overvoltage, which is a different threat and a real one in Algeria when a neighbour's supply drops. The two protections are complementary: surge protection for spikes, UPS for outages and undervoltage.",
+          "Watch the battery's age. A UPS battery lasts three to four years, and a UPS with a dead battery protects nothing while giving complete confidence. Test it once a year.",
         ],
       },
     ],
     pitfalls: [
-      "A no-name 650W at 6,000 DA is not a 650W: look at the real wattage on the 12V rail (the label).",
-      "A surge-protected power strip is not a UPS: it does nothing against blackouts.",
-      "In summer, dust it out: 45°C ambient plus dust means the PSU runs flat out and ages twice as fast.",
+      "Never plug a laser printer into the UPS: its startup power spike trips the protection and cuts everything.",
+      "A 600 VA UPS will not cope with a 450W PC plus a monitor: it will trip as soon as you power on.",
+      "Run the tower and monitor from the UPS and everything else from a surge strip fed by it. The order matters.",
+      "Six outlets for a PC and monitor is the bare minimum, eight is comfortable. A UPS's USB ports do not deliver their advertised charge rate.",
+      "A PC's power cable is specific to that machine. Another PC with the same connector shape may not work, and the reverse is equally true.",
     ],
   },
+  {
+    slug: "upgrader-ou-remplacer",
+    title: "Upgrade or replace: when changing the motherboard makes sense",
+    hook: "Memory and storage are always replaceable. The processor is not, without changing the board. Here is the number that decides, and the upgrades that always pay.",
+    kind: "guide",
+    topic: { fr: "Conseil", en: "Advice" },
+    readMin: 4,
+    parts: [
+      "cpu-r5-3600",
+      "mobo-b450m",
+      "ram-8gb-d4-3600",
+      "gpu-gtx1050ti-4gb",
+      "ssd-sata-256gb",
+      "cpu-r5-5600",
+      "mobo-b550m-a-pro",
+      "ram-vengeance-16-d4",
+      "gpu-rx6600-8gb",
+      "ssd-nvme-1tb-g4",
+    ],
+    blocks: [
+      {
+        h: "The upgrades that always pay",
+        list: [
+          "Memory. Going from 8GB to 16GB is the best-value upgrade in PC history, and on an older machine it is often the only one that genuinely changes things.",
+          "Storage. Swapping a hard drive or SATA SSD for an NVMe gives visibly faster boot and game loading for the price of a meal.",
+          "The power supply. On a machine over five years old, replacing a questionable supply with a sound one costs little and removes a cause of failure.",
+          "The graphics card. It is the most visible upgrade, and on a machine over five years old it is usually the only one worth making.",
+        ],
+      },
+      {
+        h: "What cannot be changed alone",
+        p: [
+          "A processor needs a compatible socket. Moving from a Ryzen 5 3600 to a Ryzen 7 5700X is free, because it is the same AM4 socket. Moving to a 7600X requires an AM5 board, DDR5, and usually a new cooler: three parts, not one.",
+          "That is where the real threshold sits. If the processor upgrade you are considering forces a motherboard and memory change too, you are no longer upgrading, you are replacing half the machine.",
+        ],
+      },
+      {
+        h: "The number that decides",
+        p: [
+          "Simple rule: if the total cost of the upgrade (processor plus motherboard plus memory, plus the value of your time) exceeds roughly 40% of the price of a comparable new machine, buy the new machine. Below that, upgrading is rational.",
+          "A worked example: on an AM4 machine with a 3600 and a B450, moving to a 5700X costs the processor alone, and it makes sense. On that same machine, aiming for a 7600X costs processor plus board plus memory, which is over the line.",
+        ],
+      },
+      {
+        h: "Do not forget the resale",
+        p: [
+          "A machine that has received a new graphics card and an NVMe drive resells better even if the rest is old. The local used market values the graphics card heavily and everything else barely.",
+          "Before deciding, look up the new price of your current configuration on this site: that is your reference. If your machine is worth 60,000 DA used and the upgrade costs 80,000 DA for a 10% gain, the upgrade is a straight loss.",
+        ],
+      },
+    ],
+    pitfalls: [
+      "Changing the motherboard means changing memory, cooling and often connectors. Budget the full cost, not the processor price.",
+      "A processor upgrade on a board with an old BIOS may not boot at all. Check compatibility before buying.",
+      "Selling the old graphics card before the new one arrives means risking having no machine if the new card is faulty.",
+      "The upgrade that changes nothing: a 3600 to a 4600 on a machine rendering 1080p with a mid-range card. The bottleneck is elsewhere.",
+      "A PC over ten years old is not repaired component by component, it is replaced. The parts cost more than the machine.",
+    ],
+  },
+  // __GUIDES_END__
 ];
 
-/** Locale-aware guide lookup. Falls back to French when an English entry is missing. */
-export function findGuide(slug: string, locale: Locale | "en" | "fr"): Guide | undefined {
-  const pool = locale === "en" ? GUIDES_EN : GUIDES;
+/** Locale-aware guide lookup. */
+export function findGuide(slug: string, locale: Locale): Guide | undefined {
+  const pool = locale === "en" ? GUIDES_EN : GUIDES_FR;
   return pool.find((g) => g.slug === slug);
 }
 
-/** Locale-aware guide list, keeping the French ordering (by editorial priority). */
-export function listGuides(locale: Locale | "en" | "fr"): Guide[] {
-  if (locale !== "en") return GUIDES;
-  const order = new Map(GUIDES.map((g, i) => [g.slug, i]));
-  return [...GUIDES_EN].sort(
-    (a, b) => (order.get(a.slug) ?? 99) - (order.get(b.slug) ?? 99),
-  );
+/** Locale-aware guide list, in the shared editorial order. */
+export function listGuides(locale: Locale): Guide[] {
+  return locale === "en" ? GUIDES_EN : GUIDES_FR;
 }

@@ -13,7 +13,7 @@ import LocaleSwitcher from "./LocaleSwitcher";
  * Rendered by the ROOT layout (which is out of scope for this change set), so
  * it has no locale prop. It therefore resolves the locale through `useLocale()`,
  * which reads `document.documentElement.dataset.locale` — written pre-paint by
- * app/en/layout.tsx. The first client render matches the server HTML (French),
+ * app/fr/layout.tsx. The first client render matches the server HTML (French),
  * then the English copy swaps in right after mount. Everything below is
  * data-driven from the dictionary, so there is no French string left here.
  */
@@ -106,7 +106,7 @@ export default function Footer() {
       </div>
 
       {/* Main Footer Links */}
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto px-4 pt-12 pb-[calc(3.5rem+env(safe-area-inset-bottom,0px)+1rem)] sm:pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-3.5">
@@ -137,31 +137,31 @@ export default function Footer() {
 
           {/* Outils Col */}
           <div className="space-y-2.5">
-            <h4 className="text-white font-bold text-xs uppercase tracking-widest flex items-center gap-2">
+            <h2 className="text-white font-bold text-xs uppercase tracking-widest flex items-center gap-2">
               <span className="w-1 h-3.5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
               {t("nav.toolsConfig")}
-            </h4>
+            </h2>
             <ul className="space-y-2">
               <li>
-                <Link href={href("/builder")} className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5 group">
+                <Link href={href("/builder")} className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5 group py-1 min-h-[36px]">
                   <span className="text-[#2c87c3] opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">→</span>
                   {t("footer.linkBuilder")}
                 </Link>
               </li>
               <li>
-                <Link href={href("/guides")} className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5 group">
+                <Link href={href("/guides")} className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5 group py-1 min-h-[36px]">
                   <span className="text-[#2c87c3] opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">→</span>
                   {t("footer.linkGuides")}
                 </Link>
               </li>
               <li>
-                <Link href={href("/deals")} className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5 group">
+                <Link href={href("/deals")} className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5 group py-1 min-h-[36px]">
                   <span className="text-[#2c87c3] opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">→</span>
                   {t("footer.linkDeals")}
                 </Link>
               </li>
               <li>
-                <Link href={href("/category/cpu")} className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5 group">
+                <Link href={href("/category/cpu")} className="text-slate-400 hover:text-white transition-colors inline-flex items-center gap-1.5 group py-1 min-h-[36px]">
                   <span className="text-[#2c87c3] opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true">→</span>
                   {t("footer.linkCatalog")}
                 </Link>
@@ -171,14 +171,14 @@ export default function Footer() {
 
           {/* Composants Col */}
           <div className="space-y-2.5">
-            <h4 className="text-white font-bold text-xs uppercase tracking-widest flex items-center gap-2">
+            <h2 className="text-white font-bold text-xs uppercase tracking-widest flex items-center gap-2">
               <span className="w-1 h-3.5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
               {t("nav.componentsPc")}
-            </h4>
+            </h2>
             <ul className="space-y-1.5">
               {componentLinks.map((c) => (
                 <li key={c.href}>
-                  <Link href={href(c.href)} className="text-slate-400 hover:text-white transition-colors">
+                  <Link href={href(c.href)} className="text-slate-400 hover:text-white transition-colors inline-flex items-center py-1 min-h-[36px]">
                     {t(c.key)}
                   </Link>
                 </li>
@@ -188,10 +188,10 @@ export default function Footer() {
 
           {/* Transparence Col */}
           <div className="space-y-2.5">
-            <h4 className="text-white font-bold text-xs uppercase tracking-widest flex items-center gap-2">
+            <h2 className="text-white font-bold text-xs uppercase tracking-widest flex items-center gap-2">
               <span className="w-1 h-3.5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
               {t("nav.transparency")}
-            </h4>
+            </h2>
             <p className="text-[11px] leading-relaxed text-slate-400">
               {t("footer.transparencyStores")}
             </p>

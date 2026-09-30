@@ -83,6 +83,7 @@ export default function StoreLogo({ store, size = 36, className = "" }: StoreLog
       style={{ width: size, height: size }}
       className={`rounded-lg bg-gradient-to-br ${profile.bg} ${profile.text} border ${profile.border} shadow-xs flex items-center justify-center font-black tracking-tight shrink-0 select-none ${fontSize} ${className}`}
       title={store}
+      aria-hidden="true"
     >
       {profile.initials}
     </div>

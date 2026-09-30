@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: "Prebuilt Gaming PCs in Algeria (DA)",
     description:
       "Compare prebuilt gaming PCs from Algerian stores against the exact price of their components bought separately, in Algerian Dinars (DA).",
-    url: "/en/prebuilds",
+    url: "/prebuilds",
     type: "website",
     locale: OG_LOCALE.en,
     siteName: "DZ PartPicker",
@@ -70,9 +70,9 @@ export default async function EnglishPrebuildsPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <LocaleSwitcher pathname="/en/prebuilds" />
+          <LocaleSwitcher pathname="/prebuilds" />
           <Link
-            href="//builder"
+            href="/builder"
             className="px-5 py-2.5 rounded-lg bg-[#2c87c3] hover:bg-[#1e5c85] text-white text-xs sm:text-sm font-bold transition-colors flex items-center gap-2 shadow-sm"
           >
             <span>{t("prebuilds.cta")}</span>

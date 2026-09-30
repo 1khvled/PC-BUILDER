@@ -4,6 +4,7 @@ import { isRuptured, productImage, type Offer, type Product } from "@/lib/data/p
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import BytekAd from "@/components/BytekAd";
+import EmptyState from "@/components/EmptyState";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, formatNumber, formatPrice, languageAlternates } from "@/lib/i18n/config";
 import { getT } from "@/lib/i18n/server";
@@ -64,7 +65,7 @@ export const metadata: Metadata = {
     title: "PC Component Deals in Algeria (DA)",
     description:
       "New offers at least 8% below their product's market median, measured live in Algerian Dinars (DA).",
-    url: "/en/deals",
+    url: "/deals",
     type: "website",
     locale: OG_LOCALE.en,
     siteName: "DZ PartPicker",
@@ -95,35 +96,42 @@ export default async function EnglishDealsPage() {
             {t("deals.subtitle", { date: scrapedAt.slice(0, 10) })}
           </p>
         </div>
-        <LocaleSwitcher pathname="/en/deals" />
+        <LocaleSwitcher pathname="/deals" />
       </div>
       <div className="mt-4 mb-4">
         <BytekAd variant="strip" locale={LOCALE} placement="en-deals" />
       </div>
-      <div className="grid md:grid-cols-2 gap-3 mt-2">
-        {list.map((d) => (
-          <Link key={d.id} href={`//product/${d.id}`} className="bg-white rounded p-4 shadow-sm border flex gap-3 items-center">
-            <Thumb src={productImage(productsMap.get(d.id)!)} alt={d.model} size={56} />
-            <div className="min-w-0 flex-1">
-              <div className="font-bold text-sm truncate">{d.brand} {d.model}</div>
-              <div className="text-xs text-slate-400">
-                {t("deals.metaLine", {
-                  median: formatNumber(d.avg, LOCALE),
-                  count: d.n,
-                  store: `${d.store}${d.wilaya ? ` (${d.wilaya})` : ""}`,
-                })}
+      {list.length === 0 ? (
+        <EmptyState type="products" title={t("deals.empty")} />
+      ) : (
+        <div className="grid md:grid-cols-2 gap-3 mt-2">
+          {list.map((d) => (
+            <Link
+              key={d.id}
+              href={`/product/${d.id}`}
+              className="bg-white rounded p-4 shadow-sm border flex gap-3 items-center min-h-[44px] hover:border-[#2c87c3]/50 hover:shadow-card-hover transition-colors"
+            >
+              <Thumb src={productImage(productsMap.get(d.id)!)} alt={d.model} size={56} />
+              <div className="min-w-0 flex-1">
+                <div className="font-bold text-sm truncate">{d.brand} {d.model}</div>
+                <div className="text-xs text-slate-400">
+                  {t("deals.metaLine", {
+                    median: formatNumber(d.avg, LOCALE),
+                    count: d.n,
+                    store: `${d.store}${d.wilaya ? ` (${d.wilaya})` : ""}`,
+                  })}
+                </div>
               </div>
-            </div>
-            <div className="text-right shrink-0">
-              <div className="font-extrabold text-emerald-700">{formatPrice(d.best, LOCALE)}</div>
-              <div className="text-[11px] font-bold text-white bg-emerald-600 rounded-full px-2 py-0.5 inline-block mt-0.5">
-                -{Math.round(d.drop * 100)}% (−{formatNumber(d.saving, LOCALE)})
+              <div className="text-right shrink-0">
+                <div className="font-extrabold text-emerald-700">{formatPrice(d.best, LOCALE)}</div>
+                <div className="text-[11px] font-bold text-white bg-emerald-600 rounded-full px-2 py-0.5 inline-block mt-0.5">
+                  -{Math.round(d.drop * 100)}% (−{formatNumber(d.saving, LOCALE)})
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-      {list.length === 0 && <p className="text-sm text-slate-400 mt-6">{t("deals.empty")}</p>}
+            </Link>
+          ))}
+        </div>
+      )}
     </main>
   );
 }

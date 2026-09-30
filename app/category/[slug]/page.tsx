@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     openGraph: {
       title,
       description: t("category.metaOgDescription", { label }),
-      url: `/en/category/${params.slug}`,
+      url: `/category/${params.slug}`,
       type: "website",
       locale: OG_LOCALE.en,
       siteName: "DZ PartPicker",
@@ -61,13 +61,13 @@ export default async function EnglishCategoryPage({ params }: { params: { slug: 
     "@type": "BreadcrumbList",
     inLanguage: "en-DZ",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/en` },
-      { "@type": "ListItem", position: 2, name: "Components", item: `${SITE_URL}/en/#categories` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}` },
+      { "@type": "ListItem", position: 2, name: "Components", item: `${SITE_URL}/#categories` },
       {
         "@type": "ListItem",
         position: 3,
         name: label,
-        item: `${SITE_URL}/en/category/${params.slug}`,
+        item: `${SITE_URL}/category/${params.slug}`,
       },
     ],
   };
@@ -88,7 +88,7 @@ export default async function EnglishCategoryPage({ params }: { params: { slug: 
         <span>/</span>
         <span className="text-slate-900 font-semibold">{label}</span>
         <span className="ml-auto">
-          <LocaleSwitcher pathname={`/en/category/${params.slug}`} />
+          <LocaleSwitcher pathname={`/category/${params.slug}`} />
         </span>
       </nav>
 

@@ -6,6 +6,7 @@ import { type Prebuilt, evaluatePrebuilt } from "@/lib/data/prebuilds";
 import { type Offer } from "@/lib/data/products";
 import { DEFAULT_LOCALE, formatNumber, formatPrice, localizedHref, type Locale } from "@/lib/i18n/config";
 import { makeT, pluralSuffix } from "@/lib/i18n/runtime";
+import EmptyState from "./EmptyState";
 
 interface PrebuildsClientProps {
   prebuilds: Prebuilt[];
@@ -154,7 +155,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("prebuilds.searchPlaceholder")}
-              className="w-full text-xs sm:text-sm px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-[#2c87c3]"
+              className="w-full text-base sm:text-sm px-3 py-2.5 min-h-[44px] rounded-lg border border-slate-200 focus:outline-none focus:border-[#2c87c3]"
             />
           </div>
 
@@ -167,7 +168,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
               <button
                 type="button"
                 onClick={() => setCpuBrand("all")}
-                className={`flex-1 py-2 font-semibold transition-colors ${
+                className={`flex-1 py-2.5 min-h-[44px] inline-flex items-center justify-center font-semibold transition-colors ${
                   cpuBrand === "all" ? "bg-slate-900 text-white" : "hover:bg-slate-50 text-slate-700"
                 }`}
               >
@@ -176,7 +177,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
               <button
                 type="button"
                 onClick={() => setCpuBrand("AMD")}
-                className={`flex-1 py-2 font-semibold transition-colors border-l border-slate-200 ${
+                className={`flex-1 py-2.5 min-h-[44px] inline-flex items-center justify-center font-semibold transition-colors border-l border-slate-200 ${
                   cpuBrand === "AMD" ? "bg-red-600 text-white" : "hover:bg-slate-50 text-slate-700"
                 }`}
               >
@@ -185,7 +186,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
               <button
                 type="button"
                 onClick={() => setCpuBrand("Intel")}
-                className={`flex-1 py-2 font-semibold transition-colors border-l border-slate-200 ${
+                className={`flex-1 py-2.5 min-h-[44px] inline-flex items-center justify-center font-semibold transition-colors border-l border-slate-200 ${
                   cpuBrand === "Intel" ? "bg-blue-600 text-white" : "hover:bg-slate-50 text-slate-700"
                 }`}
               >
@@ -203,7 +204,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
               id="prebuilds-gpu"
               value={gpuFilter}
               onChange={(e) => setGpuFilter(e.target.value as never)}
-              className="w-full text-xs sm:text-sm px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-[#2c87c3] bg-white"
+              className="w-full text-base sm:text-sm px-3 py-2.5 min-h-[44px] rounded-lg border border-slate-200 focus:outline-none focus:border-[#2c87c3] bg-white"
             >
               <option value="all">{t("prebuilds.gpuAll")}</option>
               <option value="rtx40">GeForce RTX 40 Series</option>
@@ -222,7 +223,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
               id="prebuilds-wilaya"
               value={selectedWilaya}
               onChange={(e) => setSelectedWilaya(e.target.value)}
-              className="w-full text-xs sm:text-sm px-3 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-[#2c87c3] bg-white"
+              className="w-full text-base sm:text-sm px-3 py-2.5 min-h-[44px] rounded-lg border border-slate-200 focus:outline-none focus:border-[#2c87c3] bg-white"
             >
               <option value="all">{t("category.allWilayas", { count: wilayas.length })}</option>
               {wilayas.map((w) => (
@@ -236,12 +237,12 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
 
         {/* Bottom Bar: Deal Toggle & Sort */}
         <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
-          <label className="flex items-center gap-2 cursor-pointer select-none font-semibold text-slate-700">
+          <label className="flex items-center gap-2.5 cursor-pointer select-none font-semibold text-slate-700 min-h-[44px]">
             <input
               type="checkbox"
               checked={dealOnly}
               onChange={(e) => setDealOnly(e.target.checked)}
-              className="w-4 h-4 rounded border-slate-300 text-[#2c87c3] focus:ring-[#2c87c3]"
+              className="w-5 h-5 rounded border-slate-300 text-[#2c87c3] focus:ring-[#2c87c3] shrink-0"
             />
             <span>🔥 {t("prebuilds.dealOnly")}</span>
           </label>
@@ -252,7 +253,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as never)}
               aria-label={t("prebuilds.sortBy")}
-              className="px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 bg-white"
+              className="px-2.5 py-2 min-h-[44px] rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 bg-white"
             >
               <option value="savings">🔥 {t("prebuilds.sortSavings")}</option>
               <option value="discount-pct">📊 {t("prebuilds.sortDiscount")}</option>
@@ -299,9 +300,9 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
                 </div>
 
                 {/* Prebuilt Title */}
-                <h3 className="font-extrabold text-slate-900 group-hover:text-[#2c87c3] transition-colors text-sm line-clamp-2 leading-snug">
+                <h2 className="font-extrabold text-slate-900 group-hover:text-[#2c87c3] transition-colors text-sm line-clamp-2 leading-snug">
                   {item.title}
-                </h3>
+                </h2>
 
                 {/* Core Specs Chips */}
                 <div className="space-y-2 pt-1 border-t border-slate-100">
@@ -386,7 +387,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
                   {/* Open in Builder Button */}
                   <Link
                     href={localizedHref(valuation.builderUrl, locale)}
-                    className="flex-1 py-2 px-3 rounded-lg bg-[#2c87c3] hover:bg-[#1e5c85] text-white text-xs font-bold transition-colors text-center flex items-center justify-center gap-1.5 shadow-sm"
+                    className="flex-1 py-2.5 min-h-[44px] px-3 rounded-lg bg-[#2c87c3] hover:bg-[#1e5c85] text-white text-xs font-bold transition-colors text-center flex items-center justify-center gap-1.5 shadow-sm"
                   >
                     <span>{t("prebuilds.openBuilder")}</span>
                     <span>→</span>
@@ -397,7 +398,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
                     href={item.url}
                     target="_blank"
                     rel="noreferrer"
-                    className="py-2 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors shrink-0 flex items-center gap-1"
+                    className="py-2.5 min-h-[44px] px-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors shrink-0 flex items-center gap-1"
                     title={t("prebuilds.storeTitle")}
                   >
                     <span>{t("prebuilds.storeBtn")}</span>
@@ -411,24 +412,19 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-16 bg-white rounded-xl border border-slate-200 space-y-3">
-          <p className="text-3xl">🔍</p>
-          <p className="font-bold text-slate-800">{t("prebuilds.emptyTitle")}</p>
-          <p className="text-xs text-slate-500">{t("prebuilds.emptyText")}</p>
-          <button
-            type="button"
-            onClick={() => {
-              setSearch("");
-              setCpuBrand("all");
-              setGpuFilter("all");
-              setSelectedWilaya("all");
-              setDealOnly(false);
-            }}
-            className="px-4 py-2 rounded-lg bg-[#2c87c3] text-white text-xs font-bold hover:bg-[#1e5c85]"
-          >
-            {t("common.resetFilters")}
-          </button>
-        </div>
+        <EmptyState
+          type="search"
+          title={t("prebuilds.emptyTitle")}
+          description={t("prebuilds.emptyText")}
+          actionText={t("common.resetFilters")}
+          onAction={() => {
+            setSearch("");
+            setCpuBrand("all");
+            setGpuFilter("all");
+            setSelectedWilaya("all");
+            setDealOnly(false);
+          }}
+        />
       )}
     </div>
   );

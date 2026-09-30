@@ -1,5 +1,5 @@
 import { OFFERS, PRODUCTS, bestOffer, type Offer, type Product } from "@/lib/data/products";
-import { checkCompat } from "@/lib/compat/check";
+import { checkCompat, formatCompatFinding } from "@/lib/compat/check";
 import { estimatedWattage, recommendedPsu } from "@/lib/compat/watt";
 
 export type UseCase = "gaming-1080p" | "gaming-1440p" | "office" | "design";
@@ -125,7 +125,7 @@ export function suggestBuild(budgetDa: number, useCase: UseCase, offers: Offer[]
     const built = picks as Record<string, Product>;
     const res = checkCompat(built as never);
     const total = Object.values(picks).reduce((s, p) => s + (bestOffer((p as Product).id, offers)?.priceDa ?? 0), 0);
-    const blocks = res.warnings.filter((w) => w.startsWith("BLOCK"));
+    const blocks = res.warnings.filter((w) => w.severity === "block");
     if (blocks.length === 0 && (total <= budgetDa * pass || pass === Infinity)) {
       const cpu = picks.cpu;
       const gpu = picks.gpu;
@@ -141,7 +141,7 @@ export function suggestBuild(budgetDa: number, useCase: UseCase, offers: Offer[]
           const b = bestOffer((p as Product).id, offers);
           return { productId: (p as Product).id, model: `${(p as Product).brand} ${(p as Product).model}`, priceDa: b?.priceDa ?? 0, store: b?.store ?? "—", url: b?.url ?? "#" };
         }),
-        warnings: [...res.warnings, ...(pass > 1 && pass !== Infinity ? ["Budget dépassé de <15% — regardez l'occasion Ouedkniss."] : [])],
+        warnings: [...res.warnings.map(formatCompatFinding), ...(pass > 1 && pass !== Infinity ? ["Budget dépassé de <15% — regardez l'occasion Ouedkniss."] : [])],
         bottleneck: bn,
         psuHeadroomW: psuW - watt,
         fitsBudget: total <= budgetDa,
@@ -149,7 +149,7 @@ export function suggestBuild(budgetDa: number, useCase: UseCase, offers: Offer[]
       };
     }
     if (pass === Infinity) {
-      warnings.push(...blocks, "Budget trop serré même au minimum — augmentez ou visez l'occasion.");
+      warnings.push(...blocks.map(formatCompatFinding), "Budget trop serré même au minimum — augmentez ou visez l'occasion.");
     }
   }
   throw new Error("unreachable");

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { OG_LOCALE, languageAlternates } from "@/lib/i18n/config";
 
 /**
- * Metadata-only layout for /en/builder.
+ * Metadata-only layout for /builder.
  *
  * The page itself is a Client Component ("use client"), so it cannot export
  * `metadata`. A server layout wrapping it can, which gives the builder proper
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title: "System Builder PC Algeria — Configure your PC in DA",
     description:
       "Configure your PC part by part: automatic compatibility check, estimated power draw and a live total in Algerian Dinars (DA) built from real Algerian market prices.",
-    url: "/en/builder",
+    url: "/builder",
     type: "website",
     locale: OG_LOCALE.en,
     siteName: "DZ PartPicker",

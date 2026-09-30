@@ -30,9 +30,9 @@ export async function GET(req: Request) {
     `> Prices recorded on ${scrapedAt.slice(0, 10)}. Stock is indicative: always confirm with the store.`,
     "",
     "## Pages",
-    `- System Builder (automatic compatibility check): ${base}/en/builder`,
-    ...CATEGORIES.map((c) => `- ${c.label} (${c.slug}): ${base}/en/category/${c.slug}`),
-    ...listGuides("en").map((g) => `- Guide: ${g.title}: ${base}/en/guides/${g.slug}`),
+    `- System Builder (automatic compatibility check): ${base}/builder`,
+    ...CATEGORIES.map((c) => `- ${c.label} (${c.slug}): ${base}/category/${c.slug}`),
+    ...listGuides("en").map((g) => `- Guide: ${g.title}: ${base}/guides/${g.slug}`),
     "",
     "## Lowest price per product (DA, at the recorded snapshot)",
   ];
@@ -41,16 +41,16 @@ export async function GET(req: Request) {
     const b = bestOffer(p.id, offers);
     lines.push(
       b
-        ? `- ${p.brand} ${p.model} [${p.category}]: ${b.priceDa.toLocaleString("en-DZ")} DA at ${b.store} (${b.wilaya}, ${b.condition === "new" ? "new" : "used"}) - ${base}/en/product/${p.id}`
+        ? `- ${p.brand} ${p.model} [${p.category}]: ${b.priceDa.toLocaleString("en-DZ")} DA at ${b.store} (${b.wilaya}, ${b.condition === "new" ? "new" : "used"}) - ${base}/product/${p.id}`
         : `- ${p.brand} ${p.model} [${p.category}]: no indexed offer`,
     );
   }
 
   lines.push(
     "",
-    `Full dataset: ${base}/en/llms-full.txt`,
-    `Sitemap: ${base}/en/sitemap.xml`,
-    `French version of this file: ${base}/llms.txt`,
+    `Full dataset: ${base}/llms-full.txt`,
+    `Sitemap: ${base}/sitemap.xml`,
+    `French version of this file: ${base}/fr/llms.txt`,
   );
 
   return new Response(lines.join("\n"), {

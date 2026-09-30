@@ -25,8 +25,8 @@ export default function Loading() {
         ))}
       </div>
 
-      <div className="flex items-center gap-2 text-xs text-slate-400">
-        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+      <div className="flex items-center gap-2 text-xs text-slate-400" role="status" aria-live="polite">
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
         <span>Chargement de la page…</span>
       </div>
     </main>

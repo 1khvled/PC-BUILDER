@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { CATEGORIES, PRODUCTS, bestOffer, isRuptured, productImage, type Product } from "@/lib/data/products";
 import { useCatalog } from "@/lib/data/use-offers";
@@ -175,13 +175,52 @@ export default function EnglishBuilderPage() {
   const [activeModalCat, setActiveModalCat] = useState<string | null>(null);
   const [modalSearch, setModalSearch] = useState("");
 
-  // Close the modal with Escape for a clear keyboard navigation
+  // The picker is a real modal dialog: Escape closes it, Tab is trapped inside
+  // it, and focus returns to the button that opened it. It declared
+  // aria-modal="true" without any of that, so a keyboard user could tab straight
+  // out into the page behind and land nowhere when it closed.
+  const modalRef = useRef<HTMLDivElement>(null);
+  const lastTriggerRef = useRef<HTMLElement | null>(null);
+
+  const openModal = (cat: string, trigger?: HTMLElement) => {
+    lastTriggerRef.current = trigger ?? null;
+    setActiveModalCat(cat);
+  };
+
+  const closeModal = () => {
+    setActiveModalCat(null);
+    setModalSearch("");
+    // Returning focus is what makes the dialog feel like a dialog rather than a
+    // trap that dumps the user back at the top of the document.
+    lastTriggerRef.current?.focus?.();
+    lastTriggerRef.current = null;
+  };
+
   useEffect(() => {
     if (!activeModalCat) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setActiveModalCat(null);
-        setModalSearch("");
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const root = modalRef.current;
+      if (!root) return;
+      const focusables = Array.from(
+        root.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter((el) => el.offsetParent !== null || el === document.activeElement);
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
       }
     };
     document.addEventListener("keydown", onKey);
@@ -190,15 +229,19 @@ export default function EnglishBuilderPage() {
 
   // Persist every change: the URL stays the shareable source of truth,
   // localStorage keeps the build across revisits.
+  // The English builder lives at the unprefixed "/builder"; it used to rewrite
+  // its own address bar to "/en/builder", which is a permanent redirect, so
+  // every share/reload paid a 308 hop.
+  const builderPath = href("/builder");
   useEffect(() => {
     try {
       const s = serializePicks(picks);
-      window.history.replaceState(null, "", s ? `/en/builder?p=${encodeURIComponent(s)}` : "/en/builder");
+      window.history.replaceState(null, "", s ? `${builderPath}?p=${encodeURIComponent(s)}` : builderPath);
       window.localStorage.setItem("dz_builder_picks", s);
     } catch {
       /* noop */
     }
-  }, [picks]);
+  }, [picks, builderPath]);
 
   const build = useMemo(() => {
     const b: Record<string, Product> = {};
@@ -231,7 +274,7 @@ export default function EnglishBuilderPage() {
   const handleCopyLink = () => {
     try {
       const s = serializePicks(picks);
-      const link = window.location.origin + "/en/builder" + (s ? `?p=${encodeURIComponent(s)}` : "");
+      const link = window.location.origin + href("/builder") + (s ? `?p=${encodeURIComponent(s)}` : "");
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(link)
           .then(() => showToast(t("builder.toastCopied")))
@@ -275,8 +318,7 @@ export default function EnglishBuilderPage() {
 
   const handleSelectPart = (category: string, productId: string) => {
     setPicks((prev) => ({ ...prev, [category]: productId }));
-    setActiveModalCat(null);
-    setModalSearch("");
+    closeModal();
     triggerFlash(category);
     showToast(t("builder.toastUpdated"));
   };
@@ -306,7 +348,7 @@ export default function EnglishBuilderPage() {
           </div>
           <div className="text-right text-xs text-slate-500">
             <div suppressHydrationWarning>Date: {formatDate(new Date().toISOString(), LOCALE)}</div>
-            <div className="text-[10px] text-slate-400">dz-partpicker.dz/en/builder</div>
+            <div className="text-[10px] text-slate-400">dz-partpicker.dz{builderPath}</div>
           </div>
         </div>
       </div>
@@ -329,10 +371,10 @@ export default function EnglishBuilderPage() {
 
         {/* Quick Toolbar with Print Button Next to Copy */}
         <div className="flex items-center gap-2 text-xs">
-          <LocaleSwitcher pathname="/en/builder" />
+          <LocaleSwitcher pathname="/builder" />
           <button
             onClick={handleCopyLink}
-            className="px-3.5 py-2 bg-white border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-600 rounded-lg font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
+            className="px-3.5 py-2.5 min-h-[44px] bg-white border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-600 rounded-lg font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
             title={t("builder.copyLinkTitle")}
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -345,7 +387,7 @@ export default function EnglishBuilderPage() {
           {/* Print-friendly export button next to Copy */}
           <button
             onClick={handlePrint}
-            className="px-3.5 py-2 bg-white border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-600 rounded-lg font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
+            className="px-3.5 py-2.5 min-h-[44px] bg-white border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-600 rounded-lg font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
             title={t("builder.printTitle2")}
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -358,13 +400,13 @@ export default function EnglishBuilderPage() {
 
           <button
             onClick={handleLoadDefault}
-            className="hidden sm:inline-flex px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg font-medium transition-colors btn-press"
+            className="hidden sm:inline-flex px-3 py-2.5 min-h-[44px] bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg font-medium transition-colors btn-press"
           >
             {t("builder.exampleGamer")}
           </button>
           <button
             onClick={handleReset}
-            className="px-3 py-2 bg-white border border-slate-200 hover:text-red-600 hover:border-red-200 hover:bg-red-50/50 text-slate-600 rounded-lg font-medium transition-colors btn-press"
+            className="px-3 py-2.5 min-h-[44px] bg-white border border-slate-200 hover:text-red-600 hover:border-red-200 hover:bg-red-50/50 text-slate-600 rounded-lg font-medium transition-colors btn-press"
           >
             {t("common.reset")}
           </button>
@@ -423,7 +465,7 @@ export default function EnglishBuilderPage() {
               {result.ok ? "✓" : "!"}
             </span>
             <span>
-              {result.ok
+              {result.warnings.length === 0
                 ? t("builder.compatOk")
                 : t("builder.compatIssues", {
                     count: result.warnings.length,
@@ -440,9 +482,23 @@ export default function EnglishBuilderPage() {
         </div>
 
         {result.warnings.length > 0 && (
-          <ul className="mt-3 text-xs bg-red-100/60 border border-red-200 rounded-lg p-3 list-disc pl-6 space-y-1 text-red-900 font-medium print:bg-white">
-            {result.warnings.map((w, i) => (
-              <li key={i}>{w}</li>
+          <ul className="mt-3 space-y-1.5 text-xs font-medium print:bg-white">
+            {result.warnings.map((w) => (
+              <li
+                key={w.key}
+                className={
+                  w.severity === "block"
+                    ? "flex gap-2 rounded-lg border border-red-200 bg-red-100/60 p-2.5 text-red-900"
+                    : w.severity === "warn"
+                      ? "flex gap-2 rounded-lg border border-amber-200 bg-amber-100/60 p-2.5 text-amber-900"
+                      : "flex gap-2 rounded-lg border border-slate-200 bg-slate-100/70 p-2.5 text-slate-700"
+                }
+              >
+                <span aria-hidden="true" className="shrink-0 font-black">
+                  {w.severity === "block" ? "✕" : w.severity === "warn" ? "!" : "i"}
+                </span>
+                <span>{t(w.key, w.vars ?? {})}</span>
+              </li>
             ))}
           </ul>
         )}
@@ -452,10 +508,15 @@ export default function EnglishBuilderPage() {
           <BuildPerformanceCard build={build} />
       </div>
 
-      {/* Main PCPartPicker System Builder Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-card mt-4 overflow-hidden print:border-slate-300 print:shadow-none">
+      {/* Main PCPartPicker System Builder Table
+
+          `overflow-hidden` is deliberately NOT on this wrapper: an overflow
+          ancestor is a scroll container, which would trap the total bar below
+          inside the card stack. It is applied to the mobile and desktop lists
+          instead, so the total can be `sticky` on phones (see below). */}
+      <div className="bg-white rounded-xl border border-slate-200 shadow-card mt-4 print:border-slate-300 print:shadow-none">
         {/* Mobile View: High-Density Ergonomic Component Cards */}
-        <div className="block md:hidden divide-y divide-slate-100 p-3 space-y-3 print:hidden">
+        <div className="block md:hidden divide-y divide-slate-100 p-3 space-y-3 print:hidden overflow-hidden rounded-t-xl">
           {CATEGORIES.map((cat) => {
             const product = build[cat.slug];
             const best = product ? bestOffer(product.id, offers) : undefined;
@@ -485,7 +546,7 @@ export default function EnglishBuilderPage() {
                   {product && (
                     <button
                       onClick={() => handleRemovePart(cat.slug)}
-                      className="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-0.5 rounded hover:bg-red-50"
+                      className="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-2 min-h-[40px] inline-flex items-center rounded hover:bg-red-50"
                       aria-label={t("builder.removeAria", { label: catLabel })}
                     >
                       ✕ {t("builder.remove")}
@@ -550,8 +611,8 @@ export default function EnglishBuilderPage() {
                           <span className="text-slate-300 font-normal">—</span>
                         )}
                         <button
-                          onClick={() => setActiveModalCat(cat.slug)}
-                          className="text-xs text-[#2c87c3] hover:underline font-bold mt-0.5 block"
+                          onClick={(e) => openModal(cat.slug, e.currentTarget)}
+                          className="text-xs text-[#2c87c3] hover:underline font-bold mt-0.5 py-2 min-h-[40px] inline-flex items-center"
                         >
                           {t("builder.change")}
                         </button>
@@ -564,8 +625,8 @@ export default function EnglishBuilderPage() {
                       {t("builder.noneSelected")}
                     </span>
                     <button
-                      onClick={() => setActiveModalCat(cat.slug)}
-                      className="btn-blue px-4 py-2 text-xs font-bold min-h-[38px] touch-manipulation"
+                      onClick={(e) => openModal(cat.slug, e.currentTarget)}
+                      className="btn-blue px-4 py-2.5 text-xs font-bold min-h-[44px] touch-manipulation"
                     >
                       {t("builder.choose")}
                     </button>
@@ -577,7 +638,7 @@ export default function EnglishBuilderPage() {
         </div>
 
         {/* Desktop View: Main PCPartPicker System Builder Table */}
-        <div className="hidden md:block overflow-x-auto print:block">
+        <div className="hidden md:block overflow-x-auto overflow-y-hidden rounded-t-xl print:block">
           <table className="w-full text-sm min-w-[860px] border-collapse">
             <thead className="bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200 select-none print:bg-slate-100 print:text-slate-700">
               <tr>
@@ -677,8 +738,8 @@ export default function EnglishBuilderPage() {
                         </div>
                       ) : (
                         <button
-                          onClick={() => setActiveModalCat(cat.slug)}
-                          className="btn-blue px-3.5 py-1.5 text-xs print:hidden"
+                          onClick={(e) => openModal(cat.slug, e.currentTarget)}
+                          className="btn-blue px-3.5 py-2 text-xs min-h-[40px] print:hidden"
                         >
                           {t("builder.choose")}
                         </button>
@@ -690,15 +751,15 @@ export default function EnglishBuilderPage() {
                       {product ? (
                         <div className="flex items-center justify-end gap-1.5">
                           <button
-                            onClick={() => setActiveModalCat(cat.slug)}
-                            className="px-2.5 py-1 text-[11px] font-semibold text-slate-600 hover:text-[#2c87c3] hover:bg-blue-50 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors btn-press"
+                            onClick={(e) => openModal(cat.slug, e.currentTarget)}
+                            className="px-2.5 py-1.5 sm:py-1 min-h-[36px] text-[11px] font-semibold text-slate-600 hover:text-[#2c87c3] hover:bg-blue-50 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors btn-press"
                             title={t("builder.changeTitle")}
                           >
                             {t("builder.change")}
                           </button>
                           <button
                             onClick={() => handleRemovePart(cat.slug)}
-                            className="w-7 h-7 rounded-md text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                            className="w-8 h-8 sm:w-7 sm:h-7 rounded-md text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                             title={t("builder.removeTitle")}
                             aria-label={t("builder.removeAria", { label: catLabel })}
                           >
@@ -707,8 +768,8 @@ export default function EnglishBuilderPage() {
                         </div>
                       ) : (
                         <button
-                          onClick={() => setActiveModalCat(cat.slug)}
-                          className="text-[#2c87c3] hover:text-[#1e5c85] hover:underline underline-offset-4 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] rounded btn-press"
+                          onClick={(e) => openModal(cat.slug, e.currentTarget)}
+                          className="text-[#2c87c3] hover:text-[#1e5c85] hover:underline underline-offset-4 text-xs font-bold py-2 min-h-[40px] inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] rounded btn-press"
                         >
                           {t("builder.add")}
                         </button>
@@ -721,8 +782,13 @@ export default function EnglishBuilderPage() {
           </table>
         </div>
 
-        {/* Sticky Total Bar (Styled like PCPartPicker System Total) */}
-        <div className="relative overflow-hidden flex flex-wrap items-center justify-between gap-4 px-5 py-4 bg-gradient-to-r from-[#11111c] via-[#181a2e] to-[#11111c] text-white rounded-b-xl border-t border-slate-800 print:bg-slate-100 print:bg-none print:text-slate-900 print:border-slate-300 print:rounded-none">
+        {/* Sticky Total Bar (Styled like PCPartPicker System Total)
+
+            Mobile: `sticky bottom-16` keeps the running total pinned 64px up -
+            clear of the fixed bottom nav - while scrolling the ~4000px card
+            stack, so the price in DA is never more than a glance away. Desktop
+            and print: plain static bar, as before. */}
+        <div className="sticky bottom-16 md:static z-10 relative overflow-hidden flex flex-wrap items-center justify-between gap-4 px-5 py-4 bg-gradient-to-r from-[#11111c] via-[#181a2e] to-[#11111c] text-white rounded-b-xl border-t border-slate-800 print:static print:bg-slate-100 print:bg-none print:text-slate-900 print:border-slate-300 print:rounded-none">
           <div className="absolute inset-0 dz-hero-grid opacity-40 pointer-events-none print:hidden" aria-hidden="true" />
           <div className="relative flex items-baseline gap-3 flex-wrap text-sm">
             <span className="text-slate-400 print:text-slate-600 font-medium">
@@ -744,7 +810,7 @@ export default function EnglishBuilderPage() {
           <div className="relative flex items-center gap-2 text-xs font-semibold ml-auto print:hidden">
             <button
               onClick={handlePrint}
-              className="px-3.5 py-2 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 text-white font-bold transition-colors btn-press flex items-center gap-1.5"
+              className="px-3.5 py-2.5 min-h-[44px] rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 text-white font-bold transition-colors btn-press flex items-center gap-1.5"
               title={t("builder.printTitle2")}
             >
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -757,7 +823,7 @@ export default function EnglishBuilderPage() {
 
             <button
               onClick={handleCopyLink}
-              className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white font-bold transition-colors btn-press shadow-[0_4px_14px_-4px_rgba(16,185,129,0.6)] flex items-center gap-1.5"
+              className="px-4 py-2.5 min-h-[44px] rounded-lg bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white font-bold transition-colors btn-press shadow-[0_4px_14px_-4px_rgba(16,185,129,0.6)] flex items-center gap-1.5"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
@@ -775,8 +841,12 @@ export default function EnglishBuilderPage() {
 
       {/* Component Picker Modal */}
       {activeModalCat && (
-        <div className="fixed inset-0 bg-slate-950/75 flex items-center justify-center p-4 z-50 print:hidden animate-backdrop-fade" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
+        <div
+          className="fixed inset-0 bg-slate-950/75 flex items-center justify-center p-4 z-50 print:hidden animate-backdrop-fade"
+          onClick={() => closeModal()}
+        >
           <div
+            ref={modalRef}
             role="dialog"
             aria-modal="true"
             aria-label={t("builder.chooseAria", { label: categoryLabel(activeModalCat, t) })}
@@ -799,13 +869,11 @@ export default function EnglishBuilderPage() {
                 </div>
               </div>
               <button
-                onClick={() => {
-                  setActiveModalCat(null);
-                  setModalSearch("");
-                }}
-                className="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold btn-press transition-colors"
+                onClick={() => closeModal()}
+                aria-label={t("builder.changeTitle")}
+                className="w-10 h-10 shrink-0 rounded-lg hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold btn-press transition-colors"
               >
-                ✕
+                <span aria-hidden="true">✕</span>
               </button>
             </div>
 
@@ -818,7 +886,7 @@ export default function EnglishBuilderPage() {
               </span>
               <Link
                 href={href(`/category/${activeModalCat}`)}
-                onClick={() => setActiveModalCat(null)}
+                onClick={closeModal}
                 className="text-[#2c87c3] hover:underline font-semibold flex items-center gap-1"
               >
                 <span>{t("builder.exploreCatalog")}</span>
@@ -834,7 +902,7 @@ export default function EnglishBuilderPage() {
                 onChange={(e) => setModalSearch(e.target.value)}
                 placeholder={t("builder.modalSearchPlaceholder")}
                 aria-label={t("builder.modalSearchPlaceholder")}
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-xs text-slate-800 outline-none focus:border-[#2c87c3] focus:bg-white focus:shadow-[0_0_0_3px_rgba(44,135,195,0.15)] transition-all"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2.5 min-h-[44px] text-base sm:text-xs text-slate-800 outline-none focus:border-[#2c87c3] focus:bg-white focus:shadow-[0_0_0_3px_rgba(44,135,195,0.15)] transition-all"
                 autoFocus
               />
             </div>
@@ -911,7 +979,7 @@ export default function EnglishBuilderPage() {
                       </div>
                       <button
                         onClick={() => handleSelectPart(activeModalCat, product.id)}
-                        className={`px-3.5 py-1.5 rounded-lg text-xs font-bold shrink-0 transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
+                        className={`px-3.5 py-2 min-h-[44px] rounded-lg text-xs font-bold shrink-0 transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
                           isCurrent
                             ? "bg-slate-200 text-slate-700 cursor-default"
                             : isRupturedProduct
@@ -929,10 +997,18 @@ export default function EnglishBuilderPage() {
         </div>
       )}
 
-      {/* Floating Toast Notification */}
+      {/* Floating Toast Notification
+
+          Lifted clear of the fixed mobile bottom nav (h-14 + safe area) and of
+          the builder's own sticky total bar, which it used to sit on top of. */}
       {toastMessage && (
-        <div key={toastMessage} className="fixed bottom-6 right-6 sm:right-10 z-50 bg-[#11111c] text-white px-4 py-3 rounded-xl shadow-pop border border-white/10 flex items-center gap-2.5 text-xs sm:text-sm font-semibold print:hidden animate-toast-in">
-          <span className="w-2 h-2 rounded-full bg-emerald-400" />
+        <div
+          key={toastMessage}
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-[calc(9rem+env(safe-area-inset-bottom,0px))] left-4 right-4 sm:bottom-6 sm:left-auto sm:right-10 z-50 bg-[#11111c] text-white px-4 py-3 rounded-xl shadow-pop border border-white/10 flex items-center gap-2.5 text-xs sm:text-sm font-semibold print:hidden animate-toast-in"
+        >
+          <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" aria-hidden="true" />
           <span>{toastMessage}</span>
         </div>
       )}

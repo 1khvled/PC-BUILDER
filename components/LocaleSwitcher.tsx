@@ -67,7 +67,7 @@ export default function LocaleSwitcher({ pathname, tone = "light", className = "
         // URL prefix, so it stays right even when the href had to fall back).
         const active = e.locale === localeFromPathname(source);
         const item = dark
-          ? `px-2.5 py-1 rounded-full text-[11px] font-bold transition-colors ${
+          ? `px-3 py-1.5 rounded-full text-[11px] font-bold transition-colors min-h-[32px] inline-flex items-center ${
               active
                 ? "bg-[#2c87c3] text-white"
                 : "text-slate-300 hover:text-white hover:bg-white/10"

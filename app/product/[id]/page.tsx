@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     openGraph: {
       title,
       description: t("product.metaOgDescription", { brand: product.brand, model: product.model }),
-      url: `/en/product/${product.id}`,
+      url: `/product/${product.id}`,
       type: "article",
       locale: OG_LOCALE.en,
       siteName: "DZ PartPicker",
@@ -104,9 +104,9 @@ export default async function EnglishProductPage({ params }: { params: { id: str
     "@type": "BreadcrumbList",
     inLanguage: "en-DZ",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/en` },
-      { "@type": "ListItem", position: 2, name: catLabel, item: `${SITE_URL}/en/category/${product.category}` },
-      { "@type": "ListItem", position: 3, name, item: `${SITE_URL}/en/product/${product.id}` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}` },
+      { "@type": "ListItem", position: 2, name: catLabel, item: `${SITE_URL}/category/${product.category}` },
+      { "@type": "ListItem", position: 3, name, item: `${SITE_URL}/product/${product.id}` },
     ],
   };
 
@@ -136,7 +136,7 @@ export default async function EnglishProductPage({ params }: { params: { id: str
           {t("common.home")}
         </Link>
         <span>/</span>
-        <Link href={`//category/${product.category}`} className="hover:text-slate-900 transition-colors">
+        <Link href={`/category/${product.category}`} className="hover:text-slate-900 transition-colors">
           {catLabel}
         </Link>
         <span>/</span>
@@ -144,14 +144,21 @@ export default async function EnglishProductPage({ params }: { params: { id: str
           {name}
         </span>
         <span className="ml-auto shrink-0">
-          <LocaleSwitcher pathname={`/en/product/${product.id}`} />
+          <LocaleSwitcher pathname={`/product/${product.id}`} />
         </span>
       </nav>
 
-      {/* Main Product Layout with Sticky Buy Box */}
+      {/* Main Product Layout with Sticky Buy Box
+
+          On a phone the grid collapses to one column, which put the buy box -
+          the cheapest price, the store, the wilaya and the availability, i.e.
+          the four things the whole page exists to answer - BELOW the specs
+          table, the 274-row offers comparison and the price chart. `order-1`
+          on mobile lifts it directly under the breadcrumbs; `lg:order-none`
+          restores the two-column desktop layout. */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Gallery Hero + Specs + Offers (8 cols) */}
-        <div className="lg:col-span-8 space-y-8">
+        <div className="lg:col-span-8 order-2 lg:order-none space-y-8">
           {/* Gallery Hero with Badges */}
           <div className="bg-white rounded border border-slate-200 p-6 sm:p-8 relative overflow-hidden">
             {/* Top Badges Row */}
@@ -327,8 +334,12 @@ export default async function EnglishProductPage({ params }: { params: { id: str
 
         </div>
 
-        {/* Right Column: Sticky Buy Box (4 cols) */}
-        <div className="lg:col-span-4 lg:sticky lg:top-20 space-y-4">
+        {/* Right Column: Sticky Buy Box (4 cols)
+
+            `lg:sticky` sits below `top-28`: the sticky header is two stacked
+            bars (~112px), so the previous `top-20` tucked the top 32px of the
+            buy box - including the price label - underneath it. */}
+        <div className="lg:col-span-4 lg:sticky lg:top-28 order-1 lg:order-none space-y-4">
           <div className="bg-white rounded border border-slate-200 shadow-md p-6 space-y-5">
             {/* Header / Price */}
             <div>
@@ -394,7 +405,7 @@ export default async function EnglishProductPage({ params }: { params: { id: str
                 </a>
 
                 <Link
-                  href={`//builder?add=${product.category}:${product.id}`}
+                  href={`/builder?add=${product.category}:${product.id}`}
                   className="w-full text-center py-2.5 px-4 rounded border border-slate-200 hover:border-[#2c87c3] hover:bg-blue-50/50 text-slate-800 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
                 >
                   <span>{t("product.addToBuilder")}</span>

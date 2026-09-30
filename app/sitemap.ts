@@ -5,11 +5,11 @@ import { getProducts } from "@/lib/data/catalog";
 import { absoluteUrl, localizedPath } from "@/lib/i18n/config";
 
 /**
- * English sitemap, served at /en/sitemap.xml.
+ * English sitemap, served at /sitemap.xml.
  *
  * Lists only English URLs, each one carrying the full hreflang set
- * (fr-DZ unprefixed, en-DZ prefixed, x-default -> French) so crawlers can pair
- * the two versions of every page. The French sitemap (/sitemap.xml) carries the
+ * (en-DZ unprefixed, fr-DZ prefixed under /fr, x-default -> English) so crawlers can pair
+ * the two versions of every page. The French sitemap (/fr/sitemap.xml) carries the
  * same alternates on the French URLs.
  */
 const STATIC_ROUTES = ["", "/builder", "/prebuilds", "/guides", "/deals"];

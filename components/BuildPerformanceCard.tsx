@@ -45,7 +45,7 @@ function ScoreBar({ label, value, t }: { label: string; value: number | null; t:
   );
 }
 
-function NoteLine({ note, t }: { note: BuildPerformance["notes"][number]; t: TFn }) {
+function NoteLine({ note, t }: { note: BuildPerformance["insights"][number]; t: TFn }) {
   const tone =
     note.severity === "bad"
       ? "text-red-700"
@@ -97,9 +97,9 @@ export default function BuildPerformanceCard({ build }: { build: Partial<Record<
         </p>
       )}
 
-      {perf.notes.length > 0 && (
+      {perf.insights.length > 0 && (
         <ul className="mt-2.5 space-y-1 border-t border-slate-200 pt-2.5 print:border-slate-300">
-          {perf.notes.map((n) => (
+          {perf.insights.map((n) => (
             <NoteLine key={n.key} note={n} t={t} />
           ))}
         </ul>

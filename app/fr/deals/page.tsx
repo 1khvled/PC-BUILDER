@@ -4,6 +4,7 @@ import { isRuptured, productImage, type Offer, type Product } from "@/lib/data/p
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import BytekAd from "@/components/BytekAd";
+import EmptyState from "@/components/EmptyState";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, formatNumber, formatPrice, languageAlternates } from "@/lib/i18n/config";
 import { getT } from "@/lib/i18n/server";
@@ -98,9 +99,16 @@ export default async function DealsPage() {
       <div className="mt-4 mb-4">
         <BytekAd variant="strip" locale="fr" placement="fr-deals" />
       </div>
+      {list.length === 0 ? (
+        <EmptyState type="products" title="Aucun bon plan en ce moment — revenez après le prochain relevé." />
+      ) : (
       <div className="grid md:grid-cols-2 gap-3 mt-2">
         {list.map((d) => (
-          <Link key={d.id} href={`/fr/product/${d.id}`} className="bg-white rounded p-4 shadow-sm border flex gap-3 items-center">
+          <Link
+            key={d.id}
+            href={`/fr/product/${d.id}`}
+            className="bg-white rounded p-4 shadow-sm border flex gap-3 items-center min-h-[44px] hover:border-[#2c87c3]/50 hover:shadow-card-hover transition-colors"
+          >
             <Thumb src={productImage(productsMap.get(d.id)!)} alt={d.model} size={56} />
             <div className="min-w-0 flex-1">
               <div className="font-bold text-sm truncate">{d.brand} {d.model}</div>
@@ -121,7 +129,7 @@ export default async function DealsPage() {
           </Link>
         ))}
       </div>
-      {list.length === 0 && <p className="text-sm text-slate-400 mt-6">{t("deals.empty")}</p>}
+      )}
     </main>
   );
 }

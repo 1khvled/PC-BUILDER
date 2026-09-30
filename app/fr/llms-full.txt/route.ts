@@ -24,7 +24,7 @@ export async function GET(req: Request) {
     "",
   ];
   for (const p of products) {
-    lines.push(`## ${p.brand} ${p.model} [${p.category}] — ${BASE}/product/${p.id}`);
+    lines.push(`## ${p.brand} ${p.model} [${p.category}] — ${BASE}/fr/product/${p.id}`);
     lines.push(`Specs: ${Object.entries(p.specs).map(([k, v]) => `${k}=${String(v)}`).join(", ")}`);
     const pOffers = offers.filter((o) => o.productId === p.id).sort((a, b) => a.priceDa - b.priceDa);
     if (!pOffers.length) lines.push("Aucune offre indexée.");
@@ -34,13 +34,13 @@ export async function GET(req: Request) {
       );
     }
     const extraN = LIVE_EXTRA.filter((e) => e.category === p.category).length;
-    if (extraN) lines.push(`(+${extraN} annonces marché hors-catalogue dans ${p.category}: ${BASE}/category/${p.category})`);
+    if (extraN) lines.push(`(+${extraN} annonces marché hors-catalogue dans ${p.category}: ${BASE}/fr/category/${p.category})`);
     lines.push("");
   }
   lines.push("## Guides");
   for (const g of GUIDES) {
     const total = g.parts.reduce((s, id) => s + (bestOffer(id, offers)?.priceDa ?? 0), 0);
-    lines.push(`- ${g.title} (~${total.toLocaleString("fr-DZ")} DA): ${g.hook} ${BASE}/guides/${g.slug}`);
+    lines.push(`- ${g.title} (~${total.toLocaleString("fr-DZ")} DA): ${g.hook} ${BASE}/fr/guides/${g.slug}`);
   }
   return new Response(lines.join("\n"), {
     headers: {

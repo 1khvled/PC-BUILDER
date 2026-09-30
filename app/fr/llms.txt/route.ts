@@ -24,19 +24,19 @@ export async function GET(req: Request) {
     `> Prix relevés le ${scrapedAt.slice(0, 10)}. Les stocks sont indicatifs : toujours confirmer sur la boutique.`,
     "",
     "## Pages",
-    `- Builder (compatibilité auto): ${BASE}/builder`,
-    ...CATEGORIES.map((c) => `- ${c.label}: ${BASE}/category/${c.slug}`),
-    ...GUIDES.map((g) => `- Guide: ${g.title}: ${BASE}/guides/${g.slug}`),
+    `- Builder (compatibilité auto): ${BASE}/fr/builder`,
+    ...CATEGORIES.map((c) => `- ${c.label}: ${BASE}/fr/category/${c.slug}`),
+    ...GUIDES.map((g) => `- Guide: ${g.title}: ${BASE}/fr/guides/${g.slug}`),
     "",
     "## Meilleurs prix par produit (DA, au relevé)",
   ];
   for (const p of products) {
     const b = bestOffer(p.id, offers);
     lines.push(
-      `- ${p.brand} ${p.model} [${p.category}]: ${b ? `${b.priceDa.toLocaleString("fr-DZ")} DA chez ${b.store} (${b.wilaya}, ${b.condition === "new" ? "neuf" : "occasion"}) — ${BASE}/product/${p.id}` : "pas d'offre indexée"}`
+      `- ${p.brand} ${p.model} [${p.category}]: ${b ? `${b.priceDa.toLocaleString("fr-DZ")} DA chez ${b.store} (${b.wilaya}, ${b.condition === "new" ? "neuf" : "occasion"}) — ${BASE}/fr/product/${p.id}` : "pas d'offre indexée"}`
     );
   }
-  lines.push("", `Données complètes: ${BASE}/llms-full.txt`, `Sitemap: ${BASE}/sitemap.xml`);
+  lines.push("", `Données complètes: ${BASE}/fr/llms-full.txt`, `Sitemap: ${BASE}/fr/sitemap.xml`);
   return new Response(lines.join("\n"), {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

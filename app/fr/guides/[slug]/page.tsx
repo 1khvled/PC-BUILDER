@@ -1,36 +1,39 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { GUIDES } from "@/lib/data/guides";
+import { GUIDES, GUIDE_UI } from "@/lib/data/guides";
 import { bestOffer, productImage } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
-import { OG_LOCALE, SITE_URL, formatPrice, languageAlternates } from "@/lib/i18n/config";
+import { OG_LOCALE, SITE_URL, absoluteUrl, formatPrice, languageAlternates } from "@/lib/i18n/config";
 import { getT } from "@/lib/i18n/server";
 
 export const revalidate = 60;
 
 const LOCALE = "fr" as const;
+const UI = GUIDE_UI.fr;
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const t = await getT(LOCALE);
   const guide = GUIDES.find((g) => g.slug === params.slug);
   if (!guide) return { title: t("guide.notFound") };
+  const path = `/guides/${guide.slug}`;
   return {
     title: guide.title,
     description: guide.hook,
     keywords: [
-      `${guide.title}`.toLowerCase(),
+      guide.title.toLowerCase(),
       "guide achat pc algerie",
-      "config pc gaming algerie",
-      "prix composants pc algerie da",
+      "config pc algerie da",
+      "prix composants pc algerie",
       "occasion ouedkniss",
     ],
+    alternates: languageAlternates(path, "fr"),
     openGraph: {
       title: `${guide.title} | DZ PartPicker`,
       description: guide.hook,
-      url: `/guides/${guide.slug}`,
+      url: `/fr${path}`,
       type: "article",
       locale: OG_LOCALE.fr,
       siteName: "DZ PartPicker",
@@ -40,8 +43,27 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: `${guide.title} | DZ PartPicker`,
       description: guide.hook,
     },
-    alternates: languageAlternates(`/guides/${guide.slug}`),
   };
+}
+
+/**
+ * JSON.stringify does not escape "<", so a literal `</script>` inside any
+ * string would terminate the tag early and inject markup. Escaping "<" as
+ * `<` is valid JSON and removes the breakout.
+ */
+function jsonLd(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}
+
+/** Stable, index-friendly anchor id for a guide section heading. */
+function sectionId(h: string, i: number): string {
+  const slug = h
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+  return `section-${i + 1}-${slug || "x"}`;
 }
 
 export default async function GuidePage({ params }: { params: { slug: string } }) {
@@ -62,6 +84,12 @@ export default async function GuidePage({ params }: { params: { slug: string } }
   const builderQuery = rows.map((r) => `${r.p!.category}:${r.p!.id}`).join(",");
   const missing = rows.filter((r) => !r.best).length;
   const day = scrapedAt.slice(0, 10);
+  const isBuild = guide.kind === "build";
+
+  const sections = guide.blocks
+    .map((b, i) => ({ b, i, id: b.h ? sectionId(b.h, i) : null }))
+    .filter((s) => s.id);
+  const related = GUIDES.filter((g) => g.slug !== guide.slug).slice(0, 3);
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -69,17 +97,48 @@ export default async function GuidePage({ params }: { params: { slug: string } }
     inLanguage: "fr-DZ",
     headline: guide.title,
     description: guide.hook,
-    url: `${SITE_URL}/guides/${guide.slug}`,
-    author: { "@type": "Organization", name: "DZ PartPicker" },
-    publisher: { "@type": "Organization", name: "DZ PartPicker" },
-    mainEntityOfPage: `${SITE_URL}/guides/${guide.slug}`,
+    url: absoluteUrl(`/fr/guides/${guide.slug}`),
+    mainEntityOfPage: absoluteUrl(`/fr/guides/${guide.slug}`),
+    datePublished: `${day}T00:00:00.000Z`,
+    dateModified: `${day}T00:00:00.000Z`,
+    wordCount: guide.blocks.reduce(
+      (n, b) => n + (b.p ?? []).join(" ").split(/\s+/).length + (b.list ?? []).join(" ").split(/\s+/).length,
+      guide.title.split(/\s+/).length + guide.hook.split(/\s+/).length,
+    ),
+    timeRequired: `PT${guide.readMin}M`,
+    articleSection: guide.topic.fr,
+    keywords: guide.pitfalls.join(", "),
+    image: absoluteUrl("/brand/og-hero.webp"),
+    author: { "@id": `${SITE_URL.replace(/\/$/, "")}/#organization` },
+    publisher: {
+      "@type": "Organization",
+      name: "DZ PartPicker",
+      url: SITE_URL,
+    },
+    isPartOf: {
+      "@type": "WebSite",
+      name: "DZ PartPicker",
+      url: absoluteUrl("/fr"),
+    },
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: t("common.home"), item: absoluteUrl("/fr") },
+      { "@type": "ListItem", position: 2, name: t("common.guides"), item: absoluteUrl("/fr/guides") },
+      { "@type": "ListItem", position: 3, name: guide.title, item: absoluteUrl(`/fr/guides/${guide.slug}`) },
+    ],
   };
 
   return (
     <main className="max-w-4xl mx-auto px-4 py-8 space-y-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd([articleJsonLd, breadcrumbJsonLd]) }}
+      />
 
-      {/* Breadcrumbs */}
       <nav aria-label={t("common.breadcrumb")} className="flex items-center gap-2 text-xs text-slate-500">
         <Link href="/fr" className="hover:text-slate-900 transition-colors">
           {t("common.home")}
@@ -95,12 +154,11 @@ export default async function GuidePage({ params }: { params: { slug: string } }
         </span>
       </nav>
 
-      {/* Magazine Title & Author Header */}
       <div className="bg-white rounded p-6 sm:p-10 border border-slate-200 space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-[#2c87c3] border border-blue-100">
-              {t("guide.badge")}
+              {guide.topic.fr}
             </span>
             <span className="text-xs text-slate-400">
               ⏱ {t("common.minRead", { min: guide.readMin })}
@@ -116,7 +174,6 @@ export default async function GuidePage({ params }: { params: { slug: string } }
           {guide.title}
         </h1>
 
-        {/* Author Chip */}
         <div className="flex items-center gap-3 pt-1 border-t border-slate-100">
           <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs">
             DZ
@@ -131,26 +188,31 @@ export default async function GuidePage({ params }: { params: { slug: string } }
           {guide.hook}
         </p>
 
-        {/* Budget Highlight Card */}
         <div className="pt-2 flex flex-wrap items-center justify-between gap-4 bg-[#11111c] text-white rounded p-5 sm:p-6 mt-4 shadow-lg">
           <div>
             <div className="text-xs text-slate-400 font-semibold uppercase tracking-wider">
-              {t("guide.budgetTotal")}
+              {isBuild ? t("guide.budgetTotal") : UI.partsCompared.replace("{count}", String(guide.parts.length))}
             </div>
-            <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 tracking-tight mt-1">
-              {missing > 0 ? `${t("common.from")} ` : ""}
-              {formatPrice(total, LOCALE)}
-            </div>
-            <div className="text-xs text-slate-400 mt-1">
-              {t("guide.budgetAvail")}
-            </div>
+            {isBuild ? (
+              <>
+                <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 tracking-tight mt-1">
+                  {missing > 0 ? `${t("common.from")} ` : ""}
+                  {formatPrice(total, LOCALE)}
+                </div>
+                <div className="text-xs text-slate-400 mt-1">{t("guide.budgetAvail")}</div>
+              </>
+            ) : (
+              <div className="text-sm text-slate-300 mt-2 max-w-md leading-relaxed">
+                {UI.notABuild}
+              </div>
+            )}
           </div>
           <Link
             href={`/fr/builder?p=${encodeURIComponent(builderQuery)}`}
             className="px-5 py-3 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white font-bold text-xs sm:text-sm shadow-md transition-colors flex items-center gap-2 shrink-0"
           >
             <span>{t("guide.openInBuilder")}</span>
-            <span>→</span>
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
 
@@ -159,9 +221,32 @@ export default async function GuidePage({ params }: { params: { slug: string } }
             {t("guide.missingParts", { count: missing })}
           </p>
         )}
+
+        <p className="text-[11px] text-slate-400 leading-relaxed border-t border-slate-100 pt-3">
+          {UI.priceNote.replace("{date}", day)}
+        </p>
       </div>
 
-      {/* Recommended Parts Table */}
+      {sections.length >= 3 && (
+        <nav
+          aria-label={UI.toc}
+          className="bg-white rounded border border-slate-200 p-5 sm:p-6"
+        >
+          <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3">
+            {UI.toc}
+          </div>
+          <ol className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 list-decimal pl-5 text-sm text-slate-700">
+            {sections.map((s) => (
+              <li key={s.id} className="leading-snug">
+                <a href={`#${s.id}`} className="hover:text-[#2c87c3] transition-colors">
+                  {s.b.h}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+
       <div className="bg-white rounded border border-slate-200 overflow-hidden">
         <div className="p-4 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-500">
           <span>{t("guide.recommended", { count: rows.length })}</span>
@@ -220,7 +305,7 @@ export default async function GuidePage({ params }: { params: { slug: string } }
                       <a
                         href={best.url}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noreferrer noopener"
                         className="inline-flex items-center px-3 py-1.5 rounded bg-slate-900 hover:bg-[#2c87c3] text-white font-bold text-xs transition-colors"
                       >
                         <span>{t("guide.view")}</span>
@@ -237,13 +322,12 @@ export default async function GuidePage({ params }: { params: { slug: string } }
         </div>
       </div>
 
-      {/* Guide Content Sections */}
       <div className="bg-white rounded p-6 sm:p-10 border border-slate-200 space-y-8">
         {guide.blocks.map((b, i) => (
-          <section key={i} className="space-y-3">
+          <section key={i} id={b.h ? sectionId(b.h, i) : undefined} className="space-y-3 scroll-mt-20">
             {b.h && (
               <h2 className="font-black text-xl text-slate-900 tracking-tight flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#2c87c3]" />
+                <span className="w-2 h-2 rounded-full bg-[#2c87c3]" aria-hidden="true" />
                 <span>{b.h}</span>
               </h2>
             )}
@@ -262,10 +346,9 @@ export default async function GuidePage({ params }: { params: { slug: string } }
           </section>
         ))}
 
-        {/* Pitfalls Callout */}
         <section className="bg-amber-50/80 border border-amber-200/90 rounded p-5 sm:p-6 space-y-3">
           <div className="flex items-center gap-2 text-amber-900 font-bold text-sm">
-            <span className="text-lg">⚠️</span>
+            <span className="text-lg" aria-hidden="true">⚠️</span>
             <h3 className="font-black">{t("guide.pitfallsTitle")}</h3>
           </div>
           <ul className="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-amber-950 leading-relaxed">
@@ -276,7 +359,26 @@ export default async function GuidePage({ params }: { params: { slug: string } }
         </section>
       </div>
 
-      {/* Footer Navigation Buttons */}
+      <section className="space-y-3">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400">
+          {UI.related}
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {related.map((g) => (
+            <Link
+              key={g.slug}
+              href={`/fr/guides/${g.slug}`}
+              className="bg-white rounded border border-slate-200 hover:border-[#2c87c3] p-4 flex flex-col gap-2 transition-colors"
+            >
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                {g.topic.fr} · {t("common.minRead", { min: g.readMin })}
+              </span>
+              <span className="text-sm font-bold text-slate-900 leading-snug">{g.title}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <div className="flex flex-wrap gap-3 pt-2">
         <Link
           href={`/fr/builder?p=${encodeURIComponent(builderQuery)}`}

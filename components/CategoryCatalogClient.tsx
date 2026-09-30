@@ -20,13 +20,30 @@ interface CategoryCatalogClientProps {
   products?: Product[];
   /**
    * UI locale. Passed as a prop by the server page (the route already knows it),
-   * which keeps the FIRST paint fully translated — no effect, no flash, no
+   * which keeps the FIRST paint fully translated ÔÇö no effect, no flash, no
    * hydration mismatch. Defaults to French for the unprefixed routes.
    */
   locale?: Locale;
 }
 
 type SortOption = "price-asc" | "price-desc" | "name-asc" | "offers-desc";
+
+/** Precomputed per-product offer data. See the `productStats` memo. */
+interface ProductStats {
+  offers: Offer[];
+  count: number;
+  /** True when at least one offer is not a rupture. */
+  inStock: boolean;
+  /**
+   * The hero offer, i.e. exactly what `bestOffer()` returns - which ranks by
+   * STOCK/CONDITION TIER first and price second. It is deliberately NOT simply
+   * the cheapest listing: a cheap used or unconfirmed offer must never beat a
+   * confirmed new one.
+   */
+  best: Offer | null;
+}
+
+const EMPTY_OFFERS: Offer[] = [];
 type ConditionOption = "all" | "new" | "used";
 
 export default function CategoryCatalogClient({ slug, catLabel, offers: serverOffers, products: serverProducts, locale = DEFAULT_LOCALE }: CategoryCatalogClientProps) {
@@ -56,10 +73,12 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
         setViewMode(savedMode);
       }
       const savedW = localStorage.getItem("dz_wilaya_pref");
-      // NOTE: "Toute l'Algérie (58)" is the localStorage sentinel written by
-      // components/Header.tsx (out of scope here) — it is a data value, not a
-      // translatable string, so it is compared verbatim.
-      if (savedW && savedW !== "Toute l'Algérie (58)") {
+      // The header persists the LABEL of the "all Algeria" aggregate, and that
+      // label is localized, so it reads back differently per language. Only a
+      // real wilaya - which always starts with its 2-digit code - may be
+      // applied as a filter: treating the aggregate as a wilaya name matched no
+      // offer and silently emptied the whole catalogue.
+      if (savedW && /^\d{2}\s*-\s*\S/.test(savedW)) {
         const clean = savedW.replace(/^\d+\s*-\s*/, "").trim();
         // check if any offer in catalog has this wilaya
         setWilaya(clean);
@@ -80,6 +99,46 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
 
   const rawProducts = useMemo(() => allProducts.filter((p) => p.category === slug), [slug, allProducts]);
   const rawExtras = useMemo(() => LIVE_EXTRA.filter((e) => e.category === slug), [slug]);
+
+  /**
+   * Per-product offers, hero offer, offer count and stock flag.
+   *
+   * Built once per `offers` change and shared by the filter, the sort and both
+   * render branches. It exists for performance: the sort comparator used to
+   * scan the whole 274-row offer list six times PER COMPARISON (four
+   * `offers.filter()` calls plus two `bestOffer()` calls, each of which filters
+   * again), and each render branch scanned it once more per product.
+   *
+   * `best` delegates to `bestOffer()` rather than reimplementing "cheapest":
+   * that function ranks by stock/condition TIER before price, so a cheap used
+   * or unconfirmed listing must not be able to displace a confirmed new one.
+   * The ordering and the rendered output are unchanged.
+   */
+  const productStats = useMemo(() => {
+    const byProduct = new Map<string, Offer[]>();
+    for (const o of offers) {
+      const list = byProduct.get(o.productId);
+      if (list) list.push(o);
+      else byProduct.set(o.productId, [o]);
+    }
+    const stats = new Map<string, ProductStats>();
+    for (const p of rawProducts) {
+      const list = byProduct.get(p.id);
+      if (!list || list.length === 0) {
+        stats.set(p.id, { offers: EMPTY_OFFERS, count: 0, inStock: false, best: null });
+        continue;
+      }
+      const best = bestOffer(p.id, offers);
+      const inStock = best !== undefined && !isRuptured(best);
+      stats.set(p.id, {
+        offers: list,
+        count: list.length,
+        inStock,
+        best: best ?? null,
+      });
+    }
+    return stats;
+  }, [rawProducts, offers]);
 
   // Extract unique stores and wilayas that exist in this category's offers and extras
   const availableStores = useMemo(() => {
@@ -113,7 +172,8 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
   // Filter and sort canonical products
   const filteredProducts = useMemo(() => {
     const list = rawProducts.filter((p) => {
-      const pOffers = offers.filter((o) => o.productId === p.id);
+      const st = productStats.get(p.id);
+      const pOffers = st?.offers ?? EMPTY_OFFERS;
 
       // Search filter
       if (search.trim()) {
@@ -143,24 +203,23 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
       }
 
       // Stock filter: if inStockOnly is active, exclude products where all offers are out of stock
-      if (inStockOnly) {
-        const hasLiveStock = pOffers.some((o) => !isRuptured(o));
-        if (!hasLiveStock) return false;
-      }
+      if (inStockOnly && !st?.inStock) return false;
 
       return true;
     });
 
     list.sort((a, b) => {
       // In-stock products always sort before entirely out-of-stock products
-      const inStockA = offers.some((o) => o.productId === a.id && !isRuptured(o));
-      const inStockB = offers.some((o) => o.productId === b.id && !isRuptured(o));
+      const statA = productStats.get(a.id);
+      const statB = productStats.get(b.id);
+      const inStockA = statA?.inStock ?? false;
+      const inStockB = statB?.inStock ?? false;
       if (inStockA !== inStockB) return inStockA ? -1 : 1;
 
-      const bestA = bestOffer(a.id, offers)?.priceDa ?? Infinity;
-      const bestB = bestOffer(b.id, offers)?.priceDa ?? Infinity;
-      const offersA = offers.filter((o) => o.productId === a.id).length;
-      const offersB = offers.filter((o) => o.productId === b.id).length;
+      const bestA = statA?.best?.priceDa ?? Infinity;
+      const bestB = statB?.best?.priceDa ?? Infinity;
+      const offersA = statA?.count ?? 0;
+      const offersB = statB?.count ?? 0;
 
       if (sort === "price-asc") return bestA - bestB;
       if (sort === "price-desc") return (bestB === Infinity ? -1 : bestB) - (bestA === Infinity ? -1 : bestA);
@@ -170,7 +229,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
     });
 
     return list;
-  }, [rawProducts, search, condition, store, wilaya, sort, offers, inStockOnly]);
+  }, [rawProducts, search, condition, store, wilaya, sort, productStats]);
 
   // Filter extras according to toolbar state
   const filteredExtras = useMemo(() => {
@@ -212,8 +271,15 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
               {catLabel}
             </h1>
-            <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-[#2c87c3] border border-blue-100">
-              {t("category.modelsCounted", { count: rawProducts.length })}
+            <span
+              className="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-[#2c87c3] border border-blue-100"
+              role="status"
+              aria-live="polite"
+            >
+              {t("category.modelsCounted", { count: filteredProducts.length })}
+              {filteredProducts.length !== rawProducts.length && (
+                <span className="text-slate-400 font-semibold"> / {rawProducts.length}</span>
+              )}
             </span>
           </div>
         </div>
@@ -224,7 +290,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             className="btn-blue px-4 py-2.5 text-xs sm:text-sm"
           >
             <span>{t("common.openInBuilder")}</span>
-            <span aria-hidden="true">→</span>
+            <span aria-hidden="true">ÔåÆ</span>
           </Link>
         </div>
       </div>
@@ -240,10 +306,10 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("category.searchPlaceholder", { cat: label })}
               aria-label={t("category.searchPlaceholder", { cat: label })}
-              className="w-full bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-[#2c87c3] focus:shadow-[0_0_0_3px_rgba(44,135,195,0.15)] rounded-full pl-9 pr-8 py-2 text-xs text-slate-900 outline-none transition-all placeholder:text-slate-400"
+              className="w-full bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-[#2c87c3] focus:shadow-[0_0_0_3px_rgba(44,135,195,0.15)] rounded-full pl-9 pr-9 py-2.5 text-base sm:text-xs text-slate-900 outline-none transition-all placeholder:text-slate-400 min-h-[44px]"
             />
             <svg
-              className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5 pointer-events-none"
+              className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -255,10 +321,10 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             {search && (
               <button
                 onClick={() => setSearch("")}
-                className="absolute right-3 top-2 text-slate-400 hover:text-slate-600 text-xs p-0.5"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs p-2 min-h-[36px] min-w-[36px] inline-flex items-center justify-center rounded-full"
                 aria-label={t("category.clearSearch")}
               >
-                ✕
+                Ô£ò
               </button>
             )}
           </div>
@@ -267,7 +333,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
           <div className="inline-flex rounded-full border border-slate-200 p-0.5 bg-slate-50 text-xs">
             <button
               onClick={() => handleViewModeChange("cards")}
-              className={`px-3.5 py-1.5 rounded-full font-semibold transition-colors flex items-center gap-1.5 ${
+              className={`px-3.5 py-2 min-h-[40px] rounded-full font-semibold transition-colors flex items-center gap-1.5 ${
                 viewMode === "cards" ? "bg-white text-slate-900 shadow-sm border border-slate-200" : "text-slate-600 hover:text-slate-900"
               }`}
               title={t("category.viewCardsTitle")}
@@ -282,7 +348,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             </button>
             <button
               onClick={() => handleViewModeChange("table")}
-              className={`px-3.5 py-1.5 rounded-full font-semibold transition-colors flex items-center gap-1.5 ${
+              className={`px-3.5 py-2 min-h-[40px] rounded-full font-semibold transition-colors flex items-center gap-1.5 ${
                 viewMode === "table" ? "bg-white text-slate-900 shadow-sm border border-slate-200" : "text-slate-600 hover:text-slate-900"
               }`}
               title={t("category.viewTableTitle")}
@@ -304,7 +370,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 p-0.5">
               <button
                 onClick={() => setCondition("all")}
-                className={`px-3 py-1 rounded-full font-semibold transition-colors ${
+                className={`px-3 py-2 min-h-[40px] inline-flex items-center rounded-full font-semibold transition-colors ${
                   condition === "all" ? "bg-slate-900 text-white shadow-sm" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -312,7 +378,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               </button>
               <button
                 onClick={() => setCondition("new")}
-                className={`px-3 py-1 rounded-full font-semibold transition-colors ${
+                className={`px-3 py-2 min-h-[40px] inline-flex items-center rounded-full font-semibold transition-colors ${
                   condition === "new" ? "bg-emerald-600 text-white shadow-sm" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -320,7 +386,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               </button>
               <button
                 onClick={() => setCondition("used")}
-                className={`px-3 py-1 rounded-full font-semibold transition-colors ${
+                className={`px-3 py-2 min-h-[40px] inline-flex items-center rounded-full font-semibold transition-colors ${
                   condition === "used" ? "bg-amber-600 text-white shadow-sm" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -331,7 +397,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             {/* In-Stock Only Quick Filter */}
             <button
               onClick={() => setInStockOnly(!inStockOnly)}
-              className={`px-3 py-1 rounded-full font-semibold transition-all flex items-center gap-1.5 border ${
+              className={`px-3 py-2 min-h-[40px] rounded-full font-semibold transition-all flex items-center gap-1.5 border ${
                 inStockOnly
                   ? "bg-emerald-700 text-white border-emerald-700 shadow-sm"
                   : "bg-white text-slate-700 border-slate-200 hover:border-emerald-500"
@@ -349,7 +415,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                   value={store}
                   onChange={(e) => setStore(e.target.value)}
                   aria-label={t("category.filterByStore")}
-                  className="border border-slate-200 rounded-full px-3 py-1.5 bg-white text-slate-700 font-medium outline-none cursor-pointer hover:border-slate-300 transition-colors"
+                  className="border border-slate-200 rounded-full px-3 py-2 min-h-[40px] bg-white text-slate-700 font-medium outline-none cursor-pointer hover:border-slate-300 transition-colors"
                 >
                   <option value="all">{t("category.allStores", { count: availableStores.length })}</option>
                   {availableStores.map((s) => (
@@ -368,12 +434,12 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                   value={wilaya}
                   onChange={(e) => setWilaya(e.target.value)}
                   aria-label={t("category.filterByWilaya")}
-                  className="border border-slate-200 rounded-full px-3 py-1.5 bg-white text-slate-700 font-medium outline-none cursor-pointer hover:border-slate-300 transition-colors"
+                  className="border border-slate-200 rounded-full px-3 py-2 min-h-[40px] bg-white text-slate-700 font-medium outline-none cursor-pointer hover:border-slate-300 transition-colors"
                 >
                   <option value="all">{t("category.allWilayas", { count: availableWilayas.length })}</option>
                   {availableWilayas.map((w) => (
                     <option key={w} value={w}>
-                      📍 {w}
+                      ­ƒôì {w}
                     </option>
                   ))}
                 </select>
@@ -381,13 +447,21 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             )}
           </div>
 
-          {/* Sort Dropdown */}
-          <div className="flex items-center gap-2 ml-auto">
-            <span className="text-slate-400 font-medium hidden sm:inline">{t("category.sortBy")}</span>
+          {/* Sort Dropdown
+
+              It leads the filter row on purpose. With the filter pills ahead of
+              it, this control wrapped onto a third line on a 360px screen and
+              fell below the fold: the one control that decides the order of
+              150+ prices was the hardest one to reach. The caption is also the
+              select's accessible name on every viewport - it used to be
+              `hidden sm:inline`, so on a phone the select had no name at all. */}
+          <div className="flex items-center gap-2 order-first w-full sm:order-none sm:w-auto sm:ml-auto">
+            <span className="text-slate-400 font-medium shrink-0">{t("category.sortBy")}</span>
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as SortOption)}
-              className="border border-slate-200 rounded-full px-3 py-1.5 bg-white text-slate-700 font-semibold outline-none cursor-pointer hover:border-slate-300 transition-colors"
+              aria-label={t("category.sortBy")}
+              className="flex-1 sm:flex-none border border-slate-200 rounded-full px-3 py-2 min-h-[40px] bg-white text-slate-700 font-semibold outline-none cursor-pointer hover:border-slate-300 transition-colors"
             >
               <option value="price-asc">{t("category.sortPriceAsc")}</option>
               <option value="price-desc">{t("category.sortPriceDesc")}</option>
@@ -398,7 +472,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             {isFiltered && (
               <button
                 onClick={resetFilters}
-                className="text-xs text-rose-600 hover:underline font-semibold ml-1"
+                className="text-xs text-rose-600 hover:underline font-semibold px-2 py-2 min-h-[40px] shrink-0"
                 title={t("common.resetTitle")}
               >
                 {t("common.reset")}
@@ -414,10 +488,11 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
           /* Denser Magazine Cards View */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredProducts.map((p) => {
-              const pOffers = offers.filter((o) => o.productId === p.id);
-              const hasInStock = pOffers.some((o) => !isRuptured(o));
-              const isRupturedProduct = pOffers.length > 0 && !hasInStock;
-              const best = bestOffer(p.id, offers);
+              const st = productStats.get(p.id);
+              const pOffers = st?.offers ?? EMPTY_OFFERS;
+              const hasInStock = st?.inStock ?? false;
+              const isRupturedProduct = (st?.count ?? 0) > 0 && !hasInStock;
+              const best = st?.best ?? null;
               const specs = Object.entries(p.specs).slice(0, 3);
               const hasNew = pOffers.some((o) => o.condition === "new");
               const hasUsed = pOffers.some((o) => o.condition === "used");
@@ -541,7 +616,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                     <div className="flex items-center gap-1.5 shrink-0">
                       <Link
                         href={href(`/builder?add=${p.category}:${p.id}`)}
-                        className={`px-2.5 py-1.5 rounded-lg border text-xs font-semibold transition-colors ${
+                        className={`px-3 py-2.5 min-h-[44px] rounded-lg border text-xs font-semibold transition-colors flex items-center ${
                           isRupturedProduct
                             ? "border-rose-200 text-rose-700 hover:bg-rose-50"
                             : "border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-700"
@@ -552,14 +627,14 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                       </Link>
                       <Link
                         href={href(`/product/${p.id}`)}
-                        className={`px-3 py-1.5 rounded-lg text-white font-semibold text-xs transition-colors flex items-center gap-1 ${
+                        className={`px-3.5 py-2.5 min-h-[44px] rounded-lg text-white font-semibold text-xs transition-colors flex items-center gap-1 ${
                           isRupturedProduct
                             ? "bg-rose-600 hover:bg-rose-700"
                             : "bg-slate-900 hover:bg-[#2c87c3]"
                         }`}
                       >
                         <span>{isRupturedProduct ? t("common.details") : t("common.viewOffers")}</span>
-                        <span aria-hidden="true">→</span>
+                        <span aria-hidden="true">ÔåÆ</span>
                       </Link>
                     </div>
                   </div>
@@ -570,8 +645,16 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
         ) : (
           /* Dense Table View */
           <div className="bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm min-w-[700px]">
+          {/* 700px of table inside a 360px viewport, so it scrolls sideways.
+              A scrollable region must be focusable and named, or it cannot be
+              scrolled at all with a keyboard. */}
+          <div
+            className="overflow-x-auto"
+            tabIndex={0}
+            role="region"
+            aria-label={t("category.viewTableTitle")}
+          >
+            <table className="w-full text-sm min-w-[700px]">
                 <thead className="bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
                   <tr>
                     <th className="text-left px-4 py-3">{t("category.tableProduct")}</th>
@@ -585,10 +668,11 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                 </thead>
                 <tbody className="divide-y divide-slate-100 text-xs">
                   {filteredProducts.map((p) => {
-                    const pOffers = offers.filter((o) => o.productId === p.id);
-                    const hasInStock = pOffers.some((o) => !isRuptured(o));
-                    const isRupturedProduct = pOffers.length > 0 && !hasInStock;
-                    const best = bestOffer(p.id, offers);
+                    const st = productStats.get(p.id);
+                    const pOffers = st?.offers ?? EMPTY_OFFERS;
+                    const hasInStock = st?.inStock ?? false;
+                    const isRupturedProduct = (st?.count ?? 0) > 0 && !hasInStock;
+                    const best = st?.best ?? null;
                     const specs = Object.entries(p.specs).slice(0, 3);
 
                     return (
@@ -671,7 +755,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                               )}
                             </div>
                           ) : (
-                            <span className="text-slate-300 font-normal">—</span>
+                            <span className="text-slate-300 font-normal">ÔÇö</span>
                           )}
                         </td>
 
@@ -690,18 +774,18 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                           <div className="inline-flex items-center justify-end gap-1.5">
                             <Link
                               href={href(`/builder?add=${p.category}:${p.id}`)}
-                              className="inline-flex items-center justify-center px-2 py-1.5 rounded-lg border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] text-slate-700 font-semibold text-xs transition-colors"
+                              className="inline-flex items-center justify-center px-2.5 py-2 min-h-[40px] rounded-lg border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] text-slate-700 font-semibold text-xs transition-colors"
                               title={t("common.addToBuilder")}
                             >
                               {t("category.addBuilder")}
                             </Link>
                             <Link
                               href={href(`/product/${p.id}`)}
-                              className={`inline-flex items-center justify-center px-3 py-1.5 rounded-lg text-white font-semibold text-xs transition-colors ${
+                              className={`inline-flex items-center justify-center px-3 py-2 min-h-[40px] rounded-lg text-white font-semibold text-xs transition-colors ${
                                 isRupturedProduct ? "bg-rose-600 hover:bg-rose-700" : "bg-slate-900 hover:bg-[#2c87c3]"
                               }`}
                             >
-                              {isRupturedProduct ? t("common.details") : `${t("common.viewOffers")} →`}
+                              {isRupturedProduct ? t("common.details") : `${t("common.viewOffers")} ÔåÆ`}
                             </Link>
                           </div>
                         </td>
@@ -757,9 +841,9 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                   </div>
                   <div className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1.5 flex-wrap">
                     <span>{e.store}</span>
-                    <span>•</span>
+                    <span>ÔÇó</span>
                     <span>{e.wilaya}</span>
-                    <span>•</span>
+                    <span>ÔÇó</span>
                     <span
                       className={`font-bold ${
                         e.condition === "new" ? "text-emerald-700" : "text-amber-700"
@@ -769,7 +853,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                     </span>
                     {e.postedAt ? (
                       <>
-                        <span>•</span>
+                        <span>ÔÇó</span>
                         <span title={t("category.listedOn", { date: e.postedAt.slice(0, 10) })}>
                           {t("common.snapshotOnShort", { date: e.postedAt.slice(0, 10) })}
                         </span>
@@ -777,7 +861,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                     ) : null}
                     {e.store === "Ouedkniss" ? (
                       <>
-                        <span>•</span>
+                        <span>ÔÇó</span>
                         <span
                           title={e.isStore ? t("category.sellerProTitle") : t("category.sellerPrivateTitle")}
                           className={`font-bold ${e.isStore ? "text-[#2c87c3]" : "text-slate-500"}`}
@@ -792,7 +876,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                   </div>
                 </div>
                 <span className="text-slate-300 group-hover:text-[#2c87c3] group-hover:translate-x-0.5 transition-all text-sm font-bold shrink-0" aria-hidden="true">
-                  ↗
+                  Ôåù
                 </span>
               </a>
             ))}

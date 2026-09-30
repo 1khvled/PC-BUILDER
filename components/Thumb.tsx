@@ -27,7 +27,11 @@ export default function Thumb({ src, alt, size = 56 }: { src?: string; alt: stri
   return (
     <img
       src={src}
-      alt={alt}
+      // Thumbnails sit next to the product name on every surface, so the alt
+      // text repeated it. Empty alt + aria-hidden keeps the image announced as
+      // decoration instead of making a screen reader read the model twice.
+      alt=""
+      aria-hidden="true"
       loading="lazy"
       decoding="async"
       referrerPolicy="no-referrer"
