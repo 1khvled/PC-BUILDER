@@ -45,6 +45,24 @@ function schemaTables(): string[] {
   }
 }
 
+/**
+ * MUST be dynamic, and this is a security boundary rather than a performance
+ * choice.
+ *
+ * Without this the route is prerendered at BUILD time: `adminConfigured` and
+ * the `keyMatches` comparison are evaluated during the build and their result is
+ * frozen into `.next/server/app/admin-kh7.html`. Measured before this line
+ * existed: a request with the correct key, a request with a wrong key and a
+ * request with no key at all all returned a byte-identical 47 084-byte page,
+ * because `searchParams` was never consulted - the page had already been
+ * decided.
+ *
+ * The safe failure mode is a permanently locked console (no ADMIN_KEY at build
+ * time bakes in the login form). The unsafe one is a build that DOES have
+ * ADMIN_KEY set: the authenticated console is then written into a static file
+ * and served to anybody who requests /admin-kh7 with no key at all.
+ */
+export const dynamic = "force-dynamic";
 export default async function AdminPage({ searchParams }: { searchParams: { key?: string } }) {
   // Fail closed: an unconfigured ADMIN_KEY disables the console entirely rather
   // than silently accepting a default.
