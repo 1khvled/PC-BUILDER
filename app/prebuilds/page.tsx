@@ -12,7 +12,7 @@ export const revalidate = 60;
 const LOCALE = "fr" as const;
 
 export const metadata: Metadata = {
-  title: "PC Gamer Montés & Configurations en Algérie | DZ-PartPicker",
+  title: "PC Gamer Montés & Configurations en Algérie",
   description:
     "Trouvez et comparez les PC gamers complets et unités centrales des boutiques d'Alger, Oran, Sétif et Blida. Comparatif automatique des prix face aux pièces détachées.",
   keywords: [

@@ -357,9 +357,9 @@ export default function BuilderPage() {
       <div className="hidden print:block mb-6 border-b-2 border-slate-900 pb-4">
         <div className="flex justify-between items-end">
           <div>
-            <h1 className="text-2xl font-black text-slate-900 tracking-tight">
+            <p className="text-2xl font-black text-slate-900 tracking-tight">
               DZ PartPicker — Devis & Configuration PC
-            </h1>
+            </p>
             <p className="text-xs text-slate-600 mt-1">
               Comparatif des prix du marché en Dinars Algériens (DA) • 58 Wilayas
             </p>
