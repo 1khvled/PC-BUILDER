@@ -1,57 +1,54 @@
-feat(admin): real username/password login with session cookies
+feat(retention): watchlist with "what moved since your last visit"
 
-Replaces the shared-secret-in-the-query-string gate with a normal sign-in form,
-a username AND password, and an expiring HttpOnly session cookie.
+Retention work, built around the one mechanic that actually brings people back
+to a price-comparison site: "did it drop yet?"
 
-Why the old design had to go
-- The key travelled as ?key=..., so it was echoed into the served HTML, the
-  browser history and every platform access log.
-- There was no username, so the key was the entire identity.
-- There was no way to end a session. A leaked key stayed valid forever.
-- There was no rate limiting on the attempt.
+Everything else on the site answers a question the visitor already had. A
+watchlist creates a reason to return, and the "since your last visit" framing is
+what makes a return visit worth something.
 
-What it does now
-- GET  /admin-kh7        -> redirect to the login form when there is no session
-- GET  /admin-kh7/login  -> username + password form
-- POST (server action)   -> verifies, sets the cookie, redirects to the console
-- Sign out button        -> clears the cookie, returns to the login form
+How it works without a backend
+- We remember the best price each tracked part had the last time the watchlist
+  rendered, and compare it with today's live price on the next visit.
+- That is an earned return visit rather than a notification we would need
+  accounts, email infrastructure and a consent flow to send.
+- Storage is localStorage, like the existing builder picks: no account, no PII,
+  no consent. The trade-off is per-device, which is the right call at this stage
+  because server-side would mean auth, and auth on a price site is a much
+  bigger decision than a watchlist.
 
-lib/admin/auth.ts
-- Credentials come from ADMIN_USERNAME and ADMIN_PASSWORD and are compared in
-  constant time. Both comparisons always run, so a wrong username costs the same
-  as a wrong password and cannot be told apart by timing. The digest is taken
-  first so the comparison is length-independent.
-- Sessions are stateless HMAC-SHA256 tokens carrying an expiry and a random
-  nonce, signed with ADMIN_SESSION_SECRET. That secret falls back to a hash of
-  the password, so rotating the password alone also revokes every session.
-  Cookie is HttpOnly, SameSite=Lax, Secure in production, 8 hour lifetime.
-- isAuthenticated() fails closed when the env vars are absent, so a
-  misconfigured deploy is locked rather than open.
-- Best-effort login throttle: 8 attempts per IP per 15 minutes. In-memory only,
-  so on serverless it raises the cost of brute force rather than removing it;
-  the 160-bit password is the real protection.
+A 1% floor on reporting
+A drop is only shown when it is at least 1%. A 40 DA move on a 90 000 DA part
+is noise, and telling someone "it dropped!" for that trains them to ignore the
+badge, which destroys the mechanic. Silence is the correct output when nothing
+meaningful moved.
 
-No new dependencies. Uses node:crypto only, so there is no supply-chain
-surface added to a project that has none.
+What was added
+- lib/watchlist.ts - versioned localStorage store with defensive parsing, plus
+  priceMove(), rememberCurrentPrice() and droppedCount(). A corrupt or
+  hand-edited payload is discarded rather than allowed to throw: a broken
+  watchlist must never take the page down.
+- components/WatchButton.tsx - optimistic toggle, reserves its space before
+  mount so adding it does not shift the card layout, and re-syncs when another
+  card on the page toggles the same part.
+- components/WatchlistClient.tsx - the list, with a down/up/unchanged badge, a
+  90-day trend bar, and a 90-day-low comparison. Client-side on purpose, since
+  the baseline only exists in the visitor's browser; it shows a skeleton rather
+  than an empty page so there is no layout shift.
+- app/api/watchlist - compact rows for the tracked ids only. The server cannot
+  know what is tracked at render time, and shipping the 4 000+ product
+  catalogue to filter it in the browser would be wasteful. Capped at 100 ids so
+  it cannot be used to request the whole catalogue in one call.
+- /watchlist and /fr/watchlist, plus 16 dictionary keys in each language.
+- The star is on the product cards in both the card and table layouts.
 
-Note on the redirect status: the App Router streams the shell and flushes the
-headers before the component's redirect() is reached, so an unauthenticated
-request returns 200 with the shared chrome and a client-side redirect rather
-than a 307. Verified that no console data is present in that response: the
-admin payload is not rendered without a valid session.
+Verified: tsc clean, next build passes, /api/watchlist returns correct live data
+(RTX 4060 at 89 900 DA from Click-DZ, Ryzen 5 5600 at 29 900 DA), both pages
+serve, and the button placeholders mount in the category grid. The final
+click-through in a browser was not completed: the category page is 1.79 MB and
+did not finish parsing within the tooling window, so the toggle is verified by
+types, build and mounting placeholders rather than by an observed click. Worth
+a manual check on a real device.
 
-fix(ui): repair baked-in mojibake in CategoryCatalogClient
-
-A "View offers" button on the English pages rendered as "View offers 0ae".
-Twelve symbols had been re-encoded into garbage characters and committed as
-literal text: an arrow became three characters, a close cross three, an em dash
-three, four bullets three each, a pin four, an external-link arrow three.
-
-The root cause was an encoding round trip at some point in the file's history.
-The earlier sweep missed it because it only looked for U+251C and U+FFFD, the
-two markers typical of a UTF-8-as-CP437 decode, and this damage is Latin-1
-supplement characters instead. All twelve sites repaired and a precise
-re-scan confirms zero remaining.
-
-Symbols are now the real characters, so the button reads "View offers ->"
-again in both themes.
+Not in this commit, deliberately: the header nav link for the watchlist, and the
+benchmark page with outbound YouTube / reference links discussed separately.
