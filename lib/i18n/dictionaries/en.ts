@@ -143,6 +143,9 @@ export const en: Dictionary = {
   "ad.text":
     "Ultra-light gaming mice, custom mechanical keyboards, esports mousepads, PTFE feet and pro accessories. Real stock in Algeria, express shipping to all 58 wilayas and cash on delivery.",
   "ad.cta": "Discover Bytek Store",
+  "ad.pointStock": "Real stock in Algeria, no phantom stock-outs",
+  "ad.pointWilayas": "Express delivery to all 58 wilayas",
+  "ad.pointCods": "Cash on delivery",
   "ad.verified": "verified official store",
 
   /* ------------------------------------------------------------------- home */

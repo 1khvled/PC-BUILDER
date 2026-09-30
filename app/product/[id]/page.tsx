@@ -7,6 +7,7 @@ import Thumb from "@/components/Thumb";
 import ProductOffersTable from "@/components/ProductOffersTable";
 import PriceChart from "@/components/PriceChart";
 import FbResolveForm from "@/components/FbResolveForm";
+import BytekAd from "@/components/BytekAd";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, formatNumber, languageAlternates } from "@/lib/i18n/config";
 import { categoryLabel } from "@/lib/i18n/categories";
@@ -287,6 +288,9 @@ export default async function ProductPage({ params }: { params: { id: string } }
             </div>
           </section>
 
+          {/* Sponsor: peripherals sit next to component pricing, so the ad goes
+              above the offers table where purchase intent is highest. */}
+          <BytekAd variant="strip" placement="product-offers" />
           {/* Dynamic Sortable Offers Table */}
           <section className="space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">

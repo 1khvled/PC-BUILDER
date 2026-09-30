@@ -137,6 +137,9 @@ export const fr = {
   "ad.text":
     "Souris gamer ultra-légères, claviers mécaniques custom, tapis de souris esport, patins PTFE & accessoires pro. Stock réel en Algérie, expédition express 58 Wilayas & paiement à la livraison.",
   "ad.cta": "Découvrir Bytek Store",
+  "ad.pointStock": "Stock réel en Algérie, pas de rupture fantôme",
+  "ad.pointWilayas": "Expédition express 58 wilayas",
+  "ad.pointCods": "Paiement à la livraison",
   "ad.verified": "boutique officielle vérifiée",
 
   /* ------------------------------------------------------------------- home */

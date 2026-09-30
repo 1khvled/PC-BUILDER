@@ -96,7 +96,7 @@ export default async function DealsPage() {
         {t("deals.subtitle", { date: scrapedAt.slice(0, 10) })}
       </p>
       <div className="mt-4 mb-4">
-        <BytekAd variant="compact" />
+        <BytekAd variant="strip" placement="deals" />
       </div>
       <div className="grid md:grid-cols-2 gap-3 mt-2">
         {list.map((d) => (

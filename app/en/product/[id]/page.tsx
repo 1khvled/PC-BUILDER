@@ -5,6 +5,7 @@ import { bestOffer, isRuptured, productImage } from "@/lib/data/products";
 import { getOffers, getPriceHistory, getProduct, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import ProductOffersTable from "@/components/ProductOffersTable";
+import BytekAd from "@/components/BytekAd";
 import PriceChart from "@/components/PriceChart";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, SITE_URL, formatNumber, formatPrice, languageAlternates } from "@/lib/i18n/config";
@@ -305,6 +306,7 @@ export default async function EnglishProductPage({ params }: { params: { id: str
                 {t("product.compareMeta", { date: day })}
               </span>
             </div>
+            <BytekAd variant="strip" locale={"en"} placement="en-product-offers" />
             <ProductOffersTable offers={offers} locale={LOCALE} />
           </section>
 

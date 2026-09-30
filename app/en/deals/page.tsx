@@ -98,7 +98,7 @@ export default async function EnglishDealsPage() {
         <LocaleSwitcher pathname="/en/deals" />
       </div>
       <div className="mt-4 mb-4">
-        <BytekAd variant="compact" locale={LOCALE} />
+        <BytekAd variant="strip" locale={LOCALE} placement="en-deals" />
       </div>
       <div className="grid md:grid-cols-2 gap-3 mt-2">
         {list.map((d) => (

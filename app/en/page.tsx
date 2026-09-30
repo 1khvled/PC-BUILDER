@@ -181,7 +181,7 @@ export default async function EnglishHome() {
 
       <div className="max-w-7xl mx-auto px-4 py-10 space-y-12">
         {/* Bytek Store Official Partner Ad */}
-        <BytekAd variant="banner" locale={LOCALE} />
+        <BytekAd variant="banner" locale={LOCALE} placement="en-home-top" />
 
         {/* Lowest prices right now — dense price table */}
         <section className="panel">
