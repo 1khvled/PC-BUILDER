@@ -9,6 +9,10 @@ const nextConfig = {
     // 308 (permanent) is deliberate over 301: it preserves the method and, more
     // importantly, tells crawlers the move is final and caches it aggressively.
     return [
+      // The console lives at /admin-kh7, which was an ugly placeholder path from
+      // the original scaffold. /admin is what people actually type.
+      { source: "/admin", destination: "/admin-kh7", permanent: false },
+      { source: "/fr/admin", destination: "/fr/admin-kh7", permanent: false },
       // The slug used to promise a 300k build while the parts totalled over 400k. A
       // numeric claim in the URL is a factual claim to a search engine, so the slug
       // was renamed and the old address permanently redirected.
