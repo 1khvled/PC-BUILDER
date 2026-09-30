@@ -286,13 +286,13 @@ const headerSearchCache = new Map<string, ProductResult[]>();
       <div className="bg-[#11111c]/95 backdrop-blur-md border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
           {/* Brand Logo & Name */}
-          <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-            <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0 bg-white ring-1 ring-white/20 shadow-md transition-transform group-hover:scale-105">
-              <img src="/brand/logo.svg" alt="DZ PartPicker" className="w-full h-full object-contain" />
+          <Link href="/" className="flex items-center gap-3 shrink-0 group">
+            <div className="h-10 px-3 py-1.5 rounded-xl bg-[#08090f] border border-blue-500/40 ring-1 ring-cyan-500/20 shadow-[0_0_15px_rgba(0,140,255,0.25)] flex items-center justify-center transition-all group-hover:scale-105 group-hover:border-cyan-400 group-hover:shadow-[0_0_22px_rgba(0,212,255,0.4)]">
+              <img src="/brand/logo.webp" alt="DZ PartPicker" className="h-6 w-auto object-contain" />
             </div>
             <div className="leading-tight">
-              <div className="font-extrabold tracking-tight text-white text-[17px]">
-                DZ PartPicker
+              <div className="font-black tracking-tight text-white text-[17px] flex items-center gap-1.5">
+                <span>DZ PartPicker</span>
               </div>
               <div className="text-[11px] text-slate-400 -mt-0.5 hidden sm:block">
                 Pick parts • Build your PC • Compare in DA
@@ -451,7 +451,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
       {/* Sub-Navigation Bar (PCPartPicker signature 2nd tier menu) */}
       <div className="border-b border-slate-200/80 bg-white/95 backdrop-blur-md relative z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-600">
-          <nav aria-label="Navigation principale" className="flex items-center gap-1 sm:gap-1.5 py-1.5 overflow-visible">
+          <nav aria-label="Navigation principale" className="flex items-center gap-1 sm:gap-1.5 py-1.5 overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap -mx-4 px-4 sm:mx-0 sm:px-0 touch-manipulation">
             <Link
               href="/builder"
               aria-current={pathname === "/builder" ? "page" : undefined}

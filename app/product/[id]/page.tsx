@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { bestOffer, isRuptured, productImage } from "@/lib/data/products";
@@ -8,6 +9,48 @@ import PriceChart from "@/components/PriceChart";
 import FbResolveForm from "@/components/FbResolveForm";
 
 export const revalidate = 60;
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const product = await getProduct(params.id);
+  if (!product) return { title: "Produit non trouvé" };
+
+  const allOffers = await getOffers();
+  const offers = allOffers.filter((o) => o.productId === product.id && !isRuptured(o));
+  const minPrice = offers.length > 0 ? Math.min(...offers.map((o) => o.priceDa)) : null;
+
+  const priceSnippet = minPrice ? ` dès ${minPrice.toLocaleString("fr-DZ")} DA` : "";
+  const title = `${product.brand} ${product.model} : Prix en Algérie${priceSnippet}`;
+  const description = `Comparez les prix de ${product.brand} ${product.model} en Algérie parmi plus de 180 magasins. Relevé de prix neuf & occasion en Dinars Algériens (DA), stocks vérifiés et livraison 58 wilayas.`;
+  const imgUrl = productImage(product);
+
+  return {
+    title,
+    description,
+    keywords: [
+      `${product.brand} ${product.model}`.toLowerCase(),
+      `prix ${product.model} algerie`,
+      `prix ${product.brand} algerie`,
+      `${product.model} ouedkniss`,
+      `${product.category} prix algerie da`,
+    ],
+    openGraph: {
+      title,
+      description,
+      url: `/product/${product.id}`,
+      type: "article",
+      images: imgUrl ? [{ url: imgUrl, alt: `${product.brand} ${product.model}` }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: imgUrl ? [imgUrl] : undefined,
+    },
+    alternates: {
+      canonical: `/product/${product.id}`,
+    },
+  };
+}
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
   const [product, allOffers, history, scrapedAt] = await Promise.all([
@@ -44,6 +87,16 @@ export default async function ProductPage({ params }: { params: { id: string } }
       url: o.url,
     })),
   };
+  const breadcrumbsJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: "https://dzpartpicker.dz/" },
+      { "@type": "ListItem", position: 2, name: product.category, item: `https://dzpartpicker.dz/category/${product.category}` },
+      { "@type": "ListItem", position: 3, name: `${product.brand} ${product.model}`, item: `https://dzpartpicker.dz/product/${product.id}` },
+    ],
+  };
+
   const specs = Object.entries(product.specs);
 
   // Stats ignore ruptures: a dead listing must never set the min/max or the "savings".
@@ -61,6 +114,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsJsonLd) }} />
       {/* Breadcrumbs */}
       <nav aria-label="Fil d'Ariane" className="flex items-center gap-2 text-xs text-slate-500">
         <Link href="/" className="hover:text-slate-900 transition-colors">

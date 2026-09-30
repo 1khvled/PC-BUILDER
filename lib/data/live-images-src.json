@@ -233,6 +233,7 @@
  "case-gt502": "https://www.digitecdz.com/wp-content/uploads/2024/05/LD0006123489-1.jpg",
  "case-phanteks": "https://www.digitecdz.com/wp-content/uploads/2023/10/LD0006011230.jpg",
  "mon-24-100": "https://www.digitecdz.com/wp-content/uploads/2026/01/1024-8.png",
+ "mon-asus-vg279": "https://www.digitecdz.com/wp-content/uploads/2024/11/Monitor-ASUS-TUF-Gaming-VG279QM1A-front-kopia.jpg",
  "cpu-i5-13400f": "https://wifidjelfa.com/wp-content/uploads/2026/09/102063045034901622.jfif",
  "cpu-r9-5950x": "https://wifidjelfa.com/wp-content/uploads/2026/08/102038298758742033.jpg",
  "cpu-i9-11900k": "https://wifidjelfa.com/wp-content/uploads/2026/08/102024641568047196.jpg",
@@ -326,6 +327,9 @@
  "case-havit": "https://wifidjelfa.com/wp-content/uploads/2025/09/101543455930450164.jpg",
  "case-xigmatek-aura": "https://wifidjelfa.com/wp-content/uploads/2024/05/100860668504178708.jpg",
  "mon-32-4k240": "https://wifidjelfa.com/wp-content/uploads/2026/09/102063045034901680.jpg",
+ "mon-asus-vg249": "https://wifidjelfa.com/wp-content/uploads/2026/08/102042135473160451.jpg",
+ "mon-matos-msg24": "https://wifidjelfa.com/wp-content/uploads/2025/11/101643729927929920.jpg",
+ "mon-matos-msg27": "https://wifidjelfa.com/wp-content/uploads/2023/04/100243688566817049.jpg",
  "cpu-u7-270k": "https://gigastore-dz.com/wp-content/uploads/2026/06/LD0006332295.jpg",
  "cpu-i7-12700k": "https://gigastore-dz.com/wp-content/uploads/2025/01/12700k.jpg",
  "cpu-r9-5900x": "https://gigastore-dz.com/wp-content/uploads/2025/07/LD0005746003_1.jpg",
@@ -347,9 +351,14 @@
  "gpu-rx7700xt-12gb": "https://informatics-dz.com/wp-content/uploads/2023/11/0-02-01-3f3d0e816c016352578fdea81f9715dbc45f9907591562fbfd35e7d1a5fa695c_335bb8d152256622.jpg",
  "gpu-rx5600xt-6gb": "https://informatics-dz.com/wp-content/uploads/2023/05/image_viber_2023-05-21_09-37-06-097.jpg",
  "case-gearmaster": "https://informatics-dz.com/wp-content/uploads/2026/06/NEW-GM-GM24-SP-EDITION-Black.jpg",
+ "mon-dahua-lm27": "https://informatics-dz.com/wp-content/uploads/2026/05/DAHUA-27-LED-75HZ-FHD-VGA-HDMI-Box-Front-Df-Eid.jpg",
  "ssd-sata-360gb": "https://khabirtech.com/wp-content/uploads/2026/01/GOLDENFIR-SSD-SATA-0.webp",
  "gpu-rx480-8gb": "https://khabirtech.com/wp-content/uploads/2026/07/AMD-RX-480-SAPHIRE-NITRO-PLUS-0.webp",
  "gpu-rtx3080ti-12gb": "https://cdn7.ouedkniss.com/400/medias/announcements/images/pYP75p/OkvRyYXm9XOBFaq2uFE6SHyIWL1wjWfejEJW9iIi.jpg",
  "gpu-rx580-4gb": "https://cdn8.ouedkniss.com/400/medias/announcements/images/2kX10W/wBHbkXb9LHVsdHbUWCdfKVK9lDcMYOj7ysC18dPU.jpg",
- "ssd-sn580-1tb": "https://cdn7.ouedkniss.com/400/medias/announcements/images/xk80W3/aD1PkZWbQXhT5XPXjNvYjUkTE1OAMUuHrnsTKmsy.jpg"
+ "ssd-sn580-1tb": "https://cdn7.ouedkniss.com/400/medias/announcements/images/xk80W3/aD1PkZWbQXhT5XPXjNvYjUkTE1OAMUuHrnsTKmsy.jpg",
+ "mon-dahua-lm24": "https://cdn7.ouedkniss.com/400/medias/announcements/images/3Q73p/6eSpFYhhQ7TDM0ufLReJnTHUKsiBzpRNdS0RyZF1.jpg",
+ "mon-matos-katana": "https://matos-algerie.com/wp-content/uploads/2025/10/STORY-scaled.png",
+ "mon-samsung-g3": "https://cdn7.ouedkniss.com/medias/announcements/images/oYpkqY/4Y3YlRITSAfod7XwNOFWxiQNoII3xeSrsSAxUQZ8.jpg",
+ "mon-aoc-27g4": "https://cdn9.ouedkniss.com/medias/announcements/images/j2ApDR/f0r2e6AFjNsWMYWpFQFpvANzCjRDB0K7rXVPqk86.jpg"
 }

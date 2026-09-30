@@ -8,11 +8,11 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://dzpartpicker.dz";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const prods = await getProducts();
-  const staticRoutes = ["", "/builder", "/guides", "/deals"].map((r) => ({
+  const staticRoutes = ["", "/builder", "/prebuilds", "/guides", "/deals"].map((r) => ({
     url: `${BASE}${r || "/"}`,
     lastModified: now,
     changeFrequency: "daily" as const,
-    priority: r === "" ? 1 : 0.8,
+    priority: r === "" ? 1 : r === "/prebuilds" ? 0.9 : 0.8,
   }));
   const cats = CATEGORIES.map((c) => ({
     url: `${BASE}/category/${c.slug}`,

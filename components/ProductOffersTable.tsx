@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { isRuptured, type Offer } from "@/lib/data/products";
 import Thumb from "./Thumb";
+import StoreLogo from "./StoreLogo";
 import EmptyState from "./EmptyState";
 
 interface ProductOffersTableProps {
@@ -203,11 +204,87 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
         </div>
       </div>
 
-      {/* Sortable Table */}
+      {/* Offers Display */}
       {filteredAndSortedOffers.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm min-w-[640px]">
-            <caption className="sr-only">Comparatif des offres marchands triées par prix croissant en Dinars Algériens</caption>
+        <>
+          {/* Mobile View: High-density touch-optimized cards */}
+          <div className="block md:hidden divide-y divide-slate-100 p-3 space-y-3">
+            {filteredAndSortedOffers.map((o, idx) => {
+              const ruptured = isRuptured(o);
+              const isBest = statsBase.live && !ruptured && stats !== null && o.priceDa === stats.min;
+              const unknownStock = !ruptured && o.stock !== "En stock";
+              return (
+                <div
+                  key={`mob-${o.store}-${o.priceDa}-${idx}`}
+                  className={`p-3.5 rounded-xl border transition-all ${
+                    isBest
+                      ? "bg-emerald-50/60 border-emerald-300 shadow-sm"
+                      : "bg-white border-slate-200/90 shadow-sm"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <StoreLogo store={o.store} size={36} />
+                      <div className="min-w-0">
+                        <div className="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
+                          <span className="truncate">{o.store}</span>
+                          <span className="size-1.5 rounded-full bg-emerald-500 shrink-0" />
+                        </div>
+                        <div className="text-[11px] text-slate-500 font-medium">📍 {o.wilaya}</div>
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="text-base font-black text-emerald-700 tabular-nums">
+                        {o.priceDa.toLocaleString("fr-DZ")} DA
+                      </div>
+                      {isBest && (
+                        <span className="inline-block text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-600 text-white shadow-xs">
+                          Meilleur prix
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="text-xs text-slate-600 line-clamp-2 mt-2 leading-relaxed">
+                    {o.titleRaw}
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2 mt-3 pt-2.5 border-t border-slate-100 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          o.condition === "new"
+                            ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                            : "bg-amber-100 text-amber-800 border border-amber-200"
+                        }`}
+                      >
+                        {o.condition === "new" ? "Neuf" : "Occasion"}
+                      </span>
+                      <span className="text-[11px] text-slate-600 font-medium flex items-center gap-1">
+                        <span className={`size-1.5 rounded-full ${ruptured ? "bg-red-500" : unknownStock ? "bg-slate-300" : "bg-emerald-500"}`} />
+                        <span>{ruptured ? "Rupture" : o.stock || "En stock"}</span>
+                      </span>
+                    </div>
+
+                    <a
+                      href={o.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2c87c3] hover:bg-[#1e5c85] text-white text-xs font-bold transition-colors touch-manipulation min-h-[36px]"
+                    >
+                      <span>Voir l'offre</span>
+                      <span>→</span>
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop View: Sortable Table */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full text-sm min-w-[640px]">
+              <caption className="sr-only">Comparatif des offres marchands triées par prix croissant en Dinars Algériens</caption>
             <thead className="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200 select-none sticky top-0">
               <tr>
                 <th
@@ -291,7 +368,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
                   {/* Store info */}
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-3">
-                      <Thumb src={o.image} alt={o.store} size={38} />
+                      <StoreLogo store={o.store} size={38} />
                       <div className="min-w-0">
                         <div className="font-bold text-slate-900 text-sm group-hover:text-[#2c87c3] transition-colors flex items-center gap-1.5">
                           <span>{o.store}</span>
@@ -366,6 +443,7 @@ export default function ProductOffersTable({ offers }: ProductOffersTableProps) 
             </tbody>
           </table>
         </div>
+        </>
       ) : (
         <div className="p-6">
           <EmptyState

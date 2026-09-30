@@ -41,6 +41,14 @@ function deals(products: Product[], offers: Offer[]): Deal[] {
 
 export const revalidate = 60;
 
+export const metadata = {
+  title: "Bons Plans Composants PC en Algérie (DA)",
+  description: "Découvrez les meilleures promotions et réductions sur les processeurs, cartes graphiques, SSD et RAM en Algérie. Économies réelles calculées face à la médiane du marché.",
+  alternates: {
+    canonical: "/deals",
+  },
+};
+
 export default async function DealsPage() {
   const [products, offers, scrapedAt] = await Promise.all([
     getProducts(),

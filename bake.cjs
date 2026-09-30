@@ -597,11 +597,60 @@ const RULES = [
   { id: "mon-24-180", cat: "monitor", all: ["180hz"], any: ["24", "23 8", "24 5", "23 6", "25"], none: ["27", "32", "34", "49", "55", "65", "laptop", "tv", "televiseur"] },
   { id: "mon-27-qhd165", cat: "monitor", all: ["27"], any: ["qhd", "2k", "1440p", "1440"], none: ["laptop", "tv", "televiseur", "32", "34", "49"] },
   // ---- Expanded Monitor Rules ----
-  // MATOS monitors
+  // Specific Popular Brand Monitors in Algerian Market
+  // MATOS Katana & MSG
+  { id: "mon-matos-katana", cat: "monitor", all: ["matos", "katana"], any: ["24", "165"], none: ["27", "49", "laptop", "tv", "televiseur"] },
+  { id: "mon-matos-katana27", cat: "monitor", all: ["matos", "katana"], any: ["27", "240"], none: ["49", "laptop", "tv", "televiseur"] },
+  { id: "mon-matos-katana", cat: "monitor", all: ["matos", "katana"], none: ["27", "240", "49", "laptop", "tv", "televiseur"] },
+  { id: "mon-matos-msg24", cat: "monitor", all: ["matos"], any: ["msg24", "msg 24", "msg-24", "shooter"], none: ["msg27", "katana", "27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-matos-msg27", cat: "monitor", all: ["matos"], any: ["msg27", "msg 27", "msg-27", "delta", "scorpio", "storm", "msg2712"], none: ["msg24", "katana", "24", "laptop", "tv", "televiseur"] },
+
+  // Xiaomi & Redmi
+  { id: "mon-xiaomi-g24", cat: "monitor", any: ["g24i", "g24"], all: ["xiaomi"], none: ["redmi", "27", "laptop", "tv", "televiseur"] },
+  { id: "mon-xiaomi-g24", cat: "monitor", any: ["g24i"], none: ["redmi", "27", "laptop", "tv", "televiseur"] },
+  { id: "mon-xiaomi-g27", cat: "monitor", any: ["g27i", "g27"], all: ["xiaomi"], none: ["curve", "incurv", "laptop", "tv", "televiseur"] },
+  { id: "mon-xiaomi-g27", cat: "monitor", any: ["g27i"], none: ["curve", "incurv", "laptop", "tv", "televiseur"] },
+  { id: "mon-xiaomi-curve30", cat: "monitor", any: ["xiaomi", "mi"], any: ["curve 30", "curved 30", "wfhd"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-redmi-g24", cat: "monitor", all: ["redmi"], any: ["g24", "g 24", "165hz"], none: ["laptop", "tv", "televiseur"] },
+
+  // Dahua
+  { id: "mon-dahua-lm24", cat: "monitor", all: ["dahua"], any: ["lm24", "lm24-e231", "e231"], none: ["27", "laptop", "tv", "televiseur"] },
+  { id: "mon-dahua-lm24", cat: "monitor", all: ["dahua", "24"], any: ["165hz", "180hz", "ips"], none: ["27", "laptop", "tv", "televiseur"] },
+  { id: "mon-dahua-lm27", cat: "monitor", all: ["dahua"], any: ["lm27", "lm27-e231"], none: ["24", "laptop", "tv", "televiseur"] },
+  { id: "mon-dahua-lm27", cat: "monitor", all: ["dahua", "27"], any: ["165hz", "180hz", "ips"], none: ["24", "laptop", "tv", "televiseur"] },
+
+  // Redragon
+  { id: "mon-redragon-ruby", cat: "monitor", all: ["redragon"], any: ["ruby", "gm24", "gm-24"], none: ["emerald", "27", "laptop", "tv", "televiseur"] },
+  { id: "mon-redragon-emerald", cat: "monitor", all: ["redragon"], any: ["emerald", "gm27", "gm-27"], none: ["ruby", "24", "laptop", "tv", "televiseur"] },
+
+  // Samsung Odyssey
+  { id: "mon-samsung-g3", cat: "monitor", all: ["odyssey"], any: ["g3", "g30", "g32", "lf24g3", "ls24ag3"], none: ["g5", "g7", "g9", "27", "32", "49", "laptop", "tv", "televiseur"] },
+  { id: "mon-samsung-g5", cat: "monitor", all: ["odyssey"], any: ["g5", "g50", "g55", "lc27g5", "ls27cg5"], none: ["32", "49", "laptop", "tv", "televiseur"] },
+
+  // LG UltraGear
+  { id: "mon-lg-ultragear24", cat: "monitor", all: ["ultragear"], any: ["24gn", "24gs", "24gq", "24mr"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-lg-ultragear27", cat: "monitor", all: ["ultragear"], any: ["27gn", "27gp", "27gr", "27gs"], none: ["24", "32", "laptop", "tv", "televiseur"] },
+
+  // AOC Gaming
+  { id: "mon-aoc-24g4", cat: "monitor", any: ["24g4", "24g4e", "24g4x", "24g2", "24g2sp", "24g2se"], none: ["27", "laptop", "tv", "televiseur"] },
+  { id: "mon-aoc-27g4", cat: "monitor", any: ["27g4", "27g42e", "27g4x", "27g2", "27g2sp"], none: ["24", "laptop", "tv", "televiseur"] },
+
+  // ASUS TUF Gaming
+  { id: "mon-asus-vg249", cat: "monitor", any: ["vg249", "vg249q", "vg249q1a", "vg249q3a"], none: ["27", "laptop", "tv", "televiseur"] },
+  { id: "mon-asus-vg279", cat: "monitor", any: ["vg279", "vg279q", "vg279q1a", "vg279q3a"], none: ["24", "laptop", "tv", "televiseur"] },
+
+  // BenQ ZOWIE
+  { id: "mon-benq-xl2411k", cat: "monitor", any: ["xl2411", "xl2411k", "xl2411p"], none: ["xl2546", "xl2566", "laptop", "tv", "televiseur"] },
+  { id: "mon-benq-xl2546k", cat: "monitor", any: ["xl2546", "xl2546k", "xl2546x", "xl2566", "xl2566k"], none: ["xl2411", "laptop", "tv", "televiseur"] },
+
+  // ViewSonic
+  { id: "mon-viewsonic-vx24", cat: "monitor", all: ["viewsonic"], any: ["vx24", "vx2479", "omni", "vx2418", "vx2428"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+
+  // MATOS legacy models
   { id: "mon-27-4k", cat: "monitor", any: ["sa01", "sa02", "sa03", "studioart"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-32-4k240", cat: "monitor", all: ["matos"], any: ["neon", "msg324k"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-32-qhd180", cat: "monitor", all: ["matos"], any: ["titan", "titan 2", "cyborg", "msgv32", "msg32"], none: ["laptop", "tv", "televiseur"] },
-  { id: "mon-49-superwide", cat: "monitor", all: ["matos"], any: ["space", "space 49", "katana"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-49-superwide", cat: "monitor", all: ["matos"], any: ["space", "space 49"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-27-qhd165", cat: "monitor", all: ["matos"], any: ["scorpio"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-24-280", cat: "monitor", all: ["matos"], any: ["roket", "rocket", "540hz"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-24-180", cat: "monitor", all: ["matos"], any: ["shooter", "msg244h", "msg244"], none: ["laptop", "tv", "televiseur"] },

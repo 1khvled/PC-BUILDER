@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GUIDES } from "@/lib/data/guides";
@@ -6,6 +7,24 @@ import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 
 export const revalidate = 60;
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const guide = GUIDES.find((g) => g.slug === params.slug);
+  if (!guide) return { title: "Guide non trouvé" };
+  return {
+    title: guide.title,
+    description: guide.hook,
+    openGraph: {
+      title: `${guide.title} | DZ PartPicker`,
+      description: guide.hook,
+      url: `/guides/${guide.slug}`,
+      type: "article",
+    },
+    alternates: {
+      canonical: `/guides/${guide.slug}`,
+    },
+  };
+}
 
 export default async function GuidePage({ params }: { params: { slug: string } }) {
   const [products, offers, scrapedAt] = await Promise.all([

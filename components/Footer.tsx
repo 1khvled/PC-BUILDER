@@ -77,11 +77,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-3.5">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl overflow-hidden shrink-0 bg-white ring-1 ring-white/20">
-                <img src="/brand/logo.svg" alt="DZ PartPicker" className="w-full h-full object-contain" />
+            <div className="flex items-center gap-3">
+              <div className="h-9 px-2.5 py-1 rounded-xl bg-[#08090f] border border-blue-500/40 ring-1 ring-cyan-500/20 shadow-[0_0_12px_rgba(0,140,255,0.2)] flex items-center justify-center">
+                <img src="/brand/logo.webp" alt="DZ PartPicker" className="h-5 w-auto object-contain" />
               </div>
-              <span className="text-white font-extrabold text-base tracking-tight">DZ PartPicker</span>
+              <span className="text-white font-black text-base tracking-tight">DZ PartPicker</span>
             </div>
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
               Le comparateur indépendant de composants PC en Algérie. Comparez les prix du neuf et de l'occasion parmi les boutiques d'informatique dont les vitrines livrent 58 wilayas.

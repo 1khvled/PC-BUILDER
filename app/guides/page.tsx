@@ -6,6 +6,14 @@ import Thumb from "@/components/Thumb";
 
 export const revalidate = 60;
 
+export const metadata = {
+  title: "Guides d'Achat PC Gaming en Algérie",
+  description: "Sélection de configurations PC gaming équilibrées et chiffrées selon les prix réels en Dinars Algériens (DA). Du budget malin au setup 1440p / 4K.",
+  alternates: {
+    canonical: "/guides",
+  },
+};
+
 export default async function GuidesPage() {
   const [products, offers, scrapedAt] = await Promise.all([
     getProducts(),

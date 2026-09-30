@@ -497,7 +497,129 @@ export default function BuilderPage() {
 
       {/* Main PCPartPicker System Builder Table */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-card mt-4 overflow-hidden print:border-slate-300 print:shadow-none">
-        <div className="overflow-x-auto">
+        {/* Mobile View: High-Density Ergonomic Component Cards */}
+        <div className="block md:hidden divide-y divide-slate-100 p-3 space-y-3 print:hidden">
+          {CATEGORIES.map((cat, catIdx) => {
+            const product = build[cat.slug];
+            const best = product ? bestOffer(product.id, offers) : undefined;
+            const allProductOffers = product ? offers.filter((o) => o.productId === product.id) : [];
+            const otherCount = allProductOffers.length - 1;
+
+            return (
+              <div
+                key={`mob-builder-${cat.slug}`}
+                className={`p-3.5 rounded-xl border transition-all ${
+                  product
+                    ? "bg-white border-slate-200/90 shadow-sm"
+                    : "bg-amber-50/20 border-dashed border-slate-300"
+                } ${flashCat === cat.slug ? "animate-row-flash" : ""}`}
+              >
+                {/* Card Top: Category label */}
+                <div className="flex items-center justify-between gap-2 pb-2 border-b border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-md bg-slate-100 text-slate-600 flex items-center justify-center text-xs">
+                      <CategoryIcon slug={cat.slug} />
+                    </span>
+                    <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider">
+                      {cat.label}
+                    </span>
+                  </div>
+                  {product && (
+                    <button
+                      onClick={() => handleRemovePart(cat.slug)}
+                      className="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-0.5 rounded hover:bg-red-50"
+                      aria-label={`Retirer ${cat.label}`}
+                    >
+                      ✕ Retirer
+                    </button>
+                  )}
+                </div>
+
+                {/* Card Body: Selected Product or Empty State */}
+                {product ? (
+                  <div className="pt-2.5 space-y-2">
+                    <div className="flex items-start gap-3">
+                      <Thumb src={productImage(product)} alt={product.model} size={48} />
+                      <div className="min-w-0 flex-1">
+                        <Link
+                          href={`/product/${product.id}`}
+                          className="font-bold text-sm text-[#2c87c3] hover:underline truncate block"
+                        >
+                          {product.brand} {product.model}
+                        </Link>
+                        <SpecPills product={product} />
+                      </div>
+                    </div>
+
+                    {/* Price & Merchant */}
+                    <div className="flex items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
+                      <div>
+                        {best ? (
+                          <div className="space-y-0.5">
+                            <a
+                              href={best.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="font-semibold text-slate-700 hover:text-[#2c87c3] text-[11px] block truncate"
+                            >
+                              🏪 {best.store} · {best.wilaya}
+                            </a>
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                {best.condition === "new" ? "Neuf" : "Occasion"}
+                              </span>
+                              {otherCount > 0 && (
+                                <Link
+                                  href={`/product/${product.id}`}
+                                  className="text-[10px] text-slate-400 hover:underline"
+                                >
+                                  +{otherCount} offre{otherCount > 1 ? "s" : ""}
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="text-slate-400 text-xs">Prix non disponible</span>
+                        )}
+                      </div>
+
+                      <div className="text-right shrink-0">
+                        {best ? (
+                          <div className="text-base font-black text-emerald-700 tabular-nums">
+                            {best.priceDa.toLocaleString("fr-DZ")} DA
+                          </div>
+                        ) : (
+                          <span className="text-slate-300 font-normal">—</span>
+                        )}
+                        <button
+                          onClick={() => setActiveModalCat(cat.slug)}
+                          className="text-xs text-[#2c87c3] hover:underline font-bold mt-0.5 block"
+                        >
+                          Changer
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="pt-3 pb-1 flex items-center justify-between gap-3">
+                    <span className="text-xs text-slate-400 italic">
+                      Aucun composant sélectionné
+                    </span>
+                    <button
+                      onClick={() => setActiveModalCat(cat.slug)}
+                      className="btn-blue px-4 py-2 text-xs font-bold min-h-[38px] touch-manipulation"
+                    >
+                      + Choisir
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop View: Main PCPartPicker System Builder Table */}
+        <div className="hidden md:block overflow-x-auto print:block">
           <table className="w-full text-sm min-w-[860px] border-collapse">
             <thead className="bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200 select-none print:bg-slate-100 print:text-slate-700">
               <tr>

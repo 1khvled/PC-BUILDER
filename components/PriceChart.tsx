@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { Offer, PricePoint } from "@/lib/data/products";
+import StoreLogo from "./StoreLogo";
 
 const STORE_COLORS = [
   "#2c87c3", // Brand Blue
@@ -136,7 +137,12 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
               <div className="text-base sm:text-lg font-black text-emerald-800 mt-0.5">
                 {stats.min.toLocaleString("fr-DZ")} <span className="text-xs font-bold">DA</span>
               </div>
-              {minOffer && <div className="text-[10px] text-emerald-700 truncate mt-0.5">chez {minOffer.store}</div>}
+              {minOffer && (
+                <div className="text-[11px] text-emerald-700 flex items-center justify-center gap-1.5 mt-1 font-semibold truncate">
+                  <StoreLogo store={minOffer.store} size={16} />
+                  <span>chez {minOffer.store}</span>
+                </div>
+              )}
             </div>
 
             <div className="p-3 rounded-lg bg-slate-50 border border-slate-200/80 text-center">
@@ -144,7 +150,7 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
               <div className="text-base sm:text-lg font-black text-slate-800 mt-0.5">
                 {stats.avg.toLocaleString("fr-DZ")} <span className="text-xs font-bold">DA</span>
               </div>
-              <div className="text-[10px] text-slate-400 mt-0.5">{sortedOffers.length} boutiques</div>
+              <div className="text-[11px] text-slate-500 mt-1 font-semibold">{sortedOffers.length} boutiques indexées</div>
             </div>
 
             <div className="p-3 rounded-lg bg-rose-50/70 border border-rose-100 text-center">
@@ -152,7 +158,12 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
               <div className="text-base sm:text-lg font-black text-rose-800 mt-0.5">
                 {stats.max.toLocaleString("fr-DZ")} <span className="text-xs font-bold">DA</span>
               </div>
-              {maxOffer && <div className="text-[10px] text-rose-700 truncate mt-0.5">chez {maxOffer.store}</div>}
+              {maxOffer && (
+                <div className="text-[11px] text-rose-700 flex items-center justify-center gap-1.5 mt-1 font-semibold truncate">
+                  <StoreLogo store={maxOffer.store} size={16} />
+                  <span>chez {maxOffer.store}</span>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -184,19 +195,19 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
               return (
                 <div
                   key={`${o.store}-${idx}`}
-                  className={`text-xs px-3 py-1.5 rounded-lg border flex items-center gap-2 ${
+                  className={`text-xs px-2.5 py-1.5 rounded-lg border flex items-center gap-2 ${
                     isBest
                       ? "bg-emerald-50 border-emerald-300 text-emerald-950 font-bold shadow-sm"
                       : "bg-white border-slate-200 text-slate-700"
                   }`}
                 >
-                  <span className={`w-2 h-2 rounded-full ${isBest ? "bg-emerald-500" : "bg-slate-300"}`} />
+                  <StoreLogo store={o.store} size={18} />
                   <span className="font-semibold">{o.store} :</span>
                   <span className={isBest ? "text-emerald-700 font-extrabold" : "text-slate-900 font-bold"}>
                     {o.priceDa.toLocaleString("fr-DZ")} DA
                   </span>
                   {isBest && (
-                    <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.2 rounded uppercase">
+                    <span className="text-[9px] bg-emerald-600 text-white font-extrabold px-1.5 py-0.5 rounded uppercase">
                       Top Deal
                     </span>
                   )}
@@ -389,13 +400,14 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
         <div className="flex flex-wrap items-center gap-3">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">Boutiques :</span>
           {sortedStores.slice(0, 5).map(({ store, pts }, i) => (
-            <span key={store} className="text-xs text-slate-600 flex items-center gap-1.5 font-medium">
+            <span key={store} className="text-xs text-slate-700 flex items-center gap-1.5 font-medium bg-slate-50 px-2 py-1 rounded-md border border-slate-200/60">
               <span
-                className="w-2.5 h-2.5 rounded-full inline-block shadow-sm"
+                className="w-2 h-2 rounded-full inline-block shadow-sm shrink-0"
                 style={{ background: STORE_COLORS[i % STORE_COLORS.length] }}
               />
-              <span>{store}</span>
-              <span className="text-[10px] text-slate-400 font-bold">
+              <StoreLogo store={store} size={16} />
+              <span className="font-semibold">{store}</span>
+              <span className="text-[10px] text-slate-500 font-bold">
                 ({pts[pts.length - 1].price.toLocaleString("fr-DZ")} DA)
               </span>
             </span>
