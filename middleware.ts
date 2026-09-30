@@ -121,7 +121,7 @@ export function middleware(req: NextRequest) {
   let windowSec = 60;
 
   const isApi = pathname.startsWith("/api/");
-  const isApiWrite = isApi && (req.method === "POST" || req.method === "PUT" || req.method === "DELETE" || pathname.includes("/fb-resolve"));
+  const isApiWrite = isApi && (req.method === "POST" || req.method === "PUT" || req.method === "DELETE");
 
   if (isApiWrite) {
     limit = 25;

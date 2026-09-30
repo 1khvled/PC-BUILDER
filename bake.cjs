@@ -22,7 +22,10 @@ function norm(s) {
     .replace(/((?:[248]|0[48]|1[26]|2[24]|3[26]|4[28]|6[24]))g\b/g, "$1gb") // 8g/08g/16g/32g -> gb (not 5600g!)
     .replace(/(\d+)\s?go\b/g, "$1gb") // 08go/240go/500go -> gb
     .replace(/(\d)\s?to\b/g, "$1tb")
-    .replace(/(\d)\s?zh\b/g, "$1hz") // 120ZH/144ZH (FR marketplace Hz spelling) -> hz
+    .replace(/(\d+)\s?zh\b/gi, "$1hz") // 120ZH/144ZH (FR marketplace Hz spelling) -> hz
+    .replace(/(\d+)\s*hz\b/gi, "$1hz") // 144 Hz / 165 Hz / 240 Hz -> 144hz / 165hz
+    .replace(/(\d{1,2}(?:\.\d)?)\s*["”]\b/g, "$1 pouce") // 24" / 27" -> 24 pouce
+    .replace(/(\d{3,4})\s*(?:watts?|w)\b/gi, "$1w") // 650 W / 750 watt / 750watts -> 650w / 750w
     .replace(/(\d+)\s*pouces?\b/g, "$1 pouce") // 24POUCES (glued size) -> 24 pouce (word-matchable for Hz/size rules)
     .replace(/\b(\d{1,2})t\b/g, "$1tb") // 1T/2T/4T (FR shorthand) -> tb (1-2 digits only: 7200T/MIN RPM specs must not become 7200tb)
     .replace(/((?:[248]|0[48]|1[26]|2[24]|3[26]|4[28]|6[24]))\s+g\b/g, "$1gb") // 8 G/16 G (spaced lone-g) -> gb; allowlist: 5600 g untouched
@@ -502,6 +505,34 @@ const RULES = [
   { id: "case-h5flow", cat: "case", all: ["h5"], any: ["h5", "flow"] },
   { id: "case-velox", cat: "case", all: ["velox"] },
   { id: "case-mcv3", cat: "case", all: ["mcv3"] },
+  
+  // Popular Algerian Market PSUs
+  { id: "psu-antec-atom550", cat: "psu", all: ["antec", "550w"], any: ["atom", "b550", "vp550"] },
+  { id: "psu-antec-atom650", cat: "psu", all: ["antec", "650w"], any: ["atom", "b650", "csk650", "csk", "vp650"] },
+  { id: "psu-redragon-rgps500", cat: "psu", all: ["redragon", "500w"], any: ["rgps", "bronze", "80+"] },
+  { id: "psu-redragon-rgps600", cat: "psu", all: ["redragon", "600w"], any: ["rgps", "bronze", "80+"] },
+  { id: "psu-redragon-rgps750", cat: "psu", all: ["redragon", "750w"], any: ["rgps", "gold", "bronze"] },
+  { id: "psu-redragon-rgps850", cat: "psu", all: ["redragon", "850w"], any: ["rgps", "gold"] },
+  { id: "psu-mars-mpb550", cat: "psu", all: ["mars", "550w"], any: ["mpb", "gaming", "bronze"] },
+  { id: "psu-mars-mpb650", cat: "psu", all: ["mars", "650w"], any: ["mpb", "gaming", "bronze"] },
+  { id: "psu-mars-mpb750", cat: "psu", all: ["mars", "750w"], any: ["mpb", "gaming", "bronze"] },
+  { id: "psu-mars-mpb850", cat: "psu", all: ["mars", "850w"], any: ["mpb", "gaming", "bronze"] },
+  { id: "psu-1stplayer-ngdp750", cat: "psu", all: ["1stplayer", "750w"], any: ["ngdp", "gold", "steampunk"] },
+  { id: "psu-1stplayer-ngdp850", cat: "psu", all: ["1stplayer", "850w"], any: ["ngdp", "gold", "steampunk"] },
+  { id: "psu-cougar-vte600", cat: "psu", all: ["cougar", "600w"], any: ["vte", "stc", "bronze"] },
+  { id: "psu-cougar-xtc650", cat: "psu", all: ["cougar", "650w"], any: ["xtc", "vte", "650w"] },
+  { id: "psu-aerocool-lux550", cat: "psu", all: ["aerocool", "550w"], any: ["lux", "vx", "cylon"] },
+  { id: "psu-aerocool-lux650", cat: "psu", all: ["aerocool", "650w"], any: ["lux", "vx", "cylon"] },
+  { id: "psu-aerocool-lux750", cat: "psu", all: ["aerocool", "750w"], any: ["lux", "vx", "cylon"] },
+  { id: "psu-seasonic-b12-650", cat: "psu", all: ["seasonic", "650w"], any: ["b12", "s12", "g12"] },
+  { id: "psu-seasonic-focus750", cat: "psu", all: ["seasonic", "750w"], any: ["focus", "gx750", "gold"] },
+  { id: "psu-deepcool-pk550d", cat: "psu", all: ["deepcool", "550w"], any: ["pk550", "pk550d", "pl550"] },
+  { id: "psu-deepcool-pk650d", cat: "psu", all: ["deepcool", "650w"], any: ["pk650", "pk650d", "pl650"] },
+  { id: "psu-deepcool-pk750d", cat: "psu", all: ["deepcool", "750w"], any: ["pk750", "pk750d", "pl750"] },
+  { id: "psu-deepcool-pn750m", cat: "psu", all: ["deepcool", "750w"], any: ["pn750", "pn750m", "gold"] },
+  { id: "psu-deepcool-pn850m", cat: "psu", all: ["deepcool", "850w"], any: ["pn850", "pn850m", "gold"] },
+  { id: "psu-fsp-hyper650", cat: "psu", all: ["fsp", "650w"], any: ["hyper", "hydro"] },
+  { id: "psu-thermaltake-smart600", cat: "psu", all: ["thermaltake", "600w"], any: ["smart", "rgb"] },
   { id: "psu-mwe650-b", cat: "psu", all: ["mwe", "650"] },
   { id: "psu-450-b", cat: "psu", all: ["450w"] },
   { id: "psu-400-b", cat: "psu", all: ["400w"] },
@@ -644,6 +675,12 @@ const RULES = [
   { id: "mon-benq-xl2546k", cat: "monitor", any: ["xl2546", "xl2546k", "xl2546x", "xl2566", "xl2566k"], none: ["xl2411", "laptop", "tv", "televiseur"] },
 
   // ViewSonic
+  
+  // Koorui, Titan Army, Gamemax, Philips monitors
+  { id: "mon-koorui-24e4", cat: "monitor", all: ["koorui"], any: ["24e4", "24e3", "24", "165hz"] },
+  { id: "mon-titan-27qhd", cat: "monitor", all: ["titan"], any: ["army", "p27", "27"] },
+  { id: "mon-gamemax-24", cat: "monitor", all: ["gamemax"], any: ["gmx24", "24", "144hz", "165hz"] },
+  { id: "mon-philips-evnia24", cat: "monitor", all: ["philips"], any: ["evnia", "24", "165hz", "180hz"] },
   { id: "mon-viewsonic-vx24", cat: "monitor", all: ["viewsonic"], any: ["vx24", "vx2479", "omni", "vx2418", "vx2428"], none: ["27", "32", "laptop", "tv", "televiseur"] },
 
   // MATOS legacy models
@@ -768,6 +805,22 @@ const RULES = [
 ];
 
 
+
+function detectTitleCategory(title) {
+  if (!title) return null;
+  const t = " " + norm(title) + " ";
+  if (/\b(ecran|moniteur|monitor|dalle|curved|incurv[eé]|ips\s*gaming)\b|\b\d{2,3}hz\b/i.test(t)) return "monitor";
+  if (/\b(alimentation|allimentation|alim|psu|power\s*supply|bloc\s*d|boite\s*d|80\s*plus|80plus|modulaire)\b|\b(450|500|550|600|650|700|750|800|850|1000|1050|1200|1250|1300)w\b/i.test(t)) return "psu";
+  if (/\b(boitier|boîtier|chassis|case|aquarium|tour\s*atx|m-atx\s*case|mid\s*tower)\b/i.test(t)) return "case";
+  if (/\b(watercooling|water\s*cooling|ventirad|cooler|refroidisseur|dissipateur|aio|ak400|ak620|ag400|ag620|peerless|phantom\s*spirit)\b/i.test(t)) return "cooler";
+  if (/\b(carte\s*m[eè]re|motherboard|mobo|b450|b550|b650|a520|a620|b760|h610|z790|z890|b850|x670|x870|h510|h410|h310|h110|a320|z390|z490|z590|z690)\b/i.test(t)) return "motherboard";
+  if (/\b(ddr[45]|ram|m[eé]moire|spectrix|vengeance|fury\s*beast|t-force|trident)\b/i.test(t)) return "ram";
+  if (/\b(ssd|nvme|m2|disque\s*dur|hdd|sn850|sn770|sn580|980\s*pro|990\s*pro|kc3000|legend|nv2|nv3)\b/i.test(t)) return "ssd";
+  if (/\b(ryzen|intel\s*core|cpu|processeur|threadripper)\b|\bi[3579]-?\d{4,5}\b|\bultra\s*[579]\b/i.test(t)) return "cpu";
+  if (/\b(rtx|gtx|radeon|geforce|gpu|carte\s*graphique)\b|\brx\s*\d{3,4}\b|\barc\s*b?\d{3}\b/i.test(t)) return "gpu";
+  return null;
+}
+
 function detectQueryCategory(q) {
   if (!q) return "gpu";
   const low = q.toLowerCase().trim();
@@ -862,7 +915,7 @@ function isQueryRelevant(query, title) {
   const tNorm = norm(title);
   if (!qNorm || !tNorm) return false;
 
-  const isMon = /ecran|monit|odyssey|ultragear|zowie|matos/i.test(qNorm);
+  const isMon = /ecran|monit|odyssey|ultragear|zowie|matos|\d{2,3}hz/i.test(qNorm);
   if (isMon) {
     if (/laptop|\blap\b|notebook|macbook|pc\s*portable|portatif|\b\d{4,5}(?:hx|hs|h|u)\b/i.test(tNorm)) return false;
     if (/\bodyssey\b/i.test(qNorm) && !/\bodyssey\b/i.test(tNorm)) return false;
@@ -1467,8 +1520,12 @@ let okiExtra = 0; // tier-3 particuliers: own extras cap, never canonical
 const seenOkUrl = new Set();
 for (const o of report["ouedkniss:all"] || []) {
   const qKey = (o.query || "").toLowerCase().trim();
-  const category = detectQueryCategory(qKey);
   const title = clean(o.title);
+  if (!title || !o.priceDa) continue;
+  const tCat = detectTitleCategory(title);
+  const qCat = detectQueryCategory(qKey);
+  // Title-detected category takes precedence when query defaulted to 'gpu' or differs
+  let category = (qCat === "gpu" && tCat) ? tCat : (tCat || qCat);
   if (!title || !o.priceDa) continue;
 
   // Filter out ancient dead listings: reject deals older than 90 days (or before 2025-10-01)
