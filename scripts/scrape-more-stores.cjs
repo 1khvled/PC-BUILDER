@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const GRAPHQL_ENDPOINT = "https://api.ouedkniss.com/graphql";
 
-const BROWSER_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36";
+const BROWSER_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36";
 
 const HEADERS = {
   "Content-Type": "application/json",
@@ -18,6 +18,9 @@ const QUERY = `query SearchQuery($q: String, $filter: SearchFilterInput) {
       paginatorInfo {
         total
         count
+        currentPage
+        lastPage
+        hasMorePages
       }
       data {
         id
@@ -27,7 +30,9 @@ const QUERY = `query SearchQuery($q: String, $filter: SearchFilterInput) {
         description
         slug
         status
+        createdAt
         refreshedAt
+        isFromStore
         cities {
           name
           region {
@@ -50,11 +55,12 @@ const QUERY = `query SearchQuery($q: String, $filter: SearchFilterInput) {
   }
 }`;
 
-// Load all discovered stores
+// Load discovered stores
 let STORES = [];
 try {
   const discovered = JSON.parse(fs.readFileSync('scripts/discovered-stores.json', 'utf8'));
-  STORES = discovered.slice(0, 60).map(s => ({ id: s.id, name: s.name, wilaya: s.wilaya }));
+  // Take top 80 stores across Algerian wilayas
+  STORES = discovered.slice(0, 80).map(s => ({ id: s.id, name: s.name, wilaya: s.wilaya }));
 } catch {
   console.log("Could not load discovered-stores.json, using fallback.");
   STORES = [
@@ -91,46 +97,43 @@ try {
   ];
 }
 
-const STORE_SAMPLE_QUERIES = [
-  "RTX", "GTX", "Radeon", "Ryzen", "Intel", "B550", "B650", "B760", "Z790",
-  "DDR4", "DDR5", "SSD", "NVMe", "PSU", "Watercooling", "Ecran", "144Hz", "165Hz", "180Hz", "240Hz", "Matos", "Boitier"
-];
-
 async function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-async function queryOuedkniss(q, storeId = null) {
-  const filter = { page: 1, count: 40 };
-  if (storeId) {
-    filter.stores = [parseInt(storeId, 10)];
-  }
+async function queryStoreAnnouncements(storeId, page = 1) {
   try {
     const res = await fetch(GRAPHQL_ENDPOINT, {
       method: "POST",
       headers: HEADERS,
       body: JSON.stringify({
         query: QUERY,
-        variables: { q, filter }
+        variables: {
+          filter: {
+            storeId: parseInt(storeId, 10),
+            page,
+            count: 48
+          }
+        }
       })
     });
-    if (!res.ok) return [];
+    if (!res.ok) return { offers: [], hasMore: false };
     const json = await res.json();
+    const paginator = json?.data?.search?.announcements?.paginatorInfo;
     const items = json?.data?.search?.announcements?.data || [];
-    return items.map((a) => {
+
+    const offers = items.map((a) => {
       if (!a || !a.id) return null;
 
-      // 1. Status check: only active/published/edited listings
       const st = String(a.status || "").toUpperCase();
       if (st && st !== "PUBLISHED" && st !== "ACTIVE" && st !== "EDITED") return null;
 
-      // 2. Freshness check: reject dead/expired listings older than 90 days
-      const postDate = a.refreshedAt;
-      if (!postDate) return null;
-      const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
-      if (isNaN(ageDays) || ageDays > 45) return null;
+      const postDate = a.refreshedAt || a.createdAt;
+      if (postDate) {
+        const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
+        if (isNaN(ageDays) || ageDays > 45) return null;
+      }
 
-      // 3. Price validation: clean numeric price, reject placeholders
       let p = a.price;
       if (!p && a.pricePreview) {
         const cleaned = String(a.pricePreview).replace(/\s/g, "");
@@ -141,37 +144,44 @@ async function queryOuedkniss(q, storeId = null) {
       if (/^(?:1000|1111|1234|12345|123456|9999|99999|1000000)$/.test(String(p))) return null;
 
       const title = (a.title || "").replace(/\s+/g, " ").trim();
-      if (!title || title.length < 10) return null;
+      if (!title || title.length < 8) return null;
 
-      // 4. Exclude broken, empty box, accessories, or entire PC units
-      const titleLower = title.toLowerCase();
-      if (/\b(?:hs\b|en panne|pour pi[eè]ces?|bo[iî]te vide|carton seul|ventirad seul|support seul|c[aâ]ble seul)\b/i.test(titleLower)) return null;
-      if (/\b(?:pc complet|pc gamer complet|unit[eé] gamer|unit[eé] centrale|configuration compl[eè]te|setup gamer)\b/i.test(titleLower)) return null;
+      // Exclude obvious accessories / empty box
+      if (/\b(?:hs\b|en panne|pour pi[eè]ces?|bo[iî]te vide|carton seul|ventirad seul|support seul|c[aâ]ble seul)\b/i.test(title)) return null;
 
-      const wilaya = a.cities?.[0]?.region?.name || "Alger";
+      const primaryCity = a.cities?.[0];
+      const wilaya = primaryCity?.region?.name || primaryCity?.name || "Alger";
       const storeName = (a.store?.name || a.user?.username || "Ouedkniss").trim();
-      const url = `https://www.ouedkniss.com/${a.slug}-d${a.id}`;
+      const slug = a.slug || "annonce";
+      const url = `https://www.ouedkniss.com/${slug}-d${a.id}`;
       const img = a.defaultMedia?.mediaUrl || "";
-      const desc = (a.description || "") + " " + a.title;
-      const isNew = /neuf|sous emballage|jamais servi|scell/i.test(desc) && !/occasion|utilis|bon etat/i.test(desc);
+
       return {
-        id: String(a.id),
+        id: a.id,
         title,
         priceDa: p,
         url,
         image: img,
         wilaya,
+        seller: storeName,
         store: storeName,
-        stock: "En stock",
-        condition: isNew ? "new" : "used",
-        postedAt: postDate,
-        isStore: Boolean(a.store),
-        isFromStore: Boolean(a.store),
-        query: q
+        stock: "Ouedkniss",
+        postedAt: postDate || "",
+        isFromStore: true,
+        storeSlug: a.store?.slug || undefined,
+        storeId: a.store?.id || String(storeId),
+        query: "store-sweep",
+        description: a.description || ""
       };
     }).filter(Boolean);
+
+    return {
+      offers,
+      hasMore: Boolean(paginator && paginator.hasMorePages)
+    };
   } catch (err) {
-    return [];
+    console.error(`  Error querying storeId ${storeId} p${page}:`, err.message);
+    return { offers: [], hasMore: false };
   }
 }
 
@@ -189,11 +199,10 @@ async function scrapeBlidaComputer() {
       const priceRaw = it.prices?.price;
       if (!priceRaw) continue;
       const priceDa = Math.round(parseInt(priceRaw, 10) / 100);
-      if (priceDa < 1000 || priceDa > 5000000) continue;
+      if (priceDa < 1500 || priceDa > 5000000) continue;
       const title = it.name || "";
       const img = it.images?.[0]?.src || "";
       const url = it.permalink || "";
-      const isNew = true; // Retail storefront new inventory
       offers.push({
         id: `blida-${it.id}`,
         title,
@@ -201,9 +210,10 @@ async function scrapeBlidaComputer() {
         url,
         image: img,
         wilaya: "Blida",
+        seller: "Blida Computer",
         store: "Blida Computer",
         stock: it.is_in_stock ? "En stock" : "Rupture",
-        condition: isNew ? "new" : "used",
+        condition: "new",
         postedAt: new Date().toISOString(),
         isStore: true,
         isFromStore: true,
@@ -219,7 +229,9 @@ async function scrapeBlidaComputer() {
 }
 
 async function run() {
-  console.log(`Starting expanded scrape across Algeria: ${STORES.length} stores + Blida Computer standalone.`);
+  console.log("==========================================================");
+  console.log(`DZ-PartPicker: Comprehensive Algeria Store Sweep (${STORES.length} Stores)`);
+  console.log("==========================================================");
 
   const fullPath = "full.json";
   let fullData = { ok: true, report: {} };
@@ -233,51 +245,96 @@ async function run() {
     fullData.report["ouedkniss:all"] = [];
   }
 
-  const existingUrls = new Set(fullData.report["ouedkniss:all"].map((x) => x.url));
-  console.log(`Existing offers in full.json ouedkniss:all: ${existingUrls.size}`);
+  const existingOffers = fullData.report["ouedkniss:all"];
+  console.log(`Current listings in full.json ouedkniss:all: ${existingOffers.length}`);
+
+  const existingUrlMap = new Map();
+  for (const o of existingOffers) {
+    if (o.url) existingUrlMap.set(o.url, o);
+  }
 
   let totalNew = 0;
+  let totalUpdated = 0;
 
   // 1. Standalone store: Blida Computer
   const blidaOffers = await scrapeBlidaComputer();
   for (const off of blidaOffers) {
-    if (!existingUrls.has(off.url)) {
-      existingUrls.add(off.url);
-      fullData.report["ouedkniss:all"].push(off);
+    if (!existingUrlMap.has(off.url)) {
+      existingUrlMap.set(off.url, off);
+      existingOffers.push(off);
       totalNew++;
+    } else {
+      const old = existingUrlMap.get(off.url);
+      if (off.priceDa && off.priceDa !== old.priceDa) {
+        old.priceDa = off.priceDa;
+        totalUpdated++;
+      }
     }
   }
 
-  // 2. Sweep top discovered stores on Ouedkniss across Algerian wilayas
+  // 2. Sweep stores across Algerian wilayas via storeId
   let storeIdx = 0;
   for (const store of STORES) {
     storeIdx++;
-    console.log(`[${storeIdx}/${STORES.length}] Sweeping ${store.name} (${store.wilaya})...`);
-    for (const sq of STORE_SAMPLE_QUERIES) {
-      const offers = await queryOuedkniss(sq, store.id);
-      let added = 0;
+    process.stdout.write(`[${storeIdx}/${STORES.length}] Sweeping ${store.name} (${store.wilaya})... `);
+
+    let storeAdded = 0;
+    let storeRefreshed = 0;
+
+    for (let page = 1; page <= 2; page++) {
+      const { offers, hasMore } = await queryStoreAnnouncements(store.id, page);
       for (const off of offers) {
-        if (!existingUrls.has(off.url)) {
-          existingUrls.add(off.url);
-          fullData.report["ouedkniss:all"].push(off);
-          added++;
+        if (!existingUrlMap.has(off.url)) {
+          existingUrlMap.set(off.url, off);
+          existingOffers.push(off);
+          storeAdded++;
           totalNew++;
+        } else {
+          const old = existingUrlMap.get(off.url);
+          let changed = false;
+          if (off.priceDa && off.priceDa !== old.priceDa) {
+            old.priceDa = off.priceDa;
+            changed = true;
+          }
+          if (off.postedAt && off.postedAt > (old.postedAt || "")) {
+            old.postedAt = off.postedAt;
+            changed = true;
+          }
+          if (store.name && (!old.seller || old.seller === "Ouedkniss")) {
+            old.seller = store.name;
+            old.store = store.name;
+            changed = true;
+          }
+          if (store.wilaya && (!old.wilaya || old.wilaya === "Alger")) {
+            old.wilaya = store.wilaya;
+            changed = true;
+          }
+          if (old.isFromStore !== true) {
+            old.isFromStore = true;
+            changed = true;
+          }
+          if (changed) {
+            storeRefreshed++;
+            totalUpdated++;
+          }
         }
       }
-      if (added > 0) {
-        console.log(`  +${added} new from ${store.name} query "${sq}"`);
-      }
-      await sleep(400);
+      if (!hasMore) break;
+      await sleep(250);
     }
+
+    console.log(`(+${storeAdded} new, ~${storeRefreshed} refreshed)`);
+    await sleep(350);
   }
 
-  console.log(`\nAll stores swept! Total new unique offers added: ${totalNew}`);
-  console.log(`Total listings in full.json ouedkniss:all: ${fullData.report["ouedkniss:all"].length}`);
+  console.log("==========================================================");
+  console.log(`Store Sweep Complete! Total NEW unique offers added: ${totalNew}`);
+  console.log(`Total listings refreshed with store/wilaya/price: ${totalUpdated}`);
+  console.log(`Total listings in full.json ouedkniss:all: ${existingOffers.length}`);
+  console.log("==========================================================");
 
-  if (totalNew > 0) {
-    fs.writeFileSync(fullPath, JSON.stringify(fullData), "utf8");
-    console.log("Saved updated full.json!");
-  }
+  fs.writeFileSync(fullPath, JSON.stringify(fullData), "utf8");
+  console.log("Saved updated full.json!");
 }
 
-run();
+run().catch(console.error);

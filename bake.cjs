@@ -5,7 +5,17 @@ const fs = require("fs");
 const full = JSON.parse(fs.readFileSync("full.json", "utf8"));
 const report = full.report;
 
-const WILAYA = { "LICB+": "Alger", "Click-DZ": "Alger", Digitec: "Alger", WifiDjelfa: "Djelfa", KOTEK: "Alger", GamingDZ: "Sétif", GigaStore: "Oran", Informatics: "Boumerdes", Lahlou: "Alger", HardSoft: "Oran", Campus: "Alger", KhabirTech: "M'sila", DeskCom: "Oran", NextGen: "Sétif", Matos: "Alger", BlidaComputer: "Blida" };
+const WILAYA = {
+  "LICB+": "Alger", "Click-DZ": "Alger", Digitec: "Alger", WifiDjelfa: "Djelfa", KOTEK: "Alger", GamingDZ: "Sétif",
+  GigaStore: "Oran", Informatics: "Boumerdes", Lahlou: "Alger", HardSoft: "Oran", Campus: "Alger", KhabirTech: "M'sila",
+  DeskCom: "Oran", NextGen: "Sétif", Matos: "Alger", BlidaComputer: "Blida", "TECHMATE DZ": "Jijel", "MBA INFO": "Batna",
+  "E K Service Informatique": "Blida", "mark computer": "Blida", "GAMING ONE": "Oran", "CLICK INFORMATIQUE ORAN": "Oran",
+  "FAIZ TECH": "Djelfa", "INI VOLT": "Sidi Bel Abbès", SolutionMaxi: "Oran", "Zmika Store": "Alger", "TKI TEC": "Alger",
+  "FUTURE CITY INFORMATIQUE": "Alger", "IT DEVICE": "Alger", "ADMIN Informatique": "Alger", "IFTA COMPUTER": "Alger",
+  "PROMOTECH IT": "Alger", "DKTIQUE COMPUTER": "Alger", "Technal Computer": "Alger", BUYMORE: "Alger", HWstore: "Alger",
+  "MDI informatique": "Alger", "AN-TECH": "Alger", "AGYN TECH DZ": "Tizi Ouzou", "KPC SOLUTIONS": "Alger",
+  "EL ASSLI HI TECH": "Alger", TRETEC: "Alger", "INFO TECH": "Alger"
+};
 const NOW = new Date().toISOString();
 
 // seed pairs win over live dupes (read from products.ts)
@@ -101,7 +111,7 @@ const RULES = [
   { id: "cpu-r5-3500x", cat: "cpu", all: ["3500x"], none: ["laptop", "notebook"] },
   { id: "cpu-r7-3700x", cat: "cpu", all: ["3700x"], none: ["laptop", "notebook"] },
   { id: "cpu-r9-5950x", cat: "cpu", all: ["5950x"], none: ["laptop", "notebook"] },
-  { id: "cpu-i5-12600k", cat: "cpu", all: ["12600k"], none: ["laptop", "notebook"] },
+  { id: "cpu-i5-12600k", cat: "cpu", all: ["12600k"], none: ["12600kf", "laptop", "notebook"] },
   { id: "cpu-i7-13700f", cat: "cpu", all: ["13700f"], none: ["laptop", "notebook"] },
   { id: "cpu-i7-10700f", cat: "cpu", all: ["10700f"], none: ["laptop", "notebook"] },
   { id: "cpu-i5-10600kf", cat: "cpu", all: ["10600k"], none: ["laptop", "notebook"] },
@@ -118,6 +128,10 @@ const RULES = [
   { id: "cpu-r3-3100", cat: "cpu", all: ["3100"], none: ["laptop", "notebook"] },
   { id: "cpu-r3-4300g", cat: "cpu", all: ["4300g"], none: ["laptop", "notebook"] },
   { id: "cpu-r5-5500", cat: "cpu", all: ["5500"], any: ["ryzen", "r5", "amd", "cpu", "processor", "core"], none: ["5500gt", "5500x3d", "5500u", "5500m", "rx", "xt", "laptop", "notebook"] },
+  { id: "cpu-r5-3600", cat: "cpu", all: ["3600"], none: ["3600x", "3600xt", "laptop", "notebook"] },
+  { id: "cpu-r5-4500", cat: "cpu", all: ["4500"], any: ["ryzen", "r5", "amd", "cpu", "processor"], none: ["laptop", "notebook"] },
+  { id: "cpu-r7-5700x3d", cat: "cpu", all: ["5700x3d"], none: ["laptop", "notebook"] },
+  { id: "cpu-i5-12600kf", cat: "cpu", all: ["12600kf"], none: ["laptop", "notebook"] },
   { id: "cpu-r5-5500gt", cat: "cpu", all: ["5500gt"], none: ["laptop", "notebook"] },
   { id: "cpu-r3-2200g", cat: "cpu", all: ["2200g"], none: ["laptop", "notebook"] },
   { id: "cpu-u7-270k", cat: "cpu", all: ["270k"], none: ["laptop", "notebook"] },
@@ -284,8 +298,8 @@ const RULES = [
   { id: "hdd-4tb", cat: "ssd", all: ["4tb"], any: ["hdd", "skyhawk", "surveillance", "purple"], none: ["ssd", "nvme", "laptop", "notebook"] },
   { id: "hdd-2tb", cat: "ssd", all: ["2tb"], any: ["hdd", "barracuda", "skyhawk", "purple", "surveillance", "7200rpm", "5400rpm"], none: ["ssd", "nvme", "laptop", "notebook"] },
   { id: "ssd-external", cat: "ssd", any: ["external", "externe", "my book", "rugged", "backup plus", "boitier ssd", "arion", "travelair", "rack extern"], none: ["laptop", "notebook"] },
-  { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["1tb", "nvme"], none: ["sata", "laptop", "notebook"] },
-  { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["1tb"], any: ["m2"], none: ["sata", "hdd", "surveillance", "laptop", "notebook"] },
+  { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["1tb", "nvme"], none: ["nv3", "nv2", "nm620", "nm710", "nm790", "sn850", "sn770", "sn580", "980", "990", "kc3000", "legend", "sata", "laptop", "notebook"] },
+  { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["1tb"], any: ["m2"], none: ["nv3", "nv2", "nm620", "nm710", "nm790", "sn850", "sn770", "sn580", "980", "990", "kc3000", "legend", "sata", "hdd", "surveillance", "laptop", "notebook"] },
   { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["sn5100"], none: ["laptop", "notebook"] },
   { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["m450"], none: ["laptop", "notebook"] },
   { id: "ssd-gen5-1tb", cat: "ssd", all: ["m560"], none: ["laptop", "notebook"] },
@@ -298,7 +312,12 @@ const RULES = [
   { id: "ssd-nvme-500gb", cat: "ssd", all: ["firecuda", "500gb"], none: ["laptop", "notebook"] },
   { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["firecuda"], none: ["5tb", "8tb", "500gb", "laptop", "notebook"] },
   { id: "ssd-nvme-512gb", cat: "ssd", all: ["512gb"], any: ["nvme", "gen3", "gen4", "m2"], none: ["sata", "1tb", "2tb", "laptop", "notebook"] },
-  { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["nv3"] },
+  { id: "ssd-nv3-500gb", cat: "ssd", all: ["nv3"], any: ["500gb", "512gb", "500g", "512g"], none: ["1tb", "2tb", "laptop", "notebook"] },
+  { id: "ssd-nv3-1tb", cat: "ssd", all: ["nv3"], any: ["1tb", "1000gb", "1024gb"], none: ["500gb", "512gb", "2tb", "laptop", "notebook"] },
+  { id: "ssd-nv3-1tb", cat: "ssd", all: ["nv3"], none: ["500gb", "512gb", "2tb", "laptop", "notebook"] },
+  { id: "ssd-nv2-1tb", cat: "ssd", all: ["nv2"], any: ["1tb", "1000gb", "1024gb"], none: ["500gb", "512gb", "2tb", "laptop", "notebook"] },
+  { id: "ssd-nm620-1tb", cat: "ssd", all: ["nm620"], none: ["256gb", "512gb", "2tb", "laptop", "notebook"] },
+  { id: "ssd-nm710-1tb", cat: "ssd", all: ["nm710"], none: ["256gb", "512gb", "2tb", "laptop", "notebook"] },
   { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["gen4"], any: ["1tb"], none: ["512gb", "256gb", "2tb", "sata", "laptop", "notebook"] },
   { id: "ssd-sata-120gb", cat: "ssd", all: ["sata", "120gb"], none: ["nvme", "m2", "hdd", "laptop", "notebook"] },
   { id: "ssd-sata-360gb", cat: "ssd", all: ["sata", "360gb"], none: ["nvme", "m2", "hdd", "laptop", "notebook"] },
@@ -352,7 +371,10 @@ const RULES = [
   { id: "gpu-rtx4070s-12gb", cat: "gpu", all: ["4070super"], none: ["laptop", "notebook", "portable", "ti"] },
   { id: "gpu-rtx4070tis-16gb", cat: "gpu", all: ["4070tisuper"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-gt1030-4gb", cat: "gpu", all: ["1030"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-b580-12gb", cat: "gpu", all: ["b580"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-arc-b580-12gb", cat: "gpu", all: ["b580"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-arc-a750-8gb", cat: "gpu", all: ["a750"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-arc-a580-8gb", cat: "gpu", all: ["a580"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-arc-a380-6gb", cat: "gpu", all: ["a380"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rtx4060ti-16gb", cat: "gpu", all: ["4060ti", "16gb"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rtx4060ti-8gb", cat: "gpu", all: ["4060ti"], none: ["16gb", "laptop", "notebook", "portable"] },
   { id: "gpu-rtx3060-8gb", cat: "gpu", all: ["3060"], any: ["8gb", "08g", "8g"], none: ["12gb", "12g", "o12g", "ti", "laptop", "notebook", "portable"] },
@@ -368,6 +390,7 @@ const RULES = [
   { id: "gpu-rx480-8gb", cat: "gpu", all: ["480"], none: ["pro", "laptop", "notebook", "portable"] },
   { id: "gpu-rtx3060-12gb", cat: "gpu", all: ["3060"], none: ["8gb", "08g", "8g", "ti", "laptop", "notebook", "portable"] },
   { id: "gpu-gtx1660ti-6gb", cat: "gpu", all: ["1660ti"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-gtx1660-6gb", cat: "gpu", all: ["1660"], none: ["super", "ti", "1660s", "laptop", "notebook", "portable"] },
   { id: "gpu-gtx1650-4gb", cat: "gpu", all: ["1650"], none: ["super", "ti", "1650s", "laptop", "notebook", "portable"] },
   { id: "gpu-gtx1050ti-4gb", cat: "gpu", all: ["1050ti"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-gtx1070-8gb", cat: "gpu", all: ["1070"], none: ["laptop", "notebook", "portable"] },
@@ -414,9 +437,9 @@ const RULES = [
   { id: "case-magma-t9", cat: "case", all: ["magma", "t9"] },
   { id: "case-hybrok-ares", cat: "case", all: ["hybrok"], any: ["ares", "titan"] },
   { id: "case-nox-hummer", cat: "case", all: ["nox"] },
-  { id: "case-xigmatek-aura", cat: "case", all: ["xigmatek"] },
-  { id: "case-mars", cat: "case", all: ["mars"] },
-  { id: "case-gamemax", cat: "case", all: ["gamemax"] },
+  { id: "case-xigmatek-aura", cat: "case", all: ["xigmatek"], any: ["aura", "gaming", "aquarius", "omero", "endorphin", "anubis", "master", "case", "boitier", "chassis", "tour"], none: ["psu", "alimentation", "cooler", "fan", "laptop", "notebook"] },
+  { id: "case-mars", cat: "case", all: ["mars"], any: ["case", "boitier", "chassis", "tour", "mc", "mcv", "mcp", "gaming"], none: ["mpb", "mpiii", "mpvu", "psu", "alimentation", "power", "clavier", "souris", "mouse", "keyboard", "cooler", "laptop", "notebook"] },
+  { id: "case-gamemax", cat: "case", all: ["gamemax"], any: ["case", "boitier", "chassis", "tour", "ninja", "optical", "brufen", "abyss", "nova", "expedition", "diamond", "vista", "moonlight"], none: ["psu", "alimentation", "power", "vp", "gmx", "ecran", "monitor", "ventilateur", "fan", "laptop", "notebook"] },
   { id: "case-masterbox", cat: "case", all: ["masterbox"] },
   { id: "case-masterbox", cat: "case", all: ["mastercase"] },
   { id: "case-gungnir", cat: "case", all: ["gungnir"] },
@@ -428,7 +451,7 @@ const RULES = [
   { id: "case-xpg", cat: "case", all: ["lander"] },
   { id: "case-gigabyte", cat: "case", all: ["c301g"] },
   { id: "case-gt502", cat: "case", all: ["gt502"] },
-  { id: "case-phanteks", cat: "case", all: ["phanteks"] },
+  { id: "case-phanteks", cat: "case", all: ["phanteks"], any: ["case", "boitier", "chassis", "tour", "eclipse", "evolv", "nv5", "nv7", "nv9", "xt", "g360a", "p300", "p400", "p500"], none: ["fan", "cable", "psu", "cooler", "laptop", "notebook"] },
   { id: "case-gearmaster", cat: "case", all: ["gearmaster"] },
   { id: "case-asus-pro", cat: "case", all: ["proart"] },
   { id: "case-hybrok-ares", cat: "case", all: ["hybrok"], any: ["ares", "titan", "race", "hacker"] },
@@ -440,13 +463,13 @@ const RULES = [
   { id: "case-4000d", cat: "case", all: ["4000x"] },
   { id: "case-cg580", cat: "case", all: ["cg380"] },
   { id: "case-gamma-c60", cat: "case", all: ["c70"] },
-  { id: "case-antec", cat: "case", all: ["antec"] },
+  { id: "case-antec", cat: "case", all: ["antec"], any: ["case", "boitier", "chassis", "tour", "nx", "ax", "cx", "p20", "c8", "flux", "performance", "torque"], none: ["atom", "csk", "vp", "hcg", "ne", "psu", "alimentation", "power", "cooler", "fan", "symphony", "laptop", "notebook"] },
   { id: "case-gc7", cat: "case", all: ["talos"] },
   { id: "case-ch560", cat: "case", all: ["ch690"] },
   { id: "case-ch560", cat: "case", all: ["ch270"] },
   { id: "case-cg580", cat: "case", all: ["cg530"] },
   { id: "case-gc7", cat: "case", all: ["gcm10"] },
-  { id: "case-havit", cat: "case", all: ["havit"] },
+  { id: "case-havit", cat: "case", all: ["havit"], any: ["case", "boitier", "chassis", "tour"], none: ["watercooling", "cooler", "f2002", "f2003", "f2005", "clavier", "souris", "keyboard", "mouse", "casque", "headset", "laptop", "notebook"] },
   { id: "case-infinita-i802", cat: "case", all: ["x606"] },
   { id: "case-budget", cat: "case", all: ["cmt192"] },
   { id: "case-budget", cat: "case", all: ["ares"] },
@@ -695,15 +718,15 @@ const RULES = [
 function detectTitleCategory(title) {
   if (!title) return null;
   const t = " " + norm(title) + " ";
-  if (/\b(ecran|moniteur|monitor|dalle|curved|incurv[eé]|ips\s*gaming)\b|\b\d{2,3}hz\b/i.test(t)) return "monitor";
-  if (/\b(alimentation|allimentation|alim|psu|power\s*supply|bloc\s*d|boite\s*d|80\s*plus|80plus|modulaire)\b|\b(450|500|550|600|650|700|750|800|850|1000|1050|1200|1250|1300)w\b/i.test(t)) return "psu";
-  if (/\b(boitier|boîtier|chassis|case|aquarium|tour\s*atx|m-atx\s*case|mid\s*tower)\b/i.test(t)) return "case";
-  if (/\b(watercooling|water\s*cooling|ventirad|cooler|refroidisseur|dissipateur|aio|ak400|ak620|ag400|ag620|peerless|phantom\s*spirit)\b/i.test(t)) return "cooler";
+  if (/\b(ecran|moniteur|monitor|dalle|curved|incurv[eé]|ips\s*gaming|fast\s*ips|ultragear|odyssey|zowie|katana|msg24|msg27|msg32|24g4|27g4|24g2|27g2|g24i|g27i|vg249|vg279|g242f|g25f|gs27fa|mag\s*255f|255f|272f|mp242|mp271|mp275)\b|\b\d{2,3}hz\b/i.test(t)) return "monitor";
+  if (/\b(alimentation|allimentation|alim|psu|power\s*supply|bloc\s*d|boite\s*d|80\s*plus|80plus|modulaire|semi\s*modulaire|full\s*modulaire|pk550|pk650|pk750|pl550|pl650|pl750|pn650|pn750|pn850|pn1200|a650bn|a750bn|a850gl|a1000g|mpb550|mpb650|mpb750|mpb850|rgps|vte|xtc|ngdp)\b|\b(400|450|500|550|600|650|700|750|800|850|1000|1050|1200|1250|1300)w\b/i.test(t)) return "psu";
+  if (/\b(boitier|boîtier|chassis|case|aquarium|tour\s*atx|m-atx\s*case|mid\s*tower|4000d|5000d|h5\s*flow|h7\s*flow|h9\s*flow|ch560|cg580|cg530|cg380|ap201|magma|infinita|meshian|hurrikan|shield\s*m100|forge\s*320|pano\s*110)\b/i.test(t)) return "case";
+  if (/\b(watercooling|water\s*cooling|ventirad|cooler|refroidisseur|dissipateur|aio|ak400|ak500|ak620|ak700|ag400|ag500|ag620|le500|le520|le720|ls720|lt520|lt720|peerless|phantom\s*spirit|liquid\s*freezer|hyper\s*212)\b/i.test(t)) return "cooler";
   if (/\b(carte\s*m[eè]re|motherboard|mobo|b450|b550|b650|a520|a620|b760|h610|z790|z890|b850|x670|x870|h510|h410|h310|h110|a320|z390|z490|z590|z690)\b/i.test(t)) return "motherboard";
   if (/\b(ddr[45]|ram|m[eé]moire|spectrix|vengeance|fury\s*beast|t-force|trident)\b/i.test(t)) return "ram";
-  if (/\b(ssd|nvme|m2|disque\s*dur|hdd|sn850|sn770|sn580|980\s*pro|990\s*pro|kc3000|legend|nv2|nv3)\b/i.test(t)) return "ssd";
-  if (/\b(ryzen|intel\s*core|cpu|processeur|threadripper)\b|\bi[3579]-?\d{4,5}\b|\bultra\s*[579]\b/i.test(t)) return "cpu";
-  if (/\b(rtx|gtx|radeon|geforce|gpu|carte\s*graphique)\b|\brx\s*\d{3,4}\b|\b\d{4}\s*xt\b|\barc\s*b?\d{3}\b/i.test(t)) return "gpu";
+  if (/\b(ssd|nvme|m2|disque\s*dur|hdd|sn850|sn770|sn580|980\s*pro|990\s*pro|kc3000|legend|nv2|nv3|nm620|nm710|nm790)\b/i.test(t)) return "ssd";
+  if (/\b(ryzen|intel\s*core|cpu|processeur|threadripper)\b|\bi[3579]-?\d{4,5}[a-z]*\b|\bultra\s*[579]\b/i.test(t)) return "cpu";
+  if (/\b(rtx|gtx|radeon|geforce|gpu|carte\s*graphique)\b|\brx\s*\d{3,4}\b|\b\d{4}\s*xt\b|\barc\s*[ab]?\d{3}\b/i.test(t)) return "gpu";
   return null;
 }
 
@@ -725,19 +748,20 @@ function detectQueryCategory(q) {
 
 const OK_CAT = {
   // CPU
-  "ryzen 5 3600": "cpu", "ryzen 5 5600": "cpu", "ryzen 5 5600x": "cpu", "ryzen 5 5600g": "cpu", "ryzen 7 5700x": "cpu",
+  "ryzen 5 3600": "cpu", "r5 3600": "cpu", "ryzen 5 4500": "cpu", "r5 4500": "cpu", "ryzen 5 5600": "cpu", "ryzen 5 5600x": "cpu", "ryzen 5 5600g": "cpu", "ryzen 7 5700x": "cpu",
   "ryzen 7 5700x3d": "cpu", "ryzen 7 5800x3d": "cpu", "ryzen 5 7500f": "cpu", "ryzen 5 7600": "cpu",
   "ryzen 7 7700": "cpu", "ryzen 7 7800x3d": "cpu", "ryzen 7 9800x3d": "cpu", "ryzen 9 7900x": "cpu", "ryzen 9 7950x": "cpu",
   "ryzen 5 8400f": "cpu", "ryzen 5 8500g": "cpu", "ryzen 5 9600x": "cpu", "ryzen 7 9700x": "cpu", "ryzen 9 9900x": "cpu", "ryzen 9 9950x": "cpu",
-  "i3 12100": "cpu", "i5 12400": "cpu", "i5 12600k": "cpu", "i5 13400": "cpu", "i5 13600k": "cpu", "i5 14400": "cpu", "i5 14600k": "cpu",
+  "i3 12100": "cpu", "i5 12400": "cpu", "i5 12600k": "cpu", "i5 12600kf": "cpu", "12600kf": "cpu", "i5 13400": "cpu", "i5 13600k": "cpu", "i5 14400": "cpu", "i5 14600k": "cpu",
   "i7 12700": "cpu", "i7 13700": "cpu", "i7 14700": "cpu", "i7 14700k": "cpu", "i9 13900k": "cpu", "i9 14900": "cpu",
   "ultra 7 265k": "cpu", "ultra 9 285k": "cpu",
   // GPU
   "rtx 3050": "gpu", "rtx 3060": "gpu", "rtx 3060 ti": "gpu", "rtx 3070": "gpu", "rtx 3080": "gpu",
   "rtx 4060": "gpu", "rtx 4060 ti": "gpu", "rtx 4070": "gpu", "rtx 4070 super": "gpu", "rtx 4070 ti": "gpu", "rtx 4080": "gpu", "rtx 4090": "gpu",
-  "rtx 5060": "gpu", "rtx 5060 ti": "gpu", "rtx 5070": "gpu", "gtx 1660 super": "gpu", "gtx 1650 super": "gpu", "1650 super": "gpu", "gtx 1650s": "gpu", "gtx 1650": "gpu",
+  "rtx 5060": "gpu", "rtx 5060 ti": "gpu", "rtx 5070": "gpu", "gtx 1660 super": "gpu", "gtx 1660 ti": "gpu", "gtx 1660": "gpu", "gtx 1650 super": "gpu", "1650 super": "gpu", "gtx 1650s": "gpu", "gtx 1650": "gpu",
   "rx 5500": "gpu", "rx 5500 xt": "gpu", "rx 5500 xt 8gb": "gpu", "rx 5500 xt 4gb": "gpu", "5500 xt": "gpu", "5500 xt 8gb": "gpu",
-  "rx 590": "gpu", "rx 590 8gb": "gpu", "rx 570": "gpu", "rx 570 8gb": "gpu", "rx 570 4gb": "gpu", "rx 5600 xt": "gpu", "rx 5700 xt": "gpu", "rx 5700": "gpu", "ryzen 5 5500": "cpu",
+  "rx 590": "gpu", "rx 590 8gb": "gpu", "rx 570": "gpu", "rx 570 8gb": "gpu", "rx 570 4gb": "gpu", "rx 5600 xt": "gpu", "rx 5700 xt": "gpu", "rx 5700": "gpu",
+  "arc b580": "gpu", "b580": "gpu", "arc a750": "gpu", "arc a580": "gpu", "arc a380": "gpu", "ryzen 5 5500": "cpu",
   "rx 580": "gpu", "rx 6600": "gpu", "rx 6650 xt": "gpu", "rx 6700 xt": "gpu", "rx 6800": "gpu",
   "rx 7600": "gpu", "rx 7700 xt": "gpu", "rx 7800 xt": "gpu", "rx 7900 xt": "gpu", "rx 7900 xtx": "gpu", "rx 9070": "gpu", "rx 9060": "gpu",
   // Motherboard
@@ -752,7 +776,7 @@ const OK_CAT = {
   "16gb ddr4": "ram", "32gb ddr4": "ram", "ddr4 3200": "ram", "ddr5 16gb": "ram", "ddr5 32gb": "ram", "ddr5 6000": "ram",
   // SSD
   "980 pro": "ssd", "990 pro": "ssd", "sn850x": "ssd", "sn770": "ssd", "kc3000": "ssd",
-  "legend 710": "ssd", "legend 850": "ssd", "nv3 1tb": "ssd", "nvme 1tb": "ssd", "nvme 512gb": "ssd", "nvme 2tb": "ssd",
+  "legend 710": "ssd", "legend 850": "ssd", "nv3": "ssd", "nv3 1tb": "ssd", "nv3 500gb": "ssd", "nv2": "ssd", "nv2 1tb": "ssd", "nm620": "ssd", "nm710": "ssd", "nvme 1tb": "ssd", "nvme 512gb": "ssd", "nvme 2tb": "ssd",
   // PSU
   "550w": "psu", "600w": "psu", "650w": "psu", "750w": "psu", "850w": "psu", "1000w": "psu",
   "alimentation 550w": "psu", "alimentation 600w": "psu", "alimentation 650w": "psu", "alimentation 750w": "psu", "alimentation 850w": "psu", "alimentation 1000w": "psu",
@@ -1322,7 +1346,7 @@ function isAbsurd(category, pid, price) {
   return price < m * 0.55 || price > m * 1.6;
 }
 
-const BUNDLE_CATS = ["cpu", "gpu", "motherboard", "ram", "ssd"];
+const BUNDLE_CATS = ["cpu", "gpu", "motherboard", "ram", "ssd", "psu", "cooler", "case", "monitor"];
 function matchAnyCategory(title) {
   const hits = [];
   for (const c of BUNDLE_CATS) {

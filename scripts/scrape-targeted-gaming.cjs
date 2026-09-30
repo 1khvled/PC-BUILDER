@@ -53,15 +53,41 @@ const QUERY = `query SearchQuery($q: String, $filter: SearchFilterInput) {
 }`;
 
 const TARGET_QUERIES = [
-  // Budget AMD GPUs
+  // Budget & Mid-Range AMD GPUs
   "rx 590", "rx 590 8gb", "rx 590 sapphire",
   "rx 570", "rx 570 8gb", "rx 570 4gb", "rx 570 sapphire",
   "rx 5500 xt", "rx 5500 xt 8gb", "rx 5500 xt 4gb", "rx 5500", "5500 xt", "5500 xt 8gb", "carte graphique rx 5500",
-  "rx 5600 xt", "rx 5700 xt",
-  // Budget Nvidia GPUs
-  "gtx 1650 super", "1650 super", "gtx 1650s", "gtx 1650", "gtx 1650 4gb",
-  // Popular Budget CPU
-  "ryzen 5 5500", "r5 5500", "amd ryzen 5 5500"
+  "rx 5600 xt", "rx 5700 xt", "rx 580", "rx 580 8gb",
+
+  // Budget & Mid-Range Nvidia GPUs
+  "gtx 1660 6gb", "gtx 1660", "gtx 1660 super", "gtx 1660 ti", "carte graphique gtx 1660",
+  "gtx 1650 super", "1650 super", "gtx 1650s", "gtx 1650", "gtx 1650 4gb", "gtx 1060 6gb", "gtx 1050 ti",
+
+  // Intel Arc GPUs
+  "arc b580", "intel arc b580", "b580 12gb", "arc a750", "intel arc a750", "arc a580", "arc a380",
+
+  // High-Demand & Underrated CPUs
+  "ryzen 5 3600", "r5 3600", "amd ryzen 5 3600",
+  "ryzen 5 4500", "r5 4500", "amd ryzen 5 4500",
+  "ryzen 7 5700x3d", "5700x3d", "r7 5700x3d",
+  "i5 12600kf", "12600kf", "i5 12600k", "i3 12100f",
+  "ryzen 5 5500", "r5 5500", "amd ryzen 5 5500",
+
+  // High-Demand NVMe SSDs
+  "kingston nv3", "nv3 1tb", "nv3 500gb", "kingston nv2", "nv2 1tb",
+  "lexar nm620", "lexar nm710", "nm620 1tb", "nm710 1tb",
+
+  // Popular Algerian Monitors (Matos Katana & MSG, AOC, Xiaomi, Dahua)
+  "katana 24", "katana 27", "matos katana", "matos msg", "msg 24", "msg 27", "ecran matos",
+  "aoc 24g4", "aoc 27g4", "xiaomi g24i", "xiaomi g27i", "dahua lm24", "dahua lm27",
+  "redragon ruby", "redragon emerald", "odyssey g3", "odyssey g5", "koorui 24e4", "msi mag 255f",
+
+  // Popular Algerian Market PSUs
+  "deepcool pk550d", "deepcool pk650d", "deepcool pk750d", "deepcool pn750m", "deepcool pn850m",
+  "antec atom 550", "antec atom 650", "antec b550", "antec b650",
+  "mars gaming mpb", "mars gaming 650w", "mars gaming 750w",
+  "redragon rgps", "cougar vte", "cougar xtc", "1stplayer ngdp",
+  "msi mag a650bn", "msi mag a750bn"
 ];
 
 function sleep(ms) {
