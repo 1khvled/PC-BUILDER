@@ -1,0 +1,66 @@
+feat(builder): estimated performance with bottleneck and waste detection
+
+Continues the algo-side assignment (performance-based compatibility) that the
+other agent had started. The builder could already tell you whether a build
+*works*; it could not tell you whether it was *worth the money*. It now does.
+
+The gap this closes is real and common: a perfectly compatible build can be
+badly balanced. A 5700X3D behind a GTX 1650 passes every socket, RAM and wattage
+check and still throws away most of the CPU. Compatibility answers "will it
+turn on", this answers "was that money well spent".
+
+lib/data/benchmarks.ts
+- Curated performance indices for 77 CPUs, 79 GPUs, 21 memory kits and 30 SSDs.
+- Deliberately RELATIVE, not absolute. Every figure is an index against a
+  stated fixed baseline (Ryzen 5 5600 = 100 for CPU, RTX 4060 = 100 for GPU).
+  Exact-looking Cinebench/3DMark numbers we did not measure would be the most
+  damaging thing this site could publish: the whole value proposition is that
+  the data here can be trusted, and a confident wrong "21,847" is worse than no
+  number. An index against a baseline readers already know is both more useful
+  and defensible. The baselines are exported and rendered on screen so "100" is
+  never a mystery.
+- CPU: cores, threads, multi-thread, single-thread, and a gaming figure that
+  accounts for cache (which is why the X3D parts are rated well above their
+  clock speed suggests).
+- GPU: raster at 1080p and 1440p separately, so VRAM/bandwidth limits show up
+  where they belong, plus a ray-tracing index for the newer generations.
+- Memory: bandwidth index plus real CAS latency in ns - the figure that decides
+  CPU-bound games, and the one most spec sheets bury.
+- Storage: sequential read/write AND 4K random IOPS, because a cheap SATA drive
+  feels slow in Windows and in load times despite respectable sequential
+  numbers.
+- Every key is validated against the ids in lib/data/products.ts: zero orphan
+  keys, and full coverage of all 77 CPUs, 21 memory kits and 30 SSDs, 79 of 80
+  GPUs (gpu-quadro is a generic "Quadro Workstation" placeholder, not a real
+  SKU, so it is deliberately absent). Accessors return null rather than
+  guessing, and the UI reports its own coverage.
+
+lib/perf/estimate.ts
+- Combines the indices into a gaming score (geometric mean of CPU and GPU,
+  weighted to the GPU because a fast CPU cannot make a slow GPU fast) and a
+  productivity score (CPU-bound, with a memory-bandwidth boost).
+- The index -> 0-100 mapping is compressive, not linear: 50 -> 100 matters far
+  more to a buyer than 250 -> 300, and a linear map would make every high-end
+  build look identical.
+- Detects the cases where money is wasted, and says so specifically:
+  CPU bottlenecking a much stronger GPU, GPU bottlenecking a much stronger CPU
+  at 1440p/4K, slow storage (<1000 MB/s), and memory that will hold the build
+  back. Each carries the actual part names rather than a generic warning.
+- Degrades honestly: a partial build reports less coverage instead of a
+  confident wrong number.
+
+components/BuildPerformanceCard.tsx
+- Sits directly under the compatibility summary, because the two answer
+  different questions and both matter.
+- Compact, print-safe (the builder has a PDF/print path), and fully bilingual:
+  every note is a dictionary key, never a hardcoded string. 16 new keys in both
+  dictionaries, with FR as the shape source so a missing EN key is a compile
+  error.
+- Wired into BOTH builders. The builders are near-duplicate files, so any
+  builder change has to be made twice - see docs/AGENT-CONTEXT.md.
+
+Verified: tsc clean, next build passes, and in the browser the default build
+reports 47 gaming / 103 productivity ("Mainstream" / "Milieu de gamme") with the
+baseline stated on screen. A deliberately imbalanced build (5700X3D + GTX 1650
++ BX500 SATA + 8GB DDR3) correctly trips all three notes, in both languages,
+while the existing compatibility check still blocks the DDR3/AM4 mismatch.

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CATEGORIES, PRODUCTS, bestOffer, isRuptured, productImage, type Product } from "@/lib/data/products";
 import { useCatalog } from "@/lib/data/use-offers";
 import { checkCompat } from "@/lib/compat/check";
+import BuildPerformanceCard from "@/components/BuildPerformanceCard";
 import { recommendedPsu } from "@/lib/compat/watt";
 import Thumb from "@/components/Thumb";
 import CategoryIcon from "@/components/CategoryIcon";
@@ -445,6 +446,10 @@ export default function EnglishBuilderPage() {
             ))}
           </ul>
         )}
+
+          {/* Performance is a different question from compatibility: a build can be
+              perfectly valid and still badly balanced. */}
+          <BuildPerformanceCard build={build} />
       </div>
 
       {/* Main PCPartPicker System Builder Table */}
