@@ -86,6 +86,7 @@ export const en: Dictionary = {
   /* --------------------------------------------------------------------- nav */
   "nav.main": "Main navigation",
   "nav.mobile": "Mobile navigation",
+  "nav.benchmarks": "Benchmarks",
   "nav.buyingGuides": "Buying guides",
   "nav.new": "New",
   "nav.livePricesDz": "Live prices Algeria (DA)",
