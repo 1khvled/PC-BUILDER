@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import RecordVisit from "@/components/RecordVisit";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { bestOffer, isRuptured, productImage } from "@/lib/data/products";
@@ -128,6 +129,7 @@ export default async function EnglishProductPage({ params }: { params: { id: str
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-8">
+      <RecordVisit productId={product.id} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsJsonLd) }} />
       {/* Breadcrumbs */}

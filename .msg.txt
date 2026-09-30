@@ -1,0 +1,41 @@
+feat(retention): home page return strip, recently viewed, and a dictionary lint
+
+Completes the three-item retention plan, and the lint immediately caught a bug I
+had just shipped.
+
+1. Home page return strip (app/page.tsx + app/fr/page.tsx)
+   The home page showed a returning visitor exactly what it showed a first-time
+   visitor. It now answers "what is new for me?" with two surfaces: tracked
+   parts that dropped since their last visit, and recently viewed parts. A part
+   is never listed twice - anything already shown as a drop is excluded from
+   recently-viewed.
+   Renders nothing at all for a first-time visitor rather than an empty box, and
+   a failed price fetch degrades to nothing rather than breaking the home page.
+   One request to /api/watchlist, only for people who have something to see, and
+   the id list is capped.
+
+2. Recently viewed (lib/recent.ts + components/RecordVisit.tsx)
+   "Where was that PSU I was looking at?" is one of the most common ways a
+   session ends without a purchase. Most-recent-first, capped at 12, and
+   revisiting a part moves it to the front instead of adding a duplicate - a
+   list of the same PSU three times is not a history. Same localStorage approach
+   as the watchlist, for the same reason: server-side history would need auth.
+   RecordVisit renders nothing and writes in an effect, so it cannot affect
+   layout and the server never stores anything about who is browsing.
+
+3. scripts/check-dict.mjs
+   A missing English key is already a compile error, but a French VALUE copied
+   from the English file compiles perfectly clean and silently ships an English
+   interface to a French visitor.
+   It ran for the first time on this branch and found 40 untranslated French
+   values - the entire benchmarks.* block and most of watch.*, both of which I
+   had written with English strings in fr.ts. All 40 are now translated, plus
+   one pre-existing case (builder.meta.ogDescription) that predates this work.
+   The remaining 35 shared values are in an ALLOWLIST with a written reason for
+   each, so the allowlist stays auditable instead of becoming somewhere to hide
+   sloppiness. The script's own message says it: if you are adding a key to
+   silence it, translate the string instead.
+   fr.ts 553 keys, en.ts 553 keys, lint exits 0.
+
+Verified: tsc clean, next build passes, lint clean, and all four pages import
+and render their new component.
