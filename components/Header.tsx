@@ -145,6 +145,9 @@ export default function Header() {
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const catDropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  // Mirror of catDropdownOpen, readable from the mouseenter handler without
+  // re-binding the listener every time the menu opens or closes.
+  const catOpenRef = useRef(false);
 
   // Load saved wilaya preference
   useEffect(() => {
@@ -268,6 +271,20 @@ const headerSearchCache = new Map<string, ProductResult[]>();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Keep the hover-traverse mirror in sync, and close the menu when keyboard
+  // focus leaves it (click-outside alone never fires for tab navigation).
+  useEffect(() => {
+    catOpenRef.current = catDropdownOpen;
+    if (!catDropdownOpen) return;
+    const onFocusOut = (e: FocusEvent) => {
+      if (catDropdownRef.current && !catDropdownRef.current.contains(e.target as Node)) {
+        setCatDropdownOpen(false);
+      }
+    };
+    document.addEventListener("focusout", onFocusOut);
+    return () => document.removeEventListener("focusout", onFocusOut);
+  }, [catDropdownOpen]);
 
   // Keyboard navigation for search dropdown
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -492,7 +509,12 @@ const headerSearchCache = new Map<string, ProductResult[]>();
       {/* Sub-Navigation Bar (PCPartPicker signature 2nd tier menu) */}
       <div className="border-b border-slate-200/80 bg-white relative z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-600">
-          <nav aria-label="Navigation principale" className="flex items-center gap-1 sm:gap-1.5 py-1.5 overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap -mx-4 px-4 sm:mx-0 sm:px-0 touch-manipulation">
+          {/* NOTE: deliberately no overflow-x-auto here. A non-visible
+              overflow-x forces overflow-y to auto as well, which turns this nav
+              into a ~40px-tall clip box; the "Produits" panel is 421px and was
+              being cut off entirely (it opened, but nothing was ever painted).
+              Links wrap onto a second row on narrow screens instead. */}
+          <nav aria-label="Navigation principale" className="flex flex-wrap items-center gap-1 sm:gap-1.5 py-1.5 -mx-4 px-4 sm:mx-0 sm:px-0 touch-manipulation">
             <Link
               href="/builder"
               aria-current={pathname === "/builder" ? "page" : undefined}
@@ -505,11 +527,21 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               <span>System Builder</span>
             </Link>
 
-            {/* Products Dropdown */}
+            {/* Products Dropdown
+
+                Click is the single source of truth for opening. Previously this
+                also opened on onMouseEnter while the button toggled on click,
+                so on a desktop mouse the hover opened the menu and the very
+                next click toggled it back shut — clicking could never leave it
+                open. Hover now only *traverses* an already-open menu (mouse
+                users can slide across to the submenu instead of arrowing),
+                and touch/keyboard get the same click-to-open behaviour. */}
             <div
               className="relative"
               ref={catDropdownRef}
-              onMouseEnter={() => setCatDropdownOpen(true)}
+              onMouseEnter={() => {
+                if (catOpenRef.current) setCatDropdownOpen(true);
+              }}
               onMouseLeave={() => setCatDropdownOpen(false)}
             >
               <button
