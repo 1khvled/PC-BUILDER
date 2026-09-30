@@ -696,7 +696,7 @@ export const GUIDES_EN: Guide[] = [
     ],
   },
   {
-    slug: "gaming-1440p-300k",
+    slug: "gaming-1440p-165hz",
     title: "1440p: the build that stays valid for years",
     hook: "A 7600X, B650, DDR5 and a 16GB card: 1440p 165Hz without sinking the rest of the budget into the motherboard. The reasoning behind each line item.",
     kind: "build",

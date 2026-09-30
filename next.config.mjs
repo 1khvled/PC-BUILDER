@@ -9,6 +9,11 @@ const nextConfig = {
     // 308 (permanent) is deliberate over 301: it preserves the method and, more
     // importantly, tells crawlers the move is final and caches it aggressively.
     return [
+      // The slug used to promise a 300k build while the parts totalled over 400k. A
+      // numeric claim in the URL is a factual claim to a search engine, so the slug
+      // was renamed and the old address permanently redirected.
+      { source: "/guides/gaming-1440p-300k", destination: "/guides/gaming-1440p-165hz", permanent: true },
+      { source: "/fr/guides/gaming-1440p-300k", destination: "/fr/guides/gaming-1440p-165hz", permanent: true },
       { source: "/en", destination: "/", permanent: true },
       { source: "/en/builder", destination: "/builder", permanent: true },
       { source: "/en/category/:slug", destination: "/category/:slug", permanent: true },

@@ -772,7 +772,7 @@ export const GUIDES: Guide[] = [
     ],
   },
   {
-    slug: "gaming-1440p-300k",
+    slug: "gaming-1440p-165hz",
     title: "1440p : la config qui reste valable plusieurs années",
     hook: "7600X, B650, DDR5 et une carte 16 Go de VRAM : 1440p 165 Hz sans mettre le reste du budget dans la carte mère. Le raisonnement derrière chaque poste.",
     kind: "build",

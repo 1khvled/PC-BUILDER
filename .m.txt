@@ -1,0 +1,35 @@
+fix(guides): add a mechanical build audit, and fix a slug that lied about the price
+
+Rewriting prose by eye did not catch the office guide's 143,200 DA build under a
+90k title, so the builds are now checked by arithmetic instead.
+
+scripts/check-guides.mjs
+Audits every guide marked kind:"build" against the real catalogue, the real
+benchmark indices and the real estimator. Six rules:
+
+  1. BUDGET       a slug claiming a budget must land within 12% of it
+  2. BALANCE      no CPU above 30% of a build, no RAM or SSD above 35%
+  3. REDUNDANT    a CPU with integrated graphics plus a discrete GPU is flagged
+                  as money spent twice
+  4. F SUFFIX     an F-series CPU with no GPU cannot output a signal at all
+  5. BOTTLENECK   runs estimatePerformance, so a CPU that cannot feed the GPU
+                  shows up instead of being argued away
+  6. PARITY       FR and EN must list identical parts
+
+It found the second bad guide: gaming-1440p-300k promised 300,000 DA in its URL
+and the parts totalled 402,500 DA. The visible title was honest, but the slug is
+the indexed address, so that was a false price claim to a search engine.
+
+Renamed to gaming-1440p-165hz, which describes the build instead of pricing it,
+with 308 redirects for the old address in both languages so the indexed link
+survives. Chosen over "400k" deliberately: three parts in that build have no
+indexed offer, so any number in the slug would be a guess.
+
+Current state: one warning remains, on config-pc-170k-da, where a Ryzen 5 5600
+cannot fully feed an RX 6600 at high refresh. At that budget the build is
+correct - you are not chasing 240 fps - so it is left as advice rather than an
+error, and the audit now reports it as such.
+
+The office guide from the previous commit still passes all six rules.
+
+Verified: tsc clean, next build passes, audit runs and reports.
