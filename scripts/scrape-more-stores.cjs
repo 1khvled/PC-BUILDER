@@ -93,7 +93,7 @@ try {
 
 const STORE_SAMPLE_QUERIES = [
   "RTX", "GTX", "Radeon", "Ryzen", "Intel", "B550", "B650", "B760", "Z790",
-  "DDR4", "DDR5", "SSD", "NVMe", "PSU", "Watercooling", "Ecran", "Boitier"
+  "DDR4", "DDR5", "SSD", "NVMe", "PSU", "Watercooling", "Ecran", "144Hz", "165Hz", "180Hz", "240Hz", "Matos", "Boitier"
 ];
 
 async function sleep(ms) {

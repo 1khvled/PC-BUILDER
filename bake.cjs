@@ -5,7 +5,7 @@ const fs = require("fs");
 const full = JSON.parse(fs.readFileSync("full.json", "utf8"));
 const report = full.report;
 
-const WILAYA = { "LICB+": "Alger", "Click-DZ": "Alger", Digitec: "Alger", WifiDjelfa: "Djelfa", KOTEK: "Alger", GamingDZ: "Sétif", GigaStore: "Oran", Informatics: "Boumerdes", Lahlou: "Alger", HardSoft: "Oran", Campus: "Alger", KhabirTech: "M'sila", DeskCom: "Oran", NextGen: "Sétif" };
+const WILAYA = { "LICB+": "Alger", "Click-DZ": "Alger", Digitec: "Alger", WifiDjelfa: "Djelfa", KOTEK: "Alger", GamingDZ: "Sétif", GigaStore: "Oran", Informatics: "Boumerdes", Lahlou: "Alger", HardSoft: "Oran", Campus: "Alger", KhabirTech: "M'sila", DeskCom: "Oran", NextGen: "Sétif", Matos: "Alger", BlidaComputer: "Blida" };
 const NOW = new Date().toISOString();
 
 // seed pairs win over live dupes (read from products.ts)
@@ -596,6 +596,126 @@ const RULES = [
   { id: "mon-24-180", cat: "monitor", any: ["180hz", "180mhz"], all: ["24"], none: ["27", "32", "34", "49", "55", "65", "laptop", "tv", "televiseur"] },
   { id: "mon-24-180", cat: "monitor", all: ["180hz"], any: ["24", "23 8", "24 5", "23 6", "25"], none: ["27", "32", "34", "49", "55", "65", "laptop", "tv", "televiseur"] },
   { id: "mon-27-qhd165", cat: "monitor", all: ["27"], any: ["qhd", "2k", "1440p", "1440"], none: ["laptop", "tv", "televiseur", "32", "34", "49"] },
+  // ---- Expanded Monitor Rules ----
+  // MATOS monitors
+  { id: "mon-27-4k", cat: "monitor", any: ["sa01", "sa02", "sa03", "studioart"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-32-4k240", cat: "monitor", all: ["matos"], any: ["neon", "msg324k"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-32-qhd180", cat: "monitor", all: ["matos"], any: ["titan", "titan 2", "cyborg", "msgv32", "msg32"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-49-superwide", cat: "monitor", all: ["matos"], any: ["space", "space 49", "katana"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-27-qhd165", cat: "monitor", all: ["matos"], any: ["scorpio"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-24-280", cat: "monitor", all: ["matos"], any: ["roket", "rocket", "540hz"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-24-180", cat: "monitor", all: ["matos"], any: ["shooter", "msg244h", "msg244"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-27-120", cat: "monitor", all: ["matos"], any: ["delta", "msg2712"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-24-100", cat: "monitor", all: ["matos"], any: ["element", "msg27a", "rainbow", "msg24k"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-24-120", cat: "monitor", all: ["matos"], any: ["vega"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-24-200", cat: "monitor", all: ["matos"], any: ["fury", "furry"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-25-300", cat: "monitor", all: ["matos"], any: ["raptor"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-34-uw", cat: "monitor", all: ["matos"], any: ["hacker", "msg30"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-27-280", cat: "monitor", all: ["matos"], any: ["storm", "ol03"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-27-165", cat: "monitor", all: ["matos"], any: ["msg27", "msg 27"], none: ["laptop", "tv", "televiseur"] },
+
+  // Samsung Odyssey
+  { id: "mon-24-144", cat: "monitor", all: ["odyssey"], any: ["g3", "g30", "g32", "24"], none: ["27", "32", "49", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-165", cat: "monitor", all: ["odyssey", "27"], any: ["g3", "g30", "g32", "165hz", "144hz"], none: ["qhd", "2k", "1440", "4k", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-qhd165", cat: "monitor", all: ["odyssey"], any: ["g5", "g50", "g55"], none: ["32", "49", "4k", "laptop", "tv", "televiseur"] },
+  { id: "mon-32-qhd180", cat: "monitor", all: ["odyssey", "32"], any: ["g5", "g50", "g55", "165hz", "144hz"], none: ["4k", "laptop", "tv", "televiseur"] },
+  { id: "mon-25-300", cat: "monitor", all: ["odyssey"], any: ["g4", "g40", "240hz"], none: ["27", "32", "49", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-240", cat: "monitor", all: ["odyssey", "27"], any: ["g4", "g40", "240hz"], none: ["32", "49", "laptop", "tv", "televiseur"] },
+  { id: "mon-32-4k240", cat: "monitor", all: ["odyssey"], any: ["g7", "g8", "g70", "g80", "neo"], none: ["49", "laptop", "tv", "televiseur"] },
+  { id: "mon-49-superwide", cat: "monitor", all: ["odyssey"], any: ["g9", "neo g9", "oled g9"], none: ["laptop", "tv", "televiseur"] },
+
+  // LG UltraGear
+  { id: "mon-24-144", cat: "monitor", all: ["ultragear"], any: ["24gn", "24gs", "24gq", "144hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-180", cat: "monitor", all: ["ultragear"], any: ["180hz", "165hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-qhd165", cat: "monitor", all: ["ultragear", "27"], any: ["27gp", "27gn", "27gr", "27gs", "qhd", "1440", "2k"], none: ["32", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-180", cat: "monitor", all: ["ultragear", "27"], any: ["180hz", "27gs60qc"], none: ["32", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-240", cat: "monitor", all: ["ultragear", "27"], any: ["240hz", "27gr95qe", "27gs95qe"], none: ["32", "laptop", "tv", "televiseur"] },
+
+  // AOC models
+  { id: "mon-24-144", cat: "monitor", any: ["24g2", "24g2u", "24g2sp", "24b36x"], none: ["27", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-180", cat: "monitor", any: ["24g4", "24g4e", "24g4x"], none: ["27", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-280", cat: "monitor", any: ["25g3", "25g4", "cs25g", "25g3zm", "25g4s"], none: ["27", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-165", cat: "monitor", any: ["27g2", "27g2sp"], none: ["24", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-180", cat: "monitor", any: ["27g4", "27g42e", "27g4x"], none: ["24", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-280", cat: "monitor", any: ["c27g4zxe", "c27g4", "ag276qkd"], none: ["24", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-qhd165", cat: "monitor", any: ["q27g2", "q27g2s", "q27g4"], none: ["24", "laptop", "tv", "televiseur"] },
+
+  // MSI models
+  { id: "mon-24-180", cat: "monitor", any: ["g244f", "g244", "g2412", "g241", "g242"], none: ["g242f", "27", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-200", cat: "monitor", any: ["g242f"], none: ["27", "laptop", "tv", "televiseur"] },
+  { id: "mon-mag255f", cat: "monitor", any: ["255f", "g255f"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-25-300", cat: "monitor", any: ["255pxf", "255xf"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-22-100", cat: "monitor", any: ["mp223", "mp225"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-24-100", cat: "monitor", any: ["mp241", "mp242", "mp243", "mp245"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-27-100", cat: "monitor", any: ["mp271", "mp273"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-27-120", cat: "monitor", any: ["mp275"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-27-180", cat: "monitor", any: ["g274", "g275", "g275l", "g2712"], none: ["24", "qhd", "2k", "1440", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-qhd165", cat: "monitor", any: ["g274qpf", "g272qpf", "g27cq4"], none: ["24", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-4k", cat: "monitor", any: ["274urfw", "274urdfw", "271qp"], none: ["laptop", "tv", "televiseur"] },
+
+  // ASUS TUF / ROG models
+  { id: "mon-24-165", cat: "monitor", any: ["vg249q", "vg249q1a", "vg249q3a", "vg24v"], none: ["vg249q5r", "27", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-200", cat: "monitor", any: ["vg249q5r", "vg259q5a"], none: ["27", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-280", cat: "monitor", any: ["vg249qm1a", "pg248qp"], none: ["27", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-165", cat: "monitor", any: ["vg279q", "vg279q1a", "vg279"], none: ["vg279q5r", "vg279qm", "24", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-200", cat: "monitor", any: ["vg279q5r"], none: ["24", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-280", cat: "monitor", any: ["vg279qm", "vg279qm1a", "xg279cns", "xg27acdng"], none: ["24", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-qhd165", cat: "monitor", any: ["vg27aq", "vg27aql", "vg27aq1a", "vg27aq3a", "vg27aql3a", "vg27aql5a", "vg27aq5a"], none: ["24", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-4k", cat: "monitor", any: ["vg27uq", "pa279crv", "xg27ucg", "pg27ucdm"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-32-qhd180", cat: "monitor", any: ["xg32wcms", "vg32v", "vg32vqm5b", "xg32vc"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-49-superwide", cat: "monitor", any: ["xg49vq", "pd49"], none: ["laptop", "tv", "televiseur"] },
+
+  // BenQ / ZOWIE
+  { id: "mon-24-144", cat: "monitor", any: ["xl2411", "xl2411p", "xl2411k"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-24-280", cat: "monitor", any: ["xl2540", "xl2546", "xl2546k", "xl2546x", "xl2566k", "xl2566x"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-27-100", cat: "monitor", any: ["gw2780", "gw2790"], none: ["laptop", "tv", "televiseur"] },
+
+  // Gigabyte
+  { id: "mon-24-180", cat: "monitor", any: ["g24f", "g24f2", "gs24f"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-24-200", cat: "monitor", any: ["gs25f", "g25f", "g25f2"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-27-180", cat: "monitor", any: ["g27f", "g27f2", "gs27f", "gs27fa"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-27-qhd165", cat: "monitor", any: ["m27q", "m27qa", "g27q", "g27qc"], none: ["laptop", "tv", "televiseur"] },
+
+  // ---- Generic Fallback Rules by Size & Hz ----
+  // 24-inch (23.8 / 24 / 24.5)
+  { id: "mon-office-24", cat: "monitor", any: ["24", "23 8", "24 5"], all: ["60hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-office-24", cat: "monitor", any: ["24", "23 8", "24 5"], all: ["75hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-100", cat: "monitor", any: ["24", "23 8", "24 5"], all: ["100hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-120", cat: "monitor", any: ["24", "23 8", "24 5"], all: ["120hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-144", cat: "monitor", any: ["24", "23 8", "24 5"], all: ["144hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-165", cat: "monitor", any: ["24", "23 8", "24 5"], all: ["165hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-165", cat: "monitor", any: ["24", "23 8", "24 5"], all: ["170hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-180", cat: "monitor", any: ["24", "23 8", "24 5"], all: ["180hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-200", cat: "monitor", any: ["24", "23 8", "24 5"], all: ["200hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-280", cat: "monitor", any: ["24", "23 8", "24 5"], all: ["240hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-280", cat: "monitor", any: ["24", "23 8", "24 5"], any: ["280hz", "300hz", "310hz", "360hz", "540hz"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+
+  // 27-inch
+  { id: "mon-27-100", cat: "monitor", all: ["27"], any: ["60hz", "75hz", "100hz"], none: ["24", "32", "4k", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-120", cat: "monitor", all: ["27", "120hz"], none: ["24", "32", "4k", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-qhd165", cat: "monitor", all: ["27"], any: ["qhd", "2k", "1440p", "1440"], none: ["4k", "uhd", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-165", cat: "monitor", all: ["27"], any: ["144hz", "165hz", "170hz"], none: ["24", "32", "4k", "qhd", "2k", "1440p", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-180", cat: "monitor", all: ["27", "180hz"], none: ["24", "32", "4k", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-200", cat: "monitor", all: ["27", "200hz"], none: ["24", "32", "4k", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-240", cat: "monitor", all: ["27", "240hz"], none: ["24", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-280", cat: "monitor", all: ["27"], any: ["260hz", "280hz", "300hz", "360hz", "380hz", "500hz"], none: ["24", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-4k", cat: "monitor", all: ["27"], any: ["4k", "uhd", "2160"], none: ["laptop", "tv", "televiseur"] },
+
+  // 22-inch
+  { id: "mon-office-22", cat: "monitor", any: ["22", "21 5"], any: ["60hz", "75hz"], none: ["24", "27", "laptop", "tv", "televiseur"] },
+  { id: "mon-22-100", cat: "monitor", any: ["22", "21 5"], any: ["100hz", "120hz"], none: ["24", "27", "laptop", "tv", "televiseur"] },
+
+  // 31.5 / 32-inch
+  { id: "mon-32-4k240", cat: "monitor", any: ["32", "31 5"], any: ["4k", "uhd", "2160"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-315", cat: "monitor", any: ["31 5", "xv320qu"], none: ["24", "27", "laptop", "tv", "televiseur"] },
+  { id: "mon-32-qhd180", cat: "monitor", all: ["32"], any: ["144hz", "165hz", "170hz", "180hz", "240hz", "280hz", "qhd", "2k"], none: ["4k", "laptop", "tv", "televiseur"] },
+
+  // 34-inch / Ultrawide
+  { id: "mon-34-oled", cat: "monitor", any: ["34", "oled"], all: ["oled"], any: ["165hz", "175hz", "240hz"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-34-uw", cat: "monitor", any: ["34", "40", "ultrawide", "uwqhd", "21 9", "3440"], none: ["laptop", "tv", "televiseur"] },
+
+  // 49-inch Superwide
+  { id: "mon-49-superwide", cat: "monitor", any: ["49", "32 9", "5120x1440", "dqhd"], none: ["laptop", "tv", "televiseur"] },
 ];
 
 const OK_CAT = {
@@ -632,8 +752,23 @@ const OK_CAT = {
   // Cases
   "boitier atx": "case", "boitier gaming": "case", "boitier aquarium": "case",
   // Monitors
-  "ecran 144hz": "monitor", "ecran 165hz": "monitor", "ecran 180hz": "monitor", "ecran 240hz": "monitor",
-  "ecran 24": "monitor", "ecran 27": "monitor", "ecran 32": "monitor", "moniteur gaming": "monitor",
+  "ecran": "monitor", "moniteur": "monitor", "monitor": "monitor",
+  "ecran 144hz": "monitor", "ecran 165hz": "monitor", "ecran 170hz": "monitor", "ecran 180hz": "monitor",
+  "ecran 200hz": "monitor", "ecran 240hz": "monitor", "ecran 260hz": "monitor", "ecran 280hz": "monitor",
+  "ecran 300hz": "monitor", "ecran 310hz": "monitor", "ecran 360hz": "monitor", "ecran 540hz": "monitor",
+  "ecran 60hz": "monitor", "ecran 75hz": "monitor", "ecran 100hz": "monitor", "ecran 120hz": "monitor",
+  "ecran 22": "monitor", "ecran 24": "monitor", "ecran 25": "monitor", "ecran 27": "monitor",
+  "ecran 32": "monitor", "ecran 34": "monitor", "ecran 49": "monitor",
+  "ecran gamer": "monitor", "moniteur gaming": "monitor", "ecran gaming": "monitor",
+  "ecran 2k": "monitor", "ecran 4k": "monitor", "ecran qhd": "monitor", "ecran oled": "monitor",
+  "ecran 27 144hz": "monitor", "ecran 27 165hz": "monitor", "ecran 27 180hz": "monitor", "ecran 27 240hz": "monitor",
+  "ecran 24 144hz": "monitor", "ecran 24 165hz": "monitor", "ecran 24 180hz": "monitor", "ecran 24 200hz": "monitor",
+  "odyssey": "monitor", "ultragear": "monitor",
+  "aoc 24": "monitor", "aoc 27": "monitor", "msi 24": "monitor", "msi 27": "monitor",
+  "asus tuf 27": "monitor", "tuf 24": "monitor", "tuf 27": "monitor", "asus tuf 24": "monitor",
+  "matos ecran": "monitor", "ecran matos": "monitor", "matos": "monitor", "matos 24": "monitor", "matos 27": "monitor", "matos 32": "monitor",
+  "benq zowie": "monitor", "benq 24": "monitor", "benq 27": "monitor",
+  "gigabyte 24": "monitor", "gigabyte 27": "monitor", "redragon ecran": "monitor",
 };
 // non-parts never stored as extras (keeps DB + bundle lean)
 const EXTRA_JUNK = /laptop|notebook|macbook|printer|imprimante|scanner|projecteur|datashow|webcam|tablet|smartphone|console|manette|pate thermique|pad thermique|thermal pad|thermal paste|thermal grizzly|mastergel|tube (magma|watercooling)|ventilateur boitier|case fan|masterfan|sickleflow|mf120|fd12|pack (ventilo|fans)|support (carte|ecran)|monitor stand|vortex|graphics card support|gpu holder|support gpu|herculx|back plate|waterblock|cold series|radiator with thermal|kit .\volution|en configuration|sleeve|power extension|cable (mars|first)|8-pin male|4-pin female|zenscreen|monitor arm|ergo aas|carte pci|ddr2|controleur|controller|fan hub|riser|snowman h9|tf120|chroma|at120|wraith spire|cooling amd|ventill?ateur.*original|original.*fan|ventil+o original|ubisoft|steam key|jeu pc|elgato|capture|12pci|btc|mining|kit .\volution|en configuration|accessoire boitier|pixel|24pin|smart plug|transfo|ddr2|televiseur|television|smart tv|souris|mouse|clavier|keyboard|casque|headset|chaise|chair|gaming desk|bureau gamer|portal|facebook|tron[cç][oe]n|troncen|meuleuse|disqueuse|\bscie\b|panineuse|gaufrier|plaque\s+de\s+cuisson|grille[\s-]pain|moulinex|multismart|brandmann|perceuse|visseuse|boulonneuse|perforateur|marteau\s*piqueur|ponceuse|soudeur|soudeuse|poste\s*[aà]\s*souder|aspirateur|tondeuse|\brabot\b|compresseur|[ée]lectrog[eè]ne|onduleur|multiprise|rallonge|cuisine|kitchen|cuisson|four\b|micro[\s-]ondes|hachoir|presse[\s-]agrumes|taille[\s-]haie|d[ée]broussailleuse|fer\s+[aà]\s+repasser|s[eè]che[\s-]cheveux|marmite|cocotte|115mm|125mm|makita|dewalt|ingco|crown\b|dwt\b|total\s*tools|sodimm|so-dimm|so\s*dimm|\blap\b|pc\s*portable|portatif|pc-portable|memoires-pc-portables/i;
@@ -657,19 +792,30 @@ const KIT_VETO = /\bkit\s+(upgrade|[eé]volution|evol|\w+\s*\+)|\+\s*(carte|cm|m
 // RX 580s etc. Checks that listing title actually contains core query keywords.
 function isQueryRelevant(query, title) {
   if (!query || !title) return false;
-  const qLow = query.toLowerCase();
-  const tLow = title.toLowerCase();
-  const tokens = qLow.split(/\s+/).filter(w => w.length > 1);
+  const qNorm = norm(query);
+  const tNorm = norm(title);
+  if (!qNorm || !tNorm) return false;
+
+  const isMon = /ecran|monit|odyssey|ultragear|zowie|matos/i.test(qNorm);
+  if (isMon) {
+    if (/laptop|\blap\b|notebook|macbook|pc\s*portable|portatif|\b\d{4,5}(?:hx|hs|h|u)\b/i.test(tNorm)) return false;
+    if (/\bodyssey\b/i.test(qNorm) && !/\bodyssey\b/i.test(tNorm)) return false;
+    if (/\bultragear\b/i.test(qNorm) && !/\bultragear\b/i.test(tNorm)) return false;
+    if (/\bzowie\b/i.test(qNorm) && !/\bzowie\b/i.test(tNorm)) return false;
+    if (/\bmatos\b/i.test(qNorm) && !/\bmatos\b/i.test(tNorm)) return false;
+    if (/\baoc\b/i.test(qNorm) && !/\baoc\b/i.test(tNorm)) return false;
+    if (/ecran|moniteur|monitor|dalle|\b\d{2,3}hz\b|\b(22|24|25|27|32|34|49)\s*(pouce|p\b|po\b)/i.test(tNorm)) return true;
+  }
+
+  const tokens = qNorm.split(/\s+/).filter(w => w.length > 1);
   if (tokens.length === 0) return true;
-  // ALL numeric tokens (model numbers) must be in title
   const numericTokens = tokens.filter(t => /\d/.test(t));
   const alphaTokens = tokens.filter(t => !/\d/.test(t));
   for (const nt of numericTokens) {
-    if (!tLow.includes(nt)) return false;
+    if (!tNorm.includes(nt)) return false;
   }
-  // At least one alpha token must match (brand/series: "rtx", "ryzen", "ddr4")
   if (alphaTokens.length > 0) {
-    const alphaMatches = alphaTokens.filter(a => tLow.includes(a)).length;
+    const alphaMatches = alphaTokens.filter(a => tNorm.includes(a)).length;
     if (alphaMatches === 0) return false;
   }
   return true;
@@ -719,6 +865,7 @@ const MOBOPSU_VETO = /psu|\balimentation\b|80\s*plus|modulaire|bronze|gold|antec
 const PREBUILT_VETO = /unite\s+(gamer|asus|gaming)|kit\s+upgrade|forssa|\(.*configu|configu\w*\s+(uniquement|only)|desktop\s+(hp|lenovo|dell|asus|tower|sff|neo|think|pro\b)|pc\s+(high-tech|de\s+bureau)|tour\s+gamer/i;
 // Single gate, run on the RAW cleaned title BEFORE matchRule. Vetoed rows
 // bypass extras caps exactly like bundles (replaces BUNDLE_VETO at call-sites).
+const MONITOR_LAPTOP_VETO = /laptop|\blap\b|notebook|macbook|latitude|thinkpad|ideapad|vivobook|zenbook|elitebook|probook|thinkbook|yoga\b|surface\s*pro|pavilion|zephyrus|tuf\s*[af]\d{2}|\b\d{4,5}(?:hx|hs|h|u)\b|1[3-7][,.]\d|sodimm|so-dimm|so\s*dimm|portable|portatif|pc-portable/i;
 function isVetoed(category, title, url = "") {
   if (url && NON_PC_SLUG_VETO.test(url)) return true;
   if (BUNDLE_VETO.test(title) || TOOL_VETO.test(title)) return true;
@@ -726,13 +873,16 @@ function isVetoed(category, title, url = "") {
   if (KIT_VETO.test(title)) return true;
   if (FULLPC_VETO.test(title) || PREBUILT_VETO.test(title)) return true;
   if (isCrossCategoryTitle(title)) return true;
-  if (LAPTOP_VETO.test(title) || LAPTOP_VETO.test(url)) return true;
+  if (category === "monitor") {
+    if (MONITOR_LAPTOP_VETO.test(title) || MONITOR_LAPTOP_VETO.test(url)) return true;
+  } else {
+    if (LAPTOP_VETO.test(title) || LAPTOP_VETO.test(url)) return true;
+  }
   if (category === "ram" && (LAPTOP_RAM_MARKERS.test(title) || LAPTOP_RAM_MARKERS.test(url))) return true;
   if (category === "motherboard" && MOBOPSU_VETO.test(title)) return true;
   if (category === "psu" && !isLegitPsu(title, url)) return true;
   return false;
 }
-
 // ---- variant-capacity guard (SSD/RAM) ----
 // Merchants list one parent product for every capacity ("LEGEND 710
 // 256GB/512GB/1TB/2TB") carrying a single (cheapest-variant) price.
@@ -992,12 +1142,66 @@ function unitRedirect(category, title, matched, has) {
     }
     return matched;
   }
-  const unit = category === "psu" ? "w" : category === "monitor" ? "hz" : category === "cooler" ? "rad" : null;
+  if (category === "monitor") {
+    // Monitor Hz validation: never drop valid monitors using naive id numbers (e.g. mon-mag255f or mon-315)
+    const t = " " + norm(title) + " ";
+    const hzMatches = [...t.matchAll(/(\d{2,3})\s*hz\b/g)].map(m => +m[1]);
+    if (hzMatches.length === 0) return matched;
+    const wantHz = hzMatches[0];
+
+    const CANONICAL_MONITORS = {
+      "mon-20-75": { size: 20, hz: [60, 75] },
+      "mon-office-s": { size: 21, hz: [60, 75] },
+      "mon-office-22": { size: 22, hz: [60, 75] },
+      "mon-22-100": { size: 22, hz: [100, 120] },
+      "mon-office-24": { size: 24, hz: [60, 75] },
+      "mon-24-100": { size: 24, hz: [100] },
+      "mon-24-120": { size: 24, hz: [120] },
+      "mon-24-144": { size: 24, hz: [144] },
+      "mon-24-165": { size: 24, hz: [165, 170] },
+      "mon-24-180": { size: 24, hz: [180] },
+      "mon-24-200": { size: 24, hz: [200] },
+      "mon-24-280": { size: 24, hz: [240, 260, 270, 280, 300, 310, 360, 540] },
+      "mon-25-120": { size: 25, hz: [120] },
+      "mon-mag255f": { size: 25, hz: [180, 200] },
+      "mon-25-300": { size: 25, hz: [240, 300, 360] },
+      "mon-27-100": { size: 27, hz: [60, 75, 100] },
+      "mon-27-120": { size: 27, hz: [120] },
+      "mon-27-165": { size: 27, hz: [144, 165, 170] },
+      "mon-27-180": { size: 27, hz: [180] },
+      "mon-27-200": { size: 27, hz: [200] },
+      "mon-27-240": { size: 27, hz: [240] },
+      "mon-27-280": { size: 27, hz: [260, 280, 300, 360, 380, 500] },
+      "mon-27-qhd165": { size: 27, hz: [144, 165, 170, 180, 240, 260, 280] },
+      "mon-27-4k": { size: 27, hz: [60, 144, 160, 240] },
+      "mon-315": { size: 32, hz: [144, 165, 170, 180] },
+      "mon-32-qhd180": { size: 32, hz: [144, 165, 170, 180, 240, 280] },
+      "mon-32-4k240": { size: 32, hz: [144, 160, 240] },
+      "mon-34-oled": { size: 34, hz: [144, 165, 175, 240] },
+      "mon-34-uw": { size: 34, hz: [100, 120, 144, 155, 165, 175, 180, 200] },
+      "mon-49-superwide": { size: 49, hz: [120, 144, 240] },
+    };
+
+    const cur = CANONICAL_MONITORS[matched];
+    if (cur && cur.hz.includes(wantHz)) return matched;
+
+    if (cur) {
+      for (const [candId, spec] of Object.entries(CANONICAL_MONITORS)) {
+        if (spec.size === cur.size && spec.hz.includes(wantHz)) {
+          if (matched.includes("4k") && !candId.includes("4k")) continue;
+          if (matched.includes("qhd") && !candId.includes("qhd") && candId !== "mon-315") continue;
+          return candId;
+        }
+      }
+    }
+    return matched;
+  }
+
+  const unit = category === "psu" ? "w" : category === "cooler" ? "rad" : null;
   if (!unit) return matched;
   const t = " " + norm(title) + " ";
   let re;
   if (unit === "w") re = /(\d{3,4})\s*w\b/g;
-  else if (unit === "hz") re = /(\d{2,3})\s*hz\b/g;
   else if (unit === "rad") re = /(\d{3})\s*mm\b|\b(120|240|280|360|420)\b/g;
 
   const matches = [...t.matchAll(re)];
@@ -1011,16 +1215,15 @@ function unitRedirect(category, title, matched, has) {
     const raw = " " + String(title || "") + " ";
     const listed = new Set(
       [...raw.matchAll(/(\d{3,4})\s*w\s*[/|,]/gi)].map((m) => +m[1])
-        .concat([...raw.matchAll(/[/|,]\s*(\d{3,4})\s*w/gi)].map((m) => +m[1]))
+        .concat([...raw.matchAll(/[/|,]s*(\d{3,4})\s*w/gi)].map((m) => +m[1]))
     );
     const inList = units.filter((u) => listed.has(u));
     if (inList.length >= 2) want = Math.min(...inList);
-    else if (/native\s*\d+w\s*pcie|pcie\s*5|12v/i.test(raw)) want = units[0]; // first wattage is PSU, second is cable
+    else if (/native\s*\d+w\s*pcie|pcie\s*5|12v/i.test(raw)) want = units[0];
   }
   const idm = matched.match(/(\d{3,4})/);
-  if (unit === "hz" && units.length > 0 && idm && !units.includes(+idm[1])) return null;
-  if (want === null) return matched; // 0 ou ambigu : keep
-  if (idm && +idm[1] === want) return matched; // accord : keep
+  if (want === null) return matched;
+  if (idm && +idm[1] === want) return matched;
   for (const r of RULES) {
     if (r.cat !== category) continue;
     const rid = (r.id.match(/(\d{3,4})/) || [])[1];
@@ -1030,11 +1233,9 @@ function unitRedirect(category, title, matched, has) {
     if ((r.none || []).some(has)) continue;
     return r.id;
   }
-  // Hard conflict: if matched product id explicitly had a unit and title wanted a different unit, ditch to avoid polluting
   if (idm && +idm[1] !== want) return null;
   return matched;
 }
-
 function matchRule(category, title) {
   const t = " " + norm(title) + " ";
   const words = t.split(" ").filter(Boolean);
@@ -1189,7 +1390,8 @@ let okExtra = 0;
 let okiExtra = 0; // tier-3 particuliers: own extras cap, never canonical
 const seenOkUrl = new Set();
 for (const o of report["ouedkniss:all"] || []) {
-  const category = OK_CAT[o.query] || "gpu";
+  const qKey = (o.query || "").toLowerCase().trim();
+  const category = OK_CAT[qKey] || (/ecran|monit|odyssey|ultragear/i.test(qKey) ? "monitor" : "gpu");
   const title = clean(o.title);
   if (!title || !o.priceDa) continue;
 

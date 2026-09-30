@@ -8,9 +8,21 @@
 // an upsert-only push. price_history is append-only and untouched by the purge.
 import fs from "fs";
 
+function loadEnv() {
+  const env = {};
+  try {
+    for (const line of fs.readFileSync(".env.local", "utf8").split(/\r?\n/)) {
+      const i = line.indexOf("=");
+      if (i > 0) env[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+    }
+  } catch { /* optional */ }
+  return env;
+}
+const envLocal = loadEnv();
+
 const DRY = process.argv.includes("--dry-run");
-const URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+const URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || envLocal.SUPABASE_URL || envLocal.NEXT_PUBLIC_SUPABASE_URL || "";
+const KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || envLocal.SUPABASE_SERVICE_KEY || envLocal.SUPABASE_SERVICE_ROLE_KEY || "";
 
 async function main() {
   const seed = JSON.parse(fs.readFileSync("supabase-seed.json", "utf8"));
