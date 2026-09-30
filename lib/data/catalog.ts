@@ -10,6 +10,12 @@ import { SCRAPED_AT } from "./live";
 
 const PAGE = 1000; // PostgREST max-rows: paginate past the 1000-row cap
 
+// In-memory cache for fast server-side responses (TTL: 60s)
+let cachedOffers: { data: Offer[]; timestamp: number } | null = null;
+let cachedProducts: { data: Product[]; timestamp: number } | null = null;
+let cachedScrapedAt: { data: string; timestamp: number } | null = null;
+const CACHE_TTL_MS = 60 * 1000; // 1 minute in-memory cache
+
 interface DbStore {
   id: number;
   name: string;
@@ -83,6 +89,10 @@ async function fetchAll<T>(build: (from: number, to: number) => PromiseLike<{ da
 export async function getOffers(): Promise<Offer[]> {
   try {
     if (!isDbConfigured()) return OFFERS;
+    const now = Date.now();
+    if (cachedOffers && now - cachedOffers.timestamp < CACHE_TTL_MS) {
+      return cachedOffers.data;
+    }
     const client = supabase();
     const rows = await fetchAll<DbOfferRow>((from, to) =>
       client
@@ -91,7 +101,9 @@ export async function getOffers(): Promise<Offer[]> {
         .range(from, to)
     );
     if (rows.length === 0) return OFFERS;
-    return rows.map(toOffer);
+    const mapped = rows.map(toOffer);
+    cachedOffers = { data: mapped, timestamp: now };
+    return mapped;
   } catch {
     return OFFERS;
   }
@@ -101,6 +113,10 @@ export async function getOffers(): Promise<Offer[]> {
 export async function getScrapedAt(): Promise<string> {
   try {
     if (!isDbConfigured()) return SCRAPED_AT;
+    const now = Date.now();
+    if (cachedScrapedAt && now - cachedScrapedAt.timestamp < CACHE_TTL_MS) {
+      return cachedScrapedAt.data;
+    }
     const { data } = await supabase()
       .from("offers")
       .select("day")
@@ -108,7 +124,9 @@ export async function getScrapedAt(): Promise<string> {
       .limit(1)
       .maybeSingle();
     const day = (data as { day?: string } | null)?.day;
-    return day ? `${day}T00:00:00.000Z` : SCRAPED_AT;
+    const res = day ? `${day}T00:00:00.000Z` : SCRAPED_AT;
+    cachedScrapedAt = { data: res, timestamp: now };
+    return res;
   } catch {
     return SCRAPED_AT;
   }
@@ -149,6 +167,10 @@ interface DbProductRow {
 export async function getProducts(): Promise<Product[]> {
   try {
     if (!isDbConfigured()) return PRODUCTS;
+    const now = Date.now();
+    if (cachedProducts && now - cachedProducts.timestamp < CACHE_TTL_MS) {
+      return cachedProducts.data;
+    }
     const client = supabase();
     const rows = await fetchAll<DbProductRow>((from, to) =>
       client
@@ -159,13 +181,15 @@ export async function getProducts(): Promise<Product[]> {
     );
     if (!rows || rows.length === 0) return PRODUCTS;
     const specsMap = new Map(PRODUCTS.map((p) => [p.id, p.specs]));
-    return rows.map((r) => ({
+    const mapped = rows.map((r) => ({
       id: r.id,
       category: r.category as Category,
       brand: r.brand,
       model: r.model,
       specs: specsMap.get(r.id) ?? {},
     }));
+    cachedProducts = { data: mapped, timestamp: now };
+    return mapped;
   } catch {
     return PRODUCTS;
   }

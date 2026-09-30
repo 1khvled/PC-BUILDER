@@ -117,7 +117,7 @@ function SpecPills({ product }: { product: Product }) {
       {pills.slice(0, 4).map((p, idx) => (
         <span
           key={idx}
-          className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200/80 print:border-slate-300"
+          className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 border border-slate-200/70 print:border-slate-300"
         >
           {p}
         </span>
@@ -374,11 +374,11 @@ export default function BuilderPage() {
       {/* Top Header & Toolbar (Screen Only) */}
       <div className="flex flex-wrap items-center justify-between gap-4 pb-2 print:hidden">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
               System Builder
             </h1>
-            <span className="text-xs px-2.5 py-0.5 rounded-full font-bold bg-blue-100 text-[#2c87c3] border border-blue-200">
+            <span className="text-[11px] px-2.5 py-1 rounded-full font-bold bg-blue-50 text-[#2c87c3] border border-blue-100">
               Configurateur PC
             </span>
           </div>
@@ -391,10 +391,10 @@ export default function BuilderPage() {
         <div className="flex items-center gap-2 text-xs">
           <button
             onClick={handleCopyLink}
-            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
+            className="px-3.5 py-2 bg-white border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-600 rounded-lg font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
             title="Copier le lien partageable qui restaure cette sélection"
           >
-            <svg className="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
             </svg>
@@ -404,10 +404,10 @@ export default function BuilderPage() {
           {/* Print-friendly export button next to Copier */}
           <button
             onClick={handlePrint}
-            className="px-3.5 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 rounded font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
+            className="px-3.5 py-2 bg-white border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-600 rounded-lg font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
             title="Imprimer ou enregistrer en PDF (fiche optimisée pour impression)"
           >
-            <svg className="w-3.5 h-3.5 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="6 9 6 2 18 2 18 9" />
               <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
               <rect x="6" y="14" width="12" height="8" />
@@ -417,13 +417,13 @@ export default function BuilderPage() {
 
           <button
             onClick={handleLoadDefault}
-            className="hidden sm:inline-flex px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded font-medium transition-colors btn-press"
+            className="hidden sm:inline-flex px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg font-medium transition-colors btn-press"
           >
             Exemple Gamer
           </button>
           <button
             onClick={handleReset}
-            className="px-3 py-2 bg-white border border-slate-200 hover:text-red-600 hover:border-red-200 text-slate-600 rounded font-medium transition-colors btn-press"
+            className="px-3 py-2 bg-white border border-slate-200 hover:text-red-600 hover:border-red-200 hover:bg-red-50/50 text-slate-600 rounded-lg font-medium transition-colors btn-press"
           >
             Réinitialiser
           </button>
@@ -431,16 +431,22 @@ export default function BuilderPage() {
       </div>
 
       {/* Progression de la configuration — clarté immédiate */}
-      <div className="mt-4 bg-white rounded border border-slate-200 px-4 py-3 print:hidden">
+      <div className="mt-4 panel px-4 py-3.5 print:hidden">
         <div className="flex items-center justify-between gap-3 text-xs font-semibold">
-          <span className="text-slate-700">
+          <span className="text-slate-700 flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 text-[#2c87c3]">
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 3" />
+              </svg>
+            </span>
             {selectedCount} sur {CATEGORIES.length} composants sélectionnés
           </span>
           <span className="text-slate-500 tabular-nums">{Math.round((selectedCount / CATEGORIES.length) * 100)} % complété</span>
         </div>
-        <div className="mt-2 h-2 rounded-full bg-slate-100 overflow-hidden" role="progressbar" aria-valuenow={selectedCount} aria-valuemin={0} aria-valuemax={CATEGORIES.length} aria-label="Progression de la configuration">
+        <div className="mt-2.5 h-2 rounded-full bg-slate-100 overflow-hidden" role="progressbar" aria-valuenow={selectedCount} aria-valuemin={0} aria-valuemax={CATEGORIES.length} aria-label="Progression de la configuration">
           <div
-            className="h-full rounded-full bg-[#2c87c3] transition-[width] duration-500 ease-out"
+            className="h-full rounded-full bg-gradient-to-r from-[#2c87c3] to-[#5db2e8] transition-[width] duration-500 ease-out"
             style={{ width: `${(selectedCount / CATEGORIES.length) * 100}%` }}
           />
         </div>
@@ -450,17 +456,17 @@ export default function BuilderPage() {
       <div
         role="status"
         aria-live="polite"
-        className={`mt-3 rounded border p-3.5 sm:p-4 text-sm transition-colors print:border-slate-300 print:bg-white ${
+        className={`mt-3 rounded-xl border p-3.5 sm:p-4 text-sm transition-colors print:border-slate-300 print:bg-white ${
           result.ok
-            ? "bg-[#e7f6ec] border-emerald-200 text-emerald-950"
-            : "bg-red-50 border-red-200 text-red-950"
+            ? "bg-emerald-50/80 border-emerald-200/80 text-emerald-950"
+            : "bg-red-50/80 border-red-200/80 text-red-950"
         }`}
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3 font-semibold">
             <span
               key={result.ok ? "ok" : "ko"}
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs shrink-0 print:border animate-icon-pop ${
+              className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs shrink-0 shadow-sm print:border animate-icon-pop ${
                 result.ok ? "bg-emerald-600" : "bg-red-600"
               }`}
             >
@@ -481,7 +487,7 @@ export default function BuilderPage() {
         </div>
 
         {result.warnings.length > 0 && (
-          <ul className="mt-3 text-xs bg-red-100/60 border border-red-200 rounded p-3 list-disc pl-6 space-y-1 text-red-900 font-medium print:bg-white">
+          <ul className="mt-3 text-xs bg-red-100/60 border border-red-200 rounded-lg p-3 list-disc pl-6 space-y-1 text-red-900 font-medium print:bg-white">
             {result.warnings.map((w, i) => (
               <li key={i}>{w}</li>
             ))}
@@ -490,10 +496,10 @@ export default function BuilderPage() {
       </div>
 
       {/* Main PCPartPicker System Builder Table */}
-      <div className="bg-white rounded border border-slate-200 mt-4 overflow-hidden print:border-slate-300">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-card mt-4 overflow-hidden print:border-slate-300 print:shadow-none">
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[860px] border-collapse">
-            <thead className="bg-slate-50 text-[11px] font-bold uppercase tracking-wider text-slate-600 border-b border-slate-200 select-none print:bg-slate-100 print:text-slate-700">
+            <thead className="bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200 select-none print:bg-slate-100 print:text-slate-700">
               <tr>
                 <th scope="col" className="text-left px-4 py-3 w-[150px]">Composant</th>
                 <th scope="col" className="text-left px-3 py-3">Sélection</th>
@@ -512,13 +518,13 @@ export default function BuilderPage() {
                 return (
                   <tr
                     key={cat.slug}
-                    className={`transition-colors group print:hover:bg-transparent ${product ? "" : "bg-amber-50/40"} hover:bg-blue-50/40 ${flashCat === cat.slug ? "animate-row-flash" : ""}`}
+                    className={`transition-colors group print:hover:bg-transparent ${product ? "" : "bg-amber-50/30"} hover:bg-blue-50/40 ${flashCat === cat.slug ? "animate-row-flash" : ""}`}
                   >
                     {/* Component Column */}
                     <td className="px-4 py-3.5 align-top">
-                      <div className="flex items-center gap-2">
-                        <span className="w-7 h-7 rounded bg-slate-100 group-hover:bg-[#2c87c3] group-hover:text-white flex items-center justify-center text-slate-600 transition-colors shrink-0 print:border print:border-slate-200 text-xs font-bold" aria-hidden="true">
-                          {product ? <CategoryIcon slug={cat.slug} /> : <span>{catIdx + 1}</span>}
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-gradient-to-b group-hover:from-[#3a94d2] group-hover:to-[#2c87c3] group-hover:text-white group-hover:shadow-[0_4px_10px_-4px_rgba(44,135,195,0.5)] flex items-center justify-center text-slate-500 transition-all shrink-0 print:border print:border-slate-200" aria-hidden="true">
+                          {product ? <CategoryIcon slug={cat.slug} /> : <span className="text-xs font-extrabold tabular-nums">{catIdx + 1}</span>}
                         </span>
                         <span className="font-bold text-slate-800 text-xs sm:text-sm">
                           {cat.label}
@@ -543,7 +549,7 @@ export default function BuilderPage() {
                         </div>
                       ) : (
                         <div className="flex items-center gap-3 py-1">
-                          <div className="w-10 h-10 rounded border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-400 print:hidden">
+                          <div className="w-11 h-11 rounded-lg border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-400 print:hidden">
                             <CategoryIcon slug={cat.slug} />
                           </div>
                           <span className="text-slate-400 text-xs italic">
@@ -574,8 +580,8 @@ export default function BuilderPage() {
                           >
                             {best.store} · {best.wilaya}
                           </a>
-                          <div className="flex items-center gap-1.5 mt-0.5">
-                            <span className="inline-block text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 print:border print:border-emerald-200">
+                          <div className="flex items-center gap-1.5 mt-1">
+                            <span className="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200/70 print:border print:border-emerald-200">
                               {best.condition === "new" ? "Neuf" : "Occasion"}
                             </span>
                             {otherCount > 0 && (
@@ -591,7 +597,7 @@ export default function BuilderPage() {
                       ) : (
                         <button
                           onClick={() => setActiveModalCat(cat.slug)}
-                          className="px-3.5 py-1.5 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white font-bold text-xs transition-colors btn-press print:hidden"
+                          className="btn-blue px-3.5 py-1.5 text-xs print:hidden"
                         >
                           + Choisir
                         </button>
@@ -604,14 +610,14 @@ export default function BuilderPage() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setActiveModalCat(cat.slug)}
-                            className="px-2 py-1 text-[11px] font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors btn-press"
+                            className="px-2.5 py-1 text-[11px] font-semibold text-slate-600 hover:text-[#2c87c3] hover:bg-blue-50 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors btn-press"
                             title="Changer de composant"
                           >
                             Changer
                           </button>
                           <button
                             onClick={() => handleRemovePart(cat.slug)}
-                            className="w-7 h-7 rounded text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                            className="w-7 h-7 rounded-md text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
                             title="Retirer de la configuration"
                             aria-label={`Retirer ${cat.label}`}
                           >
@@ -635,8 +641,9 @@ export default function BuilderPage() {
         </div>
 
         {/* Sticky Total Bar (Styled like PCPartPicker System Total) */}
-        <div className="flex flex-wrap items-center justify-between gap-4 px-5 py-4 bg-slate-900 text-white rounded-b-xl border-t border-slate-800 print:bg-slate-100 print:text-slate-900 print:border-slate-300 print:rounded-none">
-          <div className="flex items-baseline gap-3 flex-wrap text-sm">
+        <div className="relative overflow-hidden flex flex-wrap items-center justify-between gap-4 px-5 py-4 bg-gradient-to-r from-[#11111c] via-[#181a2e] to-[#11111c] text-white rounded-b-xl border-t border-slate-800 print:bg-slate-100 print:bg-none print:text-slate-900 print:border-slate-300 print:rounded-none">
+          <div className="absolute inset-0 dz-hero-grid opacity-40 pointer-events-none print:hidden" aria-hidden="true" />
+          <div className="relative flex items-baseline gap-3 flex-wrap text-sm">
             <span className="text-slate-400 print:text-slate-600 font-medium">
               {selectedCount} sur {CATEGORIES.length} pièces :
             </span>
@@ -653,10 +660,10 @@ export default function BuilderPage() {
             </span>
           </div>
 
-          <div className="flex items-center gap-2 text-xs font-semibold ml-auto print:hidden">
+          <div className="relative flex items-center gap-2 text-xs font-semibold ml-auto print:hidden">
             <button
               onClick={handlePrint}
-              className="px-3.5 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white font-bold transition-colors btn-press flex items-center gap-1.5"
+              className="px-3.5 py-2 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 text-white font-bold transition-colors btn-press flex items-center gap-1.5"
               title="Imprimer ou enregistrer en PDF"
             >
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -669,7 +676,7 @@ export default function BuilderPage() {
 
             <button
               onClick={handleCopyLink}
-              className="px-4 py-2 rounded bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white font-bold transition-colors btn-press shadow-sm flex items-center gap-1.5"
+              className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white font-bold transition-colors btn-press shadow-[0_4px_14px_-4px_rgba(16,185,129,0.6)] flex items-center gap-1.5"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
@@ -682,36 +689,41 @@ export default function BuilderPage() {
       </div>
 
       <p className="text-xs text-slate-400 mt-3 print:hidden">
-        Format réplique de pcpartpicker.com/list adapté pour l&apos;Algérie. Les colonnes US (Base, Promo, Tax) sont adaptées en (Prix DA, Disponibilité, Marchand 58 wilayas). Le tri est 100% organique par prix croissant.
+        Format réplique de pcpartpicker.com/list adapté pour l'Algérie. Les colonnes US (Base, Promo, Tax) sont adaptées en (Prix DA, Disponibilité, Marchand 58 wilayas). Le tri est 100% organique par prix croissant.
       </p>
 
       {/* Component Picker Modal */}
       {activeModalCat && (
-        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50 print:hidden animate-backdrop-fade" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
-          <div role="dialog" aria-modal="true" aria-label={`Choisir un composant : ${CATEGORIES.find((c) => c.slug === activeModalCat)?.label ?? activeModalCat}`} className="bg-white rounded w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-modal-pop" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 print:hidden animate-backdrop-fade" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
+          <div role="dialog" aria-modal="true" aria-label={`Choisir un composant : ${CATEGORIES.find((c) => c.slug === activeModalCat)?.label ?? activeModalCat}`} className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-pop border border-slate-200/80 overflow-hidden animate-modal-pop" onClick={(e) => e.stopPropagation()}>
             {/* Modal Header */}
-            <div className="p-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-slate-50/80">
-              <div>
-                <h3 className="font-extrabold text-base text-slate-900">
-                  Choisir un composant : {CATEGORIES.find((c) => c.slug === activeModalCat)?.label}
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Sélectionnez parmi les produits indexés en Algérie
-                </p>
+            <div className="p-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-gradient-to-b from-slate-50 to-white">
+              <div className="flex items-center gap-3">
+                <span className="w-9 h-9 rounded-xl bg-gradient-to-b from-[#3a94d2] to-[#2c87c3] text-white flex items-center justify-center shadow-[0_4px_12px_-4px_rgba(44,135,195,0.5)] shrink-0">
+                  <CategoryIcon slug={activeModalCat} />
+                </span>
+                <div>
+                  <h3 className="font-extrabold text-base text-slate-900">
+                    Choisir : {CATEGORIES.find((c) => c.slug === activeModalCat)?.label}
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Sélectionnez parmi les produits indexés en Algérie
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => {
                   setActiveModalCat(null);
                   setModalSearch("");
                 }}
-                className="w-8 h-8 rounded hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold btn-press"
+                className="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold btn-press transition-colors"
               >
                 ✕
               </button>
             </div>
 
             {/* Modal Quick Catalog Link */}
-            <div className="px-4 py-2 bg-slate-50 border-b border-slate-200/80 flex items-center justify-between text-xs">
+            <div className="px-4 py-2 bg-slate-50/70 border-b border-slate-200/70 flex items-center justify-between text-xs">
               <span className="text-slate-500 font-medium">
                 {(products.length ? products : PRODUCTS).filter((p) => p.category === activeModalCat).length} modèles indexés
               </span>
@@ -721,7 +733,7 @@ export default function BuilderPage() {
                 className="text-[#2c87c3] hover:underline font-semibold flex items-center gap-1"
               >
                 <span>Explorer tout le catalogue avec filtres</span>
-                <span>→</span>
+                <span aria-hidden="true">→</span>
               </Link>
             </div>
 
@@ -732,13 +744,13 @@ export default function BuilderPage() {
                 value={modalSearch}
                 onChange={(e) => setModalSearch(e.target.value)}
                 placeholder="Filtrer par marque, modèle…"
-                className="w-full bg-slate-50 border border-slate-200 rounded px-3 py-2 text-xs text-slate-800 outline-none focus:border-[#2c87c3] focus:bg-white"
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-xs text-slate-800 outline-none focus:border-[#2c87c3] focus:bg-white focus:shadow-[0_0_0_3px_rgba(44,135,195,0.15)] transition-all"
                 autoFocus
               />
             </div>
 
             {/* Modal Product List */}
-            <div className="flex-1 overflow-y-auto divide-y divide-slate-100 p-2">
+            <div className="flex-1 overflow-y-auto divide-y divide-slate-100 p-2.5">
               {(products.length ? products : PRODUCTS).filter((p) => p.category === activeModalCat)
                 .filter((p) => {
                   if (!modalSearch.trim()) return true;
@@ -755,36 +767,36 @@ export default function BuilderPage() {
                   return (
                     <div
                       key={product.id}
-                      className={`p-3 rounded flex items-center gap-3 transition-colors ${
+                      className={`p-3 rounded-xl mb-1 flex items-center gap-3 transition-colors ${
                         isCurrent
                           ? "bg-blue-50/80 border border-blue-200"
                           : isRupturedProduct
-                          ? "bg-slate-50/70 hover:bg-rose-50/30"
-                          : "hover:bg-slate-50"
+                          ? "bg-slate-50/70 hover:bg-rose-50/30 border border-transparent"
+                          : "hover:bg-slate-50 border border-transparent"
                       }`}
                     >
                       <div className="relative shrink-0">
                         <Thumb src={productImage(product)} alt={product.model} size={52} />
                         {isRupturedProduct && (
-                          <div className="absolute inset-0 bg-white/60 flex items-center justify-center rounded">
-                            <span className="bg-rose-600 text-white text-[8px] font-black uppercase px-1 py-0.5 rounded shadow">
+                          <div className="absolute inset-0 bg-white/60 flex items-center justify-center rounded-lg">
+                            <span className="bg-rose-600 text-white text-[8px] font-black uppercase px-1.5 py-0.5 rounded shadow">
                               Épuisé
                             </span>
                           </div>
                         )}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span className="font-bold text-sm text-slate-900">
                             {product.brand} {product.model}
                           </span>
                           {isRupturedProduct && (
-                            <span className="px-1.5 py-0.5 rounded bg-rose-100 text-rose-800 text-[10px] font-bold border border-rose-200">
+                            <span className="px-1.5 py-0.5 rounded-md bg-rose-100 text-rose-800 text-[10px] font-bold border border-rose-200">
                               ✕ Rupture
                             </span>
                           )}
                           {!isRupturedProduct && hasInStock && (
-                            <span className="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200">
+                            <span className="px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200">
                               ✓ En stock
                             </span>
                           )}
@@ -803,18 +815,18 @@ export default function BuilderPage() {
                               </span>
                             )
                           ) : (
-                            <span className="text-slate-400 italic">Pas d&apos;offre indexée</span>
+                            <span className="text-slate-400 italic">Pas d'offre indexée</span>
                           )}
                         </div>
                       </div>
                       <button
                         onClick={() => handleSelectPart(activeModalCat, product.id)}
-                        className={`px-3.5 py-1.5 rounded text-xs font-bold shrink-0 transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
+                        className={`px-3.5 py-1.5 rounded-lg text-xs font-bold shrink-0 transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] ${
                           isCurrent
                             ? "bg-slate-200 text-slate-700 cursor-default"
                             : isRupturedProduct
                             ? "bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200"
-                            : "bg-[#2c87c3] hover:bg-[#1e5c85] text-white"
+                            : "btn-blue"
                         }`}
                       >
                         {isCurrent ? "Sélectionné" : isRupturedProduct ? "Choisir (Rupture)" : "Choisir"}
@@ -829,7 +841,7 @@ export default function BuilderPage() {
 
       {/* Floating Toast Notification */}
       {toastMessage && (
-        <div key={toastMessage} className="fixed bottom-6 right-6 sm:right-10 z-50 bg-slate-900 text-white px-4 py-3 rounded shadow-2xl border border-slate-700 flex items-center gap-2.5 text-xs sm:text-sm font-semibold print:hidden animate-toast-in">
+        <div key={toastMessage} className="fixed bottom-6 right-6 sm:right-10 z-50 bg-[#11111c] text-white px-4 py-3 rounded-xl shadow-pop border border-white/10 flex items-center gap-2.5 text-xs sm:text-sm font-semibold print:hidden animate-toast-in">
           <span className="w-2 h-2 rounded-full bg-emerald-400" />
           <span>{toastMessage}</span>
         </div>

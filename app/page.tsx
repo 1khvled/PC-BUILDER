@@ -109,63 +109,114 @@ export default async function Home() {
 
   const popularGuides = GUIDES.slice(0, 2);
 
+  const stats = [
+    { value: `${liveCount}`, label: "offres indexées" },
+    { value: "60+", label: "boutiques suivies" },
+    { value: "58", label: "wilayas livrées" },
+    { value: scrapedAt.slice(0, 10), label: "dernier relevé" },
+  ];
+
   return (
-    <main className="pb-8">
-      {/* Hero band — flat dark navy, pcbuilder-style */}
-      <section className="bg-[#11111c] text-white">
-        <div className="max-w-7xl mx-auto px-4 py-10 sm:py-14">
+    <main className="pb-10">
+      {/* Hero band — navy gradient, circuit dots + blue glows */}
+      <section className="relative overflow-hidden bg-[#11111c] text-white">
+        <div className="absolute inset-0 dz-hero-grid" aria-hidden="true" />
+        <div className="absolute inset-0 dz-hero-glow" aria-hidden="true" />
+        {/* accent baseline */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#2c87c3]/60 to-transparent" aria-hidden="true" />
+
+        <div className="relative max-w-7xl mx-auto px-4 py-14 sm:py-20">
           <div className="max-w-3xl">
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-              {liveCount} offres indexées • Relevé le {scrapedAt.slice(0, 10)}
-            </p>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-2 leading-tight">
-              Assemblez votre PC au meilleur prix en Algérie.
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.07] border border-white/15 backdrop-blur-sm text-xs font-semibold text-slate-200">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              </span>
+              Comparateur indépendant • {liveCount} offres indexées
+            </div>
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mt-4 leading-[1.1]">
+              Assemblez votre PC au{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5db2e8] to-[#2c87c3]">
+                meilleur prix
+              </span>{" "}
+              en Algérie.
             </h1>
-            <p className="text-sm text-slate-300 mt-3 leading-relaxed max-w-2xl">
-              Prix relevés chaque jour en Algérie, triés par prix croissant. Zéro commission.
+            <p className="text-sm sm:text-base text-slate-300/90 mt-4 leading-relaxed max-w-2xl">
+              Prix relevés chaque jour sur les boutiques DZ, triés par prix croissant.
+              Zéro commission, tri 100% organique — vous achetez directement chez le marchand.
             </p>
-            <div className="flex flex-wrap items-center gap-2.5 mt-5">
-              <Link href="/builder" className="btn-blue px-5 py-2.5 text-sm">
-                Lancer le System Builder →
+            <div className="flex flex-wrap items-center gap-3 mt-7">
+              <Link href="/builder" className="btn-blue px-6 py-3 text-sm">
+                Lancer le System Builder
+                <span aria-hidden="true">→</span>
               </Link>
               <Link
                 href="/deals"
-                className="px-5 py-2.5 rounded text-sm font-bold border border-slate-500 text-white hover:bg-white/10"
+                className="px-6 py-3 rounded-[10px] text-sm font-bold border border-white/20 text-white hover:bg-white/10 transition-colors backdrop-blur-sm"
               >
                 Voir les bons plans
               </Link>
             </div>
           </div>
+
+          {/* Stats chips */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 max-w-3xl">
+            {stats.map((s) => (
+              <div
+                key={s.label}
+                className="rounded-xl bg-white/[0.06] border border-white/10 backdrop-blur-sm px-4 py-3"
+              >
+                <div className="text-lg sm:text-xl font-extrabold tracking-tight text-white tabular-nums truncate">
+                  {s.value}
+                </div>
+                <div className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mt-0.5">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-8">
+      <div className="max-w-7xl mx-auto px-4 py-10 space-y-12">
         {/* Meilleurs prix du moment — dense price table */}
         <section className="panel">
-          <div className="panel-hd flex items-center justify-between">
-            <span>Prix les plus bas du marché</span>
+          <div className="panel-hd">
+            <span className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
+              Prix les plus bas du marché
+            </span>
             <Link href="/deals" className="pcpp-link font-bold normal-case tracking-normal">
               Tous les bons plans →
             </Link>
           </div>
-          <table className="w-full text-sm mt-1">
+          <table className="w-full text-sm">
             <caption className="sr-only">Les huit meilleurs prix relevés sur le marché algérien</caption>
             <tbody className="divide-y divide-slate-100">
-              {trending.map(({ p, best }) => (
-                <tr key={p.id} className="hover:bg-blue-50/50">
-                  <td className="px-3 py-2 w-12">
-                    <Thumb src={productImage(p)} alt={p.model} size={40} />
+              {trending.map(({ p, best }, i) => (
+                <tr key={p.id} className="group transition-colors hover:bg-blue-50/40">
+                  <td className="pl-4 py-2.5 w-12">
+                    <span className="w-6 h-6 rounded-lg bg-slate-100 group-hover:bg-[#2c87c3] group-hover:text-white text-slate-500 text-[11px] font-extrabold flex items-center justify-center transition-colors tabular-nums">
+                      {i + 1}
+                    </span>
                   </td>
-                  <td className="px-2 py-2">
+                  <td className="px-2 py-2.5 w-14">
+                    <Thumb src={productImage(p)} alt={p.model} size={44} />
+                  </td>
+                  <td className="px-2 py-2.5">
                     <Link href={`/product/${p.id}`} className="pcpp-link font-bold text-sm">
                       {p.brand} {p.model}
                     </Link>
-                    <div className="text-xs text-slate-500 mt-0.5">
-                      {best?.store} • {best?.wilaya}
+                    <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5">
+                      <span>{best?.store}</span>
+                      <span className="text-slate-300">•</span>
+                      <span>{best?.wilaya}</span>
                     </div>
                   </td>
-                  <td className="px-3 py-2 text-right whitespace-nowrap">
-                    <span className="font-extrabold text-emerald-700 tabular-nums">{fmt(best?.priceDa ?? 0)}</span>
+                  <td className="px-4 py-2.5 text-right whitespace-nowrap">
+                    <span className="font-extrabold text-emerald-700 tabular-nums group-hover:text-emerald-600 transition-colors">
+                      {fmt(best?.priceDa ?? 0)}
+                    </span>
                   </td>
                 </tr>
               ))}
@@ -173,12 +224,62 @@ export default async function Home() {
           </table>
         </section>
 
+        {/* How it works — 3 steps */}
+        <section>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="w-1 h-5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
+            <h2 className="text-lg font-extrabold tracking-tight">Comment ça marche</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              {
+                n: "1",
+                title: "Choisissez vos composants",
+                text: "Parcourez le catalogue ou configurez votre build complet dans le System Builder.",
+                href: "/category/cpu",
+                cta: "Parcourir le catalogue",
+              },
+              {
+                n: "2",
+                title: "Comparez les prix en DA",
+                text: "Chaque produit agrège les offres des boutiques DZ, neuf et occasion séparés.",
+                href: "/deals",
+                cta: "Voir les bons plans",
+              },
+              {
+                n: "3",
+                title: "Achetez chez le marchand",
+                text: "Lien direct vers la boutique, paiement à la livraison, expédition 58 wilayas.",
+                href: "/builder",
+                cta: "Lancer le Builder",
+              },
+            ].map((s) => (
+              <Link
+                key={s.n}
+                href={s.href}
+                className="panel p-5 group hover:border-[#2c87c3]/50 hover:shadow-card-hover transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="w-9 h-9 rounded-xl bg-blue-50 text-[#2c87c3] border border-blue-100 flex items-center justify-center font-extrabold text-sm">
+                    {s.n}
+                  </span>
+                  <span className="text-slate-300 group-hover:text-[#2c87c3] group-hover:translate-x-1 transition-all" aria-hidden="true">→</span>
+                </div>
+                <div className="font-bold text-sm mt-3.5">{s.title}</div>
+                <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">{s.text}</p>
+                <span className="pcpp-link text-xs font-bold mt-2.5 inline-block">{s.cta}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
         {/* Parcourir par catégorie */}
         <section>
-          <h2 className="text-lg font-extrabold tracking-tight mb-3">
-            Parcourir par catégorie
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="w-1 h-5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
+            <h2 className="text-lg font-extrabold tracking-tight">Parcourir par catégorie</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {CATEGORIES.map((c) => {
               const items = products.filter((p) => p.category === c.slug);
               const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
@@ -189,51 +290,74 @@ export default async function Home() {
                 <Link
                   key={c.slug}
                   href={`/category/${c.slug}`}
-                  className="panel p-3.5 flex items-center gap-3.5 hover:border-[#2c87c3]"
+                  className="panel p-4 flex items-center gap-4 group hover:border-[#2c87c3]/60 hover:shadow-card-hover transition-all"
                 >
-                  <div className="w-11 h-11 rounded bg-[#2c87c3] text-white flex items-center justify-center shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-b from-[#3a94d2] to-[#2c87c3] text-white flex items-center justify-center shrink-0 shadow-[0_4px_12px_-4px_rgba(44,135,195,0.5)] group-hover:scale-105 transition-transform">
                     <CategorySvg slug={c.slug} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-bold text-sm truncate">
+                    <div className="font-bold text-sm group-hover:text-[#2c87c3] transition-colors">
                       {c.label}
                     </div>
-                    <div className="text-xs text-slate-500 mt-0.5">
+                    <div className="text-xs text-slate-500 mt-1">
                       {items.length} modèle{items.length > 1 ? "s" : ""}
-                      {minPrice ? ` • dès ${fmt(minPrice)}` : ""}
-                      {extraN > 0 && <span className="text-amber-700 font-semibold"> • +{extraN} annonces live</span>}
+                      {minPrice ? <span className="text-emerald-700 font-semibold"> • dès {fmt(minPrice)}</span> : ""}
+                      {extraN > 0 && <span className="text-amber-700 font-semibold"> • +{extraN} live</span>}
                     </div>
                   </div>
-                  <span className="pcpp-link text-base font-bold">→</span>
+                  <span className="text-slate-300 group-hover:text-[#2c87c3] group-hover:translate-x-1 transition-all text-lg font-bold" aria-hidden="true">→</span>
                 </Link>
               );
             })}
           </div>
         </section>
 
-        {/* Guides & Builds */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Guides & Builder CTA */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
           {/* Guides */}
-          <section className="panel">
-            <div className="panel-hd flex items-center justify-between">
-              <span>Guides d&apos;achat gaming DZ</span>
+          <section className="panel lg:col-span-3">
+            <div className="panel-hd">
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
+                Guides d'achat gaming DZ
+              </span>
               <Link href="/guides" className="pcpp-link font-bold normal-case tracking-normal">
                 Tous les guides →
               </Link>
             </div>
             <div className="divide-y divide-slate-100">
               {popularGuides.map((g) => (
-                <Link key={g.slug} href={`/guides/${g.slug}`} className="block px-3 py-2.5 hover:bg-blue-50/50">
+                <Link key={g.slug} href={`/guides/${g.slug}`} className="block px-4 py-3.5 hover:bg-blue-50/40 transition-colors group">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-bold text-sm pcpp-link">{g.title}</span>
-                    <span className="text-[11px] text-slate-500 shrink-0">⏱ {g.readMin} min</span>
+                    <span className="text-[11px] text-slate-400 shrink-0 bg-slate-100 px-2 py-0.5 rounded-full">⏱ {g.readMin} min</span>
                   </div>
-                  <div className="text-xs text-slate-500 mt-0.5 truncate">{g.hook}</div>
+                  <div className="text-xs text-slate-500 mt-1 truncate">{g.hook}</div>
                 </Link>
               ))}
             </div>
           </section>
 
+          {/* Builder promo card */}
+          <section className="lg:col-span-2 relative overflow-hidden rounded-xl bg-[#11111c] text-white p-6 flex flex-col justify-between min-h-[220px] shadow-card">
+            <div className="absolute inset-0 dz-hero-grid opacity-60" aria-hidden="true" />
+            <div className="absolute inset-0 dz-hero-glow" aria-hidden="true" />
+            <div className="relative">
+              <span className="inline-block px-2.5 py-1 rounded-full bg-[#2c87c3]/20 border border-[#2c87c3]/40 text-[11px] font-bold uppercase tracking-wider text-[#7cc0ea]">
+                Configurateur
+              </span>
+              <h3 className="text-xl font-extrabold tracking-tight mt-3 leading-snug">
+                Votre build complet, chiffré aux prix réels du marché DZ.
+              </h3>
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+                Vérification de compatibilité automatique, puissance estimée, permalien partageable.
+              </p>
+            </div>
+            <Link href="/builder" className="relative btn-blue px-5 py-2.5 text-sm self-start mt-5">
+              Ouvrir le System Builder
+              <span aria-hidden="true">→</span>
+            </Link>
+          </section>
         </div>
       </div>
     </main>

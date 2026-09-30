@@ -645,11 +645,49 @@ const EXTRA_JUNK = /laptop|notebook|macbook|printer|imprimante|scanner|projecteu
 // through to the existing extras path, never canonical. Genuine standalone
 // store titles never contain these words (verified against live bake output).
 const BUNDLE_VETO = /\bbundle\b|\bpack\b|\bcombo\b|\blot de\b/i;
-// ---- full-PC veto (gpu/cpu rows only): a whole tower priced as one part ----
-// Requires full-PC markers (bare "AVEC CONFIG"/"EN CONFIGURATION" single-part
-// rows carry none and still match). The R in GAMER is required so "ECRAN PC
-// GAME REVOLUTION" monitors survive.
-const FULLPC_VETO = /config\s+pc|pc\s+(gammer|gamers?|gaming)|pc\s+complet|unit[eé]s?\s+centrale?s?|setup\s+(gamer|complet|gaming)|config\s+i\d|config(\w*)\s+(gaming|intel|amd|ryzen|r\d|i\d|gamer)|unite\s+montage|\bconfig\b.{0,30}\/|avec.{0,40}(ram|nvme|ddr)/i;
+// ---- "en configuration seulement" / tray-in-config veto ----
+// NOT purchasable standalone: store only sells inside a full build (config).
+// Booking them as solo offers shows phantom cheap prices.
+const CONFIG_ONLY_VETO = /en\s+config(uration)?\s+(seulement|uniquement|only)|\(en\s+config|en\s+vente\s+en\s+config|configuration\s+seul/i;
+// ---- kit upgrade / kit evolution veto ----
+// Multi-part bundles: CPU+mobo combos priced together. Never a single-part price.
+const KIT_VETO = /\bkit\s+(upgrade|[eé]volution|evol|\w+\s*\+)|\+\s*(carte|cm|mobo|motherboard)\b/i;
+// ---- query-title relevance gate (Ouedkniss only) ----
+// Ouedkniss search is fuzzy: searching "rtx 4060" returns keyboards, mice,
+// RX 580s etc. Checks that listing title actually contains core query keywords.
+function isQueryRelevant(query, title) {
+  if (!query || !title) return false;
+  const qLow = query.toLowerCase();
+  const tLow = title.toLowerCase();
+  const tokens = qLow.split(/\s+/).filter(w => w.length > 1);
+  if (tokens.length === 0) return true;
+  // ALL numeric tokens (model numbers) must be in title
+  const numericTokens = tokens.filter(t => /\d/.test(t));
+  const alphaTokens = tokens.filter(t => !/\d/.test(t));
+  for (const nt of numericTokens) {
+    if (!tLow.includes(nt)) return false;
+  }
+  // At least one alpha token must match (brand/series: "rtx", "ryzen", "ddr4")
+  if (alphaTokens.length > 0) {
+    const alphaMatches = alphaTokens.filter(a => tLow.includes(a)).length;
+    if (alphaMatches === 0) return false;
+  }
+  return true;
+}
+// ---- multi-category cross-contamination detector ----
+// Titles mentioning 3+ component categories are full builds, not single parts.
+function isCrossCategoryTitle(title) {
+  const t = (title || "").toLowerCase();
+  const hasCPU = /ryzen|\bi[357]-?\d{4,5}|intel\s+core|\bi\d\s+\d{4,5}/i.test(t);
+  const hasGPU = /rtx\s*\d{4}|gtx\s*\d{4}|\brx\s*\d{3,4}/i.test(t);
+  const hasRAM = /\d+g[bo]?\s*(ddr[45]|ram)|(ddr[45])\s*\d+g/i.test(t);
+  const hasSSD = /\bssd\b|\bnvme\b/i.test(t);
+  const hasMobo = /\b[bzhax]\d{3}[me]?\b/i.test(t);
+  const hasPSU = /\d{3,4}\s*w\b/i.test(t);
+  return [hasCPU, hasGPU, hasRAM, hasSSD, hasMobo, hasPSU].filter(Boolean).length >= 3;
+}
+// ---- full-PC veto: a whole tower/config priced as one part ----
+const FULLPC_VETO = /config\s+pc|pc\s+(gammer|gamers?|gaming)|pc\s+complet|unit[eé]s?\s+centrale?s?|setup\s+(gamer|complet|gaming)|config\s+i\d|config(\w*)\s+(gaming|intel|amd|ryzen|r\d|i\d|gamer)|unite\s+montage|\bconfig\b.{0,30}\/|avec.{0,40}(ram|nvme|ddr)|\bforssa\b|\bpc\s+gamer\b/i;
 // ---- laptop/prebuilt veto (gpu/cpu/ram/ssd rows only) ----
 // Bare "nitro"/"tuf gaming" are NOT vetoed (Sapphire Nitro GPUs, ASUS TUF
 // boards survive); screen sizes need a separator ([,.\s]+ not *) so "136" in
@@ -684,7 +722,10 @@ const PREBUILT_VETO = /unite\s+(gamer|asus|gaming)|kit\s+upgrade|forssa|\(.*conf
 function isVetoed(category, title, url = "") {
   if (url && NON_PC_SLUG_VETO.test(url)) return true;
   if (BUNDLE_VETO.test(title) || TOOL_VETO.test(title)) return true;
+  if (CONFIG_ONLY_VETO.test(title)) return true;
+  if (KIT_VETO.test(title)) return true;
   if (FULLPC_VETO.test(title) || PREBUILT_VETO.test(title)) return true;
+  if (isCrossCategoryTitle(title)) return true;
   if (LAPTOP_VETO.test(title) || LAPTOP_VETO.test(url)) return true;
   if (category === "ram" && (LAPTOP_RAM_MARKERS.test(title) || LAPTOP_RAM_MARKERS.test(url))) return true;
   if (category === "motherboard" && MOBOPSU_VETO.test(title)) return true;
@@ -1152,9 +1193,16 @@ for (const o of report["ouedkniss:all"] || []) {
   const title = clean(o.title);
   if (!title || !o.priceDa) continue;
 
-  // Filter out ancient dead listings: reject deals older than October 2025
+  // Filter out ancient dead listings: reject deals older than 90 days (or before 2025-10-01)
   const postDate = o.postedAt || o.day || "";
-  if (postDate && postDate < "2025-10-01") continue;
+  if (postDate) {
+    if (postDate < "2025-10-01") continue;
+    const ageDays = (Date.now() - new Date(postDate).getTime()) / (1000 * 864e5);
+    if (!isNaN(ageDays) && ageDays > 90) continue;
+  }
+
+  // Query-title relevance: reject if title has nothing to do with the search query
+  if (o.query && !isQueryRelevant(o.query, title)) continue;
 
   const realStore = (o.store && o.store !== "Ouedkniss" ? o.store : (o.seller || "Ouedkniss")).trim();
   const realWilaya = o.wilaya || WILAYA[realStore] || "Alger";

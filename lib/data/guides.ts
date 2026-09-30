@@ -20,7 +20,7 @@ export const GUIDES: Guide[] = [
     title: "PC Gaming 1080p en Algérie : le build qui a du sens",
     hook: "Ryzen 5 5600 + RTX 3060 12GB : 144Hz en 1080p sans jeter l'argent. Prix relevés en direct des magasins d'Alger, Sétif et Oran.",
     readMin: 6,
-    parts: ["cpu-r5-5600", "cooler-h212-v3", "mobo-b550m-a-pro", "ram-vengeance-16-d4", "ssd-970evo-1tb", "gpu-rtx3060-12gb", "case-v217", "psu-mwe650-b"],
+    parts: ["cpu-r5-5600", "cooler-ak400", "mobo-b550m-a-pro", "ram-vengeance-16-d4", "ssd-nvme-1tb-g4", "gpu-rtx3060-12gb", "case-4000d", "psu-550-b"],
     blocks: [
       {
         h: "Pourquoi ce combo",
@@ -55,7 +55,7 @@ export const GUIDES: Guide[] = [
     title: "PC bureautique / études à moins de 95 000 DA",
     hook: "i5-12400F + RX 580 d'occasion : bureautique, études, montage léger et même du jeu 1080p. Le budget étudiant malin.",
     readMin: 4,
-    parts: ["cpu-i5-12400f", "mobo-b660m-e", "ram-vengeance-16-d4", "ssd-970evo-1tb", "gpu-rx580-8gb", "case-v217", "psu-mwe650-b"],
+    parts: ["cpu-i5-12400f", "mobo-h610m", "ram-vengeance-16-d4", "ssd-nvme-512gb", "gpu-rx580-8gb", "case-4000d", "psu-450-b"],
     blocks: [
       {
         h: "La logique",
@@ -82,7 +82,7 @@ export const GUIDES: Guide[] = [
     title: "Gaming 1440p : AM5 + RTX 4070/5070",
     hook: "Quand le 1080p ne suffit plus : Ryzen 9600X, DDR5, et une 70-class. Le palier enthusiast, chiffré en DA.",
     readMin: 6,
-    parts: ["cpu-r5-9600x", "mobo-b650m", "ram-delta-32-d5", "ssd-970evo-1tb", "gpu-rtx4070-12gb", "case-v217", "psu-mwe650-b"],
+    parts: ["cpu-r5-9600x", "cooler-ak620", "mobo-b650m", "ram-delta-32-d5", "ssd-nvme-1tb-g4", "gpu-rtx4070-12gb", "case-4000d", "psu-750-gold"],
     blocks: [
       {
         h: "Pourquoi AM5 maintenant",
@@ -140,7 +140,7 @@ export const GUIDES: Guide[] = [
     title: "Alimentation et onduleur : le guide anti-coupure",
     hook: "Le courant algérien tue plus de PC que la chaleur. Dimensionner sa PSU et choisir son onduleur, avec les chiffres.",
     readMin: 5,
-    parts: ["psu-mwe650-b", "cpu-r5-5600", "gpu-rtx3060-12gb"],
+    parts: ["psu-750-gold", "cpu-r5-5600", "gpu-rtx3060-12gb"],
     blocks: [
       {
         h: "Dimensionner : la règle x1,3",
