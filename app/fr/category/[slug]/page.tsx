@@ -6,32 +6,30 @@ import { getOffers, getProducts } from "@/lib/data/catalog";
 import CategoryCatalogClient from "@/components/CategoryCatalogClient";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, SITE_URL, languageAlternates } from "@/lib/i18n/config";
-import { categoryLabel } from "@/lib/i18n/categories";
 import { getT } from "@/lib/i18n/server";
 
 export const revalidate = 60;
 
-const LOCALE = "en" as const;
-
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const t = await getT("fr");
   const currentCat = CATEGORIES.find((c) => c.slug === params.slug);
-  const t = await getT(LOCALE);
   if (!currentCat) return { title: t("category.notFound") };
-
-  const label = categoryLabel(currentCat.slug, t);
+  // The French route keeps its historical CATEGORIES label ("CPU", "Video Card", …)
+  // so existing French SERP snippets do not change; only the /en mirror uses the
+  // localized `cats.*` labels.
+  const label = currentCat.label;
   const title = t("category.metaTitle", { label });
   const description = t("category.metaDescription", { label });
   return {
     title,
     description,
     keywords: t("category.metaKeywords", { label, slug: currentCat.slug }).split(",").map((k) => k.trim()),
-    alternates: languageAlternates(`/category/${params.slug}`, "en"),
     openGraph: {
       title,
       description: t("category.metaOgDescription", { label }),
-      url: `/en/category/${params.slug}`,
+      url: `/category/${params.slug}`,
       type: "website",
-      locale: OG_LOCALE.en,
+      locale: OG_LOCALE.fr,
       siteName: "DZ PartPicker",
     },
     twitter: {
@@ -39,17 +37,16 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title,
       description: t("category.metaOgDescription", { label }),
     },
+    alternates: languageAlternates(`/category/${params.slug}`),
   };
 }
 
-export default async function EnglishCategoryPage({ params }: { params: { slug: string } }) {
+export default async function CategoryPage({ params }: { params: { slug: string } }) {
   const currentCat = CATEGORIES.find((c) => c.slug === params.slug);
   if (!currentCat) {
     notFound();
   }
-  const t = await getT(LOCALE);
-  const label = categoryLabel(currentCat.slug, t);
-
+  const t = await getT("fr");
   // Live products and offers directly from Supabase
   const [products, offers] = await Promise.all([
     getProducts(),
@@ -59,16 +56,11 @@ export default async function EnglishCategoryPage({ params }: { params: { slug: 
   const breadcrumbsJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    inLanguage: "en-DZ",
+    inLanguage: "fr-DZ",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/en` },
-      { "@type": "ListItem", position: 2, name: "Components", item: `${SITE_URL}/en/#categories` },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: label,
-        item: `${SITE_URL}/en/category/${params.slug}`,
-      },
+      { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE_URL}/` },
+      { "@type": "ListItem", position: 2, name: "Composants", item: `${SITE_URL}/#categories` },
+      { "@type": "ListItem", position: 3, name: currentCat.label, item: `${SITE_URL}/category/${params.slug}` },
     ],
   };
 
@@ -80,26 +72,20 @@ export default async function EnglishCategoryPage({ params }: { params: { slug: 
       />
       {/* Breadcrumb Navigation */}
       <nav aria-label={t("common.breadcrumb")} className="flex items-center gap-2 text-xs text-slate-500">
-        <Link href="/en" className="hover:text-slate-900 transition-colors">
+        <Link href="/fr" className="hover:text-slate-900 transition-colors">
           {t("common.home")}
         </Link>
         <span>/</span>
         <span className="text-slate-400">{t("category.breadcrumbComponents")}</span>
         <span>/</span>
-        <span className="text-slate-900 font-semibold">{label}</span>
+        <span className="text-slate-900 font-semibold">{currentCat.label}</span>
         <span className="ml-auto">
-          <LocaleSwitcher pathname={`/en/category/${params.slug}`} />
+          <LocaleSwitcher pathname={`/category/${params.slug}`} />
         </span>
       </nav>
 
       {/* Interactive Client Catalog with Toolbar & Denser Cards */}
-      <CategoryCatalogClient
-        slug={params.slug}
-        catLabel={label}
-        offers={offers}
-        products={products}
-        locale={LOCALE}
-      />
+      <CategoryCatalogClient slug={params.slug} catLabel={currentCat.label} offers={offers} products={products} locale="fr" />
     </main>
   );
 }

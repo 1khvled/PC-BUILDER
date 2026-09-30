@@ -1,40 +1,38 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { findGuide } from "@/lib/data/guides-en";
+import { GUIDES } from "@/lib/data/guides";
 import { bestOffer, productImage } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, SITE_URL, formatPrice, languageAlternates } from "@/lib/i18n/config";
-import { categoryLabel } from "@/lib/i18n/categories";
 import { getT } from "@/lib/i18n/server";
 
 export const revalidate = 60;
 
-const LOCALE = "en" as const;
+const LOCALE = "fr" as const;
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const t = await getT(LOCALE);
-  const guide = findGuide(params.slug, LOCALE);
+  const guide = GUIDES.find((g) => g.slug === params.slug);
   if (!guide) return { title: t("guide.notFound") };
   return {
     title: guide.title,
     description: guide.hook,
     keywords: [
       `${guide.title}`.toLowerCase(),
-      "pc buying guide algeria",
-      "gaming pc build algeria",
-      "pc parts price algeria da",
-      "ouedkniss used hardware",
+      "guide achat pc algerie",
+      "config pc gaming algerie",
+      "prix composants pc algerie da",
+      "occasion ouedkniss",
     ],
-    alternates: languageAlternates(`/guides/${guide.slug}`, "en"),
     openGraph: {
       title: `${guide.title} | DZ PartPicker`,
       description: guide.hook,
-      url: `/en/guides/${guide.slug}`,
+      url: `/guides/${guide.slug}`,
       type: "article",
-      locale: OG_LOCALE.en,
+      locale: OG_LOCALE.fr,
       siteName: "DZ PartPicker",
     },
     twitter: {
@@ -42,17 +40,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: `${guide.title} | DZ PartPicker`,
       description: guide.hook,
     },
+    alternates: languageAlternates(`/guides/${guide.slug}`),
   };
 }
 
-export default async function EnglishGuidePage({ params }: { params: { slug: string } }) {
+export default async function GuidePage({ params }: { params: { slug: string } }) {
   const t = await getT(LOCALE);
   const [products, offers, scrapedAt] = await Promise.all([
     getProducts(),
     getOffers(),
     getScrapedAt(),
   ]);
-  const guide = findGuide(params.slug, LOCALE);
+  const guide = GUIDES.find((g) => g.slug === params.slug);
   if (!guide) notFound();
 
   const rows = guide.parts
@@ -67,13 +66,13 @@ export default async function EnglishGuidePage({ params }: { params: { slug: str
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    inLanguage: "en-DZ",
+    inLanguage: "fr-DZ",
     headline: guide.title,
     description: guide.hook,
-    url: `${SITE_URL}/en/guides/${guide.slug}`,
+    url: `${SITE_URL}/guides/${guide.slug}`,
     author: { "@type": "Organization", name: "DZ PartPicker" },
     publisher: { "@type": "Organization", name: "DZ PartPicker" },
-    mainEntityOfPage: `${SITE_URL}/en/guides/${guide.slug}`,
+    mainEntityOfPage: `${SITE_URL}/guides/${guide.slug}`,
   };
 
   return (
@@ -82,17 +81,17 @@ export default async function EnglishGuidePage({ params }: { params: { slug: str
 
       {/* Breadcrumbs */}
       <nav aria-label={t("common.breadcrumb")} className="flex items-center gap-2 text-xs text-slate-500">
-        <Link href="/en" className="hover:text-slate-900 transition-colors">
+        <Link href="/fr" className="hover:text-slate-900 transition-colors">
           {t("common.home")}
         </Link>
         <span>/</span>
-        <Link href="/en/guides" className="hover:text-slate-900 transition-colors">
+        <Link href="/fr/guides" className="hover:text-slate-900 transition-colors">
           {t("common.guides")}
         </Link>
         <span>/</span>
         <span className="text-slate-900 font-semibold truncate">{guide.title}</span>
         <span className="ml-auto shrink-0">
-          <LocaleSwitcher pathname={`/en/guides/${guide.slug}`} />
+          <LocaleSwitcher pathname={`/guides/${guide.slug}`} />
         </span>
       </nav>
 
@@ -147,7 +146,7 @@ export default async function EnglishGuidePage({ params }: { params: { slug: str
             </div>
           </div>
           <Link
-            href={`/en/builder?p=${encodeURIComponent(builderQuery)}`}
+            href={`/fr/builder?p=${encodeURIComponent(builderQuery)}`}
             className="px-5 py-3 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white font-bold text-xs sm:text-sm shadow-md transition-colors flex items-center gap-2 shrink-0"
           >
             <span>{t("guide.openInBuilder")}</span>
@@ -187,13 +186,13 @@ export default async function EnglishGuidePage({ params }: { params: { slug: str
                       <Thumb src={productImage(p!)} alt={p!.model} size={44} />
                       <div className="min-w-0">
                         <Link
-                          href={`/en/product/${p!.id}`}
+                          href={`/fr/product/${p!.id}`}
                           className="font-bold text-sm text-[#2c87c3] hover:underline block truncate"
                         >
                           {p!.brand} {p!.model}
                         </Link>
                         <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                          {categoryLabel(p!.category, t)}
+                          {p!.category}
                         </span>
                       </div>
                     </div>
@@ -280,13 +279,13 @@ export default async function EnglishGuidePage({ params }: { params: { slug: str
       {/* Footer Navigation Buttons */}
       <div className="flex flex-wrap gap-3 pt-2">
         <Link
-          href={`/en/builder?p=${encodeURIComponent(builderQuery)}`}
+          href={`/fr/builder?p=${encodeURIComponent(builderQuery)}`}
           className="px-6 py-3 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white font-bold text-sm transition-colors"
         >
           {t("guide.adaptBuild")}
         </Link>
         <Link
-          href="/en/guides"
+          href="/fr/guides"
           className="px-6 py-3 rounded bg-white border border-slate-200 hover:bg-slate-50 text-slate-800 font-semibold text-sm transition-colors"
         >
           {t("guide.exploreAll")}

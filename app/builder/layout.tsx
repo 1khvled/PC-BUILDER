@@ -1,29 +1,44 @@
 import type { Metadata } from "next";
-import { languageAlternates } from "@/lib/i18n/config";
+import { OG_LOCALE, languageAlternates } from "@/lib/i18n/config";
 
 /**
- * Server layout for /builder.
+ * Metadata-only layout for /en/builder.
  *
- * The page itself is a client component ("use client", it drives the whole
- * pick/price state machine), and Next forbids exporting `metadata` from a
- * client module — which is why /builder used to silently inherit the home
- * page's title. Declaring it here gives the page its own title and description
- * without touching the client bundle.
+ * The page itself is a Client Component ("use client"), so it cannot export
+ * `metadata`. A server layout wrapping it can, which gives the builder proper
+ * English SEO (title, description, keywords, hreflang, OpenGraph locale)
+ * instead of falling back to the /en layout defaults.
  */
 export const metadata: Metadata = {
-  title: "System Builder PC Algérie — Configurez votre PC au meilleur prix en DA",
+  title: "System Builder PC Algeria — Configure your PC in DA",
   description:
-    "Configurateur de PC pour l'Algérie : vérifiez la compatibilité CPU/carte mère, estimez la consommation et le total en dinars à partir des prix réels des boutiques. Livraison 58 wilayas.",
+    "Configure your PC part by part: automatic compatibility check, estimated power draw and a live total in Algerian Dinars (DA) built from real Algerian market prices.",
   keywords: [
-    "configurateur pc algerie",
-    "system builder algerie",
-    "assemble pc algerie prix",
-    "pc sur mesure algerie",
-    "config pc prix da algerie",
+    "pc builder algeria",
+    "configure pc algeria",
+    "pc configurator algeria",
+    "pc parts budget algeria",
+    "pc compatibility check algeria",
+    "system builder algeria da",
   ],
-  alternates: languageAlternates("/builder"),
+  alternates: languageAlternates("/builder", "en"),
+  openGraph: {
+    title: "System Builder PC Algeria — Configure your PC in DA",
+    description:
+      "Configure your PC part by part: automatic compatibility check, estimated power draw and a live total in Algerian Dinars (DA) built from real Algerian market prices.",
+    url: "/en/builder",
+    type: "website",
+    locale: OG_LOCALE.en,
+    siteName: "DZ PartPicker",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "System Builder PC Algeria — Configure your PC in DA",
+    description:
+      "Configure your PC part by part: automatic compatibility check, estimated power draw and a live total in Algerian Dinars (DA).",
+  },
 };
 
-export default function BuilderLayout({ children }: { children: React.ReactNode }) {
+export default function EnglishBuilderLayout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }

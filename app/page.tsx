@@ -1,101 +1,83 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CATEGORIES, bestOffer, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { LIVE_EXTRA } from "@/lib/data/live";
-import { GUIDES } from "@/lib/data/guides";
+import { listGuides } from "@/lib/data/guides-en";
 import Thumb from "@/components/Thumb";
 import BytekAd from "@/components/BytekAd";
+import CategoryIcon from "@/components/CategoryIcon";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
+import { formatPrice, languageAlternates, OG_LOCALE, SITE_URL, localizedHref } from "@/lib/i18n/config";
+import { categoryLabel } from "@/lib/i18n/categories";
+import { getT } from "@/lib/i18n/server";
+import { stockLabel } from "@/lib/i18n/runtime";
 
 export const revalidate = 60;
 
-function fmt(n: number) {
-  return n.toLocaleString("fr-DZ") + " DA";
+const LOCALE = "en" as const;
+
+export const metadata: Metadata = {
+  title: "Compare PC Component Prices in Algeria (DA)",
+  description:
+    "Independent PC component price comparison in Algeria: CPU, GPU, RAM, SSD, motherboards and monitors. Lowest prices in Algerian Dinars (DA), verified stock and delivery across all 58 wilayas.",
+  keywords: [
+    "pc parts price comparison algeria",
+    "computer parts algeria",
+    "graphics card price algeria",
+    "rtx 4060 algeria price",
+    "ryzen algeria price da",
+    "gaming pc algeria",
+    "pc build algeria",
+    "ouedkniss computer parts",
+    "algerian dinar hardware prices",
+    "pcpartpicker algeria",
+  ],
+  alternates: languageAlternates("/", "en"),
+  openGraph: {
+    type: "website",
+    locale: OG_LOCALE.en,
+    title: "DZ PartPicker — Lowest PC part prices in Algeria (DA)",
+    description:
+      "CPU, GPU, RAM, SSD, motherboards and monitors compared in Algerian Dinars (DA) across 180+ Algerian stores. Delivery to all 58 wilayas.",
+    url: "/en",
+    siteName: "DZ PartPicker",
+    images: [{ url: "/brand/og-hero.webp", width: 1200, height: 630, alt: "DZ PartPicker — PC price comparison Algeria" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DZ PartPicker — PC part price comparison in Algeria",
+    description:
+      "Find PC parts at the lowest price in Algeria (DA). Zero commission, 100% organic ranking, delivery to all 58 wilayas.",
+    images: ["/brand/og-hero.webp"],
+  },
+};
+
+/** Home-page structured data, English edition of the French graph. */
+function homeJsonLd(liveCount: number) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "DZ PartPicker",
+    url: `${SITE_URL}/en`,
+    inLanguage: "en-DZ",
+    description:
+      "Independent comparison of PC part prices in Algeria, in Algerian Dinars (DA).",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_URL}/en/?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      name: "Lowest PC part prices in Algeria",
+      numberOfItems: liveCount,
+    },
+  };
 }
 
-function CategorySvg({ slug }: { slug: string }) {
-  switch (slug) {
-    case "cpu":
-      return (
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="4" y="4" width="16" height="16" rx="2" />
-          <rect x="9" y="9" width="6" height="6" />
-          <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" />
-        </svg>
-      );
-    case "cooler":
-      return (
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="9" />
-          <circle cx="12" cy="12" r="2.5" />
-          <path d="M12 9.5V3M14.5 12H21M12 14.5V21M9.5 12H3" />
-        </svg>
-      );
-    case "motherboard":
-      return (
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="3" y="3" width="18" height="18" rx="2" />
-          <rect x="7" y="7" width="4" height="4" />
-          <path d="M15 7h2M15 10h2M7 15h10M7 18h5" />
-        </svg>
-      );
-    case "ram":
-      return (
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="2" y="7" width="20" height="10" rx="1" />
-          <path d="M6 17v2M10 17v2M14 17v2M18 17v2M6 11h2M11 11h2M16 11h2" />
-        </svg>
-      );
-    case "ssd":
-      return (
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="4" y="5" width="16" height="14" rx="2" />
-          <path d="M7 9h10M7 12h4M16 15h1" />
-        </svg>
-      );
-    case "gpu":
-      return (
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="2" y="6" width="20" height="12" rx="2" />
-          <circle cx="8.5" cy="12" r="2.5" />
-          <circle cx="15.5" cy="12" r="2.5" />
-          <path d="M2 10h2M2 14h2M6 18v2M10 18v2" />
-        </svg>
-      );
-    case "case":
-      return (
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="5" y="3" width="14" height="18" rx="2" />
-          <circle cx="12" cy="7" r="1" fill="currentColor" />
-          <path d="M9 11h6M9 14h6M9 17h6" />
-        </svg>
-      );
-    case "psu":
-      return (
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="3" y="4" width="18" height="16" rx="2" />
-          <circle cx="10" cy="12" r="3.5" />
-          <path d="M16 8h2M16 12h2M16 16h2" />
-        </svg>
-      );
-    case "monitor":
-      return (
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="3" y="4" width="18" height="12" rx="2" />
-          <line x1="8" y1="20" x2="16" y2="20" />
-          <line x1="12" y1="16" x2="12" y2="20" />
-        </svg>
-      );
-    default:
-      return (
-        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="4" y="4" width="16" height="16" rx="2" />
-          <path d="M9 9h6v6H9z" />
-        </svg>
-      );
-  }
-}
-
-export default async function Home() {
+export default async function EnglishHome() {
+  const t = await getT(LOCALE);
   const [products, offers, scrapedAt] = await Promise.all([
     getProducts(),
     getOffers(),
@@ -112,17 +94,28 @@ export default async function Home() {
     .sort((a, b) => a.best.priceDa - b.best.priceDa)
     .slice(0, 8);
 
-  const popularGuides = GUIDES.slice(0, 2);
+  const popularGuides = listGuides(LOCALE).slice(0, 2);
 
   const stats = [
-    { value: `${liveCount}`, label: "offres indexées" },
-    { value: "60+", label: "boutiques suivies" },
-    { value: "58", label: "wilayas livrées" },
-    { value: scrapedAt.slice(0, 10), label: "dernier relevé" },
+    { value: `${liveCount}`, label: t("home.statOffers") },
+    { value: "60+", label: t("home.statStores") },
+    { value: "58", label: t("home.statWilayas") },
+    { value: scrapedAt.slice(0, 10), label: t("home.statSnapshot") },
+  ];
+
+  const steps = [
+    { n: "1", title: t("home.step1Title"), text: t("home.step1Text"), href: "/category/cpu", cta: t("home.step1Cta") },
+    { n: "2", title: t("home.step2Title"), text: t("home.step2Text"), href: "/deals", cta: t("home.step2Cta") },
+    { n: "3", title: t("home.step3Title"), text: t("home.step3Text"), href: "/builder", cta: t("home.step3Cta") },
   ];
 
   return (
     <main className="pb-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd(liveCount)) }}
+      />
+
       {/* Hero band — navy gradient, circuit dots + blue glows */}
       <section className="relative overflow-hidden bg-[#11111c] text-white">
         <div className="absolute inset-0 dz-hero-grid" aria-hidden="true" />
@@ -131,37 +124,40 @@ export default async function Home() {
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#2c87c3]/60 to-transparent" aria-hidden="true" />
 
         <div className="relative max-w-7xl mx-auto px-4 py-14 sm:py-20">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-slate-200">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-              </span>
-              Comparateur indépendant • {liveCount} offres indexées
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-slate-200">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                </span>
+                {t("home.badge", { count: liveCount })}
+              </div>
+              <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mt-4 leading-[1.1]">
+                {t("home.h1lead")}{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5db2e8] to-[#2c87c3]">
+                  {t("home.h1accent")}
+                </span>{" "}
+                {t("home.h1tail")}
+              </h1>
+              <p className="text-sm sm:text-base text-slate-300/90 mt-4 leading-relaxed max-w-2xl">
+                {t("home.sub")}
+              </p>
+              <div className="flex flex-wrap items-center gap-3 mt-7">
+                <Link href="//builder" className="btn-blue px-6 py-3 text-sm">
+                  {t("home.ctaBuilder")}
+                  <span aria-hidden="true">→</span>
+                </Link>
+                <Link
+                  href="//deals"
+                  className="px-6 py-3 rounded-[10px] text-sm font-bold border border-white/20 text-white hover:bg-white/10 transition-colors"
+                >
+                  {t("home.ctaDeals")}
+                </Link>
+              </div>
             </div>
-            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mt-4 leading-[1.1]">
-              Assemblez votre PC au{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5db2e8] to-[#2c87c3]">
-                meilleur prix
-              </span>{" "}
-              en Algérie.
-            </h1>
-            <p className="text-sm sm:text-base text-slate-300/90 mt-4 leading-relaxed max-w-2xl">
-              Prix relevés chaque jour sur les boutiques DZ, triés par prix croissant.
-              Zéro commission, tri 100% organique — vous achetez directement chez le marchand.
-            </p>
-            <div className="flex flex-wrap items-center gap-3 mt-7">
-              <Link href="/builder" className="btn-blue px-6 py-3 text-sm">
-                Lancer le System Builder
-                <span aria-hidden="true">→</span>
-              </Link>
-              <Link
-                href="/deals"
-                className="px-6 py-3 rounded-[10px] text-sm font-bold border border-white/20 text-white hover:bg-white/10 transition-colors"
-              >
-                Voir les bons plans
-              </Link>
-            </div>
+
+            <LocaleSwitcher pathname="/en" tone="dark" />
           </div>
 
           {/* Stats chips */}
@@ -185,36 +181,34 @@ export default async function Home() {
 
       <div className="max-w-7xl mx-auto px-4 py-10 space-y-12">
         {/* Bytek Store Official Partner Ad */}
-        <BytekAd variant="banner" placement="home-top" />
+        <BytekAd variant="banner" locale={LOCALE} placement="en-home-top" />
 
-        {/* Meilleurs prix du moment — dense price table */}
+        {/* Lowest prices right now — dense price table */}
         <section className="panel">
           <div className="panel-hd">
             <span className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
-              Prix les plus bas du marché
+              {t("home.lowestPrices")}
             </span>
-            <Link href="/deals" className="pcpp-link font-bold normal-case tracking-normal">
-              Tous les bons plans →
+            <Link href="//deals" className="pcpp-link font-bold normal-case tracking-normal">
+              {t("home.allDeals")}
             </Link>
           </div>
           <table className="w-full text-sm">
-            <caption className="sr-only">Les huit meilleurs prix relevés sur le marché algérien</caption>
+            <caption className="sr-only">{t("home.tableCaption")}</caption>
             <tbody className="divide-y divide-slate-100">
               {trending.map(({ p, best }, i) => (
                 <tr key={p.id} className="group transition-colors hover:bg-blue-50/40">
-                  {/* Rank is the first thing to go on narrow screens: the
-                      product name and price matter more than its position. */}
-                  <td className="pl-4 py-2.5 w-12 hidden sm:table-cell">
+                  <td className="pl-4 py-2.5 w-12">
                     <span className="w-6 h-6 rounded-lg bg-slate-100 group-hover:bg-[#2c87c3] group-hover:text-white text-slate-500 text-[11px] font-extrabold flex items-center justify-center transition-colors tabular-nums">
                       {i + 1}
                     </span>
                   </td>
-                  <td className="pl-4 py-2.5 w-12 sm:pl-4">
+                  <td className="px-2 py-2.5 w-14">
                     <Thumb src={productImage(p)} alt={p.model} size={44} />
                   </td>
-                  <td className="px-2 py-2.5 min-w-0">
-                    <Link href={`/product/${p.id}`} className="pcpp-link font-bold text-sm dz-break leading-snug">
+                  <td className="px-2 py-2.5">
+                    <Link href={`//product/${p.id}`} className="pcpp-link font-bold text-sm">
                       {p.brand} {p.model}
                     </Link>
                     <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5 flex-wrap">
@@ -224,13 +218,13 @@ export default async function Home() {
                       <span className="text-slate-300">•</span>
                       <span className="text-emerald-600 font-semibold inline-flex items-center gap-1 text-[11px]">
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                        {best?.stock || "En stock"}
+                        {stockLabel(best?.stock, LOCALE) || t("common.inStock")}
                       </span>
                     </div>
                   </td>
                   <td className="px-4 py-2.5 text-right whitespace-nowrap">
                     <span className="font-extrabold text-emerald-700 tabular-nums group-hover:text-emerald-600 transition-colors">
-                      {fmt(best?.priceDa ?? 0)}
+                      {formatPrice(best?.priceDa ?? 0, LOCALE)}
                     </span>
                   </td>
                 </tr>
@@ -243,35 +237,13 @@ export default async function Home() {
         <section>
           <div className="flex items-center gap-3 mb-4">
             <span className="w-1 h-5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
-            <h2 className="text-lg font-extrabold tracking-tight">Comment ça marche</h2>
+            <h2 className="text-lg font-extrabold tracking-tight">{t("home.howItWorks")}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              {
-                n: "1",
-                title: "Choisissez vos composants",
-                text: "Parcourez le catalogue ou configurez votre build complet dans le System Builder.",
-                href: "/category/cpu",
-                cta: "Parcourir le catalogue",
-              },
-              {
-                n: "2",
-                title: "Comparez les prix en DA",
-                text: "Chaque produit agrège les offres des boutiques DZ, neuf et occasion séparés.",
-                href: "/deals",
-                cta: "Voir les bons plans",
-              },
-              {
-                n: "3",
-                title: "Achetez chez le marchand",
-                text: "Lien direct vers la boutique, paiement à la livraison, expédition 58 wilayas.",
-                href: "/builder",
-                cta: "Lancer le Builder",
-              },
-            ].map((s) => (
+            {steps.map((s) => (
               <Link
                 key={s.n}
-                href={s.href}
+                href={localizedHref(s.href, LOCALE)}
                 className="panel p-5 group hover:border-[#2c87c3]/50 hover:shadow-card-hover transition-all"
               >
                 <div className="flex items-center justify-between">
@@ -288,11 +260,11 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* Parcourir par catégorie */}
+        {/* Browse by category */}
         <section>
           <div className="flex items-center gap-3 mb-4">
             <span className="w-1 h-5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
-            <h2 className="text-lg font-extrabold tracking-tight">Parcourir par catégorie</h2>
+            <h2 className="text-lg font-extrabold tracking-tight">{t("home.browseByCategory")}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {CATEGORIES.map((c) => {
@@ -304,19 +276,23 @@ export default async function Home() {
               return (
                 <Link
                   key={c.slug}
-                  href={`/category/${c.slug}`}
+                  href={`//category/${c.slug}`}
                   className="panel p-4 flex items-center gap-4 group hover:border-[#2c87c3]/60 hover:shadow-card-hover transition-all"
                 >
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-b from-[#3a94d2] to-[#2c87c3] text-white flex items-center justify-center shrink-0 shadow-[0_4px_12px_-4px_rgba(44,135,195,0.5)] group-hover:scale-105 transition-transform">
-                    <CategorySvg slug={c.slug} />
+                    <CategoryIcon slug={c.slug} />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="font-bold text-sm group-hover:text-[#2c87c3] transition-colors">
-                      {c.label}
+                      {categoryLabel(c.slug, t)}
                     </div>
                     <div className="text-xs text-slate-500 mt-1">
-                      {items.length} modèle{items.length > 1 ? "s" : ""}
-                      {minPrice ? <span className="text-emerald-700 font-semibold"> • dès {fmt(minPrice)}</span> : ""}
+                      {t("common.modelsCounted", { count: items.length })}
+                      {minPrice ? (
+                        <span className="text-emerald-700 font-semibold">
+                          {" "}• {t("common.fromPrice", { price: formatPrice(minPrice, LOCALE) })}
+                        </span>
+                      ) : ""}
                       {extraN > 0 && <span className="text-amber-700 font-semibold"> • +{extraN} live</span>}
                     </div>
                   </div>
@@ -334,18 +310,18 @@ export default async function Home() {
             <div className="panel-hd">
               <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
-                Guides d'achat gaming DZ
+                {t("home.guidesTitle")}
               </span>
-              <Link href="/guides" className="pcpp-link font-bold normal-case tracking-normal">
-                Tous les guides →
+              <Link href="//guides" className="pcpp-link font-bold normal-case tracking-normal">
+                {t("home.allGuides")}
               </Link>
             </div>
             <div className="divide-y divide-slate-100">
               {popularGuides.map((g) => (
-                <Link key={g.slug} href={`/guides/${g.slug}`} className="block px-4 py-3.5 hover:bg-blue-50/40 transition-colors group">
+                <Link key={g.slug} href={`//guides/${g.slug}`} className="block px-4 py-3.5 hover:bg-blue-50/40 transition-colors group">
                   <div className="flex items-center justify-between gap-2">
                     <span className="font-bold text-sm pcpp-link">{g.title}</span>
-                    <span className="text-[11px] text-slate-400 shrink-0 bg-slate-100 px-2 py-0.5 rounded-full">⏱ {g.readMin} min</span>
+                    <span className="text-[11px] text-slate-400 shrink-0 bg-slate-100 px-2 py-0.5 rounded-full">⏱ {t("common.minRead", { min: g.readMin })}</span>
                   </div>
                   <div className="text-xs text-slate-500 mt-1 truncate">{g.hook}</div>
                 </Link>
@@ -359,17 +335,17 @@ export default async function Home() {
             <div className="absolute inset-0 dz-hero-glow" aria-hidden="true" />
             <div className="relative">
               <span className="inline-block px-2.5 py-1 rounded-full bg-[#2c87c3]/20 border border-[#2c87c3]/40 text-[11px] font-bold uppercase tracking-wider text-[#7cc0ea]">
-                Configurateur
+                {t("home.builderBadge")}
               </span>
               <h3 className="text-xl font-extrabold tracking-tight mt-3 leading-snug">
-                Votre build complet, chiffré aux prix réels du marché DZ.
+                {t("home.builderTitle")}
               </h3>
               <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                Vérification de compatibilité automatique, puissance estimée, permalien partageable.
+                {t("home.builderText")}
               </p>
             </div>
-            <Link href="/builder" className="relative btn-blue px-5 py-2.5 text-sm self-start mt-5">
-              Ouvrir le System Builder
+            <Link href="//builder" className="relative btn-blue px-5 py-2.5 text-sm self-start mt-5">
+              {t("home.builderCta")}
               <span aria-hidden="true">→</span>
             </Link>
           </section>

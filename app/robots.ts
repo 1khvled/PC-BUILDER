@@ -8,13 +8,13 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        // The English mirror under /en/ is fully public and indexable.
+          // The French half of the site (/fr/...) is fully public and indexable.
         disallow: ["/admin-kh7", "/api/"],
       },
       // AI engines explicitly welcome (GEO)
-      { userAgent: ["GPTBot", "ChatGPT-User", "ClaudeBot", "anthropic-ai", "PerplexityBot", "Google-Extended"], allow: ["/", "/en", "/llms.txt", "/llms-full.txt"] },
+      { userAgent: ["GPTBot", "ChatGPT-User", "ClaudeBot", "anthropic-ai", "PerplexityBot", "Google-Extended"], allow: ["/", "/fr", "/llms.txt", "/llms-full.txt", "/fr/llms.txt", "/fr/llms-full.txt"] },
     ],
     // Both locales are advertised so crawlers discover the whole bilingual set.
-    sitemap: [`${BASE}/sitemap.xml`, `${BASE}/en/sitemap.xml`],
+      sitemap: [`${BASE}/sitemap.xml`, `${BASE}/fr/sitemap.xml`],
   };
 }

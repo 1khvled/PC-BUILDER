@@ -88,6 +88,15 @@
     color: #585d6e;
   }
 
+  /* Always-light surface.
+     The dark palette flips `bg-white` to #161922, which is right for cards but
+     hides brand marks whose wordmark is dark navy (Bytek Store): the tile went
+     dark and the logo vanished. Use this instead of `bg-white` behind any dark
+     logo so the mark keeps its contrast in both themes. */
+  .dz-light-tile {
+    background-color: #ffffff;
+  }
+
   /* ---- Buttons ---- */
   .btn-blue {
     background: linear-gradient(180deg, #3a94d2 0%, #2c87c3 100%);

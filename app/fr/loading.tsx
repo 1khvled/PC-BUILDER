@@ -1,4 +1,4 @@
-export default function EnglishLoading() {
+export default function Loading() {
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-4">
       {/* Breadcrumb Skeleton */}
@@ -27,7 +27,7 @@ export default function EnglishLoading() {
 
       <div className="flex items-center gap-2 text-xs text-slate-400">
         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-        <span>Loading the page…</span>
+        <span>Chargement de la page…</span>
       </div>
     </main>
   );

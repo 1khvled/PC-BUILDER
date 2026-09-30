@@ -1,4 +1,4 @@
-export default function BuilderLoading() {
+export default function EnglishBuilderLoading() {
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-4">
       {/* Top Header Skeleton */}
@@ -64,7 +64,7 @@ export default function BuilderLoading() {
 
       <div className="flex items-center gap-2 text-xs text-slate-400">
         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-        <span>Chargement des composants et des prix live en Algérie…</span>
+        <span>Loading components and live prices in Algeria…</span>
       </div>
     </main>
   );

@@ -1,42 +1,58 @@
 import { CATEGORIES, bestOffer } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
-import { GUIDES } from "@/lib/data/guides";
+import { listGuides } from "@/lib/data/guides-en";
 
-// (BASE is derived per-request; see below.)
-
-// llms.txt convention: machine-readable site summary for AI engines (GEO).
+/**
+ * English mirror of /llms.txt.
+ *
+ * Two fixes over the French route this mirrors:
+ * 1. Base URLs come from the incoming request origin, not from an env fallback.
+ *    The FR route hardcodes `|| "https://dzpartpicker.dz"`, a host that does not
+ *    resolve, so if NEXT_PUBLIC_SITE_URL is unset every URL handed to an AI
+ *    crawler points at a dead domain. Deriving the origin is always correct.
+ * 2. English copy and English guide titles, so the payload matches the locale of
+ *    the URL it is served from.
+ */
 export async function GET(req: Request) {
-  // Origin comes from the request, so the URLs handed to AI crawlers are always
-  // live. The previous env-var fallback pointed at dzpartpicker.dz, a host that
-  // does not resolve: with NEXT_PUBLIC_SITE_URL unset it silently emitted a
-  // whole catalogue of dead links.
-  const BASE = new URL(req.url).origin;
+  const base = new URL(req.url).origin;
+
   const [products, offers, scrapedAt] = await Promise.all([
     getProducts(),
     getOffers(),
     getScrapedAt(),
   ]);
+
   const lines: string[] = [
     "# DZ PartPicker",
     "",
-    "> Comparateur indépendant des prix de composants PC en Algérie (dinars DA).",
-    "> 12 boutiques (Alger, Sétif, Oran, Boumerdes, M'sila, Djelfa) + Ouedkniss. Tri 100% organique par prix croissant, neuf/occasion séparés.",
-    `> Prix relevés le ${scrapedAt.slice(0, 10)}. Les stocks sont indicatifs : toujours confirmer sur la boutique.`,
+    "> Independent price comparison for PC components in Algeria, priced in Algerian dinars (DA).",
+    "> 180+ Algerian stores (Algiers, Setif, Oran, Boumerdes, M'sila, Djelfa) plus Ouedkniss listings. 100% organic ranking by ascending price, new and used kept separate.",
+    `> Prices recorded on ${scrapedAt.slice(0, 10)}. Stock is indicative: always confirm with the store.`,
     "",
     "## Pages",
-    `- Builder (compatibilité auto): ${BASE}/builder`,
-    ...CATEGORIES.map((c) => `- ${c.label}: ${BASE}/category/${c.slug}`),
-    ...GUIDES.map((g) => `- Guide: ${g.title}: ${BASE}/guides/${g.slug}`),
+    `- System Builder (automatic compatibility check): ${base}/en/builder`,
+    ...CATEGORIES.map((c) => `- ${c.label} (${c.slug}): ${base}/en/category/${c.slug}`),
+    ...listGuides("en").map((g) => `- Guide: ${g.title}: ${base}/en/guides/${g.slug}`),
     "",
-    "## Meilleurs prix par produit (DA, au relevé)",
+    "## Lowest price per product (DA, at the recorded snapshot)",
   ];
+
   for (const p of products) {
     const b = bestOffer(p.id, offers);
     lines.push(
-      `- ${p.brand} ${p.model} [${p.category}]: ${b ? `${b.priceDa.toLocaleString("fr-DZ")} DA chez ${b.store} (${b.wilaya}, ${b.condition === "new" ? "neuf" : "occasion"}) — ${BASE}/product/${p.id}` : "pas d'offre indexée"}`
+      b
+        ? `- ${p.brand} ${p.model} [${p.category}]: ${b.priceDa.toLocaleString("en-DZ")} DA at ${b.store} (${b.wilaya}, ${b.condition === "new" ? "new" : "used"}) - ${base}/en/product/${p.id}`
+        : `- ${p.brand} ${p.model} [${p.category}]: no indexed offer`,
     );
   }
-  lines.push("", `Données complètes: ${BASE}/llms-full.txt`, `Sitemap: ${BASE}/sitemap.xml`);
+
+  lines.push(
+    "",
+    `Full dataset: ${base}/en/llms-full.txt`,
+    `Sitemap: ${base}/en/sitemap.xml`,
+    `French version of this file: ${base}/llms.txt`,
+  );
+
   return new Response(lines.join("\n"), {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

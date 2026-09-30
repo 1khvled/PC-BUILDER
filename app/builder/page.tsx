@@ -7,90 +7,29 @@ import { useCatalog } from "@/lib/data/use-offers";
 import { checkCompat } from "@/lib/compat/check";
 import { recommendedPsu } from "@/lib/compat/watt";
 import Thumb from "@/components/Thumb";
+import CategoryIcon from "@/components/CategoryIcon";
+import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { useAnimatedNumber } from "@/lib/use-animated-number";
+import { formatDate, formatPrice, localizedHref } from "@/lib/i18n/config";
+import { categoryLabel } from "@/lib/i18n/categories";
+import { makeT } from "@/lib/i18n/runtime";
 
-function CategoryIcon({ slug }: { slug: string }) {
-  switch (slug) {
-    case "cpu":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="4" y="4" width="16" height="16" rx="2" />
-          <rect x="9" y="9" width="6" height="6" />
-          <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" />
-        </svg>
-      );
-    case "cooler":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="9" />
-          <circle cx="12" cy="12" r="2.5" />
-          <path d="M12 9.5V3M14.5 12H21M12 14.5V21M9.5 12H3" />
-        </svg>
-      );
-    case "motherboard":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2" />
-          <rect x="7" y="7" width="4" height="4" />
-          <path d="M15 7h2M15 10h2M7 15h10M7 18h5" />
-        </svg>
-      );
-    case "ram":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="7" width="20" height="10" rx="1" />
-          <path d="M6 17v2M10 17v2M14 17v2M18 17v2M6 11h2M11 11h2M16 11h2" />
-        </svg>
-      );
-    case "ssd":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="4" y="5" width="16" height="14" rx="2" />
-          <path d="M7 9h10M7 12h4M16 15h1" />
-        </svg>
-      );
-    case "gpu":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="6" width="20" height="12" rx="2" />
-          <circle cx="8.5" cy="12" r="2.5" />
-          <circle cx="15.5" cy="12" r="2.5" />
-          <path d="M2 10h2M2 14h2M6 18v2M10 18v2" />
-        </svg>
-      );
-    case "case":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="5" y="3" width="14" height="18" rx="2" />
-          <circle cx="12" cy="7" r="1" fill="currentColor" />
-          <path d="M9 11h6M9 14h6M9 17h6" />
-        </svg>
-      );
-    case "psu":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="4" width="18" height="16" rx="2" />
-          <circle cx="10" cy="12" r="3.5" />
-          <path d="M16 8h2M16 12h2M16 16h2" />
-        </svg>
-      );
-    case "monitor":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="4" width="18" height="12" rx="2" />
-          <line x1="8" y1="20" x2="16" y2="20" />
-          <line x1="12" y1="16" x2="12" y2="20" />
-        </svg>
-      );
-    default:
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="4" y="4" width="16" height="16" rx="2" />
-          <path d="M9 9h6v6H9z" />
-        </svg>
-      );
-  }
-}
+/**
+ * English mirror of app/builder/page.tsx.
+ *
+ * NOTE: app/builder/page.tsx is owned by another change set and could not be
+ * refactored into a shared, locale-parameterised component, so this file is a
+ * faithful, translated COPY. Any visual/structural change made there must be
+ * ported here (and vice-versa). The only differences are the strings, the
+ * number/date formatting and the /en URL prefix.
+ *
+ * Data, logic, pricing, localStorage keys, the compat check and the print
+ * stylesheet are byte-for-byte equivalent to the French page.
+ */
+
+const LOCALE = "en" as const;
+const t = makeT(LOCALE);
+const href = (path: string) => localizedHref(path, LOCALE);
 
 function SpecPills({ product }: { product: Product }) {
   const specs = product.specs;
@@ -101,7 +40,7 @@ function SpecPills({ product }: { product: Product }) {
   if (specs.tdp_w) pills.push(`${specs.tdp_w}W`);
   if (specs.ram_type) pills.push(String(specs.ram_type));
   if (specs.type) pills.push(String(specs.type));
-  if (specs.capacity_gb) pills.push(`${specs.capacity_gb} Go`);
+  if (specs.capacity_gb) pills.push(`${specs.capacity_gb} GB`);
   if (specs.speed) pills.push(`${specs.speed} MHz`);
   if (specs.interface) pills.push(String(specs.interface));
   if (specs.form_factor) pills.push(String(specs.form_factor));
@@ -131,7 +70,7 @@ function RowPrice({ value }: { value: number }) {
   const display = useAnimatedNumber(value, 250);
   return (
     <div className="font-extrabold text-sm sm:text-base text-slate-900 tabular-nums">
-      {Math.round(display).toLocaleString("fr-DZ")} DA
+      {formatPrice(Math.round(display), LOCALE)}
     </div>
   );
 }
@@ -171,7 +110,7 @@ function parsePicks(raw: string | null): Record<string, string> | null {
   }
 }
 
-export default function BuilderPage() {
+export default function EnglishBuilderPage() {
   const { products, offers } = useCatalog();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   // Row that just changed — drives the row-flash micro-animation.
@@ -215,7 +154,7 @@ export default function BuilderPage() {
           triggerFlash(cat);
           const found = products.find((x) => x.id === id) || PRODUCTS.find((x) => x.id === id);
           if (found) {
-            showToast(`✓ ${found.brand} ${found.model} ajouté au configurateur !`);
+            showToast(t("builder.toastAdded", { brand: found.brand, model: found.model }));
           }
           return;
         }
@@ -235,7 +174,7 @@ export default function BuilderPage() {
   const [activeModalCat, setActiveModalCat] = useState<string | null>(null);
   const [modalSearch, setModalSearch] = useState("");
 
-  // Fermer le modal avec Échap pour une navigation clavier claire
+  // Close the modal with Escape for a clear keyboard navigation
   useEffect(() => {
     if (!activeModalCat) return;
     const onKey = (e: KeyboardEvent) => {
@@ -253,7 +192,7 @@ export default function BuilderPage() {
   useEffect(() => {
     try {
       const s = serializePicks(picks);
-      window.history.replaceState(null, "", s ? `/builder?p=${encodeURIComponent(s)}` : "/builder");
+      window.history.replaceState(null, "", s ? `/en/builder?p=${encodeURIComponent(s)}` : "/en/builder");
       window.localStorage.setItem("dz_builder_picks", s);
     } catch {
       /* noop */
@@ -291,10 +230,10 @@ export default function BuilderPage() {
   const handleCopyLink = () => {
     try {
       const s = serializePicks(picks);
-      const link = window.location.origin + "/builder" + (s ? `?p=${encodeURIComponent(s)}` : "");
+      const link = window.location.origin + "/en/builder" + (s ? `?p=${encodeURIComponent(s)}` : "");
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(link)
-          .then(() => showToast("✓ Permalien copié — il restaure ce build exact !"))
+          .then(() => showToast(t("builder.toastCopied")))
           .catch(() => fallbackCopy(link));
       } else {
         fallbackCopy(link);
@@ -315,9 +254,9 @@ export default function BuilderPage() {
       el.select();
       document.execCommand("copy");
       document.body.removeChild(el);
-      showToast("✓ Permalien copié — il restaure ce build exact !");
+      showToast(t("builder.toastCopied"));
     } catch {
-      showToast("Copie impossible dans ce navigateur.");
+      showToast(t("builder.toastCopyFailed"));
     }
   };
 
@@ -330,7 +269,7 @@ export default function BuilderPage() {
     delete next[category];
     setPicks(next);
     triggerFlash(category);
-    showToast(`Composant retiré.`);
+    showToast(t("builder.toastRemoved"));
   };
 
   const handleSelectPart = (category: string, productId: string) => {
@@ -338,17 +277,17 @@ export default function BuilderPage() {
     setActiveModalCat(null);
     setModalSearch("");
     triggerFlash(category);
-    showToast(`Composant mis à jour.`);
+    showToast(t("builder.toastUpdated"));
   };
 
   const handleReset = () => {
     setPicks({});
-    showToast("Configurateur réinitialisé.");
+    showToast(t("builder.toastReset"));
   };
 
   const handleLoadDefault = () => {
     setPicks(DEFAULT_BUILD);
-    showToast("Build gamer de référence chargé.");
+    showToast(t("builder.toastDefault"));
   };
 
   return (
@@ -358,79 +297,80 @@ export default function BuilderPage() {
         <div className="flex justify-between items-end">
           <div>
             <p className="text-2xl font-black text-slate-900 tracking-tight">
-              DZ PartPicker — Devis & Configuration PC
+              {t("builder.printTitle")}
             </p>
             <p className="text-xs text-slate-600 mt-1">
-              Comparatif des prix du marché en Dinars Algériens (DA) • 58 Wilayas
+              {t("builder.printSubtitle")}
             </p>
           </div>
           <div className="text-right text-xs text-slate-500">
-            <div suppressHydrationWarning>Date : {new Date().toLocaleDateString("fr-DZ")}</div>
-            <div className="text-[10px] text-slate-400">dz-partpicker.dz/builder</div>
+            <div suppressHydrationWarning>Date: {formatDate(new Date().toISOString(), LOCALE)}</div>
+            <div className="text-[10px] text-slate-400">dz-partpicker.dz/en/builder</div>
           </div>
         </div>
       </div>
 
       {/* Top Header & Toolbar (Screen Only) */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-2 print:hidden">
+      <div className="flex flex-wrap items-start justify-between gap-4 pb-2 print:hidden">
         <div>
           <div className="flex items-center gap-2.5">
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-              System Builder
+              {t("common.builder")}
             </h1>
             <span className="text-[11px] px-2.5 py-1 rounded-full font-bold bg-blue-50 text-[#2c87c3] border border-blue-100">
-              Configurateur PC
+              {t("builder.badge")}
             </span>
           </div>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Prix les plus bas en Algérie relevés quotidiennement • Vérification automatique de compatibilité • 58 wilayas
+            {t("builder.subtitle")}
           </p>
         </div>
 
-        {/* Quick Toolbar with Print Button Next to Copier */}
+        {/* Quick Toolbar with Print Button Next to Copy */}
         <div className="flex items-center gap-2 text-xs">
+          <LocaleSwitcher pathname="/en/builder" />
           <button
             onClick={handleCopyLink}
             className="px-3.5 py-2 bg-white border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-600 rounded-lg font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
-            title="Copier le lien partageable qui restaure cette sélection"
+            title={t("builder.copyLinkTitle")}
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
             </svg>
-            <span>Copier le permalien</span>
+            <span>{t("builder.copyLink")}</span>
           </button>
 
-          {/* Print-friendly export button next to Copier */}
+          {/* Print-friendly export button next to Copy */}
           <button
             onClick={handlePrint}
             className="px-3.5 py-2 bg-white border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-600 rounded-lg font-semibold transition-colors btn-press flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3]"
-            title="Imprimer ou enregistrer en PDF (fiche optimisée pour impression)"
+            title={t("builder.printTitle2")}
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polyline points="6 9 6 2 18 2 18 9" />
               <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
               <rect x="6" y="14" width="12" height="8" />
             </svg>
-            <span>Imprimer / PDF</span>
+            <span>{t("builder.print")}</span>
           </button>
 
           <button
             onClick={handleLoadDefault}
             className="hidden sm:inline-flex px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg font-medium transition-colors btn-press"
           >
-            Exemple Gamer
+            {t("builder.exampleGamer")}
           </button>
           <button
             onClick={handleReset}
             className="px-3 py-2 bg-white border border-slate-200 hover:text-red-600 hover:border-red-200 hover:bg-red-50/50 text-slate-600 rounded-lg font-medium transition-colors btn-press"
           >
-            Réinitialiser
+            {t("common.reset")}
           </button>
         </div>
       </div>
 
-      {/* Progression de la configuration — clarté immédiate */}
+      {/* Configuration progress — immediate clarity */}
       <div className="mt-4 panel px-4 py-3.5 print:hidden">
         <div className="flex items-center justify-between gap-3 text-xs font-semibold">
           <span className="text-slate-700 flex items-center gap-2">
@@ -440,11 +380,20 @@ export default function BuilderPage() {
                 <path d="M12 7v5l3 3" />
               </svg>
             </span>
-            {selectedCount} sur {CATEGORIES.length} composants sélectionnés
+            {t("builder.progress", { selected: selectedCount, total: CATEGORIES.length })}
           </span>
-          <span className="text-slate-500 tabular-nums">{Math.round((selectedCount / CATEGORIES.length) * 100)} % complété</span>
+          <span className="text-slate-500 tabular-nums">
+            {t("builder.percentDone", { pct: Math.round((selectedCount / CATEGORIES.length) * 100) })}
+          </span>
         </div>
-        <div className="mt-2.5 h-2 rounded-full bg-slate-100 overflow-hidden" role="progressbar" aria-valuenow={selectedCount} aria-valuemin={0} aria-valuemax={CATEGORIES.length} aria-label="Progression de la configuration">
+        <div
+          className="mt-2.5 h-2 rounded-full bg-slate-100 overflow-hidden"
+          role="progressbar"
+          aria-valuenow={selectedCount}
+          aria-valuemin={0}
+          aria-valuemax={CATEGORIES.length}
+          aria-label={t("builder.progressAria")}
+        >
           <div
             className="h-full rounded-full bg-gradient-to-r from-[#2c87c3] to-[#5db2e8] transition-[width] duration-500 ease-out"
             style={{ width: `${(selectedCount / CATEGORIES.length) * 100}%` }}
@@ -474,15 +423,18 @@ export default function BuilderPage() {
             </span>
             <span>
               {result.ok
-                ? "Compatibilité : Aucun problème ni incompatibilité détecté."
-                : `Incompatibilités détectées (${result.warnings.length} avertissement${result.warnings.length > 1 ? "s" : ""})`}
+                ? t("builder.compatOk")
+                : t("builder.compatIssues", {
+                    count: result.warnings.length,
+                    plural: result.warnings.length > 1 ? "s" : "",
+                  })}
             </span>
           </div>
 
           <div className="text-xs sm:text-sm font-medium text-slate-700 ml-auto flex items-center gap-2">
-            <span>Puissance estimée : <b className="text-slate-900 font-bold">{result.wattage}W</b></span>
+            <span>{t("builder.estimatedPower")} <b className="text-slate-900 font-bold">{result.wattage}W</b></span>
             <span className="text-slate-300 print:text-slate-500">•</span>
-            <span className="text-slate-500">PSU conseillée : <b className="text-slate-800">{recommendedPsu(result.wattage)}W+</b></span>
+            <span className="text-slate-500">{t("builder.recommendedPsu")} <b className="text-slate-800">{recommendedPsu(result.wattage)}W+</b></span>
           </div>
         </div>
 
@@ -496,17 +448,15 @@ export default function BuilderPage() {
       </div>
 
       {/* Main PCPartPicker System Builder Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-card mt-4 print:border-slate-300 print:shadow-none">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-card mt-4 overflow-hidden print:border-slate-300 print:shadow-none">
         {/* Mobile View: High-Density Ergonomic Component Cards */}
-        {/* overflow-hidden moved here (was on the outer wrapper) so the total
-            bar below can be position:sticky — an overflow-hidden ancestor is a
-            scroll container and would trap the total inside the card stack. */}
-        <div className="block md:hidden divide-y divide-slate-100 p-3 space-y-3 print:hidden overflow-hidden rounded-t-xl">
-          {CATEGORIES.map((cat, catIdx) => {
+        <div className="block md:hidden divide-y divide-slate-100 p-3 space-y-3 print:hidden">
+          {CATEGORIES.map((cat) => {
             const product = build[cat.slug];
             const best = product ? bestOffer(product.id, offers) : undefined;
             const allProductOffers = product ? offers.filter((o) => o.productId === product.id) : [];
             const otherCount = allProductOffers.length - 1;
+            const catLabel = categoryLabel(cat.slug, t);
 
             return (
               <div
@@ -521,19 +471,19 @@ export default function BuilderPage() {
                 <div className="flex items-center justify-between gap-2 pb-2 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <span className="w-6 h-6 rounded-md bg-slate-100 text-slate-600 flex items-center justify-center text-xs">
-                      <CategoryIcon slug={cat.slug} />
+                      <CategoryIcon slug={cat.slug} className="w-4 h-4" />
                     </span>
                     <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider">
-                      {cat.label}
+                      {catLabel}
                     </span>
                   </div>
                   {product && (
                     <button
                       onClick={() => handleRemovePart(cat.slug)}
                       className="text-xs text-red-500 hover:text-red-700 font-semibold px-2 py-0.5 rounded hover:bg-red-50"
-                      aria-label={`Retirer ${cat.label}`}
+                      aria-label={t("builder.removeAria", { label: catLabel })}
                     >
-                      ✕ Retirer
+                      ✕ {t("builder.remove")}
                     </button>
                   )}
                 </div>
@@ -545,7 +495,7 @@ export default function BuilderPage() {
                       <Thumb src={productImage(product)} alt={product.model} size={48} />
                       <div className="min-w-0 flex-1">
                         <Link
-                          href={`/product/${product.id}`}
+                          href={href(`/product/${product.id}`)}
                           className="font-bold text-sm text-[#2c87c3] hover:underline truncate block"
                         >
                           {product.brand} {product.model}
@@ -569,27 +519,27 @@ export default function BuilderPage() {
                             </a>
                             <div className="flex items-center gap-1.5">
                               <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                {best.condition === "new" ? "Neuf" : "Occasion"}
+                                {best.condition === "new" ? t("common.new") : t("common.used")}
                               </span>
                               {otherCount > 0 && (
                                 <Link
-                                  href={`/product/${product.id}`}
+                                  href={href(`/product/${product.id}`)}
                                   className="text-[10px] text-slate-400 hover:underline"
                                 >
-                                  +{otherCount} offre{otherCount > 1 ? "s" : ""}
+                                  {`+${t("common.offersCounted", { count: otherCount, plural: otherCount > 1 ? "s" : "" })}`}
                                 </Link>
                               )}
                             </div>
                           </div>
                         ) : (
-                          <span className="text-slate-400 text-xs">Prix non disponible</span>
+                          <span className="text-slate-400 text-xs">{t("builder.priceUnavailable")}</span>
                         )}
                       </div>
 
                       <div className="text-right shrink-0">
                         {best ? (
                           <div className="text-base font-black text-emerald-700 tabular-nums">
-                            {best.priceDa.toLocaleString("fr-DZ")} DA
+                            {formatPrice(best.priceDa, LOCALE)}
                           </div>
                         ) : (
                           <span className="text-slate-300 font-normal">—</span>
@@ -598,7 +548,7 @@ export default function BuilderPage() {
                           onClick={() => setActiveModalCat(cat.slug)}
                           className="text-xs text-[#2c87c3] hover:underline font-bold mt-0.5 block"
                         >
-                          Changer
+                          {t("builder.change")}
                         </button>
                       </div>
                     </div>
@@ -606,13 +556,13 @@ export default function BuilderPage() {
                 ) : (
                   <div className="pt-3 pb-1 flex items-center justify-between gap-3">
                     <span className="text-xs text-slate-400 italic">
-                      Aucun composant sélectionné
+                      {t("builder.noneSelected")}
                     </span>
                     <button
                       onClick={() => setActiveModalCat(cat.slug)}
                       className="btn-blue px-4 py-2 text-xs font-bold min-h-[38px] touch-manipulation"
                     >
-                      + Choisir
+                      {t("builder.choose")}
                     </button>
                   </div>
                 )}
@@ -622,15 +572,15 @@ export default function BuilderPage() {
         </div>
 
         {/* Desktop View: Main PCPartPicker System Builder Table */}
-        <div className="hidden md:block overflow-x-auto overflow-y-hidden rounded-t-xl print:block">
+        <div className="hidden md:block overflow-x-auto print:block">
           <table className="w-full text-sm min-w-[860px] border-collapse">
             <thead className="bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200 select-none print:bg-slate-100 print:text-slate-700">
               <tr>
-                <th scope="col" className="text-left px-4 py-3 w-[150px]">Composant</th>
-                <th scope="col" className="text-left px-3 py-3">Sélection</th>
-                <th scope="col" className="text-right px-4 py-3 w-[140px]">Prix</th>
-                <th scope="col" className="text-left px-4 py-3 w-[220px]">Où acheter</th>
-                <th scope="col" className="text-right px-4 py-3 w-[110px] print:hidden">Action</th>
+                <th scope="col" className="text-left px-4 py-3 w-[150px]">{t("builder.thComponent")}</th>
+                <th scope="col" className="text-left px-3 py-3">{t("builder.thSelection")}</th>
+                <th scope="col" className="text-right px-4 py-3 w-[140px]">{t("builder.thPrice")}</th>
+                <th scope="col" className="text-left px-4 py-3 w-[220px]">{t("builder.thWhere")}</th>
+                <th scope="col" className="text-right px-4 py-3 w-[110px] print:hidden">{t("builder.thAction")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 print:divide-slate-200">
@@ -639,6 +589,7 @@ export default function BuilderPage() {
                 const best = product ? bestOffer(product.id, offers) : undefined;
                 const allProductOffers = product ? offers.filter((o) => o.productId === product.id) : [];
                 const otherCount = allProductOffers.length - 1;
+                const catLabel = categoryLabel(cat.slug, t);
 
                 return (
                   <tr
@@ -649,10 +600,10 @@ export default function BuilderPage() {
                     <td className="px-4 py-3.5 align-top">
                       <div className="flex items-center gap-2.5">
                         <span className="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-gradient-to-b group-hover:from-[#3a94d2] group-hover:to-[#2c87c3] group-hover:text-white group-hover:shadow-[0_4px_10px_-4px_rgba(44,135,195,0.5)] flex items-center justify-center text-slate-500 transition-all shrink-0 print:border print:border-slate-200" aria-hidden="true">
-                          {product ? <CategoryIcon slug={cat.slug} /> : <span className="text-xs font-extrabold tabular-nums">{catIdx + 1}</span>}
+                          {product ? <CategoryIcon slug={cat.slug} className="w-4 h-4" /> : <span className="text-xs font-extrabold tabular-nums">{catIdx + 1}</span>}
                         </span>
                         <span className="font-bold text-slate-800 text-xs sm:text-sm">
-                          {cat.label}
+                          {catLabel}
                         </span>
                       </div>
                     </td>
@@ -664,7 +615,7 @@ export default function BuilderPage() {
                           <Thumb src={productImage(product)} alt={product.model} size={48} />
                           <div className="min-w-0">
                             <Link
-                              href={`/product/${product.id}`}
+                              href={href(`/product/${product.id}`)}
                               className="font-bold text-sm text-[#2c87c3] hover:text-[#1e5c85] hover:underline truncate block print:text-slate-900"
                             >
                               {product.brand} {product.model}
@@ -675,10 +626,10 @@ export default function BuilderPage() {
                       ) : (
                         <div className="flex items-center gap-3 py-1">
                           <div className="w-11 h-11 rounded-lg border border-dashed border-slate-300 bg-slate-50 flex items-center justify-center text-slate-400 print:hidden">
-                            <CategoryIcon slug={cat.slug} />
+                            <CategoryIcon slug={cat.slug} className="w-4 h-4" />
                           </div>
                           <span className="text-slate-400 text-xs italic">
-                            Aucun composant sélectionné
+                            {t("builder.noneSelected")}
                           </span>
                         </div>
                       )}
@@ -707,14 +658,14 @@ export default function BuilderPage() {
                           </a>
                           <div className="flex items-center gap-1.5 mt-1">
                             <span className="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200/70 print:border print:border-emerald-200">
-                              {best.condition === "new" ? "Neuf" : "Occasion"}
+                              {best.condition === "new" ? t("common.new") : t("common.used")}
                             </span>
                             {otherCount > 0 && (
                               <Link
-                                href={`/product/${product!.id}`}
+                                href={href(`/product/${product.id}`)}
                                 className="text-[11px] text-slate-400 hover:text-slate-600 underline print:hidden"
                               >
-                                +{otherCount} offre{otherCount > 1 ? "s" : ""}
+                                {`+${t("common.offersCounted", { count: otherCount, plural: otherCount > 1 ? "s" : "" })}`}
                               </Link>
                             )}
                           </div>
@@ -724,7 +675,7 @@ export default function BuilderPage() {
                           onClick={() => setActiveModalCat(cat.slug)}
                           className="btn-blue px-3.5 py-1.5 text-xs print:hidden"
                         >
-                          + Choisir
+                          {t("builder.choose")}
                         </button>
                       )}
                     </td>
@@ -735,16 +686,16 @@ export default function BuilderPage() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setActiveModalCat(cat.slug)}
-                            className="px-2.5 py-1.5 sm:py-1 text-[11px] font-semibold text-slate-600 hover:text-[#2c87c3] hover:bg-blue-50 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors btn-press"
-                            title="Changer de composant"
+                            className="px-2.5 py-1 text-[11px] font-semibold text-slate-600 hover:text-[#2c87c3] hover:bg-blue-50 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] transition-colors btn-press"
+                            title={t("builder.changeTitle")}
                           >
-                            Changer
+                            {t("builder.change")}
                           </button>
                           <button
                             onClick={() => handleRemovePart(cat.slug)}
-                            className="w-8 h-8 sm:w-7 sm:h-7 rounded-md text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
-                            title="Retirer de la configuration"
-                            aria-label={`Retirer ${cat.label}`}
+                            className="w-7 h-7 rounded-md text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center font-bold text-sm transition-colors btn-press focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+                            title={t("builder.removeTitle")}
+                            aria-label={t("builder.removeAria", { label: catLabel })}
                           >
                             ✕
                           </button>
@@ -754,7 +705,7 @@ export default function BuilderPage() {
                           onClick={() => setActiveModalCat(cat.slug)}
                           className="text-[#2c87c3] hover:text-[#1e5c85] hover:underline underline-offset-4 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2c87c3] rounded btn-press"
                         >
-                          + Ajouter
+                          {t("builder.add")}
                         </button>
                       )}
                     </td>
@@ -766,25 +717,22 @@ export default function BuilderPage() {
         </div>
 
         {/* Sticky Total Bar (Styled like PCPartPicker System Total) */}
-        {/* Mobile: sticks 64px up (clear of the fixed bottom nav) so the running
-            total stays visible while scrolling a ~4000px card stack.
-            Desktop: plain static bar, as before. Print: forced static. */}
-        <div className="sticky bottom-16 md:static z-10 relative overflow-hidden flex flex-wrap items-center justify-between gap-4 px-5 py-4 bg-gradient-to-r from-[#11111c] via-[#181a2e] to-[#11111c] text-white rounded-b-xl border-t border-slate-800 print:static print:bg-slate-100 print:bg-none print:text-slate-900 print:border-slate-300 print:rounded-none">
+        <div className="relative overflow-hidden flex flex-wrap items-center justify-between gap-4 px-5 py-4 bg-gradient-to-r from-[#11111c] via-[#181a2e] to-[#11111c] text-white rounded-b-xl border-t border-slate-800 print:bg-slate-100 print:bg-none print:text-slate-900 print:border-slate-300 print:rounded-none">
           <div className="absolute inset-0 dz-hero-grid opacity-40 pointer-events-none print:hidden" aria-hidden="true" />
           <div className="relative flex items-baseline gap-3 flex-wrap text-sm">
             <span className="text-slate-400 print:text-slate-600 font-medium">
-              {selectedCount} sur {CATEGORIES.length} pièces :
+              {t("builder.partsCount", { selected: selectedCount, total: CATEGORIES.length })}
             </span>
             <span
               className="text-xl sm:text-2xl font-extrabold tracking-tight text-white print:text-slate-900 tabular-nums"
             >
-              {Math.round(animatedTotal).toLocaleString("fr-DZ")} DA
+              {formatPrice(Math.round(animatedTotal), LOCALE)}
             </span>
             <span className="text-slate-400 print:text-slate-500 text-xs">
-              ≈ ${Math.round(animatedTotal / 132).toLocaleString()} USD
+              ≈ ${Math.round(animatedTotal / 132).toLocaleString("en")} USD
             </span>
             <span className="text-slate-500 text-xs hidden sm:inline">
-              • {result.wattage}W estimés
+              {t("builder.wattageEstimated", { watt: result.wattage })}
             </span>
           </div>
 
@@ -792,14 +740,14 @@ export default function BuilderPage() {
             <button
               onClick={handlePrint}
               className="px-3.5 py-2 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 text-white font-bold transition-colors btn-press flex items-center gap-1.5"
-              title="Imprimer ou enregistrer en PDF"
+              title={t("builder.printTitle2")}
             >
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <polyline points="6 9 6 2 18 2 18 9" />
                 <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
                 <rect x="6" y="14" width="12" height="8" />
               </svg>
-              <span>Imprimer</span>
+              <span>{t("builder.printBtn")}</span>
             </button>
 
             <button
@@ -810,32 +758,38 @@ export default function BuilderPage() {
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
               </svg>
-              <span>Copier le lien du build</span>
+              <span>{t("builder.copyBuildLink")}</span>
             </button>
           </div>
         </div>
       </div>
 
       <p className="text-xs text-slate-400 mt-3 print:hidden">
-        Format réplique de pcpartpicker.com/list adapté pour l'Algérie. Les colonnes US (Base, Promo, Tax) sont adaptées en (Prix DA, Disponibilité, Marchand 58 wilayas). Le tri est 100% organique par prix croissant.
+        {t("builder.footnote")}
       </p>
 
       {/* Component Picker Modal */}
       {activeModalCat && (
         <div className="fixed inset-0 bg-slate-950/75 flex items-center justify-center p-4 z-50 print:hidden animate-backdrop-fade" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
-          <div role="dialog" aria-modal="true" aria-label={`Choisir un composant : ${CATEGORIES.find((c) => c.slug === activeModalCat)?.label ?? activeModalCat}`} className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-pop border border-slate-200/80 overflow-hidden animate-modal-pop" onClick={(e) => e.stopPropagation()}>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("builder.chooseAria", { label: categoryLabel(activeModalCat, t) })}
+            className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-pop border border-slate-200/80 overflow-hidden animate-modal-pop"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-gradient-to-b from-slate-50 to-white">
               <div className="flex items-center gap-3">
                 <span className="w-9 h-9 rounded-xl bg-gradient-to-b from-[#3a94d2] to-[#2c87c3] text-white flex items-center justify-center shadow-[0_4px_12px_-4px_rgba(44,135,195,0.5)] shrink-0">
-                  <CategoryIcon slug={activeModalCat} />
+                  <CategoryIcon slug={activeModalCat} className="w-4 h-4" />
                 </span>
                 <div>
                   <h3 className="font-extrabold text-base text-slate-900">
-                    Choisir : {CATEGORIES.find((c) => c.slug === activeModalCat)?.label}
+                    {t("builder.chooseTitle", { label: categoryLabel(activeModalCat, t) })}
                   </h3>
                   <p className="text-xs text-slate-500">
-                    Sélectionnez parmi les produits indexés en Algérie
+                    {t("builder.chooseSubtitle")}
                   </p>
                 </div>
               </div>
@@ -853,14 +807,16 @@ export default function BuilderPage() {
             {/* Modal Quick Catalog Link */}
             <div className="px-4 py-2 bg-slate-50/70 border-b border-slate-200/70 flex items-center justify-between text-xs">
               <span className="text-slate-500 font-medium">
-                {(products.length ? products : PRODUCTS).filter((p) => p.category === activeModalCat).length} modèles indexés
+                {t("builder.indexedModels", {
+                  count: (products.length ? products : PRODUCTS).filter((p) => p.category === activeModalCat).length,
+                })}
               </span>
               <Link
-                href={`/category/${activeModalCat}`}
+                href={href(`/category/${activeModalCat}`)}
                 onClick={() => setActiveModalCat(null)}
                 className="text-[#2c87c3] hover:underline font-semibold flex items-center gap-1"
               >
-                <span>Explorer tout le catalogue avec filtres</span>
+                <span>{t("builder.exploreCatalog")}</span>
                 <span aria-hidden="true">→</span>
               </Link>
             </div>
@@ -871,7 +827,8 @@ export default function BuilderPage() {
                 type="text"
                 value={modalSearch}
                 onChange={(e) => setModalSearch(e.target.value)}
-                placeholder="Filtrer par marque, modèle…"
+                placeholder={t("builder.modalSearchPlaceholder")}
+                aria-label={t("builder.modalSearchPlaceholder")}
                 className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-xs text-slate-800 outline-none focus:border-[#2c87c3] focus:bg-white focus:shadow-[0_0_0_3px_rgba(44,135,195,0.15)] transition-all"
                 autoFocus
               />
@@ -908,7 +865,7 @@ export default function BuilderPage() {
                         {isRupturedProduct && (
                           <div className="absolute inset-0 bg-white/60 flex items-center justify-center rounded-lg">
                             <span className="bg-rose-600 text-white text-[8px] font-black uppercase px-1.5 py-0.5 rounded shadow">
-                              Épuisé
+                              {t("common.soldOut")}
                             </span>
                           </div>
                         )}
@@ -920,12 +877,12 @@ export default function BuilderPage() {
                           </span>
                           {isRupturedProduct && (
                             <span className="px-1.5 py-0.5 rounded-md bg-rose-100 text-rose-800 text-[10px] font-bold border border-rose-200">
-                              ✕ Rupture
+                              ✕ {t("common.outOfStock")}
                             </span>
                           )}
                           {!isRupturedProduct && hasInStock && (
                             <span className="px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold border border-emerald-200">
-                              ✓ En stock
+                              ✓ {t("common.inStock")}
                             </span>
                           )}
                         </div>
@@ -934,16 +891,16 @@ export default function BuilderPage() {
                           {best ? (
                             isRupturedProduct ? (
                               <span>
-                                Dernier prix : <span className="line-through text-slate-400">{best.priceDa.toLocaleString("fr-DZ")} DA</span>{" "}
-                                <b className="text-rose-600 font-semibold">(Rupture chez {best.store})</b>
+                                {t("builder.lastPrice")} <span className="line-through text-slate-400">{formatPrice(best.priceDa, LOCALE)}</span>{" "}
+                                <b className="text-rose-600 font-semibold">{t("builder.brokenAt", { store: best.store })}</b>
                               </span>
                             ) : (
                               <span>
-                                dès <b className="text-emerald-700 font-bold">{best.priceDa.toLocaleString("fr-DZ")} DA</b> chez {best.store} ({best.wilaya})
+                                {t("common.from")} <b className="text-emerald-700 font-bold">{formatPrice(best.priceDa, LOCALE)}</b> {t("common.atStore", { store: best.store })} ({best.wilaya})
                               </span>
                             )
                           ) : (
-                            <span className="text-slate-400 italic">Pas d'offre indexée</span>
+                            <span className="text-slate-400 italic">{t("common.noIndexedOffer")}</span>
                           )}
                         </div>
                       </div>
@@ -957,7 +914,7 @@ export default function BuilderPage() {
                             : "btn-blue"
                         }`}
                       >
-                        {isCurrent ? "Sélectionné" : isRupturedProduct ? "Choisir (Rupture)" : "Choisir"}
+                        {isCurrent ? t("builder.selected") : isRupturedProduct ? t("builder.chooseBroken") : t("builder.chooseShort")}
                       </button>
                     </div>
                   );

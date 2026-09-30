@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { listGuides } from "@/lib/data/guides-en";
+import { GUIDES } from "@/lib/data/guides";
 import { bestOffer, productImage, type Product } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
@@ -10,47 +10,45 @@ import { getT } from "@/lib/i18n/server";
 
 export const revalidate = 60;
 
-const LOCALE = "en" as const;
+const LOCALE = "fr" as const;
 
 export const metadata: Metadata = {
-  title: "PC Gaming Buying Guides for Algeria",
+  title: "Guides d'Achat PC Gaming en Algérie",
   description:
-    "A curated set of balanced PC gaming configurations costed against real prices in Algerian Dinars (DA). From the smart budget build to 1440p / 4K setups.",
+    "Sélection de configurations PC gaming équilibrées et chiffrées selon les prix réels en Dinars Algériens (DA). Du budget malin au setup 1440p / 4K.",
   keywords: [
-    "pc gaming buying guide algeria",
-    "how to build a pc in algeria",
-    "budget gaming pc algeria",
-    "1440p gaming pc algeria",
-    "pc build guide da",
-    "ouedkniss used pc guide",
+    "guide achat pc gaming algerie",
+    "comment assembler un pc algerie",
+    "pc gaming budget algerie",
+    "config pc 1440p algerie",
+    "guide pc da",
+    "guide occasion ouedkniss",
   ],
-  alternates: languageAlternates("/guides", "en"),
+  alternates: languageAlternates("/guides"),
   openGraph: {
-    title: "PC Gaming Buying Guides for Algeria",
+    title: "Guides d'Achat PC Gaming en Algérie",
     description:
-      "Balanced PC gaming builds costed at real Algerian store prices, in Algerian Dinars (DA).",
-    url: "/en/guides",
+      "Configs PC gaming équilibrées, chiffrées aux prix réels des boutiques algériennes, en Dinars Algériens (DA).",
+    url: "/fr/guides",
     type: "website",
-    locale: OG_LOCALE.en,
+    locale: OG_LOCALE.fr,
     siteName: "DZ PartPicker",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PC Gaming Buying Guides for Algeria",
+    title: "Guides d'Achat PC Gaming en Algérie",
     description:
-      "Balanced PC gaming builds costed at real Algerian store prices, in Algerian Dinars (DA).",
+      "Configs PC gaming équilibrées, chiffrées aux prix réels des boutiques algériennes, en Dinars Algériens (DA).",
   },
 };
 
-export default async function EnglishGuidesPage() {
+export default async function GuidesPage() {
   const t = await getT(LOCALE);
   const [products, offers, scrapedAt] = await Promise.all([
     getProducts(),
     getOffers(),
     getScrapedAt(),
   ]);
-  const guides = listGuides(LOCALE);
-
   return (
     <main className="max-w-7xl mx-auto px-4 py-8 space-y-8">
       {/* Magazine Page Header */}
@@ -68,9 +66,9 @@ export default async function EnglishGuidesPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <LocaleSwitcher pathname="/en/guides" />
+          <LocaleSwitcher pathname="/fr/guides" />
           <Link
-            href="/en/builder"
+            href="/fr/builder"
             className="px-5 py-2.5 rounded bg-[#2c87c3] hover:bg-[#1e5c85] text-white text-xs sm:text-sm font-bold transition-colors flex items-center gap-2"
           >
             <span>{t("guides.cta")}</span>
@@ -81,7 +79,7 @@ export default async function EnglishGuidesPage() {
 
       {/* Magazine-Style Guides Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {guides.map((g) => {
+        {GUIDES.map((g) => {
           const total = g.parts.reduce((sum, id) => sum + (bestOffer(id, offers)?.priceDa ?? 0), 0);
           const missing = g.parts.filter((id) => !bestOffer(id, offers)).length;
           const sampleProducts = g.parts
@@ -100,7 +98,7 @@ export default async function EnglishGuidesPage() {
           return (
             <Link
               key={g.slug}
-              href={`/en/guides/${g.slug}`}
+              href={`/fr/guides/${g.slug}`}
               className="bg-white rounded p-6 border border-slate-200/90 hover:border-[#2c87c3] flex flex-col justify-between group space-y-5 transition-colors overflow-hidden relative"
             >
               <div className="space-y-4">

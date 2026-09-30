@@ -1,10 +1,14 @@
 /**
  * Locale configuration for the DZ PartPicker bilingual surface.
  *
- * Routing model (intentionally NOT a [locale] segment, to avoid touching the
- * existing unprefixed routes):
- *   - French  -> unprefixed   "/"  "/category/cpu"  "/product/xyz"  ...
- *   - English -> prefixed     "/en" "/en/category/cpu" "/en/product/xyz" ...
+ * Routing model (intentionally NOT a [locale] segment, so the default language
+ * keeps the clean root URLs and needs no prefix):
+ *   - English -> unprefixed   "/"  "/category/cpu"  "/product/xyz"  ...  (default)
+ *   - French  -> prefixed     "/fr" "/fr/category/cpu" "/fr/product/xyz" ...
+ *
+ * The legacy "/en/..." URLs (English used to live under a prefix) are permanently
+ * redirected to their unprefixed equivalents in next.config.mjs, so no page is
+ * ever served twice and no SEO signal is split across two URLs.
  *
  * This module is dependency-free and safe to import from both server and client
  * code.
@@ -13,7 +17,7 @@
 export const LOCALES = ["fr", "en"] as const;
 export type Locale = (typeof LOCALES)[number];
 
-export const DEFAULT_LOCALE: Locale = "fr";
+export const DEFAULT_LOCALE: Locale = "en";
 
 /** `<html lang>` value per locale. */
 export const HTML_LANG: Record<Locale, string> = { fr: "fr-DZ", en: "en-DZ" };
@@ -33,10 +37,10 @@ export const NUMBER_LOCALE: Record<Locale, string> = { fr: "fr-DZ", en: "en-DZ" 
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://dzpartpicker.dz";
 
 /** Home route per locale. */
-export const HOME: Record<Locale, string> = { fr: "/", en: "/en" };
+export const HOME: Record<Locale, string> = { fr: "/fr", en: "/" };
 
 /** Prefix used by the non-default locale, empty for the default one. */
-export const LOCALE_PREFIX: Record<Locale, string> = { fr: "", en: "/en" };
+export const LOCALE_PREFIX: Record<Locale, string> = { fr: "/fr", en: "" };
 
 export function isLocale(value: unknown): value is Locale {
   return typeof value === "string" && (LOCALES as readonly string[]).includes(value);
@@ -52,6 +56,9 @@ export function isLocale(value: unknown): value is Locale {
 export function localeFromPathname(pathname: string): Locale {
   if (!pathname) return DEFAULT_LOCALE;
   const first = pathname.split("/").filter(Boolean)[0];
+  // English is the default and owns every unprefixed route, so only an explicit
+  // locale prefix changes the answer. "/en/..." is still recognised so the
+  // switcher keeps marking itself active during the redirect grace period.
   return isLocale(first) ? first : DEFAULT_LOCALE;
 }
 
@@ -61,17 +68,18 @@ export function otherLocale(locale: Locale): Locale {
 
 /** "/en/guides/x" -> "/guides/x"; "/en" -> "/"; "/guides/x" -> "/guides/x" */
 export function stripLocalePrefix(pathname: string): string {
-  const locale = localeFromPathname(pathname);
-  if (locale === DEFAULT_LOCALE) return pathname || "/";
-  const rest = pathname.split("/").filter(Boolean).slice(1).join("/");
-  return rest ? `/${rest}` : "/";
+  if (!pathname) return "/";
+  const segments = pathname.split("/").filter(Boolean);
+  if (isLocale(segments[0])) segments.shift();
+  return segments.length ? `/${segments.join("/")}` : "/";
 }
 
 /**
- * Prefixes a locale-agnostic ("French shaped") path with the right locale.
- *   localizedPath("/category/cpu", "en") -> "/en/category/cpu"
- *   localizedPath("/", "en")             -> "/en"
- *   localizedPath("/", "fr")             -> "/"
+ * Turns a locale-agnostic path into a locale-specific URL.
+ *   localizedPath("/category/cpu", "en") -> "/category/cpu"
+ *   localizedPath("/", "en")             -> "/"
+ *   localizedPath("/category/cpu", "fr") -> "/fr/category/cpu"
+ *   localizedPath("/", "fr")             -> "/fr"
  */
 export function localizedPath(path: string, locale: Locale): string {
   const rest = stripLocalePrefix(path || "/");
@@ -96,13 +104,21 @@ export function absoluteUrl(path: string): string {
 /**
  * Canonical + hreflang map for a locale-agnostic route.
  *
- * `path` is always the *French-shaped* route ("/category/cpu"). `self` is the
- * locale of the page being rendered: it decides the value of `canonical`
- * (each version must point at itself), while `x-default` always points at the
- * French (unprefixed) version — the historical root of the domain and the one
- * most Algerian traffic expects.
- */
-export function languageAlternates(path: string, self: Locale = DEFAULT_LOCALE) {
+
+  /**
+   * Canonical + hreflang map for a locale-agnostic route.
+   *
+   * `path` is always locale-agnostic ("/category/cpu") - never prefix it
+   * yourself. `self` is the locale of the page being rendered and decides the
+   * value of `canonical` (each version must point at itself), while `x-default`
+   * points at English: the site default and the unprefixed root of the domain.
+   *
+   * The default for `self` is deliberately "fr" and NOT DEFAULT_LOCALE: the
+   * French pages are the ones that call this without an argument, so letting it
+   * follow DEFAULT_LOCALE would canonicalise every French page to its English twin
+   * the moment the default locale flipped.
+   */
+export function languageAlternates(path: string, self: Locale = "fr") {
   const fr = localizedPath(path, "fr");
   const en = localizedPath(path, "en");
   return {
@@ -110,7 +126,7 @@ export function languageAlternates(path: string, self: Locale = DEFAULT_LOCALE) 
     languages: {
       "fr-DZ": absoluteUrl(fr),
       "en-DZ": absoluteUrl(en),
-      "x-default": absoluteUrl(fr),
+      "x-default": absoluteUrl(en),
     },
   };
 }

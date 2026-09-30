@@ -1,23 +1,24 @@
 import type { MetadataRoute } from "next";
-import { GUIDES } from "@/lib/data/guides";
+import { listGuides } from "@/lib/data/guides-en";
 import { CATEGORIES } from "@/lib/data/products";
 import { getProducts } from "@/lib/data/catalog";
 import { absoluteUrl, localizedPath } from "@/lib/i18n/config";
 
 /**
- * Every French URL now ships the full hreflang set, so each page is
- * reciprocally paired with its English mirror:
- *   fr-DZ     -> unprefixed URL (this one)
- *   en-DZ     -> /en/... mirror
- *   x-default -> the unprefixed French URL (historical root of the domain)
+ * English sitemap, served at /en/sitemap.xml.
  *
- * The English URLs themselves are listed in app/en/sitemap.ts (/en/sitemap.xml).
+ * Lists only English URLs, each one carrying the full hreflang set
+ * (fr-DZ unprefixed, en-DZ prefixed, x-default -> French) so crawlers can pair
+ * the two versions of every page. The French sitemap (/sitemap.xml) carries the
+ * same alternates on the French URLs.
  */
-function entry(frPath: string, priority: number, changeFrequency: "daily" | "weekly" = "daily") {
-  const fr = absoluteUrl(localizedPath(frPath, "fr"));
-  const en = absoluteUrl(localizedPath(frPath, "en"));
+const STATIC_ROUTES = ["", "/builder", "/prebuilds", "/guides", "/deals"];
+
+function withAlternates(path: string, priority: number, changeFrequency: "daily" | "weekly" = "daily") {
+  const fr = absoluteUrl(localizedPath(path, "fr"));
+  const en = absoluteUrl(localizedPath(path, "en"));
   return {
-    url: fr,
+    url: en,
     lastModified: new Date(),
     changeFrequency,
     priority,
@@ -31,13 +32,15 @@ function entry(frPath: string, priority: number, changeFrequency: "daily" | "wee
   };
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default async function englishSitemap(): Promise<MetadataRoute.Sitemap> {
   const prods = await getProducts();
-  const staticRoutes = ["", "/builder", "/prebuilds", "/guides", "/deals"].map((r) =>
-    entry(r, r === "" ? 1 : r === "/prebuilds" ? 0.9 : 0.8),
+
+  const staticRoutes = STATIC_ROUTES.map((r) =>
+    withAlternates(r, r === "" ? 1 : r === "/prebuilds" ? 0.9 : 0.8),
   );
-  const cats = CATEGORIES.map((c) => entry(`/category/${c.slug}`, 0.9));
-  const products = prods.map((p) => entry(`/product/${p.id}`, 0.9));
-  const guides = GUIDES.map((g) => entry(`/guides/${g.slug}`, 0.7, "weekly"));
+  const cats = CATEGORIES.map((c) => withAlternates(`/category/${c.slug}`, 0.9));
+  const products = prods.map((p) => withAlternates(`/product/${p.id}`, 0.9));
+  const guides = listGuides("en").map((g) => withAlternates(`/guides/${g.slug}`, 0.7, "weekly"));
+
   return [...staticRoutes, ...cats, ...products, ...guides];
 }

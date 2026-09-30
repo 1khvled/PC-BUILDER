@@ -345,7 +345,7 @@ export const fr = {
   "guides.tierPartial": "Budget Partiel",
   "guides.tierSmart": "Budget Malin",
   "guides.tierMid": "Milieu de Gamme",
-  "guides.tierEnthusiast": "Enthusiast / 1440p",
+  "guides.tierEnthusiast": "Passionné / 1440p",
   "guides.byAuthor": "Par Équipe DZ-PCPP • Édition 2026",
   "guides.selectedParts": "Composants sélectionnés ({count}) :",
   "guides.budgetPartial": "Budget partiel (dès)",
@@ -475,7 +475,7 @@ export const fr = {
   /* -------------------------------------------------------------- switcher */
   "switcher.toEn": "English",
   "switcher.toFr": "Français",
-  "switcher.ariaEn": "Switch to the English version of this page",
+  "switcher.ariaEn": "Passer à la version anglaise de cette page",
   "switcher.ariaFr": "Passer à la version française de cette page",
   "switcher.label": "Langue",
 
@@ -491,7 +491,7 @@ export const fr = {
 
   /* ------------------------------------------- header / search / nav (chrome) */
   "header.skipToContent": "Aller au contenu principal",
-  "header.tagline": "Pick parts • Build your PC • Compare in DA",
+  "header.tagline": "Choisissez vos pièces • Assemblez votre PC • Comparez en DA",
   "header.menu": "Menu",
   "header.products": "Produits",
   "header.productCategories": "Catégories Composants ({count})",
@@ -533,7 +533,7 @@ export const fr = {
   "chart.avg": "Moyenne",
   "chart.max": "Max",
   "chart.storesHeading": "Tarifs relevés aujourd'hui par boutique :",
-  "chart.topDeal": "Top Deal",
+  "chart.topDeal": "Meilleure offre",
   "chart.evolution": "Évolution Historique des Prix",
   "chart.falling": "📉 En baisse (-{pct}%)",
   "chart.rising": "📈 En hausse (+{pct}%)",

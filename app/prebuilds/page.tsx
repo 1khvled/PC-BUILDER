@@ -9,38 +9,44 @@ import { getT } from "@/lib/i18n/server";
 
 export const revalidate = 60;
 
-const LOCALE = "fr" as const;
+const LOCALE = "en" as const;
 
 export const metadata: Metadata = {
-  title: "PC Gamer Montés & Configurations en Algérie",
+  title: "Prebuilt Gaming PCs & Full Configurations in Algeria",
   description:
-    "Trouvez et comparez les PC gamers complets et unités centrales des boutiques d'Alger, Oran, Sétif et Blida. Comparatif automatique des prix face aux pièces détachées.",
+    "Find and compare complete prebuilt gaming PCs and desktops from stores in Algiers, Oran, Sétif and Blida. Automatic price comparison against the same parts bought separately.",
   keywords: [
-    "pc gamer montes algerie",
-    "pc complet algerie prix",
-    "pc gaming assemble algerie",
-    "unite centrale algerie prix da",
-    "vente pc algerie",
+    "prebuilt gaming pc algeria",
+    "ready made pc algeria price",
+    "gaming pc assemble algeria",
+    "pc complet da algerie",
+    "desktop pc algeria price",
+    "ouedkniss pc gamer complet",
   ],
-  alternates: languageAlternates("/prebuilds"),
+  alternates: languageAlternates("/prebuilds", "en"),
   openGraph: {
-    title: "PC Gamer Montés & Unités Centrales en Algérie",
+    title: "Prebuilt Gaming PCs in Algeria (DA)",
     description:
-      "Comparez les PC gamers complets des boutiques algériennes face au prix exact de leurs composants achetés séparément, en Dinars Algériens (DA).",
-    url: "/prebuilds",
+      "Compare prebuilt gaming PCs from Algerian stores against the exact price of their components bought separately, in Algerian Dinars (DA).",
+    url: "/en/prebuilds",
     type: "website",
-    locale: OG_LOCALE.fr,
+    locale: OG_LOCALE.en,
     siteName: "DZ PartPicker",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PC Gamer Montés & Unités Centrales en Algérie",
+    title: "Prebuilt Gaming PCs in Algeria (DA)",
     description:
-      "Comparez les PC gamers complets des boutiques algériennes face au prix exact de leurs composants achetés séparément, en Dinars Algériens (DA).",
+      "Compare prebuilt gaming PCs from Algerian stores against the exact price of their components bought separately, in Algerian Dinars (DA).",
   },
 };
 
-export default async function PrebuildsPage() {
+/**
+ * NOTE: `prebuilds.meta.title` is not used here — the title is spelled out so
+ * the root "| DZ PartPicker" template is applied exactly once. (The French page
+ * keeps its historical double-suffixed title untouched.)
+ */
+export default async function EnglishPrebuildsPage() {
   const t = await getT(LOCALE);
   const [offers, scrapedAt] = await Promise.all([
     getOffers(),
@@ -64,9 +70,9 @@ export default async function PrebuildsPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <LocaleSwitcher pathname="/prebuilds" />
+          <LocaleSwitcher pathname="/en/prebuilds" />
           <Link
-            href="/builder"
+            href="//builder"
             className="px-5 py-2.5 rounded-lg bg-[#2c87c3] hover:bg-[#1e5c85] text-white text-xs sm:text-sm font-bold transition-colors flex items-center gap-2 shadow-sm"
           >
             <span>{t("prebuilds.cta")}</span>
@@ -76,7 +82,7 @@ export default async function PrebuildsPage() {
       </div>
 
       {/* Interactive Catalog Client */}
-      <PrebuildsClient prebuilds={PREBUILDS} offers={offers} />
+      <PrebuildsClient prebuilds={PREBUILDS} offers={offers} locale={LOCALE} />
     </main>
   );
 }

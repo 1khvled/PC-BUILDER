@@ -2,16 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { HOME, localeFromPathname, stripLocalePrefix, type Locale } from "@/lib/i18n/config";
+import { HOME, localeFromPathname, localizedPath, stripLocalePrefix, type Locale } from "@/lib/i18n/config";
 import { useT } from "@/lib/i18n/client";
 import type { TFn } from "@/lib/i18n/runtime";
 
 /**
- * Public route prefixes that have an English mirror under /en.
- * Anything else (e.g. /admin-kh7, /api/*) has no counterpart, so the switcher
- * degrades to that locale's home page instead of linking to a dead route.
- */
-const MIRRORED_PREFIXES = ["", "/builder", "/category", "/product", "/deals", "/guides", "/prebuilds"];
+ * Public route prefixes that exist in both languages. English now owns the
+ * unprefixed URLs and French lives under /fr, so a mirrored path is one of these
+ * segments. Anything else (e.g. /admin-kh7, /api/*) has no counterpart, so the
+   */
+  const MIRRORED_PREFIXES = ["", "/builder", "/category", "/product", "/deals", "/guides", "/prebuilds"];
 
 function isMirrored(pathWithoutLocale: string): boolean {
   return MIRRORED_PREFIXES.some(
@@ -26,7 +26,7 @@ function isMirrored(pathWithoutLocale: string): boolean {
 export function hrefForLocale(anyLocalePath: string, locale: Locale): string {
   const rest = stripLocalePrefix(anyLocalePath || "/");
   if (!isMirrored(rest)) return HOME[locale];
-  return locale === "fr" ? rest : rest === "/" ? "/en" : `/en${rest}`;
+  return localizedPath(rest, locale);
 }
 
 export interface LocaleSwitcherProps {

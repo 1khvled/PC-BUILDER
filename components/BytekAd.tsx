@@ -31,7 +31,9 @@ function storeHref(placement: string) {
 /** Light tile so the dark navy wordmark stays legible on the dark ad surface. */
 function BytekLogo({ className = "h-7 w-auto" }: { className?: string }) {
   return (
-    <span className="inline-flex items-center justify-center rounded-lg bg-white px-2.5 py-1.5 shadow-sm shrink-0">
+    // `dz-light-tile`, not `bg-white`: the dark theme repaints `bg-white` dark,
+    // which made this navy wordmark disappear in dark mode.
+    <span className="inline-flex items-center justify-center rounded-lg dz-light-tile px-2.5 py-1.5 shadow-sm shrink-0">
       <img
         src="/brand/bytek-logo.png"
         alt="Bytek Store"
