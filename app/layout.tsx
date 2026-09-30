@@ -20,8 +20,25 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#11111c",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f4f4f3" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0d14" },
+  ],
 };
+
+/**
+ * Pre-paint theme resolution. This must stay inline and blocking in <head>:
+ * if the class is applied after hydration the visitor sees a white flash
+ * before the dark palette settles. Mirrors the logic of components/ThemeToggle.
+ */
+const themeInit = `
+(function(){try{
+  var s=localStorage.getItem("dz_theme");
+  var d=(s==="dark")||((!s||s==="system")&&window.matchMedia("(prefers-color-scheme: dark)").matches);
+  document.documentElement.classList.toggle("dark",d);
+  document.documentElement.style.colorScheme=d?"dark":"light";
+}catch(e){}})();
+`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://dzpartpicker.dz"),
@@ -85,7 +102,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`h-full ${sans.variable}`}>
+    <html lang="fr" className={`h-full ${sans.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+      </head>
       <body className="min-h-full flex flex-col antialiased font-sans overflow-x-hidden selection:bg-[#2c87c3] selection:text-white">
         <script
           type="application/ld+json"

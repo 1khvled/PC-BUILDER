@@ -5,6 +5,9 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  // Class-based dark mode: the .dark class on <html> is set before paint by the
+  // inline script in app/layout.tsx, so there is never a light-mode flash.
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {

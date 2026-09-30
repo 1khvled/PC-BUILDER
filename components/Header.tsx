@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Thumb from "./Thumb";
+import ThemeToggle from "./ThemeToggle";
 
 interface ProductResult {
   id: string;
@@ -429,6 +430,9 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             </div>
 
             {/* Pas de comptes utilisateurs — aucun bouton login/register. */}
+
+            {/* Light / dark theme switch */}
+            <ThemeToggle />
 
             {/* Mobile hamburger menu button */}
             <button

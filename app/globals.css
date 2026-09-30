@@ -239,3 +239,191 @@
 .safe-area-bottom {
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0.75rem));
 }
+
+/* =====================================================================
+   DARK MODE
+   ---------------------------------------------------------------------
+   Class strategy: `.dark` lands on <html> before first paint (inline script
+   in app/layout.tsx), then ThemeToggle flips it.
+
+   Why a remap block instead of `dark:` variants on every component: the UI
+   paints with light-mode utility classes (bg-white, text-slate-600,
+   border-slate-200 …) in ~500 places. Rewriting all of them is churn, so the
+   palette is inverted once, here.
+
+   These rules are deliberately UNLAYERED: unlayered declarations beat
+   Tailwind's `utilities` layer regardless of source order, which is what
+   lets a single .dark selector flip the whole site.
+   ===================================================================== */
+
+/* --- Canvas & base typography --- */
+html.dark {
+  color-scheme: dark;
+  background-color: #0b0d14;
+  scrollbar-color: #39404f #0b0d14;
+}
+html.dark body {
+  background-color: #0b0d14;
+  color: #e6e9ef;
+}
+html.dark ::-webkit-scrollbar-track {
+  background: #0b0d14;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #39404f;
+  border-color: #0b0d14;
+}
+
+/* --- Surfaces --- */
+.dark .bg-white { background-color: #161922; }
+.dark .bg-white\/95 { background-color: rgba(22, 25, 34, 0.95); }
+.dark .bg-white\/90 { background-color: rgba(22, 25, 34, 0.90); }
+.dark .bg-white\/80 { background-color: rgba(22, 25, 34, 0.80); }
+.dark .bg-slate-50,
+.dark .bg-slate-50\/40,
+.dark .bg-slate-50\/50,
+.dark .bg-slate-50\/60,
+.dark .bg-slate-50\/70,
+.dark .bg-slate-50\/80 { background-color: #12151d; }
+.dark .bg-slate-100,
+.dark .bg-slate-100\/70,
+.dark .bg-slate-100\/60 { background-color: #1a1e28; }
+.dark .bg-slate-200,
+.dark .bg-slate-200\/60,
+.dark .bg-slate-200\/70 { background-color: #232833; }
+/* Already-dark surfaces (navy blocks, dark buttons) stay dark, just tuned. */
+.dark .bg-slate-900 { background-color: #0e1119; }
+.dark .bg-slate-950 { background-color: #0a0c12; }
+.dark .bg-slate-800 { background-color: #151821; }
+.dark .bg-slate-700 { background-color: #1e222d; }
+
+/* Panel-header gradients */
+.dark .from-slate-50 { --tw-gradient-from: #12151d var(--tw-gradient-from-position); }
+.dark .to-white { --tw-gradient-to: #12151d var(--tw-gradient-to-position); }
+.dark .from-slate-100 { --tw-gradient-from: #1a1e28 var(--tw-gradient-from-position); }
+
+/* --- Tinted (status) surfaces --- */
+.dark .bg-blue-50,
+.dark .bg-blue-50\/40,
+.dark .bg-blue-50\/50,
+.dark .bg-blue-50\/60,
+.dark .bg-blue-50\/80 { background-color: #0e2130; }
+.dark .bg-blue-100 { background-color: #123047; }
+.dark .bg-emerald-50,
+.dark .bg-emerald-50\/80 { background-color: #0c2419; }
+.dark .bg-emerald-100,
+.dark .bg-emerald-100\/60 { background-color: #0f3323; }
+.dark .bg-amber-50,
+.dark .bg-amber-50\/80 { background-color: #241c0d; }
+.dark .bg-amber-100 { background-color: #33270f; }
+.dark .bg-rose-50,
+.dark .bg-rose-50\/20,
+.dark .bg-rose-50\/30,
+.dark .bg-rose-50\/40,
+.dark .bg-rose-50\/70,
+.dark .bg-red-50 { background-color: #241216; }
+.dark .bg-rose-100,
+.dark .bg-red-100\/60 { background-color: #341820; }
+
+/* --- Text --- */
+.dark .text-slate-900 { color: #f2f4f8; }
+.dark .text-slate-800 { color: #e6e9ef; }
+.dark .text-slate-700 { color: #d2d6df; }
+.dark .text-slate-600 { color: #b0b6c2; }
+.dark .text-slate-500 { color: #98a0ae; }
+.dark .text-slate-400 { color: #8b93a2; }
+.dark .text-slate-300 { color: #6e7686; }
+.dark .text-slate-200 { color: #5a6270; }
+.dark .text-\[\#191b2a\] { color: #e8ebf1; }
+
+/* Accent text: lifted for contrast on dark surfaces */
+.dark .text-emerald-800 { color: #6ee7b7; }
+.dark .text-emerald-700 { color: #34d399; }
+.dark .text-emerald-600 { color: #10b981; }
+.dark .text-blue-700 { color: #93c5fd; }
+.dark .text-blue-600 { color: #60a5fa; }
+.dark .text-amber-800 { color: #fcd34d; }
+.dark .text-amber-700 { color: #fbbf24; }
+.dark .text-rose-800 { color: #fda4af; }
+.dark .text-rose-700 { color: #fb7185; }
+.dark .text-rose-600 { color: #fb7185; }
+.dark .text-red-600 { color: #f87171; }
+.dark .text-red-700 { color: #f87171; }
+.dark .text-red-900 { color: #fecaca; }
+.dark .text-emerald-900 { color: #a7f3d0; }
+.dark .text-emerald-950 { color: #d1fae5; }
+.dark .text-amber-900,
+.dark .text-amber-950 { color: #fef3c7; }
+
+/* --- Component classes that set their own colours --- */
+.dark .panel {
+  background-color: #161922;
+  border-color: #262b36;
+}
+.dark .panel-hd {
+  background-image: linear-gradient(180deg, #171b24 0%, #12151d 100%);
+  border-bottom-color: #262b36;
+  color: #98a0ae;
+}
+.dark .dz-hero-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+.dark a.pcpp-link,
+.dark .pcpp-link { color: #5db2e8; }
+.dark a.pcpp-link:hover,
+.dark .pcpp-link:hover { color: #8ac8ef; }
+
+/* --- Borders & dividers --- */
+.dark .border-slate-100 { border-color: #22262f; }
+.dark .border-slate-200,
+.dark .border-slate-200\/60,
+.dark .border-slate-200\/70,
+.dark .border-slate-200\/80,
+.dark .border-slate-200\/90 { border-color: #262b36; }
+.dark .border-slate-300 { border-color: #333947; }
+.dark .divide-slate-100 { border-color: #21252e; }
+.dark .divide-slate-200 { border-color: #262b36; }
+.dark .border-blue-100 { border-color: #1d3a52; }
+.dark .border-emerald-200,
+.dark .border-emerald-200\/60,
+.dark .border-emerald-200\/80 { border-color: #14532d; }
+.dark .border-amber-200,
+.dark .border-amber-200\/90 { border-color: #4a3410; }
+.dark .border-rose-200,
+.dark .border-rose-200\/60,
+.dark .border-rose-200\/90 { border-color: #4c1d24; }
+.dark .ring-black\/10 { --tw-ring-color: rgba(0, 0, 0, 0.45); }
+
+/* --- Hover states --- */
+.dark .hover\:bg-slate-50:hover,
+.dark .hover\:bg-slate-50\/60:hover { background-color: #171b24; }
+.dark .hover\:bg-slate-100:hover,
+.dark .group:hover .group-hover\:bg-slate-100 { background-color: #20252f; }
+.dark .hover\:bg-slate-200:hover { background-color: #2a303c; }
+.dark .hover\:bg-slate-700:hover { background-color: #262b36; }
+.dark .hover\:bg-blue-50\/40:hover,
+.dark .hover\:bg-blue-50\/50:hover,
+.dark .hover\:bg-blue-50\/60:hover { background-color: #102434; }
+.dark .hover\:bg-blue-100:hover { background-color: #163a54; }
+.dark .hover\:bg-emerald-50:hover { background-color: #0f3020; }
+.dark .hover\:bg-rose-50\/30:hover,
+.dark .hover\:bg-rose-100:hover { background-color: #2e171d; }
+.dark .hover\:bg-red-50:hover { background-color: #2e171d; }
+
+/* --- Placeholders --- */
+.dark .placeholder\:text-slate-400::placeholder { color: #6e7686; }
+.dark .placeholder\:text-slate-300::placeholder { color: #5a6270; }
+
+/* --- Skeletons --- */
+.dark .dz-skeleton {
+  background: linear-gradient(90deg, #1a1e28 25%, #232833 50%, #1a1e28 75%);
+  background-size: 800px 100%;
+}
+
+/* --- Print always stays on the light sheet --- */
+@media print {
+  html.dark body {
+    background: #ffffff !important;
+    color: #191b2a !important;
+  }
+}
