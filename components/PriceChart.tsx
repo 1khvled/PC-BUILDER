@@ -225,6 +225,11 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
   const H = 200;
   const PAD_X = 20;
   const PAD_Y = 25;
+  // Right gutter reserved for the min/max scale labels. Without it the labels
+  // are right-aligned onto the plot's last column and collide with the data
+  // lines and the final x-axis date.
+  const PAD_R = 66;
+  const PLOT_W = W - PAD_X - PAD_R;
 
   const minVal = stats ? stats.min : 0;
   const maxVal = stats ? stats.max : 1;
@@ -232,12 +237,20 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
 
   const getX = (d: string) => {
     const idx = days.indexOf(d);
-    return PAD_X + (idx / Math.max(1, days.length - 1)) * (W - PAD_X * 2);
+    return PAD_X + (idx / Math.max(1, days.length - 1)) * PLOT_W;
   };
 
   const getY = (v: number) => {
     return PAD_Y + (1 - (v - minVal) / span) * (H - PAD_Y * 2);
   };
+
+  // Keep the two scale labels from stacking when the range is tight.
+  // The min label sits BELOW the max label, so compare the absolute gap.
+  const labelYMax = PAD_Y + 4;
+  let labelYMin = H - PAD_Y + 4;
+  if (Math.abs(labelYMax - labelYMin) < 13) {
+    labelYMin = labelYMax + 13;
+  }
 
   return (
     <div className="bg-white rounded-xl border border-slate-200 p-5 sm:p-6 space-y-5">
@@ -330,7 +343,7 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
               <line
                 key={f}
                 x1={PAD_X}
-                x2={W - PAD_X}
+                x2={PAD_X + PLOT_W}
                 y1={yPos}
                 y2={yPos}
                 stroke="#f1f5f9"
@@ -381,15 +394,15 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
           <text x={PAD_X} y={H - 5} fontSize="10" fill="#94a3b8" fontWeight="600">
             {days[0]}
           </text>
-          <text x={W - PAD_X} y={H - 5} fontSize="10" fill="#94a3b8" fontWeight="600" textAnchor="end">
+          <text x={PAD_X + PLOT_W} y={H - 5} fontSize="10" fill="#94a3b8" fontWeight="600" textAnchor="end">
             {days[days.length - 1]}
           </text>
 
-          {/* Y Axis Reference Labels */}
-          <text x={W - PAD_X} y={PAD_Y + 4} fontSize="10" fill="#64748b" fontWeight="600" textAnchor="end">
+          {/* Y Axis Reference Labels — parked in the right gutter, clear of the plot */}
+          <text x={PAD_X + PLOT_W + 8} y={labelYMax} fontSize="10" fill="#64748b" fontWeight="600">
             {maxVal.toLocaleString("fr-DZ")} DA
           </text>
-          <text x={W - PAD_X} y={H - PAD_Y + 4} fontSize="10" fill="#64748b" fontWeight="600" textAnchor="end">
+          <text x={PAD_X + PLOT_W + 8} y={labelYMin} fontSize="10" fill="#64748b" fontWeight="600">
             {minVal.toLocaleString("fr-DZ")} DA
           </text>
         </svg>

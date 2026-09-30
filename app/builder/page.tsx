@@ -816,7 +816,7 @@ export default function BuilderPage() {
 
       {/* Component Picker Modal */}
       {activeModalCat && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 print:hidden animate-backdrop-fade" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
+        <div className="fixed inset-0 bg-slate-950/75 flex items-center justify-center p-4 z-50 print:hidden animate-backdrop-fade" onClick={() => { setActiveModalCat(null); setModalSearch(""); }}>
           <div role="dialog" aria-modal="true" aria-label={`Choisir un composant : ${CATEGORIES.find((c) => c.slug === activeModalCat)?.label ?? activeModalCat}`} className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-pop border border-slate-200/80 overflow-hidden animate-modal-pop" onClick={(e) => e.stopPropagation()}>
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-gradient-to-b from-slate-50 to-white">

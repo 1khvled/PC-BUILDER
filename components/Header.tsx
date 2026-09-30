@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -284,7 +284,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
   return (
     <header className="sticky top-0 z-40 no-print">
       {/* Top Header Row — navy glass bar */}
-      <div className="bg-[#11111c]/95 backdrop-blur-md border-b border-white/[0.06]">
+      <div className="bg-[#11111c] border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
           {/* Brand Logo & Name */}
           <Link href="/" className="flex items-center gap-3 shrink-0 group">
@@ -317,7 +317,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 onFocus={() => query.trim() && setIsOpen(true)}
                 onKeyDown={handleKeyDown}
                 placeholder="Rechercher RTX 4060, Ryzen 5 5600, B550, DDR4..."
-                className="w-full bg-white/95 border border-white/20 rounded-full pl-10 pr-9 py-2 text-sm text-[#191b2a] outline-none placeholder:text-slate-400 shadow-[0_2px_10px_rgba(0,0,0,0.25)] transition-shadow focus:border-[#2c87c3] focus:shadow-[0_0_0_3px_rgba(44,135,195,0.25)]"
+                className="w-full bg-white border border-white/20 rounded-full pl-10 pr-9 py-2 text-sm text-[#191b2a] outline-none placeholder:text-slate-400 shadow-[0_2px_10px_rgba(0,0,0,0.25)] transition-shadow focus:border-[#2c87c3] focus:shadow-[0_0_0_3px_rgba(44,135,195,0.25)]"
               />
               <svg
                 className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none"
@@ -453,7 +453,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
       </div>
 
       {/* Sub-Navigation Bar (PCPartPicker signature 2nd tier menu) */}
-      <div className="border-b border-slate-200/80 bg-white/95 backdrop-blur-md relative z-30 shadow-sm">
+      <div className="border-b border-slate-200/80 bg-white relative z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-600">
           <nav aria-label="Navigation principale" className="flex items-center gap-1 sm:gap-1.5 py-1.5 overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap -mx-4 px-4 sm:mx-0 sm:px-0 touch-manipulation">
             <Link
@@ -631,7 +631,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                   key={cat.slug}
                   href={`/category/${cat.slug}`}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="px-2 py-2 rounded-lg bg-white/[0.06] hover:bg-[#2c87c3] text-slate-300 hover:text-white transition-colors truncate text-center border border-white/10 flex flex-col items-center gap-1.5"
+                  className="px-2 py-2 rounded-lg bg-white/[0.08] hover:bg-[#2c87c3] text-slate-300 hover:text-white transition-colors truncate text-center border border-white/10 flex flex-col items-center gap-1.5"
                 >
                   <span className="w-5 h-5 text-slate-400 flex items-center justify-center">
                     <CatIcon slug={cat.slug} className="w-4 h-4" />

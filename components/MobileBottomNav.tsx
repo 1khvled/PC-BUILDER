@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -70,7 +70,7 @@ export default function MobileBottomNav() {
   return (
     <nav
       aria-label="Navigation mobile"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#11111c]/95 backdrop-blur-md border-t border-white/10 safe-area-bottom shadow-[0_-4px_20px_rgba(0,0,0,0.4)] no-print"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#11111c] border-t border-white/10 safe-area-bottom shadow-[0_-4px_20px_rgba(0,0,0,0.4)] no-print"
     >
       <div className="grid grid-cols-5 h-14 items-center px-1">
         {navItems.map((item) => (

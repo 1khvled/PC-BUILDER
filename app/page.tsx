@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { CATEGORIES, bestOffer, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { LIVE_EXTRA } from "@/lib/data/live";
@@ -132,7 +132,7 @@ export default async function Home() {
 
         <div className="relative max-w-7xl mx-auto px-4 py-14 sm:py-20">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.07] border border-white/15 backdrop-blur-sm text-xs font-semibold text-slate-200">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-slate-200">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
@@ -157,7 +157,7 @@ export default async function Home() {
               </Link>
               <Link
                 href="/deals"
-                className="px-6 py-3 rounded-[10px] text-sm font-bold border border-white/20 text-white hover:bg-white/10 transition-colors backdrop-blur-sm"
+                className="px-6 py-3 rounded-[10px] text-sm font-bold border border-white/20 text-white hover:bg-white/10 transition-colors"
               >
                 Voir les bons plans
               </Link>
@@ -169,7 +169,7 @@ export default async function Home() {
             {stats.map((s) => (
               <div
                 key={s.label}
-                className="rounded-xl bg-white/[0.06] border border-white/10 backdrop-blur-sm px-4 py-3"
+                className="rounded-xl bg-white/[0.08] border border-white/10 px-4 py-3"
               >
                 <div className="text-lg sm:text-xl font-extrabold tracking-tight text-white tabular-nums truncate">
                   {s.value}
