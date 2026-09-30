@@ -1,0 +1,57 @@
+feat(admin): real username/password login with session cookies
+
+Replaces the shared-secret-in-the-query-string gate with a normal sign-in form,
+a username AND password, and an expiring HttpOnly session cookie.
+
+Why the old design had to go
+- The key travelled as ?key=..., so it was echoed into the served HTML, the
+  browser history and every platform access log.
+- There was no username, so the key was the entire identity.
+- There was no way to end a session. A leaked key stayed valid forever.
+- There was no rate limiting on the attempt.
+
+What it does now
+- GET  /admin-kh7        -> redirect to the login form when there is no session
+- GET  /admin-kh7/login  -> username + password form
+- POST (server action)   -> verifies, sets the cookie, redirects to the console
+- Sign out button        -> clears the cookie, returns to the login form
+
+lib/admin/auth.ts
+- Credentials come from ADMIN_USERNAME and ADMIN_PASSWORD and are compared in
+  constant time. Both comparisons always run, so a wrong username costs the same
+  as a wrong password and cannot be told apart by timing. The digest is taken
+  first so the comparison is length-independent.
+- Sessions are stateless HMAC-SHA256 tokens carrying an expiry and a random
+  nonce, signed with ADMIN_SESSION_SECRET. That secret falls back to a hash of
+  the password, so rotating the password alone also revokes every session.
+  Cookie is HttpOnly, SameSite=Lax, Secure in production, 8 hour lifetime.
+- isAuthenticated() fails closed when the env vars are absent, so a
+  misconfigured deploy is locked rather than open.
+- Best-effort login throttle: 8 attempts per IP per 15 minutes. In-memory only,
+  so on serverless it raises the cost of brute force rather than removing it;
+  the 160-bit password is the real protection.
+
+No new dependencies. Uses node:crypto only, so there is no supply-chain
+surface added to a project that has none.
+
+Note on the redirect status: the App Router streams the shell and flushes the
+headers before the component's redirect() is reached, so an unauthenticated
+request returns 200 with the shared chrome and a client-side redirect rather
+than a 307. Verified that no console data is present in that response: the
+admin payload is not rendered without a valid session.
+
+fix(ui): repair baked-in mojibake in CategoryCatalogClient
+
+A "View offers" button on the English pages rendered as "View offers 0ae".
+Twelve symbols had been re-encoded into garbage characters and committed as
+literal text: an arrow became three characters, a close cross three, an em dash
+three, four bullets three each, a pin four, an external-link arrow three.
+
+The root cause was an encoding round trip at some point in the file's history.
+The earlier sweep missed it because it only looked for U+251C and U+FFFD, the
+two markers typical of a UTF-8-as-CP437 decode, and this damage is Latin-1
+supplement characters instead. All twelve sites repaired and a precise
+re-scan confirms zero remaining.
+
+Symbols are now the real characters, so the button reads "View offers ->"
+again in both themes.

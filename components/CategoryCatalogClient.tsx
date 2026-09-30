@@ -20,7 +20,7 @@ interface CategoryCatalogClientProps {
   products?: Product[];
   /**
    * UI locale. Passed as a prop by the server page (the route already knows it),
-   * which keeps the FIRST paint fully translated ÔÇö no effect, no flash, no
+   * which keeps the FIRST paint fully translated — no effect, no flash, no
    * hydration mismatch. Defaults to French for the unprefixed routes.
    */
   locale?: Locale;
@@ -290,7 +290,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             className="btn-blue px-4 py-2.5 text-xs sm:text-sm"
           >
             <span>{t("common.openInBuilder")}</span>
-            <span aria-hidden="true">ÔåÆ</span>
+            <span aria-hidden="true">→</span>
           </Link>
         </div>
       </div>
@@ -324,7 +324,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                 className="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs p-2 min-h-[36px] min-w-[36px] inline-flex items-center justify-center rounded-full"
                 aria-label={t("category.clearSearch")}
               >
-                Ô£ò
+                ✕
               </button>
             )}
           </div>
@@ -439,7 +439,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                   <option value="all">{t("category.allWilayas", { count: availableWilayas.length })}</option>
                   {availableWilayas.map((w) => (
                     <option key={w} value={w}>
-                      ­ƒôì {w}
+                      📍 {w}
                     </option>
                   ))}
                 </select>
@@ -634,7 +634,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                         }`}
                       >
                         <span>{isRupturedProduct ? t("common.details") : t("common.viewOffers")}</span>
-                        <span aria-hidden="true">ÔåÆ</span>
+                        <span aria-hidden="true">→</span>
                       </Link>
                     </div>
                   </div>
@@ -755,7 +755,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                               )}
                             </div>
                           ) : (
-                            <span className="text-slate-300 font-normal">ÔÇö</span>
+                            <span className="text-slate-300 font-normal">—</span>
                           )}
                         </td>
 
@@ -785,7 +785,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                                 isRupturedProduct ? "bg-rose-600 hover:bg-rose-700" : "bg-slate-900 hover:bg-[#2c87c3]"
                               }`}
                             >
-                              {isRupturedProduct ? t("common.details") : `${t("common.viewOffers")} ÔåÆ`}
+                              {isRupturedProduct ? t("common.details") : `${t("common.viewOffers")} →`}
                             </Link>
                           </div>
                         </td>
@@ -841,9 +841,9 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                   </div>
                   <div className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1.5 flex-wrap">
                     <span>{e.store}</span>
-                    <span>ÔÇó</span>
+                    <span>•</span>
                     <span>{e.wilaya}</span>
-                    <span>ÔÇó</span>
+                    <span>•</span>
                     <span
                       className={`font-bold ${
                         e.condition === "new" ? "text-emerald-700" : "text-amber-700"
@@ -853,7 +853,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                     </span>
                     {e.postedAt ? (
                       <>
-                        <span>ÔÇó</span>
+                        <span>•</span>
                         <span title={t("category.listedOn", { date: e.postedAt.slice(0, 10) })}>
                           {t("common.snapshotOnShort", { date: e.postedAt.slice(0, 10) })}
                         </span>
@@ -861,7 +861,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                     ) : null}
                     {e.store === "Ouedkniss" ? (
                       <>
-                        <span>ÔÇó</span>
+                        <span>•</span>
                         <span
                           title={e.isStore ? t("category.sellerProTitle") : t("category.sellerPrivateTitle")}
                           className={`font-bold ${e.isStore ? "text-[#2c87c3]" : "text-slate-500"}`}
@@ -876,7 +876,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                   </div>
                 </div>
                 <span className="text-slate-300 group-hover:text-[#2c87c3] group-hover:translate-x-0.5 transition-all text-sm font-bold shrink-0" aria-hidden="true">
-                  Ôåù
+                  ↗
                 </span>
               </a>
             ))}

@@ -1,4 +1,6 @@
 import fs from "fs";
+import { redirect } from "next/navigation";
+import { endSession, isAuthenticated } from "@/lib/admin/auth";
 import path from "path";
 import Link from "next/link";
 import { type Product } from "@/lib/data/products";
@@ -11,31 +13,6 @@ import AdminOffers from "@/components/AdminOffers";
 import Thumb from "@/components/Thumb";
 
 export const metadata = { robots: "noindex", title: "Admin — Ops Console" };
-/**
- * Admin console gate.
- *
- * SECURITY: this used to fall back to a hard-coded literal
- * (`process.env.ADMIN_KEY || "dz-admin-2026"`). ADMIN_KEY was not set in any
- * deployed env file, so the console was reachable by anyone who had seen the
- * repository — the fallback string is in git history and must be treated as
- * burned. It now FAILS CLOSED: with no ADMIN_KEY configured, nobody gets in.
- *
- * Rotating the key: set ADMIN_KEY in the deployment environment (never in a
- * committed file). Any previously used value, including the old fallback, is
- * compromised and must not be reused.
- */
-const KEY = process.env.ADMIN_KEY;
-
-/** Length-independent comparison so the check does not leak the key by timing. */
-function keyMatches(candidate: string | undefined, expected: string): boolean {
-  if (!candidate || candidate.length !== expected.length) return false;
-  let diff = 0;
-  for (let i = 0; i < expected.length; i++) {
-    diff |= candidate.charCodeAt(i) ^ expected.charCodeAt(i);
-  }
-  return diff === 0;
-}
-
 function schemaTables(): string[] {
   try {
     const sql = fs.readFileSync(path.join(process.cwd(), "supabase", "schema.sql"), "utf8");
@@ -63,49 +40,19 @@ function schemaTables(): string[] {
  * and served to anybody who requests /admin-kh7 with no key at all.
  */
 export const dynamic = "force-dynamic";
-export default async function AdminPage({ searchParams }: { searchParams: { key?: string } }) {
-  // Fail closed: an unconfigured ADMIN_KEY disables the console entirely rather
-  // than silently accepting a default.
-  const adminConfigured = typeof KEY === "string" && KEY.length > 0;
-  if (!adminConfigured && process.env.NODE_ENV !== "production") {
-    console.warn(
-      "[admin] ADMIN_KEY is not set — the ops console is locked. Set ADMIN_KEY in the deployment environment.",
-    );
-  }
-  if (!adminConfigured || !keyMatches(searchParams.key, KEY as string)) {
-    return (
-      <main className="min-h-screen bg-slate-950 text-slate-200 flex items-center justify-center p-4">
-        <form className="bg-slate-900 border border-slate-800 rounded-2xl p-8 w-full max-w-sm shadow-2xl space-y-4">
-          <div className="flex items-center gap-2.5 mb-2">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold">
-              🔒
-            </div>
-            <div>
-              <h1 className="font-extrabold text-white text-base">DZ-PartPicker Ops</h1>
-              <p className="text-xs text-slate-500">Accès restreint équipe technique</p>
-            </div>
-          </div>
-          <div>
-            <label className="text-xs text-slate-400 font-medium">Clé d&apos;authentification admin</label>
-            <input
-              name="key"
-              type="password"
-              placeholder="Entrez votre clé secrète"
-              className="mt-1.5 w-full bg-slate-950 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-emerald-500"
-            />
-          </div>
-          <button className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm py-2.5 rounded-lg transition-colors shadow-2xs">
-            Déverrouiller la console
-          </button>
-          <div className="text-center">
-            <Link href="/" className="text-xs text-slate-500 hover:text-slate-400">
-              ← Retour au site public
-            </Link>
-          </div>
-        </form>
-      </main>
-    );
-  }
+
+/** Revokes the session cookie. The old shared-key design had no equivalent:
+    a leaked key stayed valid forever, with no way to end a session early. */
+async function signOut() {
+  "use server";
+  await endSession();
+  redirect("/admin-kh7/login");
+}
+export default async function AdminPage() {
+  // Session-based guard. Unauthenticated visitors are redirected to the login
+  // form, so there is exactly one login UI rather than two that can drift.
+  // isAuthenticated() fails closed when ADMIN_USERNAME / ADMIN_PASSWORD are unset.
+  if (!(await isAuthenticated())) redirect("/admin-kh7/login");
 
   const [PRODUCTS, OFFERS, scrapedAt] = await Promise.all([
     getProducts(),
@@ -177,6 +124,15 @@ export default async function AdminPage({ searchParams }: { searchParams: { key?
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-200 p-4 sm:p-6 font-sans">
+      {/* Session-based auth: a real sign-out, which the old shared key could not offer. */}
+      <form action={signOut} className="fixed top-3 right-3 z-50">
+        <button
+          type="submit"
+          className="rounded-lg border border-slate-700 bg-slate-900/90 px-3 py-1.5 text-xs font-semibold text-slate-300 hover:border-red-500/60 hover:text-red-300 transition-colors"
+        >
+          Sign out
+        </button>
+      </form>
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header Bar */}
         <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
