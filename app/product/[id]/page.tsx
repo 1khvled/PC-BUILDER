@@ -247,7 +247,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
                 {history.length} relevé{history.length > 1 ? "s" : ""} • toutes boutiques
               </span>
             </div>
-            <PriceChart points={history} />
+            <PriceChart points={history} currentOffers={offers} />
           </section>
 
           {/* Facebook Marketplace Paste Box */}

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { isRuptured, productImage, type Offer, type Product } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
+import BytekAd from "@/components/BytekAd";
 
 interface Deal {
   id: string;
@@ -54,7 +55,10 @@ export default async function DealsPage() {
       <p className="text-xs text-slate-400">
         Offres neuves ≥8% sous la médiane de leur produit (économie ≥2 000 DA) • relevé du {scrapedAt.slice(0, 10)}
       </p>
-      <div className="grid md:grid-cols-2 gap-3 mt-4">
+      <div className="mt-4 mb-4">
+        <BytekAd variant="compact" />
+      </div>
+      <div className="grid md:grid-cols-2 gap-3 mt-2">
         {list.map((d, i) => (
           <Link key={d.id} href={`/product/${d.id}`} className="bg-white rounded p-4 shadow-sm border flex gap-3 items-center">
             <Thumb src={productImage(productsMap.get(d.id)!)} alt={d.model} size={56} />

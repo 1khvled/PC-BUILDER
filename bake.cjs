@@ -314,8 +314,8 @@ const RULES = [
   { id: "gpu-rtx4060-8gb", cat: "gpu", all: ["4060"], none: ["4060ti", "laptop", "notebook", "portable", "ti", "super"] },
   { id: "gpu-rtx4070-12gb", cat: "gpu", all: ["4070"], none: ["4070ti", "laptop", "notebook", "portable", "ti", "super"] },
   { id: "gpu-rtx5070-12gb", cat: "gpu", all: ["5070"], none: ["laptop", "notebook", "portable", "ti"] },
-  { id: "gpu-rx580-4gb", cat: "gpu", all: ["rx 580"], any: ["4gb", "04g", "4g"], none: ["8gb", "laptop", "notebook", "portable"] },
-  { id: "gpu-rx580-8gb", cat: "gpu", all: ["rx 580"] },
+  { id: "gpu-rx580-4gb", cat: "gpu", any: ["rx 580", "rx580", "580 4gb", "580 4g"], none: ["8gb", "8g", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx580-8gb", cat: "gpu", any: ["rx 580", "rx580", "580 8gb", "580 8g", "2048sp"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7900xtx-24gb", cat: "gpu", all: ["7900xtx"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7900xt-20gb", cat: "gpu", all: ["7900xt"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7800xt-16gb", cat: "gpu", all: ["7800xt"], none: ["laptop", "notebook", "portable"] },
@@ -718,6 +718,23 @@ const RULES = [
   { id: "mon-49-superwide", cat: "monitor", any: ["49", "32 9", "5120x1440", "dqhd"], none: ["laptop", "tv", "televiseur"] },
 ];
 
+
+function detectQueryCategory(q) {
+  if (!q) return "gpu";
+  const low = q.toLowerCase().trim();
+  if (OK_CAT[low]) return OK_CAT[low];
+  if (/ecran|monit|odyssey|ultragear|zowie|matos/i.test(low)) return "monitor";
+  if (/ryzen|intel|core\s*i[3579]|ultra\s*[579]|cpu\b/i.test(low)) return "cpu";
+  if (/rtx|gtx|radeon|\brx\s*\d|\barc\b|gpu\b|geforce/i.test(low)) return "gpu";
+  if (/b450|b550|b650|a520|a620|b760|h610|z790|z890|b850|x670|x870|carte\s*m[eè]re|motherboard/i.test(low)) return "motherboard";
+  if (/ddr4|ddr5|ram\b|spectrix|vengeance|fury/i.test(low)) return "ram";
+  if (/nvme|ssd\b|sn850|sn770|sn580|980\s*pro|990\s*pro|kc3000|legend|nv2|nv3/i.test(low)) return "ssd";
+  if (/alim|\bpsu\b|\d{3,4}w/i.test(low)) return "psu";
+  if (/boitier|case\b|chassis/i.test(low)) return "case";
+  if (/cooler|watercooling|ventirad|ak400|ak620|ag400|ag620|assassin|spirit/i.test(low)) return "cooler";
+  return "gpu";
+}
+
 const OK_CAT = {
   // CPU
   "ryzen 5 3600": "cpu", "ryzen 5 5600": "cpu", "ryzen 5 5600x": "cpu", "ryzen 5 5600g": "cpu", "ryzen 7 5700x": "cpu",
@@ -846,6 +863,8 @@ const TOOL_VETO = /tron[cç][oe]n|troncen|meuleuse|disqueuse|\bscie\b|scie\s*sau
 const NON_PC_SLUG_VETO = /materiel-electrique|grills-panineuses|electromenager|grille-pain|outillage|bricolage|art-table|cuisine|vaisselle|jardin|auto|moto|vetement|chaussures|bebe|sport|pc-portable|pc-portables|memoires-pc-portables|pieces-detachees-pc-portable|accessoires-pc-portable/i;
 // Laptop RAM markers (strictly reject SODIMM / laptop RAM from desktop catalog)
 const LAPTOP_RAM_MARKERS = /\blap\b|laptop|sodimm|so-dimm|so\s*dimm|portable|portatif|pc-portable|memoires-pc-portables/i;
+// Server RAM markers: reject ECC Registered / RDIMM / server memory from consumer desktop RAM
+const SERVER_RAM_VETO = /\becc\b|\brdimm\b|\blrdimm\b|ecc\s*reg|\bregistered\b|pour\s+serveur|\bserveur\b|\bserver\b|poweredge|proliant|\bxeon\b|hpe\s*smartmemory/i;
 // Strict computer power supply identification
 const PSU_KEYWORDS = /alimentation|allimentation|\balim\b|\bpsu\b|power\s*supply|bloc\s*d\s*alim|boite\s*d\s*alim|alimentations-boitiers|80\s*plus|80plus|80\+|\bmodulaire\b|\bmodular\b|bronze|gold|platinum|titanium|\batx\b|\bsfx\b/i;
 const PSU_BRANDS = /corsair|seasonic|cooler\s*master|deepcool|thermaltake|be\s*quiet|msi|asus|gigabyte|antec|fsp|aerocool|kolink|mars\s*gaming|gamemax|redragon|silverstone|nzxt|enermax|huntkey|cougar|zalman|xigmatek|sama|1stplayer|darkflash|aigo|hybrok|raidmax|segotep|inwin|chieftec|super\s*flower|evga|gamdias/i;
@@ -878,7 +897,15 @@ function isVetoed(category, title, url = "") {
   } else {
     if (LAPTOP_VETO.test(title) || LAPTOP_VETO.test(url)) return true;
   }
-  if (category === "ram" && (LAPTOP_RAM_MARKERS.test(title) || LAPTOP_RAM_MARKERS.test(url))) return true;
+  if (category === "ram") {
+    if (LAPTOP_RAM_MARKERS.test(title) || LAPTOP_RAM_MARKERS.test(url)) return true;
+    if (SERVER_RAM_VETO.test(title) || SERVER_RAM_VETO.test(url)) return true;
+  }
+  if (category === "cpu" && /\bxeon\b|\bepyc\b|\bopteron\b|\bitanium\b|pour\s+serveur/i.test(title)) return true;
+  if (category === "motherboard") {
+    if (MOBOPSU_VETO.test(title)) return true;
+    if (/\bxeon\b|\bepyc\b|\bdual\s*socket\b|\blga\s*3647\b|\blga\s*4189\b|pour\s+serveur|\bserveur\b|\bserver\b|poweredge|proliant/i.test(title)) return true;
+  }
   if (category === "motherboard" && MOBOPSU_VETO.test(title)) return true;
   if (category === "psu" && !isLegitPsu(title, url)) return true;
   return false;
@@ -1391,7 +1418,7 @@ let okiExtra = 0; // tier-3 particuliers: own extras cap, never canonical
 const seenOkUrl = new Set();
 for (const o of report["ouedkniss:all"] || []) {
   const qKey = (o.query || "").toLowerCase().trim();
-  const category = OK_CAT[qKey] || (/ecran|monit|odyssey|ultragear/i.test(qKey) ? "monitor" : "gpu");
+  const category = detectQueryCategory(qKey);
   const title = clean(o.title);
   if (!title || !o.priceDa) continue;
 

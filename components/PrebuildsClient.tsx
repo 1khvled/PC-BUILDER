@@ -16,7 +16,7 @@ export default function PrebuildsClient({ prebuilds, offers }: PrebuildsClientPr
   const [gpuFilter, setGpuFilter] = useState<"all" | "rtx40" | "rtx30" | "radeon" | "igpu">("all");
   const [selectedWilaya, setSelectedWilaya] = useState("all");
   const [dealOnly, setDealOnly] = useState(false);
-  const [sortBy, setSortBy] = useState<"price-asc" | "price-desc" | "savings">("price-asc");
+  const [sortBy, setSortBy] = useState<"savings" | "discount-pct" | "price-asc" | "price-desc" | "gpu-tier" | "cpu-tier">("savings");
 
   // Wilaya list
   const wilayas = useMemo(() => {
@@ -31,12 +31,40 @@ export default function PrebuildsClient({ prebuilds, offers }: PrebuildsClientPr
   const evaluated = useMemo(() => {
     return prebuilds.map((p) => {
       const valuation = evaluatePrebuilt(p, offers);
-      return { ...p, valuation };
+      return { ...p, valuation, discountPct: valuation.savingsPct };
     });
   }, [prebuilds, offers]);
 
   // Filtered & sorted
   const filtered = useMemo(() => {
+    const getGpuScore = (name: string): number => {
+      const n = name.toLowerCase();
+      if (n.includes("4090")) return 100;
+      if (n.includes("4080")) return 95;
+      if (n.includes("4070 ti")) return 90;
+      if (n.includes("4070 super") || n.includes("4070")) return 85;
+      if (n.includes("7900") || n.includes("7800")) return 83;
+      if (n.includes("4060 ti") || n.includes("7700")) return 75;
+      if (n.includes("4060") || n.includes("3070")) return 70;
+      if (n.includes("3060 ti") || n.includes("6700")) return 65;
+      if (n.includes("3060") || n.includes("6600")) return 55;
+      if (n.includes("3050") || n.includes("2060")) return 45;
+      if (n.includes("1660") || n.includes("580") || n.includes("590") || n.includes("5500")) return 35;
+      if (n.includes("vega") || n.includes("uhd") || n.includes("rad") || n.includes("igpu")) return 15;
+      return 30;
+    };
+
+    const getCpuScore = (name: string): number => {
+      const n = name.toLowerCase();
+      if (n.includes("9800x3d") || n.includes("7800x3d") || n.includes("14900") || n.includes("13900")) return 100;
+      if (n.includes("7950") || n.includes("7900") || n.includes("9900") || n.includes("14700") || n.includes("13700")) return 90;
+      if (n.includes("5700x3d") || n.includes("5800x3d") || n.includes("7700") || n.includes("14600") || n.includes("13600")) return 80;
+      if (n.includes("7600") || n.includes("7500f") || n.includes("14400") || n.includes("13400") || n.includes("12600")) return 70;
+      if (n.includes("5600") || n.includes("12400") || n.includes("5500")) return 55;
+      if (n.includes("3600") || n.includes("12100")) return 45;
+      return 30;
+    };
+
     return evaluated
       .filter((item) => {
         // Text search
@@ -80,6 +108,9 @@ export default function PrebuildsClient({ prebuilds, offers }: PrebuildsClientPr
         if (sortBy === "price-asc") return a.priceDa - b.priceDa;
         if (sortBy === "price-desc") return b.priceDa - a.priceDa;
         if (sortBy === "savings") return b.valuation.savings - a.valuation.savings;
+        if (sortBy === "discount-pct") return b.discountPct - a.discountPct;
+        if (sortBy === "gpu-tier") return getGpuScore(b.specs.gpu.name) - getGpuScore(a.specs.gpu.name);
+        if (sortBy === "cpu-tier") return getCpuScore(b.specs.cpu.name) - getCpuScore(a.specs.cpu.name);
         return 0;
       });
   }, [evaluated, search, cpuBrand, gpuFilter, selectedWilaya, dealOnly, sortBy]);
@@ -211,9 +242,12 @@ export default function PrebuildsClient({ prebuilds, offers }: PrebuildsClientPr
               onChange={(e) => setSortBy(e.target.value as never)}
               className="px-2.5 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 bg-white"
             >
-              <option value="price-asc">Prix croissant</option>
-              <option value="price-desc">Prix décroissant</option>
-              <option value="savings">Meilleure économie</option>
+              <option value="savings">🔥 Meilleure économie (DA)</option>
+              <option value="discount-pct">📊 Plus gros rabais (%)</option>
+              <option value="price-asc">💰 Prix croissant</option>
+              <option value="price-desc">💎 Prix décroissant</option>
+              <option value="gpu-tier">🎮 Carte graphique la plus puissante</option>
+              <option value="cpu-tier">⚡ Processeur le plus puissant</option>
             </select>
           </div>
         </div>

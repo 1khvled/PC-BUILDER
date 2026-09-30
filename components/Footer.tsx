@@ -170,10 +170,22 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar — Legal line untouched as required by prompt */}
+        {/* Bottom Bar */}
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
-          <div>
-            © 2026 DZ PartPicker. Tous droits réservés. Clone fidèle inspiré du format PCPartPicker.
+          <div className="flex flex-wrap items-center gap-2">
+            <span>© 2026 DZ PartPicker. Tous droits réservés. Clone fidèle inspiré du format PCPartPicker.</span>
+            <span className="text-slate-600 hidden sm:inline">•</span>
+            <a
+              href="https://bytekstore.shop/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-indigo-400 hover:text-indigo-300 font-bold transition-colors"
+            >
+              <span>Powered by bytekstore.shop</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/20 border border-indigo-500/30 text-indigo-300">
+                Partenaire Esport DZ
+              </span>
+            </a>
           </div>
           <div className="flex items-center gap-2">
             <span>Fait pour la communauté gaming d'Algérie</span>

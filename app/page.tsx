@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { CATEGORIES, bestOffer, productImage } from "@/lib/data/products";
+import { CATEGORIES, bestOffer, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { LIVE_EXTRA } from "@/lib/data/live";
 import { GUIDES } from "@/lib/data/guides";
 import Thumb from "@/components/Thumb";
+import BytekAd from "@/components/BytekAd";
 
 export const revalidate = 60;
 
@@ -101,9 +102,14 @@ export default async function Home() {
     getScrapedAt(),
   ]);
   const liveCount = offers.length + LIVE_EXTRA.length;
-  const trending = products.map((p) => ({ p, best: bestOffer(p.id, offers) }))
-    .filter((x) => x.best)
-    .sort((a, b) => (a.best as { priceDa: number }).priceDa - (b.best as { priceDa: number }).priceDa)
+  const trending = products
+    .map((p) => {
+      const prodOffers = offers.filter((o) => o.productId === p.id && !isRuptured(o) && o.stock !== "Rupture" && o.stock !== "Sur commande");
+      const best = prodOffers.length > 0 ? bestOffer(p.id, prodOffers) : undefined;
+      return { p, best };
+    })
+    .filter((x): x is { p: Product; best: Offer } => Boolean(x.best && x.best.priceDa >= 3000))
+    .sort((a, b) => a.best.priceDa - b.best.priceDa)
     .slice(0, 8);
 
   const popularGuides = GUIDES.slice(0, 2);
@@ -178,6 +184,9 @@ export default async function Home() {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 py-10 space-y-12">
+        {/* Bytek Store Official Partner Ad */}
+        <BytekAd variant="banner" />
+
         {/* Meilleurs prix du moment — dense price table */}
         <section className="panel">
           <div className="panel-hd">
@@ -206,10 +215,15 @@ export default async function Home() {
                     <Link href={`/product/${p.id}`} className="pcpp-link font-bold text-sm">
                       {p.brand} {p.model}
                     </Link>
-                    <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5">
+                    <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5 flex-wrap">
                       <span>{best?.store}</span>
                       <span className="text-slate-300">•</span>
                       <span>{best?.wilaya}</span>
+                      <span className="text-slate-300">•</span>
+                      <span className="text-emerald-600 font-semibold inline-flex items-center gap-1 text-[11px]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        {best?.stock || "En stock"}
+                      </span>
                     </div>
                   </td>
                   <td className="px-4 py-2.5 text-right whitespace-nowrap">
