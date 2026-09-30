@@ -11,7 +11,30 @@ import AdminOffers from "@/components/AdminOffers";
 import Thumb from "@/components/Thumb";
 
 export const metadata = { robots: "noindex", title: "Admin — Ops Console" };
-const KEY = process.env.ADMIN_KEY || "dz-admin-2026";
+/**
+ * Admin console gate.
+ *
+ * SECURITY: this used to fall back to a hard-coded literal
+ * (`process.env.ADMIN_KEY || "dz-admin-2026"`). ADMIN_KEY was not set in any
+ * deployed env file, so the console was reachable by anyone who had seen the
+ * repository — the fallback string is in git history and must be treated as
+ * burned. It now FAILS CLOSED: with no ADMIN_KEY configured, nobody gets in.
+ *
+ * Rotating the key: set ADMIN_KEY in the deployment environment (never in a
+ * committed file). Any previously used value, including the old fallback, is
+ * compromised and must not be reused.
+ */
+const KEY = process.env.ADMIN_KEY;
+
+/** Length-independent comparison so the check does not leak the key by timing. */
+function keyMatches(candidate: string | undefined, expected: string): boolean {
+  if (!candidate || candidate.length !== expected.length) return false;
+  let diff = 0;
+  for (let i = 0; i < expected.length; i++) {
+    diff |= candidate.charCodeAt(i) ^ expected.charCodeAt(i);
+  }
+  return diff === 0;
+}
 
 function schemaTables(): string[] {
   try {
@@ -23,7 +46,15 @@ function schemaTables(): string[] {
 }
 
 export default async function AdminPage({ searchParams }: { searchParams: { key?: string } }) {
-  if (searchParams.key !== KEY) {
+  // Fail closed: an unconfigured ADMIN_KEY disables the console entirely rather
+  // than silently accepting a default.
+  const adminConfigured = typeof KEY === "string" && KEY.length > 0;
+  if (!adminConfigured && process.env.NODE_ENV !== "production") {
+    console.warn(
+      "[admin] ADMIN_KEY is not set — the ops console is locked. Set ADMIN_KEY in the deployment environment.",
+    );
+  }
+  if (!adminConfigured || !keyMatches(searchParams.key, KEY as string)) {
     return (
       <main className="min-h-screen bg-slate-950 text-slate-200 flex items-center justify-center p-4">
         <form className="bg-slate-900 border border-slate-800 rounded-2xl p-8 w-full max-w-sm shadow-2xl space-y-4">

@@ -364,6 +364,7 @@
  "gpu-rx7900xtx-24gb": "https://gigastore-dz.com/wp-content/uploads/2025/03/7900xfx.png",
  "gpu-rx7800xt-16gb": "https://gigastore-dz.com/wp-content/uploads/2025/01/LD0006093434-1.jpg",
  "psu-deepcool-pk550d": "https://gigastore-dz.com/wp-content/uploads/2025/07/r-pl550d-fc0b-in-v2-1-800x800-1.jpg",
+ "cpu-r5-5500": "https://informatics-dz.com/wp-content/uploads/2025/01/AMD-Ryzen-5-5500.png",
  "mobo-b150m": "https://informatics-dz.com/wp-content/uploads/2022/08/LD0003231553_2.jpeg",
  "hdd-1tb": "https://informatics-dz.com/wp-content/uploads/2026/03/IMG_1784-1.jpg",
  "hdd-2tb": "https://informatics-dz.com/wp-content/uploads/2024/06/Toshiba-Surveillance-S300-HDD-2Tb.webp",
@@ -380,7 +381,11 @@
  "mon-samsung-g3": "https://informatics-dz.com/wp-content/uploads/2024/05/0-02-05-a7ae66949e23ac86959d2a2ad90f4b58ff9e29b785c2bc7d7fc5c268075e41e4_875f38d2fb605b07.jpg",
  "ssd-sata-360gb": "https://khabirtech.com/wp-content/uploads/2026/01/GOLDENFIR-SSD-SATA-0.webp",
  "gpu-rx480-8gb": "https://khabirtech.com/wp-content/uploads/2026/07/AMD-RX-480-SAPHIRE-NITRO-PLUS-0.webp",
+ "gpu-gtx1650s-4gb": "https://khabirtech.com/wp-content/uploads/2024/12/GTX-1650-SUPER-GIGABYTE-WF-4GB-0.webp",
  "gpu-rx580-4gb": "https://cdn8.ouedkniss.com/400/medias/announcements/images/2kX10W/wBHbkXb9LHVsdHbUWCdfKVK9lDcMYOj7ysC18dPU.jpg",
+ "gpu-rx590-8gb": "https://cdn7.ouedkniss.com/400/medias/announcements/images/pYP75p/rQwLLPcsuywVjBZ9Ab2W0UvRIfEObKrOmzEqgukk.jpg",
+ "gpu-rx570-8gb": "https://cdn9.ouedkniss.com/400/medias/announcements/images/pYP75p/4N7r3NNozVZXtnaiowjmoycwc6tU0XIUQIcnuwau.jpg",
  "mon-xiaomi-curve30": "https://cdn9.ouedkniss.com/medias/announcements/images/p8olV/Iu2f8Bghyug6jwq44LRqsF8fvY0np9EO50njxQUI.jpg",
+ "gpu-rx570-4gb": "https://cdn9.ouedkniss.com/medias/announcements/images/Z4Ez0g/QEjgKKPsxYC8S8BuXreRWzYn2NiWg9BkaLoygTD9.jpg",
  "psu-cougar-vte600": "https://cdn7.ouedkniss.com/medias/announcements/images/XD1m3l/rYfiFEj3lN0HT4OST4gSSbTqVxMyULWiCT0A8pOU.jpg"
 }

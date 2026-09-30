@@ -1,14 +1,12 @@
 const fs = require('fs');
 
-const GRAPHQL_ENDPOINT = "https://api.ouedkniss.com/graphql";
-const BROWSER_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36";
-
+const GRAPHQL_ENDPOINT = 'https://api.ouedkniss.com/graphql';
 const HEADERS = {
-  "Content-Type": "application/json",
-  "User-Agent": BROWSER_UA,
-  "Origin": "https://www.ouedkniss.com",
-  "Referer": "https://www.ouedkniss.com/",
-  "Accept-Language": "fr-DZ,fr;q=0.9",
+  'Content-Type': 'application/json',
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36',
+  'Origin': 'https://www.ouedkniss.com',
+  'Referer': 'https://www.ouedkniss.com/',
+  'Accept-Language': 'fr-DZ,fr;q=0.9',
 };
 
 const QUERY = `query SearchQuery($q: String, $filter: SearchFilterInput) {
@@ -17,6 +15,8 @@ const QUERY = `query SearchQuery($q: String, $filter: SearchFilterInput) {
       paginatorInfo {
         total
         count
+        currentPage
+        lastPage
         hasMorePages
       }
       data {
@@ -52,77 +52,26 @@ const QUERY = `query SearchQuery($q: String, $filter: SearchFilterInput) {
   }
 }`;
 
-const MARKET_QUERIES = [
-  // GPU — Especially RX 580, RX 5500 XT, and popular budget/mid-range & high-end GPUs in Algeria
-  "rx 580", "rx 580 8gb", "rx 580 4gb", "rx 580 xfx", "rx 580 sapphire", "rx 580 nitro",
-  "rx 5500 xt", "rx 5500 xt 8gb", "rx 5500 xt 4gb", "rx 5500", "5500 xt", "5500 xt 8gb",
-  "rx 590", "rx 590 8gb", "rx 570", "rx 570 8gb", "rx 570 4gb",
-  "gtx 1660 super", "gtx 1660 ti", "gtx 1650 super", "1650 super", "gtx 1650s", "gtx 1650", "gtx 1060",
-  "rx 5600 xt", "rx 5700 xt", "rx 5700",
-  "rtx 2060", "rtx 2060 super", "rtx 2070", "rtx 2080",
-  "rtx 3050", "rtx 3060", "rtx 3060 ti", "rtx 3070", "rtx 3070 ti", "rtx 3080", "rtx 3090",
-  "rtx 4060", "rtx 4060 ti", "rtx 4070", "rtx 4070 super", "rtx 4070 ti", "rtx 4080", "rtx 4090",
-  "rx 6600", "rx 6600 xt", "rx 6650 xt", "rx 6700 xt", "rx 6800", "rx 6800 xt",
-  "rx 7600", "rx 7700 xt", "rx 7800 xt", "rx 7900 xt", "rx 7900 xtx", "arc b580",
-  
-  // CPU
-  "ryzen 5 3600", "ryzen 5 5500", "ryzen 5 5600", "ryzen 5 5600x", "ryzen 5 5600g", "ryzen 7 5700x", "ryzen 7 5700x3d", "ryzen 7 5800x3d",
-  "ryzen 5 7500f", "ryzen 5 7600", "ryzen 7 7700", "ryzen 7 7800x3d", "ryzen 7 9800x3d",
-  "i3 12100", "i3 12100f", "i5 12400", "i5 12400f", "i5 12600k", "i5 13400", "i5 13400f", "i5 13600k", "i5 14400", "i5 14400f", "i5 14600k",
-  "i7 12700", "i7 13700", "i7 14700", "i7 14700k", "i9 13900k", "i9 14900k",
-  
-  // Motherboards
-  "b450", "b550", "a520", "b650", "b650m", "a620", "h610", "b660", "b760", "b760m", "z790",
-  
-  // RAM
-  "16gb ddr4", "32gb ddr4", "8gb ddr4", "ddr4 3200", "ddr4 3600",
-  "ddr5 16gb", "ddr5 32gb", "ddr5 6000", "32gb ddr5", "16gb ddr5",
-  "corsair ddr4", "xpg ddr4", "fury ddr4", "lexar ddr4",
-  
-  // SSD
-  "1tb nvme", "512gb nvme", "2tb nvme", "256gb nvme", "ssd sata",
-  "sn580", "sn770", "sn850x", "980 pro", "990 pro", "kc3000", "legend 710", "nv3 1tb",
-  // PSU
-  "alimentation 550w", "alimentation 600w", "alimentation 650w", "alimentation 750w", "alimentation 850w", "alimentation 1000w",
-  "deepcool pk", "deepcool pk550d", "deepcool pk650d", "deepcool pk750d",
-  "deepcool pn", "deepcool pn750m", "deepcool pn850m", "deepcool pn1200m",
-  "cooler master mwe", "mwe 650", "mwe 750",
-  "msi mag a650bn", "msi mag a750bn", "msi mag a850gl",
-  "seasonic focus", "seasonic 650w", "seasonic 750w",
-  "antec atom", "antec atom 550", "antec atom 650",
-  "mars gaming mpb", "mars gaming 650w", "mars gaming 750w",
-  "cougar vte", "cougar xtc", "1stplayer ngdp", "redragon rgps",
-  
-  // Monitors — Algeria popular models & brands
-  "ecran gamer", "ecran 144hz", "ecran 165hz", "ecran 180hz", "ecran 240hz",
-  "ecran 24", "ecran 27", "ecran 32", "ecran 4k", "ecran 2k", "ecran oled",
-  "ecran matos", "matos katana", "katana 24", "katana 27", "matos msg", "msg 24", "msg 27",
-  "ecran aoc", "aoc 24g4", "aoc 27g4", "aoc 24g2",
-  "samsung odyssey", "odyssey g3", "odyssey g5",
-  "lg ultragear", "ultragear 24", "ultragear 27",
-  "asus vg249", "asus vg279", "asus tuf ecran",
-  "zowie xl2411", "benq zowie", "dahua lm24", "dahua lm27",
-  "xiaomi g24i", "xiaomi g27i", "redmi g24", "koorui 24e4",
-  "viewsonic omni", "viewsonic vx24", "titan army", "gamemax ecran",
-  
-  // Cases
-  "boitier gamer", "boitier aquarium", "boitier atx",
-  
-  // Coolers
-  "ak400", "ak620", "ag400", "ag620", "peerless assassin", "phantom spirit", "watercooling 240", "watercooling 360"
+const TARGET_QUERIES = [
+  // Budget AMD GPUs
+  "rx 590", "rx 590 8gb", "rx 590 sapphire",
+  "rx 570", "rx 570 8gb", "rx 570 4gb", "rx 570 sapphire",
+  "rx 5500 xt", "rx 5500 xt 8gb", "rx 5500 xt 4gb", "rx 5500", "5500 xt", "5500 xt 8gb", "carte graphique rx 5500",
+  "rx 5600 xt", "rx 5700 xt",
+  // Budget Nvidia GPUs
+  "gtx 1650 super", "1650 super", "gtx 1650s", "gtx 1650", "gtx 1650 4gb",
+  // Popular Budget CPU
+  "ryzen 5 5500", "r5 5500", "amd ryzen 5 5500"
 ];
 
 function sleep(ms) {
-  return new Promise(r => setTimeout(r, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function scrapeOuedknissQuery(q, maxPages = 2) {
+async function scrapeOuedknissQuery(q, maxPages = 3) {
   const offers = [];
-  const seenIds = new Set();
 
   for (let page = 1; page <= maxPages; page++) {
-    if (page > 1) await sleep(600);
-
     try {
       const res = await fetch(GRAPHQL_ENDPOINT, {
         method: "POST",
@@ -131,30 +80,22 @@ async function scrapeOuedknissQuery(q, maxPages = 2) {
           query: QUERY,
           variables: {
             q,
-            filter: {
-              page,
-              count: 48,
-            }
-          }
-        })
+            filter: { page, count: 48 },
+          },
+        }),
       });
 
       if (!res.ok) break;
       const json = await res.json();
       const items = json?.data?.search?.announcements?.data || [];
-      if (items.length === 0) break;
+      if (!items.length) break;
 
       for (const item of items) {
-        if (!item || !item.id || seenIds.has(item.id)) continue;
-        seenIds.add(item.id);
-
+        if (!item || !item.id) continue;
         const isStore = Boolean(item.isFromStore || item.store);
-        if (!isStore) continue; // Verified Store only
-
         const st = String(item.status || "").toUpperCase();
         if (st && st !== "PUBLISHED" && st !== "ACTIVE" && st !== "EDITED") continue;
 
-        // Freshness: reject listings older than 45 days
         const postDate = item.refreshedAt || item.createdAt;
         if (postDate) {
           const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
@@ -189,10 +130,11 @@ async function scrapeOuedknissQuery(q, maxPages = 2) {
           wilaya,
           seller,
           postedAt: item.refreshedAt || item.createdAt || "",
-          isFromStore: true,
+          isFromStore: isStore,
           storeSlug: item.store?.slug || undefined,
           storeId: item.store?.id || undefined,
-          query: q
+          query: q,
+          description: item.description || ""
         });
       }
 
@@ -209,7 +151,7 @@ async function scrapeOuedknissQuery(q, maxPages = 2) {
 
 async function main() {
   console.log("==========================================================");
-  console.log("DZ-PartPicker: Full Algerian Market Scraper & RX 580 Sweep");
+  console.log("DZ-PartPicker: Targeted Gaming & Low-Budget Market Sweep");
   console.log("==========================================================");
 
   let full = { done: {}, report: {} };
@@ -230,13 +172,15 @@ async function main() {
   }
 
   let totalNew = 0;
+  let totalUpdated = 0;
 
-  for (let i = 0; i < MARKET_QUERIES.length; i++) {
-    const q = MARKET_QUERIES[i];
-    process.stdout.write(`[${i + 1}/${MARKET_QUERIES.length}] Query "${q}"... `);
+  for (let i = 0; i < TARGET_QUERIES.length; i++) {
+    const q = TARGET_QUERIES[i];
+    process.stdout.write(`[${i + 1}/${TARGET_QUERIES.length}] Query "${q}"... `);
 
     const offers = await scrapeOuedknissQuery(q, 3);
     let added = 0;
+    let updated = 0;
 
     for (const o of offers) {
       if (!existingUrlMap.has(o.url)) {
@@ -245,29 +189,46 @@ async function main() {
         added++;
         totalNew++;
       } else {
-        // Update price & date & query if refreshed
         const old = existingUrlMap.get(o.url);
+        let changed = false;
         if (o.priceDa && o.priceDa !== old.priceDa) {
           old.priceDa = o.priceDa;
+          changed = true;
         }
         if (o.postedAt && o.postedAt > (old.postedAt || "")) {
           old.postedAt = o.postedAt;
+          changed = true;
         }
-        if (o.query) {
+        if (o.query && o.query !== old.query) {
           old.query = o.query;
+          changed = true;
         }
-        if (o.title) old.title = o.title;
-        if (o.seller && (!old.seller || old.seller === "Ouedkniss")) old.seller = o.seller;
-        if (typeof o.isFromStore === "boolean") old.isFromStore = o.isFromStore;
+        if (o.title && o.title !== old.title) {
+          old.title = o.title;
+          changed = true;
+        }
+        if (o.seller && (!old.seller || old.seller === "Ouedkniss")) {
+          old.seller = o.seller;
+          changed = true;
+        }
+        if (typeof o.isFromStore === "boolean" && o.isFromStore !== old.isFromStore) {
+          old.isFromStore = o.isFromStore;
+          changed = true;
+        }
+        if (changed) {
+          updated++;
+          totalUpdated++;
+        }
       }
     }
 
-    console.log(`got ${offers.length} (+${added} new)`);
+    console.log(`got ${offers.length} (+${added} new, ~${updated} refreshed)`);
     await sleep(400);
   }
 
   console.log("==========================================================");
   console.log(`Sweep Complete! Total NEW unique offers added: ${totalNew}`);
+  console.log(`Total listings refreshed with new timestamps/queries: ${totalUpdated}`);
   console.log(`Total listings in full.json ouedkniss:all: ${existingOffers.length}`);
   console.log("==========================================================");
 

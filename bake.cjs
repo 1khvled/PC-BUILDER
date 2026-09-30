@@ -117,6 +117,7 @@ const RULES = [
   { id: "cpu-i3-10100f", cat: "cpu", all: ["10100"], none: ["laptop", "notebook"] },
   { id: "cpu-r3-3100", cat: "cpu", all: ["3100"], none: ["laptop", "notebook"] },
   { id: "cpu-r3-4300g", cat: "cpu", all: ["4300g"], none: ["laptop", "notebook"] },
+  { id: "cpu-r5-5500", cat: "cpu", all: ["5500"], any: ["ryzen", "r5", "amd", "cpu", "processor", "core"], none: ["5500gt", "5500x3d", "5500u", "5500m", "rx", "xt", "laptop", "notebook"] },
   { id: "cpu-r5-5500gt", cat: "cpu", all: ["5500gt"], none: ["laptop", "notebook"] },
   { id: "cpu-r3-2200g", cat: "cpu", all: ["2200g"], none: ["laptop", "notebook"] },
   { id: "cpu-u7-270k", cat: "cpu", all: ["270k"], none: ["laptop", "notebook"] },
@@ -224,7 +225,7 @@ const RULES = [
   { id: "mobo-b650e", cat: "motherboard", all: ["b650e"], none: ["laptop", "notebook"] },
   { id: "mobo-b460m", cat: "motherboard", all: ["b460"], none: ["laptop", "notebook"] },
   { id: "mobo-z690", cat: "motherboard", all: ["z690"], none: ["laptop", "notebook"] },
-  { id: "mobo-x570", cat: "motherboard", all: ["x570"], none: ["laptop", "notebook"] },
+  { id: "mobo-x570", cat: "motherboard", all: ["x570"], none: ["rx", "radeon", "gpu", "laptop", "notebook"] },
   { id: "mobo-z490", cat: "motherboard", all: ["z490"], none: ["laptop", "notebook"] },
   { id: "mobo-h510m", cat: "motherboard", all: ["h510"], none: ["laptop", "notebook"] },
   { id: "mobo-h810m", cat: "motherboard", all: ["h810"], none: ["laptop", "notebook"] },
@@ -317,6 +318,13 @@ const RULES = [
   { id: "gpu-rtx4060-8gb", cat: "gpu", all: ["4060"], none: ["4060ti", "laptop", "notebook", "portable", "ti", "super"] },
   { id: "gpu-rtx4070-12gb", cat: "gpu", all: ["4070"], none: ["4070ti", "laptop", "notebook", "portable", "ti", "super"] },
   { id: "gpu-rtx5070-12gb", cat: "gpu", all: ["5070"], none: ["laptop", "notebook", "portable", "ti"] },
+    { id: "gpu-rx5500xt-4gb", cat: "gpu", all: ["5500xt"], any: ["4gb", "4g", "4go"], none: ["8gb", "8g", "8go", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx5500xt-8gb", cat: "gpu", all: ["5500xt"], none: ["4gb", "4g", "4go", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx5500-4gb", cat: "gpu", all: ["5500"], none: ["5500xt", "ryzen", "r5", "cpu", "5500u", "5500m", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx590-8gb", cat: "gpu", all: ["590"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-rx570-4gb", cat: "gpu", all: ["570"], any: ["4gb", "4g", "4go"], none: ["8gb", "8g", "8go", "5700", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx570-8gb", cat: "gpu", all: ["570"], none: ["4gb", "4g", "4go", "5700", "laptop", "notebook", "portable"] },
+  { id: "gpu-gtx1650s-4gb", cat: "gpu", any: ["1650 super", "1650super", "1650s"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx580-4gb", cat: "gpu", all: ["580"], any: ["4gb", "4g", "4go"], none: ["8gb", "8g", "8go", "laptop", "notebook", "portable"] },
   { id: "gpu-rx580-8gb", cat: "gpu", any: ["rx 580", "rx580", "580 8gb", "580 8g", "580 8go", "2048sp"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7900xtx-24gb", cat: "gpu", all: ["7900xtx"], none: ["laptop", "notebook", "portable"] },
@@ -360,7 +368,7 @@ const RULES = [
   { id: "gpu-rx480-8gb", cat: "gpu", all: ["480"], none: ["pro", "laptop", "notebook", "portable"] },
   { id: "gpu-rtx3060-12gb", cat: "gpu", all: ["3060"], none: ["8gb", "08g", "8g", "ti", "laptop", "notebook", "portable"] },
   { id: "gpu-gtx1660ti-6gb", cat: "gpu", all: ["1660ti"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-gtx1650-4gb", cat: "gpu", all: ["1650"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-gtx1650-4gb", cat: "gpu", all: ["1650"], none: ["super", "ti", "1650s", "laptop", "notebook", "portable"] },
   { id: "gpu-gtx1050ti-4gb", cat: "gpu", all: ["1050ti"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-gtx1070-8gb", cat: "gpu", all: ["1070"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rtx2070s-8gb", cat: "gpu", all: ["2070super"], none: ["laptop", "notebook", "portable"] },
@@ -695,7 +703,7 @@ function detectTitleCategory(title) {
   if (/\b(ddr[45]|ram|m[eé]moire|spectrix|vengeance|fury\s*beast|t-force|trident)\b/i.test(t)) return "ram";
   if (/\b(ssd|nvme|m2|disque\s*dur|hdd|sn850|sn770|sn580|980\s*pro|990\s*pro|kc3000|legend|nv2|nv3)\b/i.test(t)) return "ssd";
   if (/\b(ryzen|intel\s*core|cpu|processeur|threadripper)\b|\bi[3579]-?\d{4,5}\b|\bultra\s*[579]\b/i.test(t)) return "cpu";
-  if (/\b(rtx|gtx|radeon|geforce|gpu|carte\s*graphique)\b|\brx\s*\d{3,4}\b|\barc\s*b?\d{3}\b/i.test(t)) return "gpu";
+  if (/\b(rtx|gtx|radeon|geforce|gpu|carte\s*graphique)\b|\brx\s*\d{3,4}\b|\b\d{4}\s*xt\b|\barc\s*b?\d{3}\b/i.test(t)) return "gpu";
   return null;
 }
 
@@ -727,7 +735,9 @@ const OK_CAT = {
   // GPU
   "rtx 3050": "gpu", "rtx 3060": "gpu", "rtx 3060 ti": "gpu", "rtx 3070": "gpu", "rtx 3080": "gpu",
   "rtx 4060": "gpu", "rtx 4060 ti": "gpu", "rtx 4070": "gpu", "rtx 4070 super": "gpu", "rtx 4070 ti": "gpu", "rtx 4080": "gpu", "rtx 4090": "gpu",
-  "rtx 5060": "gpu", "rtx 5060 ti": "gpu", "rtx 5070": "gpu", "gtx 1660 super": "gpu",
+  "rtx 5060": "gpu", "rtx 5060 ti": "gpu", "rtx 5070": "gpu", "gtx 1660 super": "gpu", "gtx 1650 super": "gpu", "1650 super": "gpu", "gtx 1650s": "gpu", "gtx 1650": "gpu",
+  "rx 5500": "gpu", "rx 5500 xt": "gpu", "rx 5500 xt 8gb": "gpu", "rx 5500 xt 4gb": "gpu", "5500 xt": "gpu", "5500 xt 8gb": "gpu",
+  "rx 590": "gpu", "rx 590 8gb": "gpu", "rx 570": "gpu", "rx 570 8gb": "gpu", "rx 570 4gb": "gpu", "rx 5600 xt": "gpu", "rx 5700 xt": "gpu", "rx 5700": "gpu", "ryzen 5 5500": "cpu",
   "rx 580": "gpu", "rx 6600": "gpu", "rx 6650 xt": "gpu", "rx 6700 xt": "gpu", "rx 6800": "gpu",
   "rx 7600": "gpu", "rx 7700 xt": "gpu", "rx 7800 xt": "gpu", "rx 7900 xt": "gpu", "rx 7900 xtx": "gpu", "rx 9070": "gpu", "rx 9060": "gpu",
   // Motherboard
@@ -792,6 +802,11 @@ function isQueryRelevant(query, title) {
   const qNorm = norm(query);
   const tNorm = norm(title);
   if (!qNorm || !tNorm) return false;
+
+  // RX 5500 query relevance guard: do not match Ryzen 5 5500 PCs
+  if (/^rx\s*5500|^5500\s*xt/i.test(qNorm)) {
+    if (/\bryzen\s*5?\s*5500\b/i.test(tNorm) && !/\brx\s*5500|5500\s*xt/i.test(tNorm)) return false;
+  }
 
   const isMon = /ecran|monit|odyssey|ultragear|zowie|matos|\d{2,3}hz/i.test(qNorm);
   if (isMon) {
@@ -1343,7 +1358,7 @@ function isBundle(title, desc) {
   // Port lists are not config lists ("1HDMI/1DVI/1VGA"): slashes touching
   // connectivity tokens don't count as separators.
   const slashes = (noCaps.match(/\//g) || []).length;
-  const portSlashes = (noCaps.match(/(hdmi|dvi|vga|display\s?port|usb|hdcp)\s*\/|\/\s*(hdmi|dvi|vga|display\s?port|usb|hdcp)/gi) || []).length;
+  const portSlashes = (noCaps.match(/(hdmi|dvi|vga|display\s?port|usb|hdcp|gpu|cpu|ram|ssd)\s*\/|\/\s*(hdmi|dvi|vga|display\s?port|usb|hdcp|gpu|cpu|ram|ssd)/gi) || []).length;
   if (slashes - portSlashes >= 2) return true;
   if (/\S\+|\+\S/.test(title)) return true;
   return false;
@@ -1420,7 +1435,7 @@ for (const o of report["ouedkniss:all"] || []) {
   }
 
   // Query-title relevance: reject if title has nothing to do with the search query
-  if (o.query && !isQueryRelevant(o.query, title)) continue;
+  // query relevance evaluated for extras below
 
   const realStore = (o.store && o.store !== "Ouedkniss" ? o.store : (o.seller || "Ouedkniss")).trim();
   const realWilaya = o.wilaya || WILAYA[realStore] || "Alger";
@@ -1428,7 +1443,7 @@ for (const o of report["ouedkniss:all"] || []) {
   // Tier 3 (particulier, isFromStore === false): visible in extras only,
   // never a price reference. Skip entirely if non-PC tool, non-PC slug or non-legit PSU.
   if (o.isFromStore === false) {
-    if (!isVetoed(category, title, o.url) && !EXTRA_JUNK.test(title) && okiExtra < 150) {
+    if (!isVetoed(category, title, o.url) && !EXTRA_JUNK.test(title) && (!o.query || isQueryRelevant(o.query, title)) && okiExtra < 150) {
       okiExtra++;
       pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: realStore, wilaya: realWilaya, url: o.url, image: o.image || "", condition: /neuf|new|blister|jamais|scell/i.test(title) ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: 0 });
     }
@@ -1457,7 +1472,7 @@ for (const o of report["ouedkniss:all"] || []) {
     if (seenOkUrl.has(o.url)) continue; // same ad twice in feed: keep first assignment
     seenOkUrl.add(o.url);
     matched.push({ productId: pid, store: realStore, wilaya: realWilaya, titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: o.stock || "En stock", condition: isNew ? "new" : "used", image: o.image || "", scrapedAt: NOW });
-  } else if (!isVeto && !EXTRA_JUNK.test(title) && okExtra < 150) {
+  } else if (!isVeto && !EXTRA_JUNK.test(title) && (!o.query || isQueryRelevant(o.query, title)) && okExtra < 150) {
     okExtra++;
     pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: realStore, wilaya: realWilaya, url: o.url, image: o.image || "", condition: isNew ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: o.isFromStore ? 1 : 0 });
   }

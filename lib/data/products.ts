@@ -41,6 +41,14 @@ export const CATEGORIES: { slug: Category; label: string }[] = [
 
 // Seed catalog — extend to 300 per PLAN. Prices/offers are samples wired to real DZ stores.
 export const PRODUCTS: Product[] = [
+  { id: "gpu-gtx1650s-4gb", category: "gpu", brand: "NVIDIA", model: "GTX 1650 SUPER 4GB", specs: {length_mm:229,tdp_w:100,pins:"1x6"} },
+  { id: "gpu-rx570-4gb", category: "gpu", brand: "AMD", model: "RX 570 4GB", specs: {length_mm:240,tdp_w:150,pins:"1x6"} },
+  { id: "gpu-rx570-8gb", category: "gpu", brand: "AMD", model: "RX 570 8GB", specs: {length_mm:240,tdp_w:150,pins:"1x8"} },
+  { id: "gpu-rx590-8gb", category: "gpu", brand: "AMD", model: "RX 590 8GB", specs: {length_mm:260,tdp_w:225,pins:"1x8"} },
+  { id: "gpu-rx5500-4gb", category: "gpu", brand: "AMD", model: "RX 5500 4GB", specs: {length_mm:215,tdp_w:110,pins:"1x8"} },
+  { id: "gpu-rx5500xt-4gb", category: "gpu", brand: "AMD", model: "RX 5500 XT 4GB", specs: {length_mm:225,tdp_w:130,pins:"1x8"} },
+  { id: "gpu-rx5500xt-8gb", category: "gpu", brand: "AMD", model: "RX 5500 XT 8GB", specs: {length_mm:225,tdp_w:130,pins:"1x8"} },
+  { id: "cpu-r5-5500", category: "cpu", brand: "AMD", model: "Ryzen 5 5500", specs: {socket:"AM4",tdp:65,igpu:false,ram_type:"DDR4"} },
   { id: "cpu-r5-5600", category: "cpu", brand: "AMD", model: "Ryzen 5 5600", specs: { socket: "AM4", tdp: 65, igpu: false, ram_type: "DDR4" } },
   { id: "cpu-i5-12400f", category: "cpu", brand: "Intel", model: "Core i5-12400F", specs: { socket: "LGA1700", tdp: 65, igpu: false, ram_type: "DDR4" } },
   { id: "cpu-r5-7600x", category: "cpu", brand: "AMD", model: "Ryzen 5 7600X", specs: { socket: "AM5", tdp: 105, igpu: true, ram_type: "DDR5" } },
