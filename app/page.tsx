@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import HomeReturnStrip from "@/components/HomeReturnStrip";
+import HomeRecentStrip from "@/components/HomeRecentStrip";
 import Link from "next/link";
 import { CATEGORIES, bestOffer, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
@@ -183,7 +183,7 @@ export default async function EnglishHome() {
       <div className="max-w-7xl mx-auto px-4 py-10 space-y-12">
         {/* Bytek Store Official Partner Ad */}
         <BytekAd variant="banner" locale={LOCALE} placement="en-home-top" />
-        <HomeReturnStrip locale={"en"} />
+        <HomeRecentStrip locale={"en"} />
 
         {/* Lowest prices right now — dense price table */}
         <section className="panel">

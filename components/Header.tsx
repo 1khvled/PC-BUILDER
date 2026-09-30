@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Thumb from "./Thumb";
 import ThemeToggle from "./ThemeToggle";
-import WatchNavCount from "./WatchNavCount";
 import LocaleSwitcher from "./LocaleSwitcher";
 import { useI18n } from "@/lib/i18n/client";
 import { categoryLabel } from "@/lib/i18n/categories";
@@ -668,14 +667,6 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               {t("common.deals")}
             </Link>
             <Link
-              href={href("/watchlist")}
-              aria-current={isSection("/watchlist") ? "page" : undefined}
-              className={navLinkClass(isSection("/watchlist"))}
-            >
-              {t("watch.nav")}
-              <WatchNavCount />
-            </Link>
-            <Link
               href={href("/benchmarks")}
               aria-current={isSection("/benchmarks") ? "page" : undefined}
               className={navLinkClass(isSection("/benchmarks"))}
@@ -785,14 +776,6 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               }`}
             >
               {t("common.deals")}
-            </Link>
-            <Link
-              href={href("/watchlist")}
-              aria-current={isSection("/watchlist") ? "page" : undefined}
-              className={navLinkClass(isSection("/watchlist"))}
-            >
-              {t("watch.nav")}
-              <WatchNavCount />
             </Link>
             <Link
               href={href("/benchmarks")}

@@ -10,7 +10,6 @@ import { categoryLabel } from "@/lib/i18n/categories";
 import { makeT, pluralSuffix } from "@/lib/i18n/runtime";
 import Thumb from "./Thumb";
 import EmptyState from "./EmptyState";
-import WatchButton from "./WatchButton";
 
 interface CategoryCatalogClientProps {
   slug: string;
@@ -637,7 +636,6 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                         <span>{isRupturedProduct ? t("common.details") : t("common.viewOffers")}</span>
                         <span aria-hidden="true">→</span>
                       </Link>
-      <WatchButton productId={p.id} />
                     </div>
                   </div>
                 </div>
@@ -789,7 +787,6 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                             >
                               {isRupturedProduct ? t("common.details") : `${t("common.viewOffers")} →`}
                             </Link>
-      <WatchButton productId={p.id} />
                           </div>
                         </td>
                       </tr>

@@ -7,11 +7,14 @@ import { OG_LOCALE, languageAlternates, type Locale } from "@/lib/i18n/config";
 const LOCALE: Locale = "en";
 
 export const metadata: Metadata = {
-  title: "PC Benchmarks in Algeria - CPU, GPU, RAM and SSD index",
+  title: "PC component specifications and performance index - Algeria",
   description:
-    "Performance index for every CPU, GPU, memory kit and SSD we track, with the source shown under every figure. Baselines and methodology stated openly.",
+    "Specifications for every CPU, GPU, memory kit and SSD we track, with our own clearly labelled performance estimate and links to the published sources. Baselines and method stated openly.",
   alternates: languageAlternates("/benchmarks", "en"),
-  openGraph: { title: "PC Benchmarks - performance index", locale: OG_LOCALE.en },
+  openGraph: {
+    title: "PC component specifications and performance index",
+    locale: OG_LOCALE.en,
+  },
 };
 
 export default async function BenchmarksPage() {
