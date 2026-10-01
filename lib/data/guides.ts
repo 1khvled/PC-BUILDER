@@ -151,8 +151,8 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "carte-graphique-prix-2026",
-    title: "Choisir sa carte graphique : la VRAM est devenue le critère n°1",
-    hook: "Un 8 Go se fait remplacer par le moteur de jeu là où un 16 Go tient encore la route. Comment lire une fiche technique, à partir de quel palier la VRAM devient non négociable, et où se cachent les vraies palettes.",
+    title: "Cartes graphiques en Algérie : ce que 8 Go coûtent vraiment en 2026",
+    hook: "Les paliers de VRAM sont réels, mais le point d'entrée a remonté dans les prix. Avec les prix en direct dans le tableau ci-dessous, voici quel palier votre budget achète réellement et où se situe la falaise des 8 Go.",
     kind: "guide",
     topic: { fr: "Carte graphique", en: "Graphics card" },
     readMin: 5,
@@ -169,100 +169,107 @@ export const GUIDES: Guide[] = [
     ],
     blocks: [
       {
-        h: "Pourquoi 8 Go est devenu un piège plutôt qu'une entrée de gamme",
+        h: "La falaise des 8 Go est réelle, et plus haute qu'on ne le suppose",
         p: [
-          "Il y a trois ans, 8 Go de VRAM était confortable. Ce n'est plus le cas, et la raison est mécanique, pas marketing. Une texture 4K de plus en plus détaillée, un ray tracing avec ombres et reflets, et surtout la génération d'images qui rend l'image finale à une résolution supérieure à la résolution interne : le moteur doit garder en mémoire l'image interne, les données de mouvement et le résultat final en même temps. Quand ça ne rentre plus, il n'y a pas de ralentissement propre, il y a des à-coups.",
-          "La conséquence pratique : une carte 8 Go se vend toujours, parce qu'elle est moins chère, et elle est déjà limite pour les sorties de 2026 en 1440p. En dessous de 25 000 DA, c'est un choix défendable pour ce que vous comptez en faire : bureautique, montage vidéo, jeux anciens, esport. Au-dessus, vous achetez une carte qui demandera un remplacement dans deux ans.",
+          "Huit gigaoctets étaient confortables il y a trois ans. Ce n'est plus le cas, et la raison est mécanique plutôt que marketing. Textures plus détaillées, ray tracing avec reflets, et surtout le frame generation - qui maintient en mémoire une image interne, les données de mouvement et une image finale agrandie - se disputent le même bassin. Quand celui-ci déborde, vous n'obtenez pas un ralentissement régulier mais des à-coups, et une fluidité qui ne s'améliore pas en moyenne.",
+          "C'est le prix qui décide de l'importance réelle du problème. Seule la RX 580, tout en bas de ce tableau, se trouve dans la fourchette où 8 Go est vraiment correct vu son âge. La RX 6600 et la RX 6650 XT se situent nettement au-dessus - et ce sont les cartes que la plupart des gens appellent un achat 1080p. La 6650 XT a coûté près de trois fois la 6600 pour les mêmes 8 Go, une manière dure d'apprendre que le point d'entrée avait bougé.",
         ],
       },
       {
-        h: "Les paliers de VRAM qui comptent",
-        list: [
-          "8 Go : bureautique, montage vidéo, jeux anciens et esport en haute fréquence. RX 6600, RX 6650 XT, RTX 4060 et RTX 5060 forment ce marché ; comparez-les au prix du jour dans le tableau.",
-          "12 Go : le minimum honnête pour jouer en 1080p et 1440p aujourd'hui. La RX 6700 XT et la RTX 5070 coûtent plus cher que leurs homologues 8 Go pour exactement cette raison, et c'est souvent l'écart le plus rentable de toute la carte.",
-          "16 Go : la norme du milieu de gamme. C'est le palier que je recommande à quiconque joue en 1440p ou en 4K, parce qu'il tient au moins cinq ans.",
-          "24 Go et plus : 4K en ultra, rendu, streaming, ou occasion d'une génération précédente. Une RX 7900 XTX 24 Go en est le cas typique.",
+        h: "Où chaque palier se situe",
+        p: [
+          "La porte d'entrée de cette page est la RX 580, et à ce prix son âge n'a aucune importance. C'est une carte 1080p complète pour le bureautique, le montage vidéo et les jeux anciens.",
+          "Les cartes 8 Go qui sont réellement actuelles, la RX 6600 et la RTX 4060, occupent deux marchés totalement différents, séparés par des dizaines de milliers de dinars pour une carte globalement plus rapide. Il vaut la peine de se demander laquelle correspond à votre usage avant de les traiter comme des alternatives.",
+          "La première carte 16 Go de cette page est la RX 7600 XT, et c'est la comparaison la plus intéressante : 16 Go pour moins qu'une RTX 4060 en 8 Go. Si la VRAM est votre critère plutôt que la performance raster, cette comparaison tranche à elle seule.",
         ],
       },
       {
-        h: "Le piège du prix d'appel",
+        h: "Pourquoi AMD gagne sur ce marché précisément",
         p: [
-          "Sur Ouedkniss, la première annonce d'une catégorie est presque toujours un piège : soit un prix d'appel qui n'est pas le prix réel, soit une carte défectueuse sans mention, soit un clavier, un boîtier et une carte dans la même annonce. Nos fiches produit affichent les offres des boutiques vérifiées, triées organiquement par prix : c'est cette page qu'il faut regarder, pas la première annonce d'une recherche.",
-          "L'autre piège est de comparer une occasion à une offre neuve sans regarder qui vend. Une RX 580 à la moitié du prix neuf n'est pas une affaire si le vendeur n'a ni facture ni garantie : votre risque est de 100 % et votre garantie de 0 %.",
+          "En raster pur, les cartes AMD donnent davantage d'images par dinar en Algérie, et l'écart de VRAM est devenu leur argument principal. La RX 7600 XT associe 16 Go à un prix que les équivalents NVIDIA n'approchent pas à ce palier.",
+          "NVIDIA garde l'avantage sur le ray tracing, l'encodage vidéo et un écosystème d'upscaling plus large. La RTX 4060 est une carte cohérente pour un créateur qui joue aussi ; c'est un mauvais rapport qualité-prix pour un joueur qui n'encode pas.",
+          "Pour un joueur pur la règle est simple : prenez le meilleur prix par image avec au moins 12 Go. Le tableau est trié pour permettre exactement cette comparaison plutôt que de vous fier à un classement.",
         ],
       },
       {
-        h: "AMD ou NVIDIA, en une phrase",
+        h: "Le piège des annonces",
         p: [
-          "En raster pur, les cartes AMD 16 Go offrent le meilleur dinar par image, et l'écart de VRAM est devenu leur argument principal face à des concurrentes qui restent à 12 Go sur le milieu de gamme. NVIDIA garde l'avantage sur le ray tracing, l'encodage vidéo et un écosystème d'upscaling plus large. Pour un joueur pur, prenez le meilleur prix par image avec au moins 12 Go. Pour quelqu'un qui monte de la vidéo en parallèle, l'encodeur NVIDIA vaut parfois le supplément.",
+          "Sur Ouedkniss, la première annonce d'une catégorie est presque toujours un piège : un prix d'appel qui n'est pas le vrai prix, une carte défectueuse sans mention, ou un clavier, un boîtier et une carte graphique dans la même annonce. Les pages produit de ce site montrent les offres de magasins vérifiés triées par prix. Lisez celles-là, pas le premier résultat de recherche.",
+          "Le second piège est de comparer une offre d'occasion à une offre neuve sans vérifier qui vend. Une RX 580 à la moitié du prix neuf n'est pas une affaire quand le vendeur n'a ni facture ni garantie : votre risque est le prix complet et votre couverture est nulle.",
         ],
       },
     ],
     pitfalls: [
-      "Ne comparez jamais deux annonces d'occasion sans regarder le nombre d'offres : une carte avec une seule annonce et pas de photo HD est rarement une bonne affaire.",
-      "8 Go à prix réduit n'est pas « la même chose moins cher ». C'est une machine qui ne sera plus à jour dans deux ans.",
-      "La longueur de la carte est une contrainte physique, pas une préférence : comparez les millimètres indiqués dans la fiche produit avec la limite de votre boîtier avant de signer.",
-      "Une carte qui demande un connecteur 16 broches a besoin d'une alimentation compatible, et seul le câble fourni d'origine doit être utilisé.",
-      "Les cartes deux ventilateurs chauffent plus fort que les trois ventilateurs. À prix égal en 1080p, deux fans restent un bon compromis ; en 1440p, privilégiez le refroidissement.",
+      "Ne comparez jamais deux annonces d'occasion sans vérifier le nombre d'offres. Une annonce unique sans photos nettes est rarement une bonne affaire.",
+      "La longueur d'une carte est une contrainte physique, pas une préférence. Vérifiez les millimètres contre votre boîtier avant de vous engager au-delà de 240 mm.",
+      "Une carte qui demande un connecteur 16 broches exige une alimentation qui le fournit, et seul le câble livré d'origine doit être utilisé.",
+      "Les cartes à deux ventilateurs chauffent plus que celles à trois. À prix égal en 1080p deux ventilateurs restent un bon compromis ; en 1440p privilégiez le refroidissement.",
+      "Ne lisez pas les chiffres d'indice de ce site comme des benchmarks mesurés. C'est notre estimation arrondie, étiquetée comme telle, et les sources sont liées sous chaque pièce.",
     ],
   },
   {
-    slug: "config-pc-170k-da",
-    title: "Premier PC gaming neuf : la répartition qui rend le plus",
-    hook: "On paie la carte graphique en premier, on économise sur le boîtier et le chipset, on ne touche pas à l'alimentation. Le détail poste par poste, avec les quatre oublis les plus fréquents.",
-    kind: "build",
-    topic: { fr: "Build complet", en: "Full build" },
-    readMin: 5,
-    parts: [
-      "cpu-r5-5600",
-      "cooler-ak400",
-      "mobo-b450m",
-      "ram-vengeance-16-d4",
-      "ssd-nvme-512gb",
-      "gpu-rx6600-8gb",
-      "case-nx400",
-      "psu-550-b",
-    ],
-    blocks: [
-      {
-        h: "La règle de répartition",
-        p: [
-          "Un premier PC se répartit à peu près ainsi : 45 à 55 % pour la carte graphique, 15 à 18 % pour le processeur, 10 à 12 % pour la mémoire et le stockage, et le reste pour la carte mère, le boîtier, le refroidissement et l'alimentation. Un budget 1080p équilibré met la carte graphique au-dessus de tout le reste réuni.",
-          "Sur le tableau de cette page, la carte graphique représente à elle seule plus du tiers du total. C'est normal : c'est le seul poste où la dépense se voit directement dans le nombre d'images par seconde.",
-        ],
-      },
-      {
-        h: "Les postes où l'économie est légitime",
-        p: [
-          "Le chipset : une B450 fait le même travail qu'une B550 avec un Ryzen 5 5600. La B550 ajoute le PCIe 4.0 pour le SSD et l'overclocking, rien qui change une image par seconde. Vérifiez seulement que la B450 que vous achetez supporte bien le 5600, sinon il faudra mettre à jour le BIOS avant même d'installer quoi que ce soit.",
-          "Le boîtier : sur une carte de 242 mm comme la RX 6600, n'importe quelle tour ATX de milieu de gamme convient. Inutile de payer le boîtier le plus cher de la liste.",
-          "Le refroidissement : un ventirail en tour de 120 mm de qualité coûte la moitié d'un watercooling et refroidit un 65 W sans discussion. Un watercooling ne se justifie que sur un processeur de plus de 105 W.",
-        ],
-      },
-      {
-        h: "Les postes où l'économie est une faute",
-        p: [
-          "L'alimentation. Vous ne gagnez rien à mettre une 400 W ou une 450 W bas de gamme : le 5600 et la RX 6600 demandent environ 350 W en pointe, plus les pics de tension que les cartes modernes sollicitent au démarrage. Une 550 W de marque correcte est le minimum raisonnable.",
-          "La mémoire. 16 Go en DDR4-3200 est le plancher. 8 Go, c'est un PC qui rame avant la fin de l'année. Ne descendez pas.",
-          "La carte graphique. C'est là que le budget doit être maximal. Une RX 6600 8 Go est ici le choix cohérent : c'est la carte qui joue en 1080p haute sans mettre le budget en danger.",
-        ],
-      },
-      {
-        h: "Ce que cette configuration ne pourra pas faire",
-        p: [
-          "Soyons clairs sur les limites : cette machine ne jouera pas en 4K et n'a pas la marge pour un écran 1440p de qualité. Le 512 Go est le point faible assumé, et le boîtier d'entrée de gamme n'est pas un boîtier évolutif.",
-          "Ce qu'elle fait bien : jouer en 1080p haute fréquence pendant des années, avec une marge de puissance suffisante pour ajouter une mémoire plus tard. C'est la définition d'un premier PC réussi, pas d'un PC final.",
-        ],
-      },
-    ],
-    pitfalls: [
-      "Le 512 Go est le point faible de cette config. Si vous installez beaucoup de jeux, montez directement en 1 To et economisez sur le boîtier.",
-      "La B450 doit supporter le Ryzen 5 5600 sans mise à jour de BIOS. Demandez la date de fabrication ou choisissez la B550, l'écart est faible.",
-      "Ne descendez pas à 8 Go de RAM pour gagner quelques milliers de dinars : c'est la dépense la plus rentable que vous ferez dans trois ans.",
-      "Une 450 W bas de gamme sur cette configuration, c'est prendre le risque de griller la carte mère pour une économie de quelques milliers de dinars.",
-      "N'achetez pas un watercooling pour cette config : le ventirail suffit et il ne tombera pas en panne.",
-    ],
-  },
+  slug: "config-pc-170k-da",
+  title: "Un PC de jeu à 170 000 DA qui est réellement équilibré",
+  hook: "La liste ci-dessous coûte 169 600 DA aujourd'hui. Voici où part chaque dinar, quelles lignes peuvent être réduites sans conséquences, et celle qu'il ne faut pas toucher.",
+  kind: "build",
+  topic: { fr: "Build complet", en: "Full build" },
+  readMin: 5,
+  parts: [
+    "cpu-r5-7500f",
+    "cooler-ak400",
+    "mobo-b650m",
+    "ram-16gb-d5-5600",
+    "ssd-nm620-1tb",
+    "gpu-rx6600xt-8gb",
+    "case-budget",
+    "psu-650-gold",
+  ],
+  blocks: [
+    {
+      h: "Ce que cette machine est vraiment",
+      p: [
+        "Une plateforme AM5 avec un Ryzen 5 7500F, 16 Go de DDR5-5600 et une RX 6600 XT. En 1080p cette carte tient des cadences élevées sur presque tout, et le 7500F a assez de vitesse mono-thread pour que le processeur ne soit jamais la raison d'une image manquante.",
+        "Ce n'est pas une machine 4K, ni une machine 1440p confortable. C'est une machine 1080p avec la possibilité d'ajouter une deuxième barrette de mémoire plus tard, ce qui est de loin l'évolution la plus probable dans sa vie.",
+      ],
+    },
+    {
+      h: "La répartition, ligne par ligne",
+      p: [
+        "La carte graphique représente 55 000 sur 169 600, soit 32%. Le processeur et la carte mère ensemble valent 46 900, soit 28%. Tout le reste - mémoire, stockage, refroidissement, boîtier, alimentation - occupe les 40% restants.",
+        "Ce ratio est tout l'argument. Une configuration 1080p équilibrée met environ un tiers de son budget dans la carte graphique et un quart dans la plateforme, car ce sont les deux pièces qui décident si la machine paraît rapide. Le tiers restant est là où les gens paient trop sans s'en rendre compte.",
+      ],
+    },
+    {
+      h: "Où l'on peut réellement économiser",
+      p: [
+        "Le dissipateur. L'AK400 refroidit un processeur de 65 W sans discussion et coûte moins de la moitié d'un AIO de 240 mm. Un watercooling ne se justifie qu'au-dessus de 105 W, et ici nous sommes à 65 W.",
+        "Le boîtier. La RX 6600 XT mesure 242 mm de long ; presque toutes les tours ATX du marché l'accumulent. Rien dans le boîtier d'entrée de gamme à fenêtre ne change le nombre d'images par seconde.",
+        "Le chipset. Une carte B650 est le minimum pour AM5, il n'y a donc rien en dessous à sauter. Vous êtes déjà sur la plateforme la moins chère qui accepte ce processeur.",
+      ],
+    },
+    {
+      h: "Où économiser coûte la machine",
+      p: [
+        "L'alimentation. C'est la seule ligne qui n'a pas de plancher acceptable. Le 7500F et la RX 6600 XT tirent environ 300 W ensemble, et les cartes récentes demandent de brèves pointes de tension au démarrage qu'une alimentation sans marque ne fournit pas. Le 650W Gold ci-dessus coûte 7 900 DA, et aucune unité moins chère dans cette configuration ne vaut le risque d'emballer la carte mère avec.",
+        "Le stockage. Le NVMe de 1 To est la ligne la moins spectaculaire et celle qui provoque le plus de regrets. Les jeux récents occupent de 80 à 150 Go chacun. Un disque de 512 Go est plein en un an d'usage normal, et vous supprimez alors des jeux pour faire de la place.",
+      ],
+    },
+    {
+      h: "Ce qu'elle ne fera pas",
+      p: [
+        "En 1440p la RX 6600 XT est jouable mais pas confortable : vous tiendrez une fréquence fixe en réglages compétitifs et perdrez en natif sur les réglages élevés. Si vous comptez jouer au-dessus de 1080p, l'évolution honnête est la carte graphique, pas le processeur.",
+        "La mémoire est de 16 Go sur une carte qui en accepte davantage. Si vous savez que vous monterez des vidéos ou lancerez beaucoup d'onglets en même temps qu'un jeu, ajoutez une deuxième barrette de 16 Go maintenant pendant que le slot est libre.",
+      ],
+    },
+  ],
+  pitfalls: [
+    "Ne remplacez pas le 650W par une unité sans marque de 450W pour économiser quelques milliers de dinars. L'économie est faible et le risque est la carte mère.",
+    "La RX 6600 XT mesure 242 mm. Vérifiez la longueur maximale acceptée par le boîtier avant de commander : c'est la raison la plus fréquente pour laquelle un PC par ailleurs terminé ne se ferme pas.",
+    "Un disque de 512 Go est le mauvais endroit pour économiser sur un PC que vous comptez garder. Les jeux le remplissent plus vite qu'on ne le croit.",
+    "N'achetez pas d'AIO pour un processeur de 65 W. L'argent n'achète rien de mesurable et ajoute une pompe qui peut tomber en panne.",
+    "Les cartes AM5 demandent de la DDR5. Une barrette DDR4 ne s'enfoncera pas, et une DDR5 ne passe pas sur une B450.",
+  ],
+},
   {
     slug: "config-pc-250k-da",
     title: "Le palier 250 000 DA : le 1080p qui ne fait aucun compromis",
@@ -432,15 +439,15 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "memoire-ddr4-ou-ddr5",
-    title: "DDR4 ou DDR5 : le calcul qui tranche en Algérie",
-    hook: "L'écart de prix entre les deux générations est le seul critère qui compte, et il est bien plus large en DA qu'ailleurs. 16 Go ou 32 Go, 6000 ou 6400, RGB ou pas : les quatre réponses.",
+    title: "DDR4 ou DDR5 : l'écart qui décide de votre plateforme",
+    hook: "Un kit 32 Go DDR4 coûte une fraction du kit 32 Go DDR5 placé dans le même tableau. Cet écart décide de la plateforme avant le moindre chiffre de fréquence — voici comment le dépenser.",
     kind: "guide",
     topic: { fr: "Mémoire", en: "Memory" },
     readMin: 5,
     parts: [
       "ram-value-8-d4",
       "ram-vengeance-16-d4",
-      "ram-vengeance-32-d4",
+      "ram-32gb-d4-3600",
       "ram-16gb-d5-5600",
       "ram-delta-32-d5",
       "ram-32gb-d5-6400",
@@ -448,42 +455,49 @@ export const GUIDES: Guide[] = [
     ],
     blocks: [
       {
-        h: "La règle simple : d'abord la plateforme, ensuite le prix",
+        h: "Les chiffres qui tranchent",
         p: [
-          "Il n'existe aucune carte mère AM5 qui accepte de la DDR4, et aucune carte mère AM4 ou LGA1700 qui accepte de la DDR5. La question « DDR4 ou DDR5 » n'a donc pas de réponse indépendante : elle découle du processeur que vous avez choisi.",
-          "Une fois ce point réglé, le calcul est purement économique. Comparez dans le tableau le kit DDR4 32 Go et le kit DDR5 32 Go : l'écart de prix se compte en dizaines de milliers de dinars. Dans un jeu, la différence de performance entre les deux générations est de l'ordre de quelques pour cent, et elle n'est visible que quand le CPU est le goulot d'étranglement, ce qui arrive rarement en 1080p et 1440p.",
-          "Conclusion : si vous ne cherchez pas un upgrade processeur dans quatre ans, dépensez cet écart dans une meilleure carte graphique. C'est le seul arbitrage rationnel à ce jour.",
+          "Il n'existe aucune carte mère AM5 qui accepte de la DDR4, et aucune carte AM4 ou LGA1700 qui accepte de la DDR5. La question de la mémoire n'a pas de réponse indépendante : elle découle du processeur que vous avez déjà choisi.",
+          "Sur le tableau de cette page, 32 Go de DDR4-3600 et 32 Go de DDR5-6000 sont séparés par un écart assez large pour acheter la carte graphique plusieurs fois. Ce n'est pas un arrondi.",
+          "En jeu, les deux générations se situent à quelques pour cent l'une de l'autre, et seulement quand le processeur est le facteur limitant, ce qui est rare en 1080p et 1440p. Le calcul n'est donc pas « laquelle est plus rapide ». C'est : avez-vous besoin de la nouvelle plateforme au point de payer cet écart pour une mémoire que vous ne ressentirez pas ?",
+        ],
+      },
+      {
+        h: "Le seul résultat DDR4 à connaître",
+        p: [
+          "Le kit 32 Go DDR4-3600 est le meilleur rapport qualité-prix du catalogue mémoire, et pas de peu : un kit 16 Go DDR4-3200 coûte à peine plus de la moitié pour la moitié de la capacité.",
+          "Si vous construisez en AM4 et avez décidé de rester dessus, ce kit est le bon achat et rien du côté DDR5 de ce tableau ne le bat sur ce critère. La capacité compte davantage que la génération à tous les prix où les deux sont disponibles.",
         ],
       },
       {
         h: "16 Go ou 32 Go",
         p: [
-          "16 Go en 2026, c'est correct pour jouer. C'est le standard, ce n'est plus le minimum. 8 Go est mort : un navigateur à quelques onglets suffit à le mettre à genoux, sans parler de Discord ouvert en arrière-plan.",
-          "32 Go devient justifié si vous faites autre chose en même temps : streamer avec l'encodeur, monter de la vidéo, faire tourner des machines virtuelles, ou simplement laisser un jeu tourner en arrière-plan. Le kit 48 Go du tableau n'a de sens que pour ces usages précis.",
-          "Le seul cas où 32 Go est obligatoire pour jouer : vous ne comptez pas arrêter de jouer avant 2030. Dans ce cas, achetez les 32 Go d'un coup.",
+          "16 Go en 2026 est la norme, pas le minimum. 8 Go est terminé : un navigateur avec quelques onglets et Discord en arrière-plan suffisent à l'épuiser avant même le lancement d'un jeu. Le kit 8 Go DDR4 figure dans ce tableau pour montrer où est le plancher, pas pour être recommandé.",
+          "32 Go se justifie quand vous faites autre chose en jouant : diffuser avec le encodeur, monter des vidéos, faire tourner des machines virtuelles, ou simplement laisser un jeu tourner pendant que vous travaillez. En AM4, cette capacité coûte presque rien au regard de ce qu'elle coûte en AM5, ce qui est un autre débat.",
+          "Le seul cas où 32 Go est obligatoire pour le jeu pur : si vous comptez garder cette machine après 2030. Prenez-la d'un bloc plutôt que d'ajouter plus tard une barrette dépareillée, car mélanger les capacités perd le double canal.",
         ],
       },
       {
         h: "DDR5-6000, et pas plus",
         p: [
-          "Sur Ryzen, la fréquence mémoire doit rester liée à l'horloge du contrôleur mémoire, sinon le passage de données coûte plus de cycles qu'il n'en économise et la performance baisse. DDR5-6000 avec des latences correctes est le point d'équilibre recommandé par AMD lui-même.",
-          "Au-dessus, vous payez plus pour deux choses : moins de stabilité sur quatre barrettes, et l'obligation d'ajuster les timings à la main. Comparez le kit 6400 du tableau au 6000 : si l'écart de prix est important, la DDR5-6000 est le bon achat.",
+          "Sur Ryzen, la fréquence mémoire doit rester liée à celle du contrôleur mémoire. Au-delà, le transfert de données demande plus de cycles qu'il n'en économise. La DDR5-6000 avec des timings raisonnables est le point d'équilibre, et c'est ce qu'AMD recommande elle-même.",
+          "Au-dessus de 6000, vous payez deux fois pour trois choses : une stabilité moindre avec quatre barrettes, l'obligation de régler les timings à la main, et dans notre catalogue un prix plus élevé pour la même capacité. Le kit 6400 vous achète 400 MT/s et aucune image.",
         ],
       },
       {
-        h: "Ne payez jamais le RGB",
+        h: "La question RGB, honnêtement",
         p: [
-          "Un dissipateur mémoire avec des LED RGB coûte systématiquement plus cher qu'un dissipateur nu pour la même fréquence et les mêmes timings. La différence de prix n'achète aucune performance, elle achète des diodes.",
-          "La seule exception : un kit sans LED genuine peut avoir un PCB moins bien fini et des barrettes plus hautes qui gênent le ventirail. Vérifiez la hauteur dans la fiche produit si votre dissipateur est imposant.",
+          "Un kit éclairé coûte régulièrement plus cher qu'un kit sans éclairage à fréquence et timings identiques. Côté DDR5 le palier de prix est net, et un kit 32 Go DDR5-6000 face à un kit 6400 de capacité équivalente n'est pas une prime pour l'éclairage : c'est une prime de fréquence qui inclut l'éclairage.",
+          "La seule vraie réserve est physique. Certains kits sans LED utilisent un PCB plus grossier et des dissipateurs plus hauts qui gênent un grand dissipateur à tour. Si vous associez la mémoire à un double tour comme ceux de notre guide refroidissement, vérifiez la hauteur des barrettes contre le dégagement du dissipateur.",
         ],
       },
     ],
     pitfalls: [
-      "Le type de mémoire est lié à la carte mère, pas à votre goût. DDR5 sur une B450 ou une B550 ne démarre pas, DDR4 sur une B650 non plus.",
-      "Mieux vaut deux barrettes qu'une seule : un kit 2 x 16 Go est en dual channel, un 1 x 32 Go ne l'est pas. L'écart de prix est faible et le gain en 1080p est réel.",
-      "Mélanger deux kits différents (par exemple 16 Go + 8 Go) perd le dual channel et n'est pas garanti par les fabricants.",
-      "XMP ou EXPO n'est pas activé par défaut dans le BIOS. Sans ça, la mémoire tourne à sa fréquence de base, très en dessous de ce que vous avez payé.",
-      "16 Go, c'est bien. 8 Go, c'est fini. Ne descendez pas sous 16 Go pour gagner quelques milliers de dinars.",
+      "Le type de mémoire est lié à la carte mère. La DDR5 ne démarre pas sur une B450 ou B550, et la DDR4 ne passe pas sur une B650.",
+      "Deux barrettes valent mieux qu'une. Un kit 2x16 Go fonctionne en double canal ; une seule barrette de 32 Go non.",
+      "Mélanger un kit 16 Go et un kit 8 Go perd le double canal et ne bénéficie d'aucune garantie constructeur.",
+      "Le XMP ou l'EXPO est désactivé par défaut dans le BIOS. Sans lui, votre mémoire tourne à sa fréquence de base, bien en dessous de ce que vous avez payé.",
+      "Ne descendez pas sous 16 Go pour économiser quelques milliers de dinars. C'est la pire économie possible dans tout le catalogue.",
     ],
   },
   {
@@ -600,8 +614,8 @@ export const GUIDES: Guide[] = [
   },
   {
     slug: "refroidissement-pc-algerie",
-    title: "Refroidissement : est-ce qu'un PC throttle en été à Alger ?",
-    hook: "Oui, mais moins qu'on ne le croit, et pas pour la raison qu'on imagine. Air ou watercooling, pâte thermique, poussière : ce qui compte vraiment quand la température ambiante monte.",
+    title: "Refroidir en été algérien : ce que disent vraiment les chiffres",
+    hook: "Oui, il throttle — quelques pour cent, pas la moitié de vos performances. Et le classement des dissipateurs de notre catalogue s'inverse dès qu'on le calcule au watt. Voici la version corrigée.",
     kind: "guide",
     topic: { fr: "Refroidissement", en: "Cooling" },
     readMin: 4,
@@ -617,40 +631,50 @@ export const GUIDES: Guide[] = [
     ],
     blocks: [
       {
-        h: "Oui, mais de combien",
+        h: "Oui il throttle, mais moins que ne le disent les forums",
         p: [
-          "Un PC de jeu à 45 °C ambiant dans un bureau non climatisé perd quelques pour cent de performance en mode turbo, pas la moitié. Le Ryzen réduit sa fréquence de quelques pour cent, la carte graphique quelques pour cent aussi. Ce n'est pas le drame vendu sur les forums, mais ce n'est pas gratuit non plus.",
-          "Le vrai risque n'est pas la baisse de performance, c'est l'usure. Un processeur maintenu à 95 °C pendant des mois vieillit plus vite qu'un maintenu à 70 °C. C'est de la marge de sécurité, pas de l'urgence.",
+          "Un PC de jeu dans une pièce non climatisée à 45°C ambiant perd quelques pour cent de fréquence de boost. Quelques pour cent sur le processeur, quelques pour cent sur la carte. Ce n'est pas la catastrophe vendue en commentaire, mais ce n'est pas gratuit non plus, et cela se combine avec un dissipateur encrassé.",
+          "Le risque qui mérite attention est l'usure, pas la fréquence d'images. Une puce maintenue à 95°C pendant des mois vieillit plus vite qu'une autre maintenue à 70°C. C'est un argument de marge, et c'est pourquoi les valeurs ci-dessous comptent davantage à 40°C ambiant qu'en vitrine.",
         ],
       },
       {
-        h: "Air ou watercooling : quand l'un gagne",
+        h: "Le prix au watt inverse le classement",
         p: [
-          "Un ventirail en tour haut comme l'Assassin IV ou la tour dual du tableau refroidit un processeur de 65 à 105 W sans aucun risque et sans liquide. Pour la plupart des configurations, c'est le meilleur rapport coût-durabilité du marché.",
-          "Le watercooling n'a qu'un seul argument fort : un processeur de 120 W ou plus, ou un boîtier très compact où la tour ne rentre pas. Dans ce cas, un 240 mm comme ceux du tableau fait gagner 10 à 15 °C. En contrepartie, une pompe est un point de panne mécanique, et la garantie est souvent plus courte que celle d'un bon ventirail.",
+          "Triez les dissipateurs ci-dessus par coût par watt de capacité nominale et l'ordre n'est pas celui qu'on attend. L'AIO GL120 est annoncé 150 W pour un prix inférieur à celui de la double tour MA621C, annoncée 260 W. Par watt de capacité, le petit AIO l'emporte, et ce n'est pas serré.",
+          "C'est une conséquence de la façon dont ces pièces sont tarifées sur ce marché plutôt qu'une affirmation que le liquide bat le métal. À prix égal, une tour reste le choix le plus durable : pas de pompe, pas de circuit, et une garantie qui dépasse généralement celle des concurrentes du dissipateur. Le point est que payer plus cher un dissipateur n'apporte pas régulièrement plus de capacité ici : achetez la capacité dont vous avez besoin et arrêtez-vous là.",
+          "Pour référence, l'Assassin IV 260 W coûte plus cher que le MA621C pour la même valeur annoncée. Le moins cher est le meilleur rapport qualité-prix, et personne ne vous le dit.",
+        ],
+      },
+      {
+        h: "Air ou AIO : l'argument honnête de chacun",
+        p: [
+          "Un dissipateur à tour est le choix par défaut. Il gère un processeur de 65 à 105 W sans liquide en mouvement, rien qui ne fuie, et aucun point de défaillance au-delà du ventilateur. L'AK400 est annoncé 155 W, ce qui couvre un 7500F ou un 5600 avec une marge confortable.",
+          "Un watercooling a deux cas légitimes : un processeur à 120 W ou plus où vous voulez la marge, ou un boîtier compact où une tour de 158 mm ne rentrera pas. Les unités 240 mm ci-dessus sont annoncées 250 W.",
+          "Nous ne publions pas de différence de température entre eux, parce que nous n'en avons mesuré aucune et que personne d'autre qui pourrait montrer son travail ne l'a fait. Quiconque vous cite un chiffre précis sur un dissipateur qu'il n'a pas testé répète un nombre, il ne mesure rien.",
         ],
       },
       {
         h: "La pâte thermique : ne touchez à rien",
         p: [
-          "La pâte livrée avec un dissipateur est déjà appliquée et elle est correcte. Elle ne sèche pas en deux ans, elle ne « grille » pas, et elle ne se remplace pas par nécessité. Un PC qui refroidit bien à la livraison refroidira encore bien trois ans plus tard.",
-          "Les deux seules situations où il faut rouvrir : une machine de plus de trois ans, ou une machine qui a été montée avec une dose de pâte absurdement généreuse. Le dentifrice, la pâte de Breakfast et les pâtes thermiques à base d'huile ne sont pas des options.",
+          "La pâte appliquée en usine est suffisante et ne demande pas d'être remplacée selon un calendrier. Elle ne sèche pas en deux ans et ne brûle pas. Un PC qui refroidit bien à la sortie de la boîte refroidira encore correctement trois ans plus tard.",
+          "Deux situations justifient d'ouvrir le boîtier : une machine de plus de trois ans, ou une machine montée avec une quantité absurde de pâte. Le dentifrice et l'huile de cuisine ne sont pas des options, et ajouter une seconde couche par-dessus une couche existante non plus : deux couches isolent.",
         ],
       },
       {
-        h: "La poussière, le vrai problème algérien",
+        h: "La poussière est le vrai problème algérien",
         p: [
-          "L'été d'Alger et du Sud, c'est de la poussière autant que de la chaleur. Un radiateur de ventirail bourré de poussière perd une bonne partie de sa surface d'échange, et l'écart de température se mesure très vite. Un dépoussiérage complet tous les douze à dix-huit mois est la seule maintenance nécessaire.",
-          "Le boîtier compte autant que le dissipateur : une tour avec des entrées d'air filtrées, un fond dégagé et un ventilateur d'extraction à l'arrière fait plus pour les températures d'été que passer d'un ventirail correct à un watercooling.",
+          "Un été algérien est autant un problème de poussière qu'un problème de chaleur, et c'est la poussière qui dégrade les performances année après année. Un dissipateur rempli de fibres perd de sa surface effective, et la température monte régulièrement alors que toutes les autres variables restent identiques.",
+          "Un nettoyage tous les douze à dix-huit mois est le seul entretien dont un PC a réellement besoin. Le boîtier compte autant que le dissipateur : entrées filtrées, dégagement à l'arrière et un ventilateur d'extraction font plus pour les températures d'été que passer d'un bon dissipateur à un AIO.",
+          "Et ne couvrez jamais les entrées avec un tissu ou un rideau. Le flux d'air avant est ce qui refroidit le processeur.",
         ],
       },
     ],
     pitfalls: [
-      "Un watercooling n'est pas plus durable qu'un bon ventirail : la pompe est le point de panne, et elle est souvent moins bien garantie.",
-      "Un dissipateur trop haut pour le boîtier ne rentre pas. Vérifiez la hauteur maximale dans la fiche du boîtier avant de commander, c'est l'erreur la plus fréquente.",
-      "Le ventirail d'origine d'un Ryzen 7 ou 9 est rarement suffisant en été. Un dissipateur d'entrée de gamme à une tour de 120 mm change beaucoup de choses.",
-      "Ne couvrez jamais les entrées d'air du boîtier avec un tissu ou un rideau. Le flux d'air frontal est ce qui refroidit le processeur.",
-      "N'appliquez jamais de pâte thermique supplémentaire sur une pâte déjà en place sans retirer l'ancienne : deux couches isolent.",
+      "Un watercooling n'est pas plus durable qu'un bon dissipateur. La pompe est le point de défaillance et elle est souvent moins bien garantie.",
+      "Vérifiez la hauteur maximale de dissipateur du boîtier avant de commander. Un dissipateur trop haut ne rentre simplement pas, et c'est l'erreur d'assemblage la plus fréquente.",
+      "Le dissipateur d'origine d'un Ryzen 7 ou 9 suffit rarement en été. Une tour 120 mm d'entrée de gamme change beaucoup pour très peu.",
+      "Ne bouchez jamais les entrées du boîtier. Si la machine est dans une armoire fermée, c'est le problème — pas le dissipateur.",
+      "Ne prenez pas une différence de température citée pour une mesure. Nous n'avons pas mesuré les nôtres et nous le disons plutôt que de répéter un chiffre.",
     ],
   },
   {
