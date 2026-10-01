@@ -149,6 +149,7 @@ export const en: Dictionary = {
   "ad.pointWilayas": "Express delivery to all 58 wilayas",
   "ad.pointCods": "Cash on delivery",
   "ad.verified": "verified official store",
+  "ad.independence": "Sponsored. Does not affect our ranking, our prices or what we recommend.",
 
   /* ------------------------------------------------------------------- home */
   "home.meta.title": "PC Component Price Comparison in Algeria (DA)",

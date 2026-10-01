@@ -4,6 +4,7 @@ const t = makeT("fr");
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import BytekAd from "@/components/BytekAd";
 import { CATEGORIES, PRODUCTS, bestOffer, isRuptured, productImage, type Product } from "@/lib/data/products";
 import { useCatalog } from "@/lib/data/use-offers";
 import { checkCompat } from "@/lib/compat/check";
@@ -1022,6 +1023,10 @@ export default function BuilderPage() {
           </div>
         </div>
       )}
+
+      <div className="print:hidden">
+        <BytekAd variant="strip" locale="fr" placement="fr-builder-bottom" />
+      </div>
 
       {/* Floating Toast Notification */}
       {toastMessage && (

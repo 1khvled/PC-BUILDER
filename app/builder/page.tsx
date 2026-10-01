@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import BytekAd from "@/components/BytekAd";
 import { CATEGORIES, PRODUCTS, bestOffer, isRuptured, productImage, type Product } from "@/lib/data/products";
 import { useCatalog } from "@/lib/data/use-offers";
 import { checkCompat } from "@/lib/compat/check";
@@ -996,6 +997,13 @@ export default function EnglishBuilderPage() {
           </div>
         </div>
       )}
+
+      {/* A planned build needs a mouse and a headset to be usable. Placed
+          above the floating toast so it never covers the summary, and hidden
+          in print because a sponsor has no business on a shopping list. */}
+      <div className="print:hidden">
+        <BytekAd variant="strip" locale={LOCALE} placement="en-builder-bottom" />
+      </div>
 
       {/* Floating Toast Notification
 

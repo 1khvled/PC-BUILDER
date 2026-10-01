@@ -74,6 +74,10 @@ export default function BytekAd({
             bytekstore.shop <span className="group-hover:translate-x-0.5 transition-transform">→</span>
           </span>
         </div>
+        {/* Independence stated on this variant too: it is the one used on every
+            text-heavy page, which is exactly where a reader is most likely to
+            wonder whether the sponsor bought the placement. */}
+        <p className="mt-1 text-[10px] leading-relaxed text-slate-500">{t("ad.independence")}</p>
       </a>
     );
   }
@@ -127,6 +131,7 @@ export default function BytekAd({
           {t("ad.cta")}
           <span className="group-hover:translate-x-0.5 transition-transform">→</span>
         </span>
+        <span className="mt-2 block text-[10px] leading-relaxed text-slate-500">{t("ad.independence")}</span>
       </a>
     );
   }
@@ -179,6 +184,11 @@ export default function BytekAd({
           </a>
           <span className="text-[11px] text-slate-400 font-medium text-center md:text-right">
             {t("ad.verified")}
+            {/* Guardrail in docs/MONETIZATION-PLAN.md: editorial independence is
+                stated wherever a sponsor is present. Rendering it inside the
+                component means every placement inherits it, including any added
+                later, instead of relying on the footer being read. */}
+            <span className="block mt-1 max-w-xs">{t("ad.independence")}</span>
           </span>
         </div>
       </div>

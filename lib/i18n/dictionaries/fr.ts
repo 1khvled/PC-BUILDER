@@ -143,6 +143,7 @@ export const fr = {
   "ad.pointWilayas": "Expédition express 58 wilayas",
   "ad.pointCods": "Paiement à la livraison",
   "ad.verified": "boutique officielle vérifiée",
+  "ad.independence": "Sponsorisé. N’influence ni notre classement, ni nos prix, ni nos recommandations.",
 
   /* ------------------------------------------------------------------- home */
   "home.meta.title": "Comparateur de Prix Composants PC en Algérie (DA)",

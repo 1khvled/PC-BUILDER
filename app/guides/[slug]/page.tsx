@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BytekAd from "@/components/BytekAd";
 import { notFound } from "next/navigation";
 import { GUIDE_UI } from "@/lib/data/guides";
 import { findGuide, listGuides } from "@/lib/data/guides-en";
@@ -390,6 +391,13 @@ export default async function EnglishGuidePage({ params }: { params: { slug: str
           {t("guide.exploreAll")}
         </Link>
       </div>
+
+      {/* "Sponsored by" note, after the article and the related-guides grid: by
+          the time a reader sees it the argument is already made, so it reads as
+          funding rather than influence. */}
+      <section aria-label={t("ad.sponsor")} className="pt-2">
+        <BytekAd variant="compact" locale={LOCALE} placement={`en-guide-${params.slug}`} />
+      </section>
     </main>
   );
 }

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { CATEGORIES } from "@/lib/data/products";
 import { getOffers, getProducts } from "@/lib/data/catalog";
 import CategoryCatalogClient from "@/components/CategoryCatalogClient";
+import BytekAd from "@/components/BytekAd";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, SITE_URL, languageAlternates } from "@/lib/i18n/config";
 import { categoryLabel } from "@/lib/i18n/categories";
@@ -100,6 +101,15 @@ export default async function EnglishCategoryPage({ params }: { params: { slug: 
         products={products}
         locale={LOCALE}
       />
+
+      {/* Category sponsorship. docs/MONETIZATION-PLAN.md lists this as a
+          recommended slot that was never built. It sits BELOW the organic
+          catalog, in its own visually separate block, and the ranking above is
+          untouched - the plan's first guardrail is that organic ranking is
+          never sold, so a sponsor may not buy a better position. */}
+      <section aria-label={t("ad.sponsor")} className="pt-2">
+        <BytekAd variant="compact" locale={LOCALE} placement={`en-category-${params.slug}`} />
+      </section>
     </main>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BytekAd from "@/components/BytekAd";
 import { notFound } from "next/navigation";
 import { GUIDES, GUIDE_UI } from "@/lib/data/guides";
 import { bestOffer, productImage } from "@/lib/data/products";
@@ -393,6 +394,10 @@ export default async function GuidePage({ params }: { params: { slug: string } }
           {t("guide.exploreAll")}
         </Link>
       </div>
+
+      <section aria-label={t("ad.sponsor")} className="pt-2">
+        <BytekAd variant="compact" locale={LOCALE} placement={`fr-guide-${params.slug}`} />
+      </section>
     </main>
   );
 }

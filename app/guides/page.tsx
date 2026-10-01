@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BytekAd from "@/components/BytekAd";
 import { GUIDE_UI } from "@/lib/data/guides";
 import { listGuides } from "@/lib/data/guides-en";
 import { bestOffer, productImage, type Product } from "@/lib/data/products";
@@ -212,6 +213,12 @@ export default async function EnglishGuidesPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {topics.map(renderCard)}
         </div>
+      </section>
+
+      {/* Guide sponsorship: low clutter, high trust transfer, per the plan.
+          After every section so it never displaces a guide in the index. */}
+      <section aria-label={t("ad.sponsor")} className="pt-2">
+        <BytekAd variant="card" locale={LOCALE} placement="en-guides-index" />
       </section>
     </main>
   );

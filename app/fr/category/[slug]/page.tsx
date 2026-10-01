@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BytekAd from "@/components/BytekAd";
 import { notFound } from "next/navigation";
 import { CATEGORIES } from "@/lib/data/products";
 import { getOffers, getProducts } from "@/lib/data/catalog";
@@ -86,6 +87,13 @@ export default async function CategoryPage({ params }: { params: { slug: string 
 
       {/* Interactive Client Catalog with Toolbar & Denser Cards */}
       <CategoryCatalogClient slug={params.slug} catLabel={currentCat.label} offers={offers} products={products} locale="fr" />
+
+      {/* Sponsorship. Placed below all organic content, in its own block, so it
+          cannot be mistaken for a ranked result - the first guardrail in
+          docs/MONETIZATION-PLAN.md is that organic ranking is never sold. */}
+      <section aria-label={t("ad.sponsor")} className="pt-2">
+        <BytekAd variant="compact" locale="fr" placement={`fr-category-${params.slug}`} />
+      </section>
     </main>
   );
 }

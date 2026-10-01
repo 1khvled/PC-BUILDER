@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BytekAd from "@/components/BytekAd";
 import { PREBUILDS } from "@/lib/data/prebuilds";
 import { getOffers, getScrapedAt } from "@/lib/data/catalog";
 import PrebuildsClient from "@/components/PrebuildsClient";
@@ -77,6 +78,13 @@ export default async function PrebuildsPage() {
 
       {/* Interactive Catalog Client */}
       <PrebuildsClient prebuilds={PREBUILDS} offers={offers} locale="fr" />
+
+      {/* Sponsorship. Placed below all organic content, in its own block, so it
+          cannot be mistaken for a ranked result - the first guardrail in
+          docs/MONETIZATION-PLAN.md is that organic ranking is never sold. */}
+      <section aria-label={t("ad.sponsor")} className="pt-2">
+        <BytekAd variant="strip" locale={LOCALE} placement="fr-prebuilds-bottom" />
+      </section>
     </main>
   );
 }
