@@ -194,12 +194,46 @@ to check a redirect chain.
 
 ---
 
-## 8. Known outstanding issues
+## 8. The ops console (INTERNAL — do not link publicly)
 
-1. **`ADMIN_KEY` must be rotated.** The previous value (`dz-admin-2026`) is
-   burned and is in git history. The admin gate now fails closed (no hardcoded
-   fallback, length-independent compare) but the key itself must change.
-   **It must be set at BUILD time, not runtime** — Next inlines known env vars.
+**Path: `/ops-4fkq`** (login at `/ops-4fkq/login`).
+
+This path is deliberately unguessable and is not linked from anywhere on the
+public site. It replaced `/admin-kh7`, which was a guessable placeholder and is
+still in git history — both old paths now 308 to the new one.
+
+| Path | Purpose |
+|---|---|
+| `app/ops-4fkq/page.tsx` | Console shell. `force-dynamic` + `runtime = "nodejs"` are both load-bearing. |
+| `app/ops-4fkq/login/page.tsx` | Login. Server action, generic error, no field-level feedback. |
+| `lib/admin/auth.ts` | Session cookies, timing-safe compare, fail-closed `isAuthenticated()`. |
+| `lib/admin/data.ts` | `buildAdminData()` — the single fetch + compute pass. |
+| `components/admin/` | `AdminShell` (tabs) + one panel per tab + `ui.tsx` primitives. |
+
+**Credentials:** `ADMIN_USERNAME` + `ADMIN_PASSWORD` (not `ADMIN_KEY`, which is
+burned and in git history). Setting them requires a **redeploy** — env changes
+only apply to fresh deployments.
+
+**Why `force-dynamic`:** without it the route is prerendered at build time and
+the auth result is frozen into a static file. Measured before it existed: correct
+password, wrong password and no password all returned a byte-identical 47KB
+page. Never remove it.
+
+**Why `runtime = "nodejs"`:** `lib/admin/auth` uses `node:crypto`. Edge cannot
+resolve it at module load and throws on every request.
+
+**Do not** add the console path to the sitemap, `llms.txt`, the header, the
+footer, or any public component. It is disallow-listed in `app/robots.ts` and
+carries `noindex`.
+
+---
+
+## 9. Known outstanding issues
+
+1. **`ADMIN_PASSWORD` must be rotated.** The first generated value is in this
+   conversation and in shell history. The gate fails closed (no hardcoded
+   fallback, length-independent compare, generic login errors) but the
+   credential itself must be replaced. Set it in Vercel, then redeploy.
 
 2. **`NEXT_PUBLIC_SITE_URL` is wrong locally.** `.env.local` has
    `localhost:3000` and takes precedence over `.env.production`, so canonical
@@ -231,6 +265,8 @@ to check a redirect chain.
 | `lib/i18n/client.tsx` | `I18nProvider`, `useLocale`, `useI18n` |
 | `app/globals.css` | Design tokens + the unlayered `.dark` remap block |
 | `components/BytekAd.tsx` | Sponsor placements (own store: bytekstore.shop) |
+| `lib/admin/data.ts` | One fetch + compute pass for the whole ops console |
+| `components/admin/` | Ops console: `AdminShell` + one panel per tab + `ui.tsx` |
 | `docs/MONETIZATION-PLAN.md` | Revenue plan — **planning only, nothing implemented** |
 | `middleware.ts` | CSP, HSTS, rate limiting (scraping side) |
 
