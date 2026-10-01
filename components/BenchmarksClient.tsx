@@ -10,7 +10,6 @@ import {
   GPU_BENCH,
   RAM_BENCH,
   SSD_BENCH,
-  COOLER_BENCH,
 } from "@/lib/data/benchmarks";
 import { sourcesFor, type BenchmarkSource } from "@/lib/data/benchmarkSources";
 import { useT } from "@/lib/i18n/client";
@@ -48,6 +47,35 @@ function fmt(n: number): string {
   return n.toLocaleString("en-US");
 }
 
+/**
+ * WHAT BELONGS ON THIS PAGE
+ * ========================
+ * Only the parts where the buyer is actually choosing between a faster and a
+ * slower option, and where the catalogue holds real specifications to compare.
+ *
+ * Deliberately excluded:
+ * - monitor  A monitor's entire spec sheet here is size and refresh rate. Two
+ *            numbers, no comparison worth a page, and it is not a component
+ *            that slots into a build.
+ * - cooler   One real field (height) and sockets. Its interesting number is a
+ *            TDP rating WE invented, which is precisely what this page must
+ *            not present as fact.
+ * - case     Three clearance fields. Real, but fit checks belong on the product
+ *            page and in the builder's compatibility warnings, not in a
+ *            performance table.
+ *
+ * A category is added here only when it clears both tests: real specs in the
+ * catalogue, and something meaningful to compare them on.
+ */
+const SCOPE: ReadonlySet<string> = new Set([
+  "cpu",
+  "gpu",
+  "motherboard",
+  "ram",
+  "ssd",
+  "psu",
+]);
+
 /** VRAM is not stored as a spec field; it lives in the model name. */
 function vramFromModel(model: string): string | null {
   const m = model.match(/(\d+)\s?gb/i);
@@ -64,10 +92,11 @@ function buildRows(products: Product[], t: ReturnType<typeof useT>): Row[] {
   const rows: Row[] = [];
 
   for (const p of products) {
+    if (!SCOPE.has(p.category)) continue;
+
     const s = p.specs as Record<string, unknown>;
     const str = (k: string) => (typeof s[k] === "string" ? (s[k] as string) : null);
     const int = (k: string) => (typeof s[k] === "number" ? (s[k] as number) : null);
-    const list = (k: string) => (Array.isArray(s[k]) ? (s[k] as unknown[]).map(String).join(", ") : null);
 
     const specs: { label: string; value: string }[] = [];
     const add = (label: string, value: string | null | undefined) => {
@@ -104,15 +133,18 @@ function buildRows(products: Product[], t: ReturnType<typeof useT>): Row[] {
         break;
       }
       case "ram": {
+        // Only what the stick is actually labelled with. RAM_BENCH.bandwidth is
+        // our relative index and its `latencyNs` is really the CL number, not a
+        // nanosecond figure - (16/3200)*2000 = 10 ns for a 3200 CL16 kit. Neither
+        // belongs in a column headed "specifications".
         add(t("benchmarks.capacity"), int("capacity_gb") ? `${s.capacity_gb} GB` : null);
         add(t("benchmarks.ramType"), str("type"));
         add(t("benchmarks.speed"), str("speed"));
-        const b = RAM_BENCH[p.id];
-        add(t("benchmarks.bandwidth"), b ? String(b.bandwidth) : null);
-        add(t("benchmarks.latency"), b ? `${b.latencyNs} ns` : null);
         break;
       }
       case "ssd": {
+        // SSD_BENCH carries real interface-speed figures (spec-sheet values, not
+        // an index), so these are specifications rather than an estimate.
         const b = SSD_BENCH[p.id];
         add(t("benchmarks.interface"), b?.interface ?? str("interface"));
         add(t("benchmarks.seqRead"), b ? `${fmt(b.seqRead)} MB/s` : null);
@@ -123,25 +155,6 @@ function buildRows(products: Product[], t: ReturnType<typeof useT>): Row[] {
       case "psu": {
         add(t("benchmarks.wattage"), int("wattage") ? `${s.wattage} W` : null);
         add(t("benchmarks.efficiency"), str("rating"));
-        break;
-      }
-      case "cooler": {
-        const b = COOLER_BENCH[p.id];
-        add(t("benchmarks.tdp"), b ? `${b.tdpRating} W` : null);
-        add(t("benchmarks.coolerType"), b ? b.kind : null);
-        add(t("benchmarks.height"), int("height_mm") ? `${s.height_mm} mm` : null);
-        add(t("benchmarks.sockets"), list("sockets"));
-        break;
-      }
-      case "case": {
-        add(t("benchmarks.maxGpu"), int("max_gpu_mm") ? `${s.max_gpu_mm} mm` : null);
-        add(t("benchmarks.maxCooler"), int("max_cooler_mm") ? `${s.max_cooler_mm} mm` : null);
-        add(t("benchmarks.supports"), list("supports"));
-        break;
-      }
-      case "monitor": {
-        add(t("benchmarks.screenSize"), int("size") ? `${s.size}"` : null);
-        add(t("benchmarks.refresh"), int("hz") ? `${s.hz} Hz` : null);
         break;
       }
       default:
@@ -220,6 +233,10 @@ export default function BenchmarksClient({
     return CATEGORIES.filter((c) => set.has(c.slug));
   }, [all]);
 
+  // CATEGORIES[].label is hardcoded English. The translated names live in the
+  // `cats.*` dictionary family, which is what the category pages use.
+  const catLabel = (slug: string) => t(`cats.${slug}` as "cats.cpu");
+
   const filterBtn = (active: boolean) =>
     `rounded-lg px-2.5 py-1 text-xs font-semibold transition-colors ${
       active
@@ -261,7 +278,7 @@ export default function BenchmarksClient({
         </button>
         {available.map((c) => (
           <button key={c.slug} onClick={() => setFilter(c.slug)} className={filterBtn(filter === c.slug)}>
-            {c.label}
+            {catLabel(c.slug)}
           </button>
         ))}
         <span className="ml-auto text-xs text-slate-500 dark:text-slate-400">
