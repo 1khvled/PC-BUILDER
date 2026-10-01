@@ -15,6 +15,9 @@ export const CATEGORY_BANDS: Record<Category, Band> = {
   motherboard: createBand(4000, 200000),
   ram: createBand(1000, 300000),
   ssd: createBand(800, 160000),
+  // Mechanical drives. Cheaper per terabyte than SSD, so the floor is lower,
+  // but a large-capacity spinning disk is still capped well below a GPU.
+  hdd: createBand(2500, 120000),
   gpu: createBand(2000, 1500000),
   case: createBand(1000, 130000),
   psu: createBand(3500, 150000),

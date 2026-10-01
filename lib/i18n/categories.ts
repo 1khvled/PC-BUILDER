@@ -12,6 +12,7 @@ const CATEGORY_KEYS: Record<string, TKey> = {
   motherboard: "cats.motherboard",
   ram: "cats.ram",
   ssd: "cats.ssd",
+  hdd: "cats.hdd",
   gpu: "cats.gpu",
   case: "cats.case",
   psu: "cats.psu",

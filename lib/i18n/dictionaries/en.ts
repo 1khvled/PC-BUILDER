@@ -78,6 +78,7 @@ export const en: Dictionary = {
   "cats.motherboard": "Motherboards",
   "cats.ram": "Memory (RAM)",
   "cats.ssd": "Storage (SSD / NVMe)",
+  "cats.hdd": "Hard Drives (HDD)",
   "cats.gpu": "Graphics Cards (GPU)",
   "cats.case": "PC Cases",
   "cats.psu": "Power Supplies (PSU)",

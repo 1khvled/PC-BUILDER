@@ -46,6 +46,16 @@ export default function CategoryIcon({ slug, className = "w-6 h-6" }: { slug: st
           <path d="M7 9h10M7 12h4M16 15h1" />
         </svg>
       );
+    case "hdd":
+      // A platter stack read from the side, distinct from the SSD's flat
+      // rectangle above so the two storage categories are distinguishable.
+      return (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <ellipse cx="12" cy="7" rx="8" ry="3" />
+          <path d="M4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7" />
+          <path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" />
+        </svg>
+      );
     case "gpu":
       return (
         <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

@@ -77,6 +77,7 @@ export const fr = {
   "cats.motherboard": "Cartes Mères",
   "cats.ram": "Mémoire Vive (RAM)",
   "cats.ssd": "Stockage (SSD / NVMe)",
+  "cats.hdd": "Disques durs (HDD)",
   "cats.gpu": "Cartes Graphiques (GPU)",
   "cats.case": "Boîtiers PC",
   "cats.psu": "Alimentations (PSU)",

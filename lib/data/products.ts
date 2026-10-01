@@ -4,7 +4,7 @@ import PRICE_HISTORY_JSON from "./price-history.json";
 
 export type Category =
   | "cpu" | "cooler" | "motherboard" | "ram"
-  | "ssd" | "gpu" | "case" | "psu" | "monitor";
+  | "ssd" | "hdd" | "gpu" | "case" | "psu" | "monitor";
 
 export interface Product {
   id: string;
@@ -33,6 +33,7 @@ export const CATEGORIES: { slug: Category; label: string }[] = [
   { slug: "motherboard", label: "Motherboard" },
   { slug: "ram", label: "Memory" },
   { slug: "ssd", label: "Storage" },
+  { slug: "hdd", label: "Hard Drives" },
   { slug: "gpu", label: "Video Card" },
   { slug: "case", label: "Case" },
   { slug: "psu", label: "Power Supply" },
@@ -283,9 +284,9 @@ export const PRODUCTS: Product[] = [
   { id: "ssd-sata-512gb", category: "ssd", brand: "ADATA", model: "SU680 512GB SATA", specs: { interface: "SATA" } },
   { id: "ssd-sata-1tb", category: "ssd", brand: "TeamGroup", model: "CX2 1TB SATA", specs: { interface: "SATA" } },
   { id: "ssd-sata-2tb", category: "ssd", brand: "CUSU", model: "C300 2TB SATA", specs: { interface: "SATA" } },
-  { id: "hdd-2tb", category: "ssd", brand: "Seagate", model: "BarraCuda 2TB HDD", specs: { interface: "SATA" } },
-  { id: "hdd-4tb", category: "ssd", brand: "Seagate", model: "SkyHawk 4TB Surveillance", specs: { interface: "SATA" } },
-  { id: "hdd-6tb", category: "ssd", brand: "WD", model: "Purple 6TB Surveillance", specs: { interface: "SATA" } },
+  { id: "hdd-2tb", category: "hdd", brand: "Seagate", model: "BarraCuda 2TB HDD", specs: { interface: "SATA" } },
+  { id: "hdd-4tb", category: "hdd", brand: "Seagate", model: "SkyHawk 4TB Surveillance", specs: { interface: "SATA" } },
+  { id: "hdd-6tb", category: "hdd", brand: "WD", model: "Purple 6TB Surveillance", specs: { interface: "SATA" } },
   { id: "ssd-portable-1tb", category: "ssd", brand: "SanDisk", model: "Extreme Portable 1TB", specs: { interface: "USB" } },
   { id: "ssd-990pro-2tb", category: "ssd", brand: "Samsung", model: "990 Pro 2TB NVMe", specs: { interface: "NVME" } },
   // PSU +11
@@ -473,7 +474,7 @@ export const PRODUCTS: Product[] = [
   { id: "gpu-rx5600xt-6gb", category: "gpu", brand: "XFX", model: "RX 5600 XT 6GB", specs: { length_mm: 242, tdp_w: 150, pins: "1x8" } },
   { id: "gpu-rx480-8gb", category: "gpu", brand: "Sapphire", model: "RX 480 Nitro+ 8GB", specs: { length_mm: 242, tdp_w: 150, pins: "1x8" } },
   { id: "ssd-990evo-plus", category: "ssd", brand: "Samsung", model: "990 Evo Plus NVMe", specs: { interface: "NVME" } },
-  { id: "hdd-5tb", category: "ssd", brand: "Seagate", model: "FireCuda 5TB Gaming HDD", specs: { interface: "SATA" } },
+  { id: "hdd-5tb", category: "hdd", brand: "Seagate", model: "FireCuda 5TB Gaming HDD", specs: { interface: "SATA" } },
   { id: "case-a21", category: "case", brand: "ASUS", model: "Prime A21", specs: { max_gpu_mm: 380, max_cooler_mm: 165, supports: ["ATX", "mATX", "ITX"] } },
   { id: "case-xpg", category: "case", brand: "XPG", model: "Lander 501", specs: { max_gpu_mm: 340, max_cooler_mm: 160, supports: ["ATX", "mATX", "ITX"] } },
   { id: "case-gigabyte", category: "case", brand: "Gigabyte", model: "C301G", specs: { max_gpu_mm: 340, max_cooler_mm: 165, supports: ["ATX", "mATX", "ITX"] } },
@@ -492,7 +493,7 @@ export const PRODUCTS: Product[] = [
   { id: "mobo-b150m", category: "motherboard", brand: "Gigabyte", model: "B150M (DDR4)", specs: { socket: "LGA1151", chipset: "B150", ram_type: "DDR4", form_factor: "mATX", m2: 1 } },
   { id: "ssd-128gb", category: "ssd", brand: "Generic", model: "128GB SATA SSD", specs: { interface: "SATA" } },
   { id: "ssd-budget", category: "ssd", brand: "Generic", model: "Budget SSD", specs: { interface: "SATA" } },
-  { id: "hdd-1tb", category: "ssd", brand: "WD", model: "Blue 1TB HDD", specs: { interface: "SATA" } },
+  { id: "hdd-1tb", category: "hdd", brand: "WD", model: "Blue 1TB HDD", specs: { interface: "SATA" } },
 ];
 
 export const OFFERS: Offer[] = LIVE_OFFERS;
