@@ -5,6 +5,8 @@ import { CATEGORIES } from "@/lib/data/products";
 import { getOffers, getProducts } from "@/lib/data/catalog";
 import CategoryCatalogClient from "@/components/CategoryCatalogClient";
 import BytekAd from "@/components/BytekAd";
+import AskAI from "@/components/AskAI";
+import { categoryPrompt } from "@/lib/ai/prompt";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, SITE_URL, languageAlternates } from "@/lib/i18n/config";
 import { categoryLabel } from "@/lib/i18n/categories";
@@ -110,6 +112,24 @@ export default async function EnglishCategoryPage({ params }: { params: { slug: 
       <section aria-label={t("ad.sponsor")} className="pt-2">
         <BytekAd variant="compact" locale={LOCALE} placement={`en-category-${params.slug}`} />
       </section>
+      <AskAI
+        locale={LOCALE}
+        placement={`en-category-${params.slug}-ai`}
+        prompt={categoryPrompt({
+          label,
+          slug: params.slug,
+          products: products.filter((p) => p.category === params.slug).length,
+          cheapest: (() => {
+            const inCat = offers.filter((o) =>
+              products.some((p) => p.id === o.productId && p.category === params.slug),
+            );
+            if (!inCat.length) return "no live price";
+            const m = Math.min(...inCat.map((o) => o.priceDa));
+            return `${m.toLocaleString("en-US")} DA`;
+          })(),
+          locale: LOCALE,
+        })}
+      />
     </main>
   );
 }

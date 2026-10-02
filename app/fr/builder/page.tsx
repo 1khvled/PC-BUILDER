@@ -5,6 +5,8 @@ const t = makeT("fr");
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import BytekAd from "@/components/BytekAd";
+import AskAI from "@/components/AskAI";
+import { builderPrompt } from "@/lib/ai/prompt";
 import { CATEGORIES, PRODUCTS, bestOffer, isRuptured, productImage, type Product } from "@/lib/data/products";
 import { useCatalog } from "@/lib/data/use-offers";
 import { checkCompat } from "@/lib/compat/check";
@@ -1026,6 +1028,17 @@ export default function BuilderPage() {
 
       <div className="print:hidden">
         <BytekAd variant="strip" locale="fr" placement="fr-builder-bottom" />
+      </div>
+      <div className="print:hidden">
+        <AskAI
+          locale="fr"
+          placement="fr-builder-ai"
+          prompt={builderPrompt({
+            parts: Object.values(build).map((p) => `${p.brand} ${p.model}`),
+            total,
+            locale: "fr",
+          })}
+        />
       </div>
 
       {/* Floating Toast Notification */}

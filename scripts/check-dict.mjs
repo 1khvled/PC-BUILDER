@@ -76,6 +76,8 @@ const ALLOWED_IDENTICAL = new Map([
   ["benchmarks.sources", "'Sources' is identical in French"],
   ["benchmarks.source.cpumonkey", "site name"],
   ["benchmarks.source.wikichip", "site name"],
+  ["ai.chatgpt", "product name, identical everywhere"],
+  ["ai.claude", "product name, identical everywhere"],
 ]);
 
 /** Extracts "key": "value" pairs, including values continued on the next line. */

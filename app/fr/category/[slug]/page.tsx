@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BytekAd from "@/components/BytekAd";
+import AskAI from "@/components/AskAI";
+import { categoryPrompt } from "@/lib/ai/prompt";
 import { notFound } from "next/navigation";
 import { CATEGORIES } from "@/lib/data/products";
 import { getOffers, getProducts } from "@/lib/data/catalog";
@@ -94,6 +96,24 @@ export default async function CategoryPage({ params }: { params: { slug: string 
       <section aria-label={t("ad.sponsor")} className="pt-2">
         <BytekAd variant="compact" locale="fr" placement={`fr-category-${params.slug}`} />
       </section>
+      <AskAI
+        locale="fr"
+        placement={`fr-category-${params.slug}-ai`}
+        prompt={categoryPrompt({
+          label: currentCat.label,
+          slug: params.slug,
+          products: products.filter((p) => p.category === params.slug).length,
+          cheapest: (() => {
+            const inCat = offers.filter((o) =>
+              products.some((p) => p.id === o.productId && p.category === params.slug),
+            );
+            if (!inCat.length) return "aucun prix en direct";
+            const m = Math.min(...inCat.map((o) => o.priceDa));
+            return `${m.toLocaleString("en-US")} DA`;
+          })(),
+          locale: "fr",
+        })}
+      />
     </main>
   );
 }

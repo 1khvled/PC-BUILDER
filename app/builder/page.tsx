@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import BytekAd from "@/components/BytekAd";
+import AskAI from "@/components/AskAI";
+import { builderPrompt } from "@/lib/ai/prompt";
 import { CATEGORIES, PRODUCTS, bestOffer, isRuptured, productImage, type Product } from "@/lib/data/products";
 import { useCatalog } from "@/lib/data/use-offers";
 import { checkCompat } from "@/lib/compat/check";
@@ -1003,6 +1005,17 @@ export default function EnglishBuilderPage() {
           in print because a sponsor has no business on a shopping list. */}
       <div className="print:hidden">
         <BytekAd variant="strip" locale={LOCALE} placement="en-builder-bottom" />
+      </div>
+      <div className="print:hidden">
+        <AskAI
+          locale={LOCALE}
+          placement="en-builder-ai"
+          prompt={builderPrompt({
+            parts: Object.values(build).map((p) => `${p.brand} ${p.model}`),
+            total,
+            locale: LOCALE,
+          })}
+        />
       </div>
 
       {/* Floating Toast Notification

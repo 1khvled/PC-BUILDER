@@ -7,6 +7,8 @@ import { getOffers, getPriceHistory, getProduct, getProducts, getScrapedAt } fro
 import Thumb from "@/components/Thumb";
 import ProductOffersTable from "@/components/ProductOffersTable";
 import BytekAd from "@/components/BytekAd";
+import AskAI from "@/components/AskAI";
+import { productPrompt } from "@/lib/ai/prompt";
 import PriceChart from "@/components/PriceChart";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, SITE_URL, formatNumber, formatPrice, languageAlternates } from "@/lib/i18n/config";
@@ -317,6 +319,19 @@ export default async function EnglishProductPage({ params }: { params: { id: str
             </div>
             <BytekAd variant="strip" locale={"en"} placement="en-product-offers" />
             <ProductOffersTable offers={offers} locale={LOCALE} />
+            <AskAI
+              locale={LOCALE}
+              placement="en-product"
+              prompt={productPrompt({
+                brand: product.brand,
+                model: product.model,
+                category: product.category,
+                bestPrice: best ? best.priceDa : null,
+                bestStore: best ? best.store : null,
+                offersCount: offers.length,
+                locale: LOCALE,
+              })}
+            />
           </section>
 
           {/* Price History (PCPartPicker signature) */}

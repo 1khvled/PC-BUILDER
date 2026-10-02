@@ -9,6 +9,8 @@ import ProductOffersTable from "@/components/ProductOffersTable";
 import PriceChart from "@/components/PriceChart";
 import FbResolveForm from "@/components/FbResolveForm";
 import BytekAd from "@/components/BytekAd";
+import AskAI from "@/components/AskAI";
+import { productPrompt } from "@/lib/ai/prompt";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, formatNumber, languageAlternates } from "@/lib/i18n/config";
 import { categoryLabel } from "@/lib/i18n/categories";
@@ -304,6 +306,19 @@ export default async function ProductPage({ params }: { params: { id: string } }
               </span>
             </div>
             <ProductOffersTable offers={offers} locale="fr" />
+            <AskAI
+              locale="fr"
+              placement="fr-product"
+              prompt={productPrompt({
+                brand: product.brand,
+                model: product.model,
+                category: product.category,
+                bestPrice: best ? best.priceDa : null,
+                bestStore: best ? best.store : null,
+                offersCount: offers.length,
+                locale: "fr",
+              })}
+            />
           </section>
 
           {/* Price History (PCPartPicker signature) */}

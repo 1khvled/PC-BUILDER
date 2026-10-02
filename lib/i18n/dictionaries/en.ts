@@ -150,6 +150,13 @@ export const en: Dictionary = {
   "ad.pointCods": "Cash on delivery",
   "ad.verified": "verified official store",
   "ad.independence": "Sponsored. Does not affect our ranking, our prices or what we recommend.",
+  "ai.ask": "Ask AI",
+  "ai.chatgpt": "ChatGPT",
+  "ai.claude": "Claude",
+  "ai.copy": "Copy prompt",
+  "ai.copied": "Copied",
+  "ai.showPrompt": "See exactly what is sent",
+  "ai.note": "Opens in a new tab with this page's public facts prefilled. Nothing hidden.",
 
   /* ------------------------------------------------------------------- home */
   "home.meta.title": "PC Component Price Comparison in Algeria (DA)",

@@ -144,6 +144,13 @@ export const fr = {
   "ad.pointCods": "Paiement à la livraison",
   "ad.verified": "boutique officielle vérifiée",
   "ad.independence": "Sponsorisé. N’influence ni notre classement, ni nos prix, ni nos recommandations.",
+  "ai.ask": "Demander à l'IA",
+  "ai.chatgpt": "ChatGPT",
+  "ai.claude": "Claude",
+  "ai.copy": "Copier le prompt",
+  "ai.copied": "Copié",
+  "ai.showPrompt": "Voir exactement ce qui est envoyé",
+  "ai.note": "S'ouvre dans un nouvel onglet avec les infos publiques de cette page. Rien n'est caché.",
 
   /* ------------------------------------------------------------------- home */
   "home.meta.title": "Comparateur de Prix Composants PC en Algérie (DA)",

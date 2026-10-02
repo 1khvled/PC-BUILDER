@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import BytekAd from "@/components/BytekAd";
+import AskAI from "@/components/AskAI";
+import { guidePrompt } from "@/lib/ai/prompt";
 import { notFound } from "next/navigation";
 import { GUIDES, GUIDE_UI } from "@/lib/data/guides";
 import { bestOffer, productImage } from "@/lib/data/products";
@@ -398,6 +400,11 @@ export default async function GuidePage({ params }: { params: { slug: string } }
       <section aria-label={t("ad.sponsor")} className="pt-2">
         <BytekAd variant="compact" locale={LOCALE} placement={`fr-guide-${params.slug}`} />
       </section>
+      <AskAI
+        locale={LOCALE}
+        placement={`fr-guide-${params.slug}-ai`}
+        prompt={guidePrompt({ title: guide.title, hook: guide.hook, locale: LOCALE })}
+      />
     </main>
   );
 }
