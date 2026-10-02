@@ -217,6 +217,9 @@ const RULES = [
   { id: "cooler-lt360", cat: "cooler", all: ["lt360"] },
   { id: "cooler-lt360", cat: "cooler", all: ["ml360"] },
   { id: "cooler-lt360", cat: "cooler", all: ["360mm"] },
+  { id: "cooler-deepcool-le720", cat: "cooler", all: ["le720"], none: ["le520", "le500", "laptop", "notebook"] },
+  { id: "cooler-peerless-120", cat: "cooler", all: ["peerless"], none: ["laptop", "notebook"] },
+  { id: "cooler-assassin-x120", cat: "cooler", all: ["assassin"], any: ["x120", "ax120", "120 se", "refined"], none: ["peerless", "phantom", "iv", "laptop", "notebook"] },
   { id: "cooler-ag620", cat: "cooler", all: ["ag620"] },
   { id: "cooler-ak500", cat: "cooler", all: ["ak500"] },
   { id: "cooler-ag200", cat: "cooler", all: ["ag200"] },
@@ -264,6 +267,9 @@ const RULES = [
   { id: "ram-16gb-d5-6400", cat: "ram", all: ["16gb", "ddr5", "6400"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-16gb-d5-6000", cat: "ram", all: ["16gb", "ddr5", "6000"], none: ["6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-96gb-d5", cat: "ram", all: ["48gb", "ddr5"], any: ["96gb"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-lexar-thor-16gb-3200", cat: "ram", all: ["lexar", "thor"], any: ["16gb", "16g", "2x8gb", "2x8g"], none: ["32gb", "32g", "64gb", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-lexar-thor-32gb-3200", cat: "ram", all: ["lexar", "thor"], any: ["32gb", "32g", "2x16gb", "2x16g"], none: ["16gb", "16g", "64gb", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-lexar-ares-32gb-6000", cat: "ram", all: ["lexar", "ares"], any: ["32gb", "32g", "6000", "ddr5"], none: ["16gb", "16g", "64gb", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-16gb-d5-5600", cat: "ram", all: ["16gb", "ddr5", "5600"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-vengeance-16-d5", cat: "ram", all: ["16gb", "ddr5"], none: ["32gb", "5600", "6000", "6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-8gb-d5-5600", cat: "ram", all: ["8gb", "ddr5"], none: ["16gb", "32gb", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
@@ -316,6 +322,11 @@ const RULES = [
   { id: "ssd-nv3-1tb", cat: "ssd", all: ["nv3"], any: ["1tb", "1000gb", "1024gb"], none: ["500gb", "512gb", "2tb", "laptop", "notebook"] },
   { id: "ssd-nv3-1tb", cat: "ssd", all: ["nv3"], none: ["500gb", "512gb", "2tb", "laptop", "notebook"] },
   { id: "ssd-nv2-1tb", cat: "ssd", all: ["nv2"], any: ["1tb", "1000gb", "1024gb"], none: ["500gb", "512gb", "2tb", "laptop", "notebook"] },
+  { id: "ssd-nm620-512gb", cat: "ssd", all: ["nm620"], any: ["500gb", "512gb", "500g", "512g"], none: ["1tb", "2tb", "laptop", "notebook"] },
+  { id: "ssd-nm790-1tb", cat: "ssd", all: ["nm790"], any: ["1tb", "1000gb", "1024gb"], none: ["2tb", "4tb", "laptop", "notebook"] },
+  { id: "ssd-nm790-2tb", cat: "ssd", all: ["nm790"], any: ["2tb", "2000gb", "2048gb"], none: ["1tb", "4tb", "laptop", "notebook"] },
+  { id: "ssd-nv3-2tb", cat: "ssd", all: ["nv3"], any: ["2tb", "2000gb", "2048gb"], none: ["500gb", "512gb", "1tb", "laptop", "notebook"] },
+  { id: "ssd-netac-nv3000-1tb", cat: "ssd", all: ["netac"], any: ["nv3000", "3000"], none: ["nv5000", "nv7000", "250gb", "500gb", "2tb", "laptop", "notebook"] },
   { id: "ssd-nm620-1tb", cat: "ssd", all: ["nm620"], none: ["256gb", "512gb", "2tb", "laptop", "notebook"] },
   { id: "ssd-nm710-1tb", cat: "ssd", all: ["nm710"], none: ["256gb", "512gb", "2tb", "laptop", "notebook"] },
   { id: "ssd-nvme-1tb-g4", cat: "ssd", all: ["gen4"], any: ["1tb"], none: ["512gb", "256gb", "2tb", "sata", "laptop", "notebook"] },
@@ -560,6 +571,14 @@ const RULES = [
   { id: "psu-aerocool-lux750", cat: "psu", all: ["aerocool", "750w"], any: ["lux", "vx", "cylon", "bronze"] },
   { id: "psu-seasonic-b12-650", cat: "psu", all: ["seasonic", "650w"], any: ["b12", "s12", "g12", "bronze"] },
   { id: "psu-seasonic-focus750", cat: "psu", all: ["seasonic", "750w"], any: ["focus", "gx750", "gold", "plus gold"] },
+  { id: "psu-deepcool-pf550", cat: "psu", all: ["deepcool", "550w"], any: ["pf550", "pf550d"] },
+  { id: "psu-deepcool-pf650", cat: "psu", all: ["deepcool", "650w"], any: ["pf650", "pf650d"] },
+  { id: "psu-deepcool-pf750", cat: "psu", all: ["deepcool", "750w"], any: ["pf750", "pf750d"] },
+  { id: "psu-deepcool-pl650d", cat: "psu", all: ["deepcool", "650w"], any: ["pl650", "pl650d"] },
+  { id: "psu-deepcool-pl750d", cat: "psu", all: ["deepcool", "750w"], any: ["pl750", "pl750d"] },
+  { id: "psu-1stplayer-black-sir-500w", cat: "psu", all: ["500w"], any: ["black sir", "ps 500", "ps500"] },
+  { id: "psu-1stplayer-black-sir-600w", cat: "psu", all: ["600w"], any: ["black sir", "ps 600", "ps600"] },
+  { id: "psu-gamemax-gp650", cat: "psu", all: ["gamemax", "650w"], any: ["gp650", "gp 650", "gp"] },
   { id: "psu-deepcool-pk550d", cat: "psu", all: ["deepcool", "550w"], any: ["pk550", "pk550d", "pl550", "bronze"] },
   { id: "psu-deepcool-pk650d", cat: "psu", all: ["deepcool", "650w"], any: ["pk650", "pk650d", "pl650", "bronze"] },
   { id: "psu-deepcool-pk750d", cat: "psu", all: ["deepcool", "750w"], any: ["pk750", "pk750d", "pl750", "bronze"] },
@@ -1455,7 +1474,7 @@ for (const o of report["ouedkniss:all"] || []) {
   if (postDate) {
     if (postDate < "2025-10-01") continue;
     const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
-    if (!isNaN(ageDays) && ageDays > 45) continue;
+    if (!isNaN(ageDays) && ageDays > 30) continue;
   }
 
   // Query-title relevance: reject if title has nothing to do with the search query

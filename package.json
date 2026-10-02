@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
+    "sweep": "node scripts/sweep-recurring.cjs",
+    "bake": "node bake.cjs",
     "sync:smart": "node scripts/smart-sync.mjs",
     "sync:smart:force": "node scripts/smart-sync.mjs --force",
     "sync:smart:dry": "node scripts/smart-sync.mjs --dry-run"

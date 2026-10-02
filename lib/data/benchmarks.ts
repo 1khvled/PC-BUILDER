@@ -317,6 +317,9 @@ export const RAM_BENCH: Record<string, { bandwidth: number; cl: number | null }>
   "ram-16gb-d5-6400": { bandwidth: 200, cl: 10 },
   "ram-96gb-d5": { bandwidth: 200, cl: 10 },
   "ram-24gb-d5": { bandwidth: 188, cl: 10 },
+  "ram-lexar-thor-16gb-3200": { bandwidth: 100, cl: 16 },
+  "ram-lexar-thor-32gb-3200": { bandwidth: 100, cl: 16 },
+  "ram-lexar-ares-32gb-6000": { bandwidth: 188, cl: 30 },
 };
 
 /**
@@ -330,18 +333,23 @@ export const SSD_BENCH: Record<
 > = {
   "ssd-gen5-1tb": { seqRead: 10000, seqWrite: 9500, random4k: 1400, interface: "PCIe 5.0 x4" },
   "ssd-990pro-2tb": { seqRead: 7450, seqWrite: 6900, random4k: 1350, interface: "PCIe 4.0 x4" },
+  "ssd-nm790-2tb": { seqRead: 7400, seqWrite: 6500, random4k: 1150, interface: "PCIe 4.0 x4" },
+  "ssd-nm790-1tb": { seqRead: 7400, seqWrite: 6500, random4k: 1100, interface: "PCIe 4.0 x4" },
   "ssd-sn850x-1tb": { seqRead: 7300, seqWrite: 6600, random4k: 1200, interface: "PCIe 4.0 x4" },
   "ssd-990evo-plus": { seqRead: 7150, seqWrite: 6300, random4k: 1050, interface: "PCIe 4.0 x4" },
   "ssd-980pro-1tb": { seqRead: 7000, seqWrite: 5000, random4k: 1000, interface: "PCIe 4.0 x4" },
   "ssd-sn850-1tb": { seqRead: 7000, seqWrite: 5300, random4k: 900, interface: "PCIe 4.0 x4" },
   "ssd-nvme-2tb": { seqRead: 7000, seqWrite: 6800, random4k: 1050, interface: "PCIe 4.0 x4" },
   "ssd-nvme-4tb": { seqRead: 7000, seqWrite: 6800, random4k: 1050, interface: "PCIe 4.0 x4" },
+  "ssd-nv3-2tb": { seqRead: 6000, seqWrite: 5000, random4k: 850, interface: "PCIe 4.0 x4" },
   "ssd-nv3-1tb": { seqRead: 6000, seqWrite: 4000, random4k: 800, interface: "PCIe 4.0 x4" },
   "ssd-nvme-1tb-g4": { seqRead: 6000, seqWrite: 4000, random4k: 800, interface: "PCIe 4.0 x4" },
   "ssd-nm620-1tb": { seqRead: 5000, seqWrite: 4000, random4k: 800, interface: "PCIe 4.0 x4" },
   "ssd-nm710-1tb": { seqRead: 5000, seqWrite: 4000, random4k: 850, interface: "PCIe 4.0 x4" },
   "ssd-sn580-1tb": { seqRead: 4150, seqWrite: 4000, random4k: 750, interface: "PCIe 4.0 x4" },
   "ssd-nv3-500gb": { seqRead: 5000, seqWrite: 3000, random4k: 650, interface: "PCIe 4.0 x4" },
+  "ssd-nm620-512gb": { seqRead: 3500, seqWrite: 2400, random4k: 450, interface: "PCIe 3.0 x4" },
+  "ssd-netac-nv3000-1tb": { seqRead: 3100, seqWrite: 2100, random4k: 400, interface: "PCIe 3.0 x4" },
   "ssd-nvme-500gb": { seqRead: 3500, seqWrite: 3300, random4k: 550, interface: "PCIe 3.0 x4" },
   "ssd-970evo-1tb": { seqRead: 3500, seqWrite: 3300, random4k: 600, interface: "PCIe 3.0 x4" },
   "ssd-nvme-512gb": { seqRead: 3400, seqWrite: 2600, random4k: 500, interface: "PCIe 4.0 x4" },
@@ -398,6 +406,8 @@ export const COOLER_BENCH: Record<string, CoolerBenchmark> = {
   "cooler-phantom": { tdpRating: 230, kind: "air" },
 
   // --- dual tower ---
+  "cooler-peerless-120": { tdpRating: 250, kind: "air" },
+  "cooler-assassin-x120": { tdpRating: 155, kind: "air" },
   "cooler-ak620": { tdpRating: 250, kind: "air" },
   "cooler-ag620": { tdpRating: 250, kind: "air" },
   "cooler-ak700": { tdpRating: 250, kind: "air" },
@@ -421,6 +431,7 @@ export const COOLER_BENCH: Record<string, CoolerBenchmark> = {
   "cooler-hl240": { tdpRating: 250, kind: "aio", radiator: 240 },
 
   // --- 360 mm AIO ---
+  "cooler-deepcool-le720": { tdpRating: 320, kind: "aio", radiator: 360 },
   "cooler-lt360": { tdpRating: 320, kind: "aio", radiator: 360 },
   "cooler-lt720": { tdpRating: 320, kind: "aio", radiator: 360 },
   "cooler-lq360": { tdpRating: 320, kind: "aio", radiator: 360 },
