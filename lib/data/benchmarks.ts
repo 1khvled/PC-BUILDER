@@ -254,6 +254,11 @@ export const GPU_BENCH: Record<string, GpuBenchmark> = {
   "gpu-rx480-8gb": { raster1080: 25, raster1440: 20, rt: 12 },
 
   // --- Intel Arc ---
+  // NOTE: a second listing id for the B580 12GB exists in live offer data
+  // under a different id, but it is not in the static catalogue, so it gets
+  // no index here. An index key without a catalogue product breaks the
+  // scorer (it receives undefined) and fails check-perf.cjs section 6.
+  // If the id is ever added to lib/data/products.ts, mirror the entry below.
   "gpu-arc-b580-12gb": { raster1080: 105, raster1440: 108, rt: 102 },
   "gpu-arc-a750-8gb": { raster1080: 95, raster1440: 98, rt: 92 },
   "gpu-arc-a580-8gb": { raster1080: 62, raster1440: 60, rt: 58 },
@@ -263,32 +268,55 @@ export const GPU_BENCH: Record<string, GpuBenchmark> = {
 /* --------------------------------------------------- memory and storage */
 
 /**
- * Memory bandwidth index, DDR4-3200 dual channel = 100. Latency is in
- * nanoseconds at the rated speed (CAS latency included), which is the figure
- * that actually matters for CPU-bound games.
+ * Memory bandwidth index, DDR4-3200 dual channel = 100.
+ *
+ * HOW THE BANDWIDTH NUMBERS ARE DERIVED (not guessed per kit)
+ * -----------------------------------------------------------
+ * bandwidth = round(100 * MT/s / 3200).
+ *
+ * 3200 -> 100, 3600 -> 112, 2666 -> 83, 5600 -> 175, 6000 -> 188, 6400 -> 200.
+ * Every entry in the table below matches this formula; it is stated here so a
+ * future kit can be added by arithmetic rather than by feel. Dual-channel is
+ * assumed throughout - a single stick halves real throughput, which is why the
+ * guides insist on two sticks rather than one.
+ *
+ * `cl` is the CAS latency printed on the kit (a cycle count, NOT nanoseconds).
+ * True latency in ns is CL * 2000 / MT/s, e.g. a 3200 CL16 kit is 10 ns, not
+ * 16. An earlier version of this file labelled the CL number `latencyNs`,
+ * which was wrong by definition; the field is renamed so the mistake cannot
+ * be reintroduced by reading the name literally. `cl` is null wherever the
+ * cycle count is not on the label we track - omitted rather than guessed.
+ * Nothing in the perf model consumes it - bandwidth is the axis that moves
+ * CPU-bound scores.
  */
-export const RAM_BENCH: Record<string, { bandwidth: number; latencyNs: number }> = {
-  "ram-vengeance-16-d4": { bandwidth: 100, latencyNs: 16 },
-  "ram-vengeance-32-d4": { bandwidth: 100, latencyNs: 16 },
-  "ram-value-8-d4": { bandwidth: 100, latencyNs: 22 },
-  "ram-16gb-d4-3600": { bandwidth: 112, latencyNs: 14.2 },
-  "ram-32gb-d4-3600": { bandwidth: 112, latencyNs: 14.2 },
-  "ram-8gb-d4-3600": { bandwidth: 112, latencyNs: 17.8 },
-  "ram-4gb-d4-2666": { bandwidth: 83, latencyNs: 19.1 },
-  "ram-8gb-d3-1600": { bandwidth: 50, latencyNs: 13.5 },
-  "ram-vengeance-16-d5": { bandwidth: 175, latencyNs: 10 },
-  "ram-16gb-d5-5600": { bandwidth: 175, latencyNs: 10 },
-  "ram-8gb-d5-5600": { bandwidth: 175, latencyNs: 10 },
-  "ram-32gb-d5-5600": { bandwidth: 175, latencyNs: 10 },
-  "ram-delta-32-d5": { bandwidth: 188, latencyNs: 10 },
-  "ram-32gb-d5-6000": { bandwidth: 188, latencyNs: 10 },
-  "ram-48gb-d5-6000": { bandwidth: 188, latencyNs: 10 },
-  "ram-64gb-d5-6000": { bandwidth: 188, latencyNs: 10 },
-  "ram-16gb-d5-6000": { bandwidth: 188, latencyNs: 10 },
-  "ram-32gb-d5-6400": { bandwidth: 200, latencyNs: 10 },
-  "ram-16gb-d5-6400": { bandwidth: 200, latencyNs: 10 },
-  "ram-96gb-d5": { bandwidth: 200, latencyNs: 10 },
-  "ram-24gb-d5": { bandwidth: 200, latencyNs: 10 },
+export const RAM_BASELINE_MTS = 3200;
+
+export function ramBandwidthFor(mts: number): number {
+  return Math.round((100 * mts) / RAM_BASELINE_MTS);
+}
+
+export const RAM_BENCH: Record<string, { bandwidth: number; cl: number | null }> = {
+  "ram-vengeance-16-d4": { bandwidth: 100, cl: 16 },
+  "ram-vengeance-32-d4": { bandwidth: 100, cl: 16 },
+  "ram-value-8-d4": { bandwidth: 100, cl: 22 },
+  "ram-16gb-d4-3600": { bandwidth: 113, cl: null },
+  "ram-32gb-d4-3600": { bandwidth: 113, cl: null },
+  "ram-8gb-d4-3600": { bandwidth: 113, cl: null },
+  "ram-4gb-d4-2666": { bandwidth: 83, cl: 19 },
+  "ram-8gb-d3-1600": { bandwidth: 50, cl: null },
+  "ram-vengeance-16-d5": { bandwidth: 175, cl: 10 },
+  "ram-16gb-d5-5600": { bandwidth: 175, cl: 10 },
+  "ram-8gb-d5-5600": { bandwidth: 175, cl: 10 },
+  "ram-32gb-d5-5600": { bandwidth: 175, cl: 10 },
+  "ram-delta-32-d5": { bandwidth: 188, cl: 10 },
+  "ram-32gb-d5-6000": { bandwidth: 188, cl: 10 },
+  "ram-48gb-d5-6000": { bandwidth: 188, cl: 10 },
+  "ram-64gb-d5-6000": { bandwidth: 188, cl: 10 },
+  "ram-16gb-d5-6000": { bandwidth: 188, cl: 10 },
+  "ram-32gb-d5-6400": { bandwidth: 200, cl: 10 },
+  "ram-16gb-d5-6400": { bandwidth: 200, cl: 10 },
+  "ram-96gb-d5": { bandwidth: 200, cl: 10 },
+  "ram-24gb-d5": { bandwidth: 188, cl: 10 },
 };
 
 /**
@@ -416,7 +444,7 @@ export function gpuBench(productId: string): GpuBenchmark | null {
   return GPU_BENCH[productId] ?? null;
 }
 
-export function ramBench(productId: string): { bandwidth: number; latencyNs: number } | null {
+export function ramBench(productId: string): { bandwidth: number; cl: number | null } | null {
   return RAM_BENCH[productId] ?? null;
 }
 

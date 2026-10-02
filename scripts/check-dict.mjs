@@ -78,6 +78,9 @@ const ALLOWED_IDENTICAL = new Map([
   ["benchmarks.source.wikichip", "site name"],
   ["ai.chatgpt", "product name, identical everywhere"],
   ["ai.claude", "product name, identical everywhere"],
+  ["benchmarks.multi", "short column header, same word in French"],
+  ["benchmarks.single", "short column header, same word in French"],
+  ["benchmarks.gaming", "short column header, same word in French"],
 ]);
 
 /** Extracts "key": "value" pairs, including values continued on the next line. */
