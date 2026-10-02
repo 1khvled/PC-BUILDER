@@ -453,6 +453,17 @@ export default async function ProductPage({ params }: { params: { id: string } }
               ✓ Indépendant, sans commission • Relevé le {scrapedAt.slice(0, 10)}
             </p>
           </div>
+          <a
+            href="https://bytekstore.shop/?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=sponsor&utm_content=fr-product-buybox"
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="block rounded-lg border border-indigo-200/70 bg-indigo-50/50 px-3 py-2 text-[11px] leading-relaxed text-slate-600 transition-colors hover:border-indigo-300 hover:bg-indigo-50"
+          >
+            <span className="mr-1.5 rounded bg-indigo-500/15 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-widest text-indigo-600">
+              Sponsor
+            </span>
+            Besoin d'une souris, d'un clavier ou d'un casque avec ? Bytek Store stocke des périphériques esport en Algérie.
+          </a>
         </div>
       </div>
     </main>

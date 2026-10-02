@@ -132,9 +132,9 @@ export const GUIDES_EN: Guide[] = [
     ],
   },
   {
-    slug: "config-pc-170k-da",
-    title: "A 170,000 DA gaming PC that is actually balanced",
-    hook: "Eight parts chosen to land near 170,000 DA, with the reasoning behind each. The live total sits at the top of this page and it moves daily - what follows is the reasoning, not the arithmetic.",
+    slug: "config-pc-230k-da",
+    title: "A 230,000 DA gaming PC that is actually balanced",
+    hook: "Eight parts chosen to land near 230,000 DA, with the reasoning behind each. The live total sits at the top of this page and it moves daily - what follows is the reasoning, not the arithmetic.",
     kind: "build",
     topic: { fr: "Build complet", en: "Full build" },
     readMin: 5,

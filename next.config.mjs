@@ -22,6 +22,9 @@ const nextConfig = {
       // was renamed and the old address permanently redirected.
       { source: "/guides/gaming-1440p-300k", destination: "/guides/gaming-1440p-165hz", permanent: true },
       { source: "/fr/guides/gaming-1440p-300k", destination: "/fr/guides/gaming-1440p-165hz", permanent: true },
+      // Same story: the slug promised a 170k build while live prices total 231k.
+      { source: "/guides/config-pc-170k-da", destination: "/guides/config-pc-230k-da", permanent: true },
+      { source: "/fr/guides/config-pc-170k-da", destination: "/fr/guides/config-pc-230k-da", permanent: true },
       { source: "/en", destination: "/", permanent: true },
       { source: "/en/builder", destination: "/builder", permanent: true },
       { source: "/en/category/:slug", destination: "/category/:slug", permanent: true },

@@ -150,6 +150,7 @@ export const en: Dictionary = {
   "ad.pointCods": "Cash on delivery",
   "ad.verified": "verified official store",
   "ad.independence": "Sponsored. Does not affect our ranking, our prices or what we recommend.",
+  "ad.buybox": "Need a mouse, keyboard or headset to go with it? Bytek Store stocks esports peripherals in Algeria.",
   "ai.ask": "Ask AI",
   "ai.chatgpt": "ChatGPT",
   "ai.claude": "Claude",

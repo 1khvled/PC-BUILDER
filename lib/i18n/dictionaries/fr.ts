@@ -144,6 +144,7 @@ export const fr = {
   "ad.pointCods": "Paiement à la livraison",
   "ad.verified": "boutique officielle vérifiée",
   "ad.independence": "Sponsorisé. N’influence ni notre classement, ni nos prix, ni nos recommandations.",
+  "ad.buybox": "Besoin d'une souris, d'un clavier ou d'un casque avec ? Bytek Store stocke des périphériques esport en Algérie.",
   "ai.ask": "Demander à l'IA",
   "ai.chatgpt": "ChatGPT",
   "ai.claude": "Claude",

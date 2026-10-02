@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import BenchmarksClient from "@/components/BenchmarksClient";
+import BytekAd from "@/components/BytekAd";
 import { getProducts } from "@/lib/data/catalog";
 import { getT } from "@/lib/i18n/server";
 import { OG_LOCALE, languageAlternates, type Locale } from "@/lib/i18n/config";
@@ -33,6 +34,11 @@ export default async function BenchmarksPage() {
         <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{t("benchmarks.subtitle")}</p>
       </header>
       <BenchmarksClient products={products} locale={LOCALE} />
+      {/* Sponsor, below the reference table only. Reference pages earn trust by
+          not selling the content itself; the ad sits after it, clearly separate. */}
+      <div className="mt-6">
+        <BytekAd variant="strip" locale={LOCALE} placement="en-benchmarks-bottom" />
+      </div>
     </main>
   );
 }

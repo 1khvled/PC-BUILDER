@@ -457,6 +457,21 @@ export default async function EnglishProductPage({ params }: { params: { id: str
               {t("product.footNote", { date: day })}
             </p>
           </div>
+          {/* Buy-box cross-sell: a text link, not a banner. The buy box already
+              answers price/store/stock; this only offers the peripherals that
+              complete the setup, below the footnote so it never competes with
+              the purchase decision itself. */}
+          <a
+            href="https://bytekstore.shop/?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=sponsor&utm_content=en-product-buybox"
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="block rounded-lg border border-indigo-200/70 bg-indigo-50/50 px-3 py-2 text-[11px] leading-relaxed text-slate-600 transition-colors hover:border-indigo-300 hover:bg-indigo-50"
+          >
+            <span className="mr-1.5 rounded bg-indigo-500/15 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-widest text-indigo-600">
+              {t("ad.sponsor")}
+            </span>
+            {t("ad.buybox")}
+          </a>
         </div>
       </div>
     </main>

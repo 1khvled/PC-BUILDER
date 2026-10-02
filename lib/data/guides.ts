@@ -208,9 +208,9 @@ export const GUIDES: Guide[] = [
     ],
   },
   {
-  slug: "config-pc-170k-da",
-  title: "Un PC de jeu à 170 000 DA qui est réellement équilibré",
-  hook: "La liste ci-dessous coûte 169 600 DA aujourd'hui. Voici où part chaque dinar, quelles lignes peuvent être réduites sans conséquences, et celle qu'il ne faut pas toucher.",
+  slug: "config-pc-230k-da",
+  title: "Un PC de jeu à 230 000 DA qui est réellement équilibré",
+  hook: "Huit pièces choisies pour atterrir près de 230 000 DA, avec le raisonnement derrière chacune. Le total en direct est en haut de cette page et bouge chaque jour : ce qui suit est le raisonnement, pas le calcul.",
   kind: "build",
   topic: { fr: "Build complet", en: "Full build" },
   readMin: 5,
@@ -235,7 +235,7 @@ export const GUIDES: Guide[] = [
     {
       h: "La répartition, ligne par ligne",
       p: [
-        "La carte graphique représente 55 000 sur 169 600, soit 32%. Le processeur et la carte mère ensemble valent 46 900, soit 28%. Tout le reste - mémoire, stockage, refroidissement, boîtier, alimentation - occupe les 40% restants.",
+        "La carte graphique représente environ un tiers de cette configuration. Le processeur et la carte mère ensemble valent un peu moins d'un autre tiers. Tout le reste - mémoire, stockage, refroidissement, boîtier, alimentation - occupe le solde.",
         "Ce ratio est tout l'argument. Une configuration 1080p équilibrée met environ un tiers de son budget dans la carte graphique et un quart dans la plateforme, car ce sont les deux pièces qui décident si la machine paraît rapide. Le tiers restant est là où les gens paient trop sans s'en rendre compte.",
       ],
     },
@@ -250,7 +250,7 @@ export const GUIDES: Guide[] = [
     {
       h: "Où économiser coûte la machine",
       p: [
-        "L'alimentation. C'est la seule ligne qui n'a pas de plancher acceptable. Le 7500F et la RX 6600 XT tirent environ 300 W ensemble, et les cartes récentes demandent de brèves pointes de tension au démarrage qu'une alimentation sans marque ne fournit pas. Le 650W Gold ci-dessus coûte 7 900 DA, et aucune unité moins chère dans cette configuration ne vaut le risque d'emballer la carte mère avec.",
+        "L'alimentation. C'est la seule ligne qui n'a pas de plancher acceptable. Le 7500F et la RX 6600 XT tirent environ 300 W ensemble, et les cartes récentes demandent de brèves pointes de tension au démarrage qu'une alimentation sans marque ne fournit pas. Un 650W Gold est le bon format, et aucune unité moins chère ne vaut le risque d'emballer la carte mère avec.",
         "Le stockage. Le NVMe de 1 To est la ligne la moins spectaculaire et celle qui provoque le plus de regrets. Les jeux récents occupent de 80 à 150 Go chacun. Un disque de 512 Go est plein en un an d'usage normal, et vous supprimez alors des jeux pour faire de la place.",
       ],
     },
