@@ -64,7 +64,7 @@ function getArg(flag, defaultValue = null) {
 }
 const hasFlag = (flag) => argv.includes(flag);
 
-const MAX_AGE_DAYS = parseInt(getArg("--max-days", "30"), 10);
+const MAX_AGE_DAYS = parseInt(getArg("--max-days", "90"), 10); // 3 months
 const LIMIT_STORES = getArg("--limit") ? parseInt(getArg("--limit"), 10) : Infinity;
 const ONLY_STORES = getArg("--stores") ? getArg("--stores").split(",").map(s => s.trim()) : [];
 const AUTO_PUSH = hasFlag("--push");
@@ -80,7 +80,7 @@ function normalizeAnnouncement(a, queryLabel = "sweep") {
   const st = String(a.status || "").toUpperCase();
   if (st && st !== "PUBLISHED" && st !== "ACTIVE" && st !== "EDITED") return null;
 
-  // Strict Freshness: reject deals older than MAX_AGE_DAYS (30 days default)
+  // Strict Freshness: reject deals older than MAX_AGE_DAYS (90 days / 3 months default)
   const postDate = a.refreshedAt || a.createdAt;
   if (!postDate) return null;
   const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
@@ -269,7 +269,7 @@ async function main() {
 
   const initialCount = full.report["ouedkniss:all"].length;
 
-  // Prune any legacy offers in full.json older than 30 days
+  // Prune any legacy offers in full.json older than 3 months (90 days)
   const nowMs = Date.now();
   const maxMs = MAX_AGE_DAYS * 24 * 60 * 60 * 1000;
   const freshExisting = full.report["ouedkniss:all"].filter(o => {
