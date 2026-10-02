@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import HomeRecentStrip from "@/components/HomeRecentStrip";
+import CurrencyConverter from "@/components/CurrencyConverter";
 import Link from "next/link";
 import { CATEGORIES, bestOffer, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
@@ -352,6 +353,10 @@ export default async function EnglishHome() {
             </Link>
           </section>
         </div>
+
+        {/* USD→DA at the parallel rate. Sellers quote in dollars; the site prices
+            in dinars. Without this the buyer does the multiplication by hand. */}
+        <CurrencyConverter locale={LOCALE} />
       </div>
     </main>
   );

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import HomeRecentStrip from "@/components/HomeRecentStrip";
+import CurrencyConverter from "@/components/CurrencyConverter";
 import { CATEGORIES, bestOffer, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { LIVE_EXTRA } from "@/lib/data/live";
@@ -376,6 +377,8 @@ export default async function Home() {
             </Link>
           </section>
         </div>
+
+        <CurrencyConverter locale="fr" />
       </div>
     </main>
   );
