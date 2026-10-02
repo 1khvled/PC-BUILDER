@@ -121,6 +121,14 @@ export default async function ProductPage({ params }: { params: { id: string } }
     live: liveOffers.length > 0,
   } : null;
 
+  const lowestUsedOffer = statsPool.find((o) => o.condition === "used");
+  const hasCheaperUsed = Boolean(
+    best &&
+    best.condition === "new" &&
+    lowestUsedOffer &&
+    lowestUsedOffer.priceDa < best.priceDa
+  );
+
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-8">
       <RecordVisit productId={product.id} />
@@ -296,7 +304,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
               above the offers table where purchase intent is highest. */}
           <BytekAd variant="strip" locale="fr" placement="fr-product-offers" />
           {/* Dynamic Sortable Offers Table */}
-          <section className="space-y-3">
+          <section id="offers" className="space-y-3 scroll-mt-24">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-lg font-bold text-slate-900 tracking-tight">
                 Comparatif des prix marchands en Algérie
@@ -357,7 +365,13 @@ export default async function ProductPage({ params }: { params: { id: string } }
             {/* Header / Price */}
             <div>
               <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                {allRuptured ? "Dernier tarif constaté (Épuisé)" : "Meilleur tarif constaté"}
+                {allRuptured
+                  ? "Dernier tarif constaté (Épuisé)"
+                  : hasCheaperUsed
+                  ? "Meilleur prix neuf constaté"
+                  : best?.condition === "used"
+                  ? "Meilleur prix occasion"
+                  : "Meilleur tarif constaté"}
               </div>
               {best ? (
                 <>
@@ -379,13 +393,21 @@ export default async function ProductPage({ params }: { params: { id: string } }
                       {isRuptured(best) ? "✕ Rupture" : "✓ En stock"}
                     </span>
                   </div>
+                  {hasCheaperUsed && lowestUsedOffer && (
+                    <div className="mt-2 text-xs text-amber-800 dark:text-amber-200 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded p-2.5 flex items-center justify-between">
+                      <span className="font-semibold">Occasion disponible dès {lowestUsedOffer.priceDa.toLocaleString("fr-DZ")} DA</span>
+                      <a href="#offers" className="font-bold text-amber-900 dark:text-amber-100 underline hover:text-[#2c87c3] shrink-0 ml-2">
+                        Voir offres ↓
+                      </a>
+                    </div>
+                  )}
                   {isRuptured(best) && (
                     <div className="text-xs text-rose-700 font-bold mt-2 bg-rose-50 border border-rose-200 rounded p-2.5 flex items-start gap-1.5">
                       <span className="shrink-0">✕</span>
                       <span>Offre constatée en rupture de stock par le marchand.</span>
                     </div>
                   )}
-                  {best.condition === "used" && (
+                  {best.condition === "used" && !hasCheaperUsed && (
                     <div className="text-xs text-amber-700 font-semibold mt-1.5">
                       Offre d'occasion — exigez test + facture (voir guide Ouedkniss).
                     </div>
@@ -429,10 +451,23 @@ export default async function ProductPage({ params }: { params: { id: string } }
             {/* Price Range Comparison info */}
             {priceStats && priceStats.diff > 0 && (
               <div className="p-3.5 rounded bg-slate-50 border border-slate-200/80 text-xs space-y-1.5">
-                <div className="flex justify-between text-slate-600">
-                  <span>Prix le plus bas :</span>
-                  <b className="text-emerald-700">{priceStats.min.toLocaleString("fr-DZ")} DA</b>
-                </div>
+                {hasCheaperUsed && best ? (
+                  <>
+                    <div className="flex justify-between text-slate-600">
+                      <span>Prix le plus bas (neuf) :</span>
+                      <b className="text-emerald-700">{best.priceDa.toLocaleString("fr-DZ")} DA</b>
+                    </div>
+                    <div className="flex justify-between text-slate-600">
+                      <span>Prix le plus bas (occasion) :</span>
+                      <b className="text-amber-700">{priceStats.min.toLocaleString("fr-DZ")} DA</b>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex justify-between text-slate-600">
+                    <span>Prix le plus bas :</span>
+                    <b className="text-emerald-700">{priceStats.min.toLocaleString("fr-DZ")} DA</b>
+                  </div>
+                )}
                 <div className="flex justify-between text-slate-600">
                   <span>Prix le plus haut :</span>
                   <b className="text-slate-800">{priceStats.max.toLocaleString("fr-DZ")} DA</b>

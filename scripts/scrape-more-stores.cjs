@@ -59,8 +59,8 @@ const QUERY = `query SearchQuery($q: String, $filter: SearchFilterInput) {
 let STORES = [];
 try {
   const discovered = JSON.parse(fs.readFileSync('scripts/discovered-stores.json', 'utf8'));
-  // Take top 80 stores across Algerian wilayas
-  STORES = discovered.slice(0, 80).map(s => ({ id: s.id, name: s.name, wilaya: s.wilaya }));
+  // Target stores 80 to 200 across Algerian wilayas (120 stores)
+  STORES = discovered.slice(80, 200).map(s => ({ id: s.id, name: s.name, wilaya: s.wilaya }));
 } catch {
   console.log("Could not load discovered-stores.json, using fallback.");
   STORES = [
@@ -101,26 +101,37 @@ async function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-async function queryStoreAnnouncements(storeId, page = 1) {
-  try {
-    const res = await fetch(GRAPHQL_ENDPOINT, {
-      method: "POST",
-      headers: HEADERS,
-      body: JSON.stringify({
-        query: QUERY,
-        variables: {
-          filter: {
-            storeId: parseInt(storeId, 10),
-            page,
-            count: 48
+async function queryStoreAnnouncements(storeId, page = 1, retries = 2) {
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const res = await fetch(GRAPHQL_ENDPOINT, {
+        method: "POST",
+        headers: HEADERS,
+        body: JSON.stringify({
+          query: QUERY,
+          variables: {
+            filter: {
+              storeId: parseInt(storeId, 10),
+              page,
+              count: 48
+            }
           }
+        })
+      });
+      if (res.status === 429) {
+        await sleep(2000);
+        continue;
+      }
+      if (!res.ok) {
+        if (attempt < retries - 1) {
+          await sleep(1000);
+          continue;
         }
-      })
-    });
-    if (!res.ok) return { offers: [], hasMore: false };
-    const json = await res.json();
-    const paginator = json?.data?.search?.announcements?.paginatorInfo;
-    const items = json?.data?.search?.announcements?.data || [];
+        return { offers: [], hasMore: false };
+      }
+      const json = await res.json();
+      const paginator = json?.data?.search?.announcements?.paginatorInfo;
+      const items = json?.data?.search?.announcements?.data || [];
 
     const offers = items.map((a) => {
       if (!a || !a.id) return null;
@@ -179,10 +190,16 @@ async function queryStoreAnnouncements(storeId, page = 1) {
       offers,
       hasMore: Boolean(paginator && paginator.hasMorePages)
     };
-  } catch (err) {
-    console.error(`  Error querying storeId ${storeId} p${page}:`, err.message);
-    return { offers: [], hasMore: false };
+    } catch (err) {
+      if (attempt < retries - 1) {
+        await sleep(1000);
+        continue;
+      }
+      console.error(`  Error querying storeId ${storeId} p${page}:`, err.message);
+      return { offers: [], hasMore: false };
+    }
   }
+  return { offers: [], hasMore: false };
 }
 
 // Scrape standalone Blida Computer store (WooCommerce API)
@@ -281,7 +298,7 @@ async function run() {
     let storeAdded = 0;
     let storeRefreshed = 0;
 
-    for (let page = 1; page <= 2; page++) {
+    for (let page = 1; page <= 3; page++) {
       const { offers, hasMore } = await queryStoreAnnouncements(store.id, page);
       for (const off of offers) {
         if (!existingUrlMap.has(off.url)) {

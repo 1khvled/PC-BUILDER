@@ -501,7 +501,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               return (
                 <div
                   key={p.id}
-                  className={`rounded-xl p-4 border flex flex-col justify-between group transition-all hover:shadow-card-hover hover:-translate-y-0.5 ${
+                  className={`rounded-xl p-4 border flex flex-col justify-between overflow-hidden group transition-all hover:shadow-card-hover hover:-translate-y-0.5 ${
                     isRupturedProduct
                       ? "bg-slate-50/70 border-rose-200/90 hover:border-rose-300"
                       : "bg-white border-slate-200/90 hover:border-[#2c87c3]/60 shadow-card"
@@ -581,47 +581,46 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                   </div>
 
                   {/* Pricing and Action Footer */}
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-end justify-between gap-2">
-                    <div>
-                      <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">
-                        {isRupturedProduct ? t("common.lastKnownPrice") : t("common.from")}
-                      </span>
-                      {best ? (
-                        <>
+                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <div>
+                        <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">
+                          {isRupturedProduct ? t("common.lastKnownPrice") : t("common.from")}
+                        </span>
+                        {best ? (
                           <div
-                            className={`text-base font-extrabold tracking-tight tabular-nums ${
-                              isRupturedProduct ? "text-slate-400 line-through" : "text-emerald-700"
+                            className={`text-base sm:text-lg font-extrabold tracking-tight tabular-nums ${
+                              isRupturedProduct ? "text-slate-400 line-through" : "text-emerald-700 dark:text-emerald-400"
                             }`}
                           >
                             {formatPrice(best.priceDa, locale)}
                           </div>
-                          <div
-                            className={`text-[11px] truncate max-w-[170px] ${
-                              isRupturedProduct ? "text-rose-600 font-semibold" : "text-slate-500"
-                            }`}
-                          >
-                            {isRupturedProduct ? (
-                              <span>{t("category.outOfStockAtStore", { store: best.store })}</span>
-                            ) : (
-                              <span>
-                                {t("common.at")} <b className="text-slate-700">{best.store}</b> ({best.wilaya})
-                              </span>
-                            )}
-                          </div>
-                        </>
-                      ) : (
-                        <div className="text-xs text-rose-500 font-medium italic">{t("category.offersExhausted")}</div>
+                        ) : (
+                          <div className="text-xs text-rose-500 font-medium italic">{t("category.offersExhausted")}</div>
+                        )}
+                      </div>
+                      {best && (
+                        <div className="text-right text-[11px] truncate max-w-[170px] text-slate-500 dark:text-slate-400">
+                          {isRupturedProduct ? (
+                            <span className="text-rose-600 dark:text-rose-400 font-semibold">{t("category.outOfStockAtStore", { store: best.store })}</span>
+                          ) : (
+                            <>
+                              {t("common.at")} <b className="text-slate-700 dark:text-slate-200">{best.store}</b>
+                              <span className="text-slate-400 block text-[10px]">({best.wilaya})</span>
+                            </>
+                          )}
+                        </div>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-1.5 shrink-0">
+                    <div className="flex items-center gap-1.5 pt-1">
                       <CompareToggle productId={p.id} locale={locale} />
                       <Link
                         href={href(`/builder?add=${p.category}:${p.id}`)}
-                        className={`px-3 py-2.5 min-h-[44px] rounded-lg border text-xs font-semibold transition-colors flex items-center ${
+                        className={`px-2.5 py-1.5 min-h-[36px] rounded-lg border text-xs font-semibold transition-colors flex items-center shrink-0 ${
                           isRupturedProduct
-                            ? "border-rose-200 text-rose-700 hover:bg-rose-50"
-                            : "border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-700"
+                            ? "border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400"
+                            : "border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-700 dark:border-slate-700 dark:text-slate-300"
                         }`}
                         title={isRupturedProduct ? t("category.addBuilderBrokenTitle") : t("common.addToBuilder")}
                       >
@@ -629,10 +628,10 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                       </Link>
                       <Link
                         href={href(`/product/${p.id}`)}
-                        className={`px-3.5 py-2.5 min-h-[44px] rounded-lg text-white font-semibold text-xs transition-colors flex items-center gap-1 ${
+                        className={`flex-1 px-3 py-1.5 min-h-[36px] rounded-lg text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1 text-center shrink-0 ${
                           isRupturedProduct
                             ? "bg-rose-600 hover:bg-rose-700"
-                            : "bg-slate-900 hover:bg-[#2c87c3]"
+                            : "bg-slate-900 hover:bg-[#2c87c3] dark:bg-slate-700 dark:hover:bg-[#2c87c3]"
                         }`}
                       >
                         <span>{isRupturedProduct ? t("common.details") : t("common.viewOffers")}</span>

@@ -127,6 +127,14 @@ export default async function EnglishProductPage({ params }: { params: { id: str
     live: liveOffers.length > 0,
   } : null;
 
+  const lowestUsedOffer = statsPool.find((o) => o.condition === "used");
+  const hasCheaperUsed = Boolean(
+    best &&
+    best.condition === "new" &&
+    lowestUsedOffer &&
+    lowestUsedOffer.priceDa < best.priceDa
+  );
+
   const day = scrapedAt.slice(0, 10);
 
   return (
@@ -308,7 +316,7 @@ export default async function EnglishProductPage({ params }: { params: { id: str
           </section>
 
           {/* Dynamic Sortable Offers Table */}
-          <section className="space-y-3">
+          <section id="offers" className="space-y-3 scroll-mt-24">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-lg font-bold text-slate-900 tracking-tight">
                 {t("product.compareTitle")}
@@ -361,7 +369,13 @@ export default async function EnglishProductPage({ params }: { params: { id: str
             {/* Header / Price */}
             <div>
               <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                {allRuptured ? t("product.lastPriceLabel") : t("product.bestLabel")}
+                {allRuptured
+                  ? t("product.lastPriceLabel")
+                  : hasCheaperUsed
+                  ? t("product.bestNewPriceLabel")
+                  : best?.condition === "used"
+                  ? t("product.bestUsedPriceLabel")
+                  : t("product.bestLabel")}
               </div>
               {best ? (
                 <>
@@ -383,13 +397,21 @@ export default async function EnglishProductPage({ params }: { params: { id: str
                       {isRuptured(best) ? `✕ ${t("common.outOfStock")}` : `✓ ${t("common.inStock")}`}
                     </span>
                   </div>
+                  {hasCheaperUsed && lowestUsedOffer && (
+                    <div className="mt-2 text-xs text-amber-800 dark:text-amber-200 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded p-2.5 flex items-center justify-between">
+                      <span className="font-semibold">{t("product.usedFrom", { price: formatPrice(lowestUsedOffer.priceDa, LOCALE) })}</span>
+                      <a href="#offers" className="font-bold text-amber-900 dark:text-amber-100 underline hover:text-[#2c87c3] shrink-0 ml-2">
+                        {t("common.viewOffers")} ↓
+                      </a>
+                    </div>
+                  )}
                   {isRuptured(best) && (
                     <div className="text-xs text-rose-700 font-bold mt-2 bg-rose-50 border border-rose-200 rounded p-2.5 flex items-start gap-1.5">
                       <span className="shrink-0">✕</span>
                       <span>{t("product.ruptureNote")}</span>
                     </div>
                   )}
-                  {best.condition === "used" && (
+                  {best.condition === "used" && !hasCheaperUsed && (
                     <div className="text-xs text-amber-700 font-semibold mt-1.5">
                       {t("product.usedNote")}
                     </div>
@@ -433,10 +455,23 @@ export default async function EnglishProductPage({ params }: { params: { id: str
             {/* Price Range Comparison info */}
             {priceStats && priceStats.diff > 0 && (
               <div className="p-3.5 rounded bg-slate-50 border border-slate-200/80 text-xs space-y-1.5">
-                <div className="flex justify-between text-slate-600">
-                  <span>{t("product.rangeLow")}</span>
-                  <b className="text-emerald-700">{formatPrice(priceStats.min, LOCALE)}</b>
-                </div>
+                {hasCheaperUsed && best ? (
+                  <>
+                    <div className="flex justify-between text-slate-600">
+                      <span>{t("product.rangeLowNew")}</span>
+                      <b className="text-emerald-700">{formatPrice(best.priceDa, LOCALE)}</b>
+                    </div>
+                    <div className="flex justify-between text-slate-600">
+                      <span>{t("product.rangeLowUsed")}</span>
+                      <b className="text-amber-700">{formatPrice(priceStats.min, LOCALE)}</b>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex justify-between text-slate-600">
+                    <span>{t("product.rangeLow")}</span>
+                    <b className="text-emerald-700">{formatPrice(priceStats.min, LOCALE)}</b>
+                  </div>
+                )}
                 <div className="flex justify-between text-slate-600">
                   <span>{t("product.rangeHigh")}</span>
                   <b className="text-slate-800">{formatPrice(priceStats.max, LOCALE)}</b>

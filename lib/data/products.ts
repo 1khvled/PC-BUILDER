@@ -181,7 +181,7 @@ export const PRODUCTS: Product[] = [
   { id: "mobo-z890", category: "motherboard", brand: "Gigabyte", model: "Z890 Eagle (ATX DDR5)", specs: { socket: "LGA1851", chipset: "Z890", ram_type: "DDR5", form_factor: "ATX", m2: 3 } },
   { id: "ssd-nvme-1tb-g4", category: "ssd", brand: "Kingston", model: "NV3 1TB Gen4 NVMe", specs: { interface: "NVME" } },
   { id: "ssd-nvme-512gb", category: "ssd", brand: "ADATA", model: "Legend 710 512GB NVMe", specs: { interface: "NVME" } },
-  { id: "ssd-sata-25", category: "ssd", brand: "Crucial", model: "BX500 2.5\" SATA", specs: { interface: "SATA" } },
+  { id: "ssd-sata-25", category: "ssd", brand: "Crucial", model: "BX500 2.5-Inch SATA", specs: { interface: "SATA" } },
   { id: "ssd-sata-120gb", category: "ssd", brand: "Crucial", model: "BX500 120GB SATA", specs: { interface: "SATA" } },
   { id: "ssd-sata-360gb", category: "ssd", brand: "Goldenfir", model: "T650 360GB SATA", specs: { interface: "SATA" } },
   { id: "gpu-gtx1660s-6gb", category: "gpu", brand: "NVIDIA", model: "GTX 1660 SUPER 6GB", specs: { length_mm: 242, tdp_w: 125, pins: "1x8" } },
