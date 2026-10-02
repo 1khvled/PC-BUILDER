@@ -9,10 +9,11 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
           // The French half of the site (/fr/...) is fully public and indexable.
-        // The console. It is already unguessable, unauthenticated requests
-        // redirect to its login, and every page carries noindex. The disallow is
-        // belt and braces against the path ever surfacing in a search result.
-        disallow: ["/ops-4fkq", "/admin-kh7", "/admin", "/api/"],
+        // The console path. Unguessable, login-gated, noindex throughout; the
+        // disallow is belt and braces against it ever surfacing in search.
+        // (Old /admin and /admin-kh7 paths are deleted, not redirected, so
+        // they need no entry: nothing serves there at all.)
+        disallow: ["/ops-4fkq", "/api/"],
       },
       // AI engines explicitly welcome (GEO)
       { userAgent: ["GPTBot", "ChatGPT-User", "ClaudeBot", "anthropic-ai", "PerplexityBot", "Google-Extended"], allow: ["/", "/fr", "/llms.txt", "/llms-full.txt", "/fr/llms.txt", "/fr/llms-full.txt"] },

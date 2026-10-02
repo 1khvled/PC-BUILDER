@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CATEGORIES } from "@/lib/data/products";
+import { CATEGORIES, minOf } from "@/lib/data/products";
 import { getOffers, getProducts } from "@/lib/data/catalog";
 import CategoryCatalogClient from "@/components/CategoryCatalogClient";
 import BytekAd from "@/components/BytekAd";
@@ -120,11 +120,14 @@ export default async function EnglishCategoryPage({ params }: { params: { slug: 
           slug: params.slug,
           products: products.filter((p) => p.category === params.slug).length,
           cheapest: (() => {
-            const inCat = offers.filter((o) =>
-              products.some((p) => p.id === o.productId && p.category === params.slug),
+            // Set lookup, not products.some per offer: the old form scanned the
+            // whole catalogue once per offer (O(offers x products)).
+            const inCat = new Set(
+              products.filter((p) => p.category === params.slug).map((p) => p.id),
             );
-            if (!inCat.length) return "no live price";
-            const m = Math.min(...inCat.map((o) => o.priceDa));
+            const prices = offers.filter((o) => inCat.has(o.productId)).map((o) => o.priceDa);
+            const m = minOf(prices);
+            if (m == null) return "no live price";
             return `${m.toLocaleString("en-US")} DA`;
           })(),
           locale: LOCALE,

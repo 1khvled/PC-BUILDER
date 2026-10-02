@@ -9,7 +9,7 @@ import type { TFn } from "@/lib/i18n/runtime";
 /**
  * Public route prefixes that exist in both languages. English now owns the
  * unprefixed URLs and French lives under /fr, so a mirrored path is one of these
- * segments. Anything else (e.g. /admin-kh7, /api/*) has no counterpart, so the
+ * segments. Anything else (e.g. /api/*) has no counterpart, so the
    */
   const MIRRORED_PREFIXES = ["", "/builder", "/category", "/product", "/deals", "/guides", "/prebuilds"];
 

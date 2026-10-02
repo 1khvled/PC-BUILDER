@@ -4,7 +4,7 @@ import BytekAd from "@/components/BytekAd";
 import AskAI from "@/components/AskAI";
 import { categoryPrompt } from "@/lib/ai/prompt";
 import { notFound } from "next/navigation";
-import { CATEGORIES } from "@/lib/data/products";
+import { CATEGORIES, minOf } from "@/lib/data/products";
 import { getOffers, getProducts } from "@/lib/data/catalog";
 import CategoryCatalogClient from "@/components/CategoryCatalogClient";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
@@ -104,11 +104,12 @@ export default async function CategoryPage({ params }: { params: { slug: string 
           slug: params.slug,
           products: products.filter((p) => p.category === params.slug).length,
           cheapest: (() => {
-            const inCat = offers.filter((o) =>
-              products.some((p) => p.id === o.productId && p.category === params.slug),
+            const inCat = new Set(
+              products.filter((p) => p.category === params.slug).map((p) => p.id),
             );
-            if (!inCat.length) return "aucun prix en direct";
-            const m = Math.min(...inCat.map((o) => o.priceDa));
+            const prices = offers.filter((o) => inCat.has(o.productId)).map((o) => o.priceDa);
+            const m = minOf(prices);
+            if (m == null) return "aucun prix en direct";
             return `${m.toLocaleString("en-US")} DA`;
           })(),
           locale: "fr",

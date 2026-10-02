@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import RecordVisit from "@/components/RecordVisit";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { bestOffer, isRuptured, productImage } from "@/lib/data/products";
+import { bestOffer, isRuptured, minOf, productImage } from "@/lib/data/products";
 import { getOffers, getPriceHistory, getProduct, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import ProductOffersTable from "@/components/ProductOffersTable";
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 
   const allOffers = await getOffers();
   const offers = allOffers.filter((o) => o.productId === product.id && !isRuptured(o));
-  const minPrice = offers.length > 0 ? Math.min(...offers.map((o) => o.priceDa)) : null;
+  const minPrice = minOf(offers.map((o) => o.priceDa));
 
   const name = `${product.brand} ${product.model}`;
   const title = minPrice

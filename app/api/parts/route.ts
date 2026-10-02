@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { bestOffer, type Product } from "@/lib/data/products";
+import { bestOffer, minOf, type Product } from "@/lib/data/products";
 import { getOffers, getPriceHistory, getProducts } from "@/lib/data/catalog";
 
 export const dynamic = "force-dynamic";
@@ -59,8 +59,8 @@ export async function GET(req: Request) {
         bestWilaya: best ? best.wilaya : null,
         // Cheapest point in the trailing window, which is a fairer "was it
         // cheaper before?" baseline than the price exactly 90 days ago.
-        price90: older.length ? Math.min(...older.map((h) => h.price)) : null,
-        historyLow: history.length ? Math.min(...history.map((h) => h.price)) : null,
+        price90: older.length ? minOf(older.map((h) => h.price)) : null,
+        historyLow: history.length ? minOf(history.map((h) => h.price)) : null,
       },
     ];
   });

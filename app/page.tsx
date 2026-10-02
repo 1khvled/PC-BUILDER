@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import HomeRecentStrip from "@/components/HomeRecentStrip";
 import CurrencyConverter from "@/components/CurrencyConverter";
 import Link from "next/link";
-import { CATEGORIES, bestOffer, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
+import { CATEGORIES, bestOffer, minOf, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { LIVE_EXTRA } from "@/lib/data/live";
 import { listGuides } from "@/lib/data/guides-en";
@@ -273,7 +273,7 @@ export default async function EnglishHome() {
             {CATEGORIES.map((c) => {
               const items = products.filter((p) => p.category === c.slug);
               const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
-              const minPrice = prices.length ? Math.min(...prices) : null;
+              const minPrice = minOf(prices);
               const extraN = LIVE_EXTRA.filter((e) => e.category === c.slug).length;
 
               return (

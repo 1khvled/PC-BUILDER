@@ -1,0 +1,54 @@
+# Logic sweep + audits, every 48 hours and on demand.
+#
+# Runs the full gate set: the logic sweep (spread/ceiling/scan/sort/orphan
+# rules), the perf + compat verification, the guide audit and the dictionary
+# lint, plus a typecheck. Any failure notifies via the Actions UI and email
+# (repo notification settings). Manual runs available from the Actions tab.
+#
+# 48h, not daily: offer snapshots and the parallel FX rate move on a scale of
+# days, and daily runs would mostly re-report the same price drift. Pushes to
+# main still verify everything immediately through this same job.
+
+name: sweep
+
+on:
+  schedule:
+    # 05:00 UTC every 2nd day (01, 03, 05 ... of each month)
+    - cron: "0 5 */2 * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "lib/**"
+      - "components/**"
+      - "app/**"
+      - "scripts/**"
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: types
+        run: npx tsc --noEmit -p tsconfig.json
+
+      - name: logic sweep
+        run: node scripts/sweep-logic.cjs
+
+      - name: perf + compat verification
+        run: node scripts/check-perf.cjs
+
+      - name: guide audit
+        run: node scripts/check-guides.mjs
+
+      - name: dictionary lint
+        run: node scripts/check-dict.mjs

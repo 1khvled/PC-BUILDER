@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { isRuptured, type Offer } from "@/lib/data/products";
+import { isRuptured, maxOf, minOf, type Offer } from "@/lib/data/products";
 import { DEFAULT_LOCALE, formatNumber, formatPrice, type Locale } from "@/lib/i18n/config";
 import { makeT, stockLabel, type TKey } from "@/lib/i18n/runtime";
 import Thumb from "./Thumb";
@@ -117,10 +117,10 @@ const handleSort = (field: SortField) => {
   const stats = useMemo(() => {
     if (statsBase.list.length === 0) return null;
     const prices = statsBase.list.map((o) => o.priceDa);
-    const min = Math.min(...prices);
+    const min = minOf(prices) ?? 0;
     const sorted = [...prices].sort((a, b) => a - b);
     const avg = sorted[Math.floor(sorted.length / 2)]; // médiane
-    const max = Math.max(...prices);
+    const max = maxOf(prices) ?? 0;
     return { min, avg, max };
   }, [statsBase]);
 

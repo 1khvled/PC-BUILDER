@@ -528,6 +528,27 @@ export function bestOffer(productId: string, offers: Offer[] = OFFERS): Offer | 
   )[0];
 }
 
+/**
+ * Min/max without spreading onto the call stack.
+ *
+ * Math.min(...prices) throws RangeError past ~125k arguments. Every call site
+ * today passes tens of values, but offer and history arrays only grow, so the
+ * safe form is used everywhere instead of trusting that stays true. Returns
+ * null on empty input rather than Infinity (the Math.min default, which
+ * silently poisons downstream arithmetic).
+ */
+export function minOf(values: number[]): number | null {
+  let min = Infinity;
+  for (const v of values) if (v < min) min = v;
+  return min === Infinity ? null : min;
+}
+
+export function maxOf(values: number[]): number | null {
+  let max = -Infinity;
+  for (const v of values) if (v > max) max = v;
+  return max === -Infinity ? null : max;
+}
+
 export interface PricePoint {
   day: string;
   store: string;

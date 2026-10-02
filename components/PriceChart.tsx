@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { Offer, PricePoint } from "@/lib/data/products";
+import { maxOf, minOf } from "@/lib/data/products";
 import { formatNumber, type Locale } from "@/lib/i18n/config";
 import StoreLogo from "./StoreLogo";
 import { useI18n } from "@/lib/i18n/client";
@@ -69,8 +70,8 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
     const allPrices = points.length > 0 ? points.map((p) => p.price) : currentOffers.map((o) => o.priceDa);
     if (allPrices.length === 0) return null;
 
-    const min = Math.min(...allPrices);
-    const max = Math.max(...allPrices);
+    const min = minOf(allPrices) ?? 0;
+    const max = maxOf(allPrices) ?? 0;
     const sum = allPrices.reduce((acc, v) => acc + v, 0);
     const avg = Math.round(sum / allPrices.length);
 
@@ -85,8 +86,8 @@ export default function PriceChart({ points, currentOffers = [] }: PriceChartPro
       const newestPrices = points.filter((p) => p.day === newestDay).map((p) => p.price);
 
       if (oldestPrices.length > 0 && newestPrices.length > 0) {
-        const oldMin = Math.min(...oldestPrices);
-        const newMin = Math.min(...newestPrices);
+        const oldMin = minOf(oldestPrices) ?? 0;
+        const newMin = minOf(newestPrices) ?? 0;
         const diff = newMin - oldMin;
         trendPct = Math.round((Math.abs(diff) / oldMin) * 100);
 
