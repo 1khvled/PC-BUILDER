@@ -12,7 +12,7 @@ import { absoluteUrl, localizedPath } from "@/lib/i18n/config";
  * the two versions of every page. The French sitemap (/fr/sitemap.xml) carries the
  * same alternates on the French URLs.
  */
-const STATIC_ROUTES = ["", "/builder", "/prebuilds", "/guides", "/deals"];
+const STATIC_ROUTES = ["", "/builder", "/prebuilds", "/guides", "/deals", "/drops"];
 
 function withAlternates(path: string, priority: number, changeFrequency: "daily" | "weekly" = "daily") {
   const fr = absoluteUrl(localizedPath(path, "fr"));

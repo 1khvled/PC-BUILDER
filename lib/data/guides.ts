@@ -354,14 +354,14 @@ export const GUIDES: Guide[] = [
         h: "Pourquoi un processeur AVEC graphique intégré",
         p: [
           "La plupart des processeurs récents existent en deux variantes, et la lettre F signifie « sans graphique intégré ». Une telle puce ne sort rien du tout sans carte : écran noir, pas même le BIOS. C'est exactement pour cela qu'on choisit ici un APU comme le Ryzen 3 3200G : son GPU Vega intégré sort le signal vidéo et suffit largement à un poste de travail.",
-          "Un i5-12400F à 33 900 DA aurait exigé une carte graphique à 32 900 DA de plus pour seulement fonctionner. Ce raccourci coûte 66 800 DA de plus que le 3200G seul, pour un gain de performance qui n'existe pas en bureautique. C'est de loin le premier poste où il faut économiser.",
+          "Un i5-12400F aurait exigé une carte graphique en plus pour seulement fonctionner : le processeur plus la carte la moins chère du tableau, pour un gain de performance qui n'existe pas en bureautique. C'est de loin le premier poste où il faut économiser.",
         ],
       },
       {
         h: "Où faire les économies, et où ne pas les faire",
         p: [
           "Deux postes absorbent une économie légitime. Le boîtier : un Antec NX400 coûte nettement moins cher qu'un Corsair 4000D et fait le même travail pour cette taille de carte. Et la mémoire : 16 Go est le minimum acceptable, mais un seul kit suffit, pas 2 x 16 Go.",
-          "Un poste ne doit pas être économisé, c'est le SSD. Un 512 Go NVMe à 14 500 DA coûte 5 600 DA de plus qu'un 240 Go SATA à 8 900 DA, et c'est la différence la plus visible de toute la machine : démarrage, ouverture d'un navigateur, mise à jour de Windows. Sur un poste bureautique, le SSD est roi, la mémoire vient ensuite, et le CPU est largement suffisant.",
+          "Un poste ne doit pas être économisé, c'est le SSD. Un 512 Go NVMe coûte à peine plus cher qu'un 240 Go SATA dans le tableau ci-dessus, et c'est la différence la plus visible de toute la machine : démarrage, ouverture d'un navigateur, mise à jour de Windows. Sur un poste bureautique, le SSD est roi, la mémoire vient ensuite, et le CPU est largement suffisant.",
         ],
       },
       {

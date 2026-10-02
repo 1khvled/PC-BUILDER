@@ -10,6 +10,7 @@ import { categoryLabel } from "@/lib/i18n/categories";
 import { makeT, pluralSuffix } from "@/lib/i18n/runtime";
 import Thumb from "./Thumb";
 import EmptyState from "./EmptyState";
+import { CompareToggle, CompareTray } from "./CompareTray";
 
 interface CategoryCatalogClientProps {
   slug: string;
@@ -614,6 +615,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
+                      <CompareToggle productId={p.id} locale={locale} />
                       <Link
                         href={href(`/builder?add=${p.category}:${p.id}`)}
                         className={`px-3 py-2.5 min-h-[44px] rounded-lg border text-xs font-semibold transition-colors flex items-center ${
@@ -772,6 +774,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
 
                         <td className="px-4 py-3.5 text-right">
                           <div className="inline-flex items-center justify-end gap-1.5">
+                            <CompareToggle productId={p.id} locale={locale} />
                             <Link
                               href={href(`/builder?add=${p.category}:${p.id}`)}
                               className="inline-flex items-center justify-center px-2.5 py-2 min-h-[40px] rounded-lg border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] text-slate-700 font-semibold text-xs transition-colors"
@@ -883,6 +886,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
           </div>
         </section>
       )}
+      <CompareTray products={rawProducts} locale={locale} />
     </div>
   );
 }

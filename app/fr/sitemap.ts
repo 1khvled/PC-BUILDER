@@ -33,7 +33,7 @@ function entry(frPath: string, priority: number, changeFrequency: "daily" | "wee
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const prods = await getProducts();
-  const staticRoutes = ["", "/builder", "/prebuilds", "/guides", "/deals"].map((r) =>
+  const staticRoutes = ["", "/builder", "/prebuilds", "/guides", "/deals", "/drops"].map((r) =>
     entry(r, r === "" ? 1 : r === "/prebuilds" ? 0.9 : 0.8),
   );
   const cats = CATEGORIES.map((c) => entry(`/category/${c.slug}`, 0.9));

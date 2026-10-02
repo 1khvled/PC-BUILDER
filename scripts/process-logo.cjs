@@ -2,7 +2,7 @@ const sharp = require('sharp');
 const path = require('path');
 
 async function processLogo() {
-  const input = path.resolve('public/brand/logo.png');
+  const input = path.resolve('assets/logo-source.png');
   
   // 1. Trim black borders to find exact bounding box of the DZ symbol
   const trimmed = await sharp(input)
@@ -18,12 +18,13 @@ async function processLogo() {
     .toFile('public/brand/logo.webp');
   console.log('Generated public/brand/logo.webp');
 
-  // Also replace logo.png with high-res trimmed logo
+  // Also replace logo-clean with high-res trimmed logo (kept out of public/
+  // so the 800KB+ source never ships to the CDN; regenerate on demand)
   await sharp(trimmed.data)
     .resize({ height: 160, fit: 'inside' })
     .png({ quality: 95 })
-    .toFile('public/brand/logo-clean.png');
-  console.log('Generated public/brand/logo-clean.png');
+    .toFile('assets/logo-clean.png');
+  console.log('Generated assets/logo-clean.png');
 
   // 3. Create square 512x512 icon with dark obsidian background and centered DZ
   const dzSymbol = await sharp(trimmed.data)

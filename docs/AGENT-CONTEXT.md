@@ -230,27 +230,37 @@ carries `noindex`.
 
 ## 9. Known outstanding issues
 
-1. **`ADMIN_PASSWORD` must be rotated.** The first generated value is in this
+1. **Matcher lumps whole product families onto one id (pipeline owner).**
+   `mon-lg-ultragear27` carries every 27" UltraGear variant (144Hz IPS through
+   200Hz QHD), `mon-dahua-lm27` carries four refresh tiers, and
+   `psu-antec-atom550` carries Antec, Raidmax AND Cooler Master 550W units.
+   Three rows so indefensible they corrupted max/range displays were deleted
+   directly (480Hz OLEDs on a 144Hz IPS page, a 240Hz Dahua on a 165Hz page),
+   but deletes last exactly one scrape: the matcher will re-add them because
+   the titles still match. The durable fix is variant-aware matching
+   (panel/refresh for monitors, brand + wattage for PSUs), not more deletes.
+   Watch them in the console's price-outlier panel.
+2. **`ADMIN_PASSWORD` must be rotated.** The first generated value is in this
    conversation and in shell history. The gate fails closed (no hardcoded
    fallback, length-independent compare, generic login errors) but the
    credential itself must be replaced. Set it in Vercel, then redeploy.
 
-2. **`NEXT_PUBLIC_SITE_URL` is wrong locally.** `.env.local` has
+3. **`NEXT_PUBLIC_SITE_URL` is wrong locally.** `.env.local` has
    `localhost:3000` and takes precedence over `.env.production`, so canonical
    and hreflang URLs resolve to localhost in local builds. Verify the Vercel
    env var is `https://pcbuilder-psi.vercel.app`.
 
-3. **Duplicate JSON-LD on `/fr`.** The root layout always emits the English
+4. **Duplicate JSON-LD on `/fr`.** The root layout always emits the English
    graph, so French pages carry both (two `Organization` nodes, differing
    `inLanguage`). Proper fix is two root layouts via route groups, which means
    moving page files again. It also currently costs the home page its static
    rendering, so it was deliberately left alone.
 
-4. **The builder is duplicated.** `app/builder/page.tsx` and
+5. **The builder is duplicated.** `app/builder/page.tsx` and
    `app/fr/builder/page.tsx` are ~900-line near-copies. Any builder change must
    be applied **twice**. This is the main argument for eventually merging them.
 
-5. **The live site may still be on an older build** — check after deploying.
+6. **The live site may still be on an older build** — check after deploying.
 
 ---
 

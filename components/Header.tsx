@@ -667,6 +667,13 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               {t("common.deals")}
             </Link>
             <Link
+              href={href("/drops")}
+              aria-current={isSection("/drops") ? "page" : undefined}
+              className={navLinkClass(isSection("/drops"))}
+            >
+              {t("drops.h1")}
+            </Link>
+            <Link
               href={href("/benchmarks")}
               aria-current={isSection("/benchmarks") ? "page" : undefined}
               className={navLinkClass(isSection("/benchmarks"))}
@@ -776,6 +783,18 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               }`}
             >
               {t("common.deals")}
+            </Link>
+            <Link
+              href={href("/drops")}
+              aria-current={isSection("/drops") ? "page" : undefined}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`py-3 px-2 rounded-lg text-center transition-colors border min-h-[44px] flex items-center justify-center ${
+                isSection("/drops")
+                  ? "bg-white/20 text-white border-white/25"
+                  : "bg-white/10 hover:bg-white/15 text-slate-200 border-white/10"
+              }`}
+            >
+              {t("drops.h1")}
             </Link>
             <Link
               href={href("/benchmarks")}

@@ -35,7 +35,7 @@ function BytekLogo({ className = "h-7 w-auto" }: { className?: string }) {
     // which made this navy wordmark disappear in dark mode.
     <span className="inline-flex items-center justify-center rounded-lg dz-light-tile px-2.5 py-1.5 shadow-sm shrink-0">
       <img
-        src="/brand/bytek-logo.png"
+        src="/brand/bytek-logo.webp"
         alt="Bytek Store"
         width={560}
         height={237}
