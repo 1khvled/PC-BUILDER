@@ -1450,7 +1450,7 @@ for (const o of report["ouedkniss:all"] || []) {
   if (!title || !o.priceDa) continue;
 
     // Filter out dead/expired listings: reject deals older than 45 days or invalid URLs
-  if (!o.url || !/-d\d+/.test(o.url)) continue;
+  if (!o.url || (!/-d\d+/.test(o.url) && !o.url.startsWith("http"))) continue;
   const postDate = o.postedAt || o.day || "";
   if (postDate) {
     if (postDate < "2025-10-01") continue;

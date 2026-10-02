@@ -1598,5 +1598,401 @@
     "url": "https://www.ouedkniss.com/store/3537/elharamaine-informatique",
     "wilaya": "Alger",
     "count": 1
+  },
+  {
+    "id": "38216",
+    "name": "1Place Shop",
+    "slug": "1place-shop",
+    "wilaya": "Bouira"
+  },
+  {
+    "id": "26242",
+    "name": "Zmika Store",
+    "slug": "zmika-store",
+    "wilaya": "Jijel"
+  },
+  {
+    "id": "21547",
+    "name": "HWstore",
+    "slug": "hwstore",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "33164",
+    "name": "Workstation-DZ",
+    "slug": "workstation-dz",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "12245",
+    "name": "DZ TECH SHOP",
+    "slug": "dz-tech-shop",
+    "wilaya": "Batna"
+  },
+  {
+    "id": "4652",
+    "name": "SARL Polyraw",
+    "slug": "sarl-polyraw",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "26955",
+    "name": "MiT computers",
+    "slug": "mit-computers",
+    "wilaya": "Touggourt"
+  },
+  {
+    "id": "11406",
+    "name": "SHOP+",
+    "slug": "shop",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "13406",
+    "name": "ABDEREZAK FBM COMPUTER",
+    "slug": "abderezak-fbm-computer",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "6367",
+    "name": "FitcomGetwin",
+    "slug": "fitcomgetwin",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "23915",
+    "name": "Mz Office",
+    "slug": "mz-office",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "30992",
+    "name": "TAJ INFORMATIQUE",
+    "slug": "taj-informatique",
+    "wilaya": "Constantine"
+  },
+  {
+    "id": "12215",
+    "name": "Empreinte Informatique",
+    "slug": "empreinte-informatique",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "18147",
+    "name": "ICT Solution DZ",
+    "slug": "ict-solution-dz",
+    "wilaya": "Sétif"
+  },
+  {
+    "id": "40995",
+    "name": "iTech store",
+    "slug": "itech-store",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "24287",
+    "name": "CISCO ORDER",
+    "slug": "cisco-order",
+    "wilaya": "Oran"
+  },
+  {
+    "id": "3129",
+    "name": "CHRONO INFORMATIQUE",
+    "slug": "chrono-informatique",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "2876",
+    "name": "Time to think",
+    "slug": "time-to-think",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "15878",
+    "name": "Eurl Info Oran",
+    "slug": "eurl-info-oran",
+    "wilaya": "Oran"
+  },
+  {
+    "id": "35501",
+    "name": "Asn informatique et bureautique Oran",
+    "slug": "asn-informatique-et-bureautique-oran",
+    "wilaya": "Oran"
+  },
+  {
+    "id": "5060",
+    "name": "Confort PC",
+    "slug": "confort-pc",
+    "wilaya": "Oran"
+  },
+  {
+    "id": "16617",
+    "name": "TRIO MAX  - ALGER -",
+    "slug": "trio-max-alger",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "9941",
+    "name": "MacWay Informatique",
+    "slug": "macway-informatique",
+    "wilaya": "Blida"
+  },
+  {
+    "id": "16726",
+    "name": "DEY COMPUTER",
+    "slug": "dey-computer",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "23829",
+    "name": "Atia Informatique",
+    "slug": "atia-informatique",
+    "wilaya": "Bordj Bou Arreridj"
+  },
+  {
+    "id": "24535",
+    "name": "SolutionMaxi",
+    "slug": "solutionmaxi",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "1502",
+    "name": "PC LINE",
+    "slug": "pc-line",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "35805",
+    "name": "DZAIR LAPTOP",
+    "slug": "dzair-laptop",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "36041",
+    "name": "NS Informatiques",
+    "slug": "ns-informatiques",
+    "wilaya": "Oran"
+  },
+  {
+    "id": "17067",
+    "name": "Ghano Store ELITE INFORMATIQUE",
+    "slug": "ghano-store-elite-informatique",
+    "wilaya": "Bordj Bou Arreridj"
+  },
+  {
+    "id": "14517",
+    "name": "CLICK INFORMATIQUE ORAN",
+    "slug": "click-informatique-oran",
+    "wilaya": "Oran"
+  },
+  {
+    "id": "31601",
+    "name": "Ultra Pc",
+    "slug": "ultra-pc",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "29377",
+    "name": "DEFENCE-X",
+    "slug": "defence-x",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "22981",
+    "name": "GIBTEL",
+    "slug": "gibtel",
+    "wilaya": "Béjaïa"
+  },
+  {
+    "id": "39920",
+    "name": "HTech Messaad",
+    "slug": "htech-messaad",
+    "wilaya": "Djelfa"
+  },
+  {
+    "id": "15670",
+    "name": "NDM TECH",
+    "slug": "ndm-tech",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "12943",
+    "name": "EURL DANISOFT",
+    "slug": "eurl-danisoft",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "17526",
+    "name": "Overlink",
+    "slug": "overlink",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "7245",
+    "name": "OFFICE MART",
+    "slug": "office-mart",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "40872",
+    "name": "KH INFORMATIQUE",
+    "slug": "kh-informatique",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "34543",
+    "name": "OptiQ",
+    "slug": "optiq",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "13263",
+    "name": "GENERAL IT",
+    "slug": "general-it",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "9469",
+    "name": "CDIMACC INFO",
+    "slug": "cdimacc-info",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "40629",
+    "name": "IMTEC PLUS",
+    "slug": "imtec-plus",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "37430",
+    "name": "ELMOKRANI COMPUTER",
+    "slug": "elmokrani-computer",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "26098",
+    "name": "ALPHA TECH",
+    "slug": "alpha-tech",
+    "wilaya": "Laghouat"
+  },
+  {
+    "id": "21275",
+    "name": "CompuNerds",
+    "slug": "compunerds",
+    "wilaya": "Bordj Bou Arreridj"
+  },
+  {
+    "id": "9023",
+    "name": "NOVODEY",
+    "slug": "novodey",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "2234",
+    "name": "MATINFO",
+    "slug": "matinfo",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "24886",
+    "name": "by informatique",
+    "slug": "by-informatique",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "11893",
+    "name": "JIL IT",
+    "slug": "jil-it",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "30176",
+    "name": "BSC INFO",
+    "slug": "bsc-info",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "38168",
+    "name": "HD CONNECT",
+    "slug": "hd-connect",
+    "wilaya": "Sétif"
+  },
+  {
+    "id": "7787",
+    "name": "DIGITAL COMPANY",
+    "slug": "digital-company",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "11821",
+    "name": "SARLWBP",
+    "slug": "sarlwbp",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "15080",
+    "name": "Renoh DZ",
+    "slug": "renoh-dz",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "12284",
+    "name": "Game Store El biar",
+    "slug": "game-store-el-biar",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "16019",
+    "name": "Alpha signature",
+    "slug": "alpha-signature",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "12564",
+    "name": "LOG103 informatique",
+    "slug": "log103-informatique",
+    "wilaya": "Sétif"
+  },
+  {
+    "id": "29440",
+    "name": "SARL MYNDALL",
+    "slug": "sarl-myndall",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "26206",
+    "name": "SOFIX COMPUTER",
+    "slug": "sofix-computer",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "10439",
+    "name": "ST Informatique",
+    "slug": "st-informatique",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "40362",
+    "name": "Global security vision",
+    "slug": "global-security-vision",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "5970",
+    "name": "EBS INFORMATIQUE",
+    "slug": "ebs-informatique",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "5556",
+    "name": "SARL GEOXAL",
+    "slug": "sarl-geoxal",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "37781",
+    "name": "KM INFORMATIQUE",
+    "slug": "km-informatique",
+    "wilaya": "Blida"
   }
 ]
