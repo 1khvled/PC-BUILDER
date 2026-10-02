@@ -14,6 +14,7 @@ import Thumb from "@/components/Thumb";
 import CategoryIcon from "@/components/CategoryIcon";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { useAnimatedNumber } from "@/lib/use-animated-number";
+import { DEFAULT_USD_DA } from "@/lib/fx";
 import { formatDate, formatPrice, localizedHref } from "@/lib/i18n/config";
 import { categoryLabel } from "@/lib/i18n/categories";
 import { makeT } from "@/lib/i18n/runtime";
@@ -803,7 +804,7 @@ export default function EnglishBuilderPage() {
               {formatPrice(Math.round(animatedTotal), LOCALE)}
             </span>
             <span className="text-slate-400 print:text-slate-500 text-xs">
-              ≈ ${Math.round(animatedTotal / 132).toLocaleString("en")} USD
+              ≈ ${Math.round(animatedTotal / DEFAULT_USD_DA).toLocaleString("en")} USD
             </span>
             <span className="text-slate-500 text-xs hidden sm:inline">
               {t("builder.wattageEstimated", { watt: result.wattage })}

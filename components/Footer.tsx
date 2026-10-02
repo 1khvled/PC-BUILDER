@@ -217,6 +217,15 @@ export default function Footer() {
                 {t("footer.esportPartner")}
               </span>
             </a>
+            <span className="text-slate-600 hidden sm:inline">•</span>
+            <a
+              href="https://squarealgerie.com/"
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              className="text-slate-600 hover:text-slate-400 transition-colors"
+            >
+              squarealgerie.com
+            </a>
           </div>
           <div className="flex items-center gap-3">
             <span>{t("footer.forCommunity")}</span>

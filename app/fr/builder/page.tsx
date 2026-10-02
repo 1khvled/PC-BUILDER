@@ -15,6 +15,7 @@ import BuildPerformanceCard from "@/components/BuildPerformanceCard";
 import { recommendedPsu } from "@/lib/compat/watt";
 import Thumb from "@/components/Thumb";
 import { useAnimatedNumber } from "@/lib/use-animated-number";
+import { DEFAULT_USD_DA } from "@/lib/fx";
 
 function CategoryIcon({ slug }: { slug: string }) {
   switch (slug) {
@@ -842,7 +843,7 @@ export default function BuilderPage() {
               {Math.round(animatedTotal).toLocaleString("fr-DZ")} DA
             </span>
             <span className="text-slate-400 print:text-slate-500 text-xs">
-              ≈ ${Math.round(animatedTotal / 132).toLocaleString()} USD
+              ≈ ${Math.round(animatedTotal / DEFAULT_USD_DA).toLocaleString()} USD
             </span>
             <span className="text-slate-500 text-xs hidden sm:inline">
               • {result.wattage}W estimés

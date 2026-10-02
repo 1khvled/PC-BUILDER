@@ -17,6 +17,10 @@
  *  5. ORPHAN_BENCH      benchmark key with no catalogue product (scorer gets
  *                       undefined and 4 perf checks fail - commit 9f9dd94).
  *  6. LIVE_COVERAGE     live CPU/GPU/RAM with no index.
+ *  7. I18N_VARS         every t("key") call passes every {placeholder} the
+ *                       dictionary string requires. The home page once rendered
+ *                       "77 model{plural}" literally because the call forgot
+ *                       `plural` - this rule makes that class impossible.
  *
  * Price-rot in guide prose is owned by scripts/check-guides.mjs (budget rule),
  * not duplicated here. Exit 1 on any failure so CI can gate on it.

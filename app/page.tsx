@@ -13,7 +13,7 @@ import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { formatPrice, languageAlternates, OG_LOCALE, SITE_URL, localizedHref } from "@/lib/i18n/config";
 import { categoryLabel } from "@/lib/i18n/categories";
 import { getT } from "@/lib/i18n/server";
-import { stockLabel } from "@/lib/i18n/runtime";
+import { pluralSuffix, stockLabel } from "@/lib/i18n/runtime";
 
 export const revalidate = 60;
 
@@ -290,7 +290,7 @@ export default async function EnglishHome() {
                       {categoryLabel(c.slug, t)}
                     </div>
                     <div className="text-xs text-slate-500 mt-1">
-                      {t("common.modelsCounted", { count: items.length })}
+                      {t("common.modelsCounted", { count: items.length, plural: pluralSuffix(items.length) })}
                       {minPrice ? (
                         <span className="text-emerald-700 font-semibold">
                           {" "}• {t("common.fromPrice", { price: formatPrice(minPrice, LOCALE) })}

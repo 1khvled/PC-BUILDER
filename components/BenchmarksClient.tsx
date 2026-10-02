@@ -48,29 +48,6 @@ function yesNo(v: unknown): string | null {
   return null;
 }
 
-function SourceList({ sources, t }: { sources: BenchmarkSource[]; t: ReturnType<typeof useT> }) {
-  return (
-    <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-0.5">
-      {sources.map((s) => (
-        <a
-          key={s.id}
-          href={s.url}
-          target={s.kind === "reported" ? "_blank" : undefined}
-          rel={s.kind === "reported" ? "noopener noreferrer" : undefined}
-          title={s.kind === "derived" ? t("benchmarks.derivedNote") : t("benchmarks.reportedNote")}
-          className={`text-[10px] underline decoration-dotted underline-offset-2 ${
-            s.kind === "derived"
-              ? "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
-              : "text-[#2c87c3] hover:text-[#1f6a9c] dark:text-[#5fb0e0] dark:hover:text-[#8ecbf0]"
-          }`}
-        >
-          {t(s.labelKey as "benchmarks.source.ours")}
-          {s.kind === "reported" && <span aria-hidden="true"> ↗</span>}
-        </a>
-      ))}
-    </span>
-  );
-}
 
 function Th({
   label,
@@ -98,6 +75,40 @@ function Th({
         {label} {active ? (dir === "asc" ? "▲" : "▼") : ""}
       </span>
     </th>
+  );
+}
+
+/**
+ * Sources cell.
+ *
+ * The old version returned a wrapping <span> of <a>s, and the browser placed
+ * the four ↗ links on their own line under the row content - exactly the "pure
+ * slop" pile the screenshot showed. One flat row with a tight gap, each link
+ * nowrap, wrapping only at the cell edge rather than mid-sentence.
+ */
+function SourceCell({ sources, t }: { sources: BenchmarkSource[]; t: ReturnType<typeof useT> }) {
+  return (
+    <td className="px-2.5 py-2 align-top">
+      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+        {sources.map((s) => (
+          <a
+            key={s.id}
+            href={s.url}
+            target={s.kind === "reported" ? "_blank" : undefined}
+            rel={s.kind === "reported" ? "noopener noreferrer" : undefined}
+            title={s.kind === "derived" ? t("benchmarks.derivedNote") : t("benchmarks.reportedNote")}
+            className={`whitespace-nowrap text-[10px] underline decoration-dotted underline-offset-2 ${
+              s.kind === "derived"
+                ? "text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
+                : "text-[#2c87c3] hover:text-[#1f6a9c] dark:text-[#5fb0e0] dark:hover:text-[#8ecbf0]"
+            }`}
+          >
+            {t(s.labelKey as "benchmarks.source.ours")}
+            {s.kind === "reported" && <span aria-hidden="true"> ↗</span>}
+          </a>
+        ))}
+      </div>
+    </td>
   );
 }
 
@@ -304,9 +315,7 @@ export default function BenchmarksClient({
                     <td className={numTd}>{b ? <b>{fmt(b.multi)}</b> : dash}</td>
                     <td className={numTd}>{b ? <b>{fmt(b.single)}</b> : dash}</td>
                     <td className={numTd}>{b ? <b>{fmt(b.gaming)}</b> : dash}</td>
-                    <td className="px-2.5 py-2">
-                      <SourceList sources={sourcesFor(p.id, p.category, p.model)} t={t} />
-                    </td>
+                    <SourceCell sources={sourcesFor(p.id, p.category, p.model)} t={t} />
                   </tr>
                 );
               })}
@@ -344,9 +353,7 @@ export default function BenchmarksClient({
                     <td className={numTd}>{b ? <b>{fmt(b.raster1080)}</b> : dash}</td>
                     <td className={numTd}>{b ? <b>{fmt(b.raster1440)}</b> : dash}</td>
                     <td className={numTd}>{b ? <b>{fmt(b.rt)}</b> : dash}</td>
-                    <td className="px-2.5 py-2">
-                      <SourceList sources={sourcesFor(p.id, p.category, p.model)} t={t} />
-                    </td>
+                    <SourceCell sources={sourcesFor(p.id, p.category, p.model)} t={t} />
                   </tr>
                 );
               })}
@@ -382,9 +389,7 @@ export default function BenchmarksClient({
                     <td className={txtTd}>{typeof s.type === "string" ? s.type : dash}</td>
                     <td className={numTd}>{typeof s.speed === "number" ? s.speed : dash}</td>
                     <td className={numTd}>{b ? <b>{fmt(b.bandwidth)}</b> : dash}</td>
-                    <td className="px-2.5 py-2">
-                      <SourceList sources={sourcesFor(p.id, p.category, p.model)} t={t} />
-                    </td>
+                    <SourceCell sources={sourcesFor(p.id, p.category, p.model)} t={t} />
                   </tr>
                 );
               })}
@@ -420,9 +425,7 @@ export default function BenchmarksClient({
                     <td className={numTd}>{b ? fmt(b.seqRead) : dash}</td>
                     <td className={numTd}>{b ? fmt(b.seqWrite) : dash}</td>
                     <td className={numTd}>{b ? fmt(b.random4k) : dash}</td>
-                    <td className="px-2.5 py-2">
-                      <SourceList sources={sourcesFor(p.id, p.category, p.model)} t={t} />
-                    </td>
+                    <SourceCell sources={sourcesFor(p.id, p.category, p.model)} t={t} />
                   </tr>
                 );
               })}
@@ -459,9 +462,7 @@ export default function BenchmarksClient({
                     <td className={txtTd}>{typeof s.ram_type === "string" ? s.ram_type : dash}</td>
                     <td className={numTd}>{typeof s.m2 === "number" ? s.m2 : dash}</td>
                     <td className={txtTd}>{typeof s.form_factor === "string" ? s.form_factor : dash}</td>
-                    <td className="px-2.5 py-2">
-                      <SourceList sources={sourcesFor(p.id, p.category, p.model)} t={t} />
-                    </td>
+                    <SourceCell sources={sourcesFor(p.id, p.category, p.model)} t={t} />
                   </tr>
                 );
               })}
@@ -492,9 +493,7 @@ export default function BenchmarksClient({
                     </td>
                     <td className={numTd}>{typeof s.wattage === "number" ? `${s.wattage} W` : dash}</td>
                     <td className={txtTd}>{typeof s.rating === "string" ? s.rating : dash}</td>
-                    <td className="px-2.5 py-2">
-                      <SourceList sources={sourcesFor(p.id, p.category, p.model)} t={t} />
-                    </td>
+                    <SourceCell sources={sourcesFor(p.id, p.category, p.model)} t={t} />
                   </tr>
                 );
               })}

@@ -10,6 +10,7 @@ import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, SITE_URL, absoluteUrl, formatPrice, languageAlternates } from "@/lib/i18n/config";
+import { DEFAULT_USD_DA } from "@/lib/fx";
 import { getT } from "@/lib/i18n/server";
 
 export const revalidate = 60;
@@ -201,6 +202,9 @@ export default async function GuidePage({ params }: { params: { slug: string } }
                 <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 tracking-tight mt-1">
                   {missing > 0 ? `${t("common.from")} ` : ""}
                   {formatPrice(total, LOCALE)}
+                </div>
+                <div className="text-xs text-slate-500 mt-1">
+                  ≈ ${Math.round(total / DEFAULT_USD_DA).toLocaleString("fr-DZ")} USD
                 </div>
                 <div className="text-xs text-slate-400 mt-1">{t("guide.budgetAvail")}</div>
               </>
