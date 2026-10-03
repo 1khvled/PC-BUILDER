@@ -442,6 +442,18 @@ export const COOLER_BENCH: Record<string, CoolerBenchmark> = {
   "cooler-proart360": { tdpRating: 320, kind: "aio", radiator: 360 },
   "cooler-ml360": { tdpRating: 320, kind: "aio", radiator: 360 },
   "cooler-kraken": { tdpRating: 320, kind: "aio", radiator: 360 },
+  "cooler-deepcool-ld240": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-deepcool-ld360": { tdpRating: 320, kind: "aio", radiator: 360 },
+  "cooler-deepcool-ls520": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-deepcool-ls720": { tdpRating: 320, kind: "aio", radiator: 360 },
+  "cooler-deepcool-mystique-360": { tdpRating: 340, kind: "aio", radiator: 360 },
+  "cooler-arctic-freezer-36": { tdpRating: 180, kind: "air" },
+  "cooler-arctic-lf3-360": { tdpRating: 340, kind: "aio", radiator: 360 },
+  "cooler-msi-coreliquid-240": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-msi-coreliquid-360": { tdpRating: 320, kind: "aio", radiator: 360 },
+  "cooler-raidmax-ls240": { tdpRating: 230, kind: "aio", radiator: 240 },
+  "cooler-raidmax-lm240": { tdpRating: 250, kind: "aio", radiator: 240 },
+  "cooler-raidmax-lm360": { tdpRating: 320, kind: "aio", radiator: 360 },
 };
 
 /* ------------------------------------------------------------- accessors */
