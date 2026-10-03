@@ -1088,14 +1088,6 @@
     "count": 1
   },
   {
-    "id": "7311",
-    "name": "Dadine Réparation Phone",
-    "slug": "dadine-reparation-phone",
-    "url": "dadinephone.com",
-    "wilaya": "Alger",
-    "count": 1
-  },
-  {
     "id": "1064",
     "name": "ESSAFWA Informatique",
     "slug": "essafwa-informatique",
@@ -1188,14 +1180,6 @@
     "name": "Binaire Info",
     "slug": "binaire-info",
     "url": "https://www.ouedkniss.com/store/1696/binaire-info",
-    "wilaya": "Alger",
-    "count": 1
-  },
-  {
-    "id": "8959",
-    "name": "Fouad Phone",
-    "slug": "fouad-phone",
-    "url": "fouadphone.com",
     "wilaya": "Alger",
     "count": 1
   },
@@ -1472,14 +1456,6 @@
     "count": 1
   },
   {
-    "id": "19377",
-    "name": "Foot Phone",
-    "slug": "foot-phone",
-    "url": "https://www.ouedkniss.com/store/19377/foot-phone",
-    "wilaya": "Alger",
-    "count": 1
-  },
-  {
     "id": "38944",
     "name": "ZYNTECH",
     "slug": "zyntech",
@@ -1493,14 +1469,6 @@
     "slug": "tnl-store",
     "url": "https://www.ouedkniss.com/store/29487/tnl-store",
     "wilaya": "Alger",
-    "count": 1
-  },
-  {
-    "id": "6899",
-    "name": "Mus Phone",
-    "slug": "mus-phone",
-    "url": "https://www.ouedkniss.com/store/6899/mus-phone",
-    "wilaya": "Mostaganem",
     "count": 1
   },
   {
@@ -1994,5 +1962,40 @@
     "name": "KM INFORMATIQUE",
     "slug": "km-informatique",
     "wilaya": "Blida"
+  },
+  {
+    "id": "store-teqniya",
+    "name": "TeqniyaStore",
+    "slug": "teqniyastore",
+    "url": "https://www.teqniyastore.shop/",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "store-bytek",
+    "name": "Bytek Store",
+    "slug": "bytekstore",
+    "url": "https://www.bytekstore.shop/",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "store-promotech",
+    "name": "Promotech IT",
+    "slug": "promotech-it",
+    "url": "https://promotech-it.com/",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "store-ami",
+    "name": "AMI Informatique",
+    "slug": "ami-dz",
+    "url": "https://ami-dz.com/",
+    "wilaya": "Alger"
+  },
+  {
+    "id": "store-oz",
+    "name": "Ozinformatique",
+    "slug": "ozinformatique",
+    "url": "https://ozinformatique.com/",
+    "wilaya": "Alger"
   }
 ]

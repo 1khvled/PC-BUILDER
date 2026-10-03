@@ -82,6 +82,7 @@ export const fr = {
   "cats.case": "Boîtiers PC",
   "cats.psu": "Alimentations (PSU)",
   "cats.monitor": "Écrans Gaming",
+  "cats.printer": "Imprimantes",
 
   /* --------------------------------------------------------------------- nav */
   "nav.main": "Navigation principale",
@@ -435,6 +436,7 @@ export const fr = {
   "prebuilds.sortDiscount": "Plus gros rabais (%)",
   "prebuilds.sortPriceAsc": "Prix croissant",
   "prebuilds.sortPriceDesc": "Prix décroissant",
+  "prebuilds.sortNewest": "Offres les plus récentes",
   "prebuilds.sortGpuTier": "Carte graphique la plus puissante",
   "prebuilds.sortCpuTier": "Processeur le plus puissant",
   "prebuilds.liveSource": "Relevé en direct des boutiques algériennes",
@@ -627,6 +629,16 @@ export const fr = {
   "builder.toastUpdated": "Composant mis à jour.",
   "builder.toastReset": "Configurateur réinitialisé.",
   "builder.toastDefault": "Build gamer de référence chargé.",
+  "builder.savedLocal": "Sauvegardé localement dans votre navigateur (privé)",
+  "builder.pickOffer": "Offre boutique :",
+  "builder.allOffers": "Toutes les offres ({count})",
+  "builder.sortBy": "Trier par :",
+  "builder.sortPriceAsc": "Prix : Moins cher",
+  "builder.sortPriceDesc": "Prix : Plus cher",
+  "builder.sortName": "Nom (A-Z)",
+  "builder.sortStock": "En stock d'abord",
+  "builder.toastOfferSelected": "Offre boutique sélectionnée et enregistrée.",
+
 
   /* -------------------------------------------------------------- switcher */
   "switcher.toEn": "English",

@@ -7,7 +7,7 @@
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-unite-gamer-amd-ryzen-5-5600gt-cm-unika-b450m-proddr4-8g-3200mhzssd-256-gb-psu-550wcase-nox-phantom-full-black-plus-3pcs-fans-m42-12cm-argb-mohammadia-alger-algerie-d55263856",
     "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/L9oRjp/FMb7bEidGUkDuGMC58hJ1B5iq9tuHeea4NJCdc90.jpg",
-    "postedAt": "2026-05-03T10:55:48.768552Z",
+    "postedAt": "2026-09-13T11:30:20.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600gt",
@@ -39,6 +39,44 @@
   },
   {
     "id": "prebuild-2",
+    "title": "PC GAMING ANTEC VX310 + RYZEN 5 5600G 8GB DDR4 / SSD NVMe 256GB",
+    "priceDa": 77800,
+    "store": "MC HARDEC",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gaming-antec-vx310-ryzen-5-5600g-8gb-ddr4-ssd-nvme-256gb-mohammadia-alger-algerie-d57080277",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/zvXz12/wlQLekDj3mVwxULvaB9AtLn4rJuzjuARX8HLPMUG.jpg",
+    "postedAt": "2026-08-10T17:44:44.371222Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600g",
+        "name": "Ryzen 5 5600G",
+        "brand": "AMD",
+        "igpu": true
+      },
+      "gpu": {
+        "id": "igpu",
+        "name": "Graphique Intégré"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 256GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-3",
     "title": "CONFIG PC GAMER :AMD RYZEN 5 5600X/16GB/RTX 3060 12GB",
     "priceDa": 190000,
     "store": "MDI informatique",
@@ -67,44 +105,6 @@
       "storage": {
         "id": "ssd-nvme-512gb",
         "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-3",
-    "title": "PC GAMER / RYZEN 5 5600GT - RAM 8GO - SSD 256GO - VEGA 7",
-    "priceDa": 81400,
-    "store": "Campus informatique",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-ryzen-5-5600gt-ram-8go-ssd-256go-vega-7-alger-centre-algerie-d51540472",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/Z7QvR/FNezz7uo9841UBLYtWX32tQ83F6hY8Hzt6Pykryj.jpg",
-    "postedAt": "2025-10-23T17:07:58.969922Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r5-5600gt",
-        "name": "Ryzen 5 5600GT",
-        "brand": "AMD",
-        "igpu": true
-      },
-      "gpu": {
-        "id": "igpu",
-        "name": "Graphique Intégré"
-      },
-      "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
-      },
-      "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 256GB"
       },
       "psu": {
         "id": "psu-550-b",
@@ -232,7 +232,7 @@
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-promo-العودة-للمدرسة-pc-gamer-ryzen-5-5600g-dar-el-beida-alger-algerie-d47596237",
     "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/n5NWDW/R7HgEtxr1wk4uWtbz1wYyXo82ZgquLtAhV8MhWFi.jpg",
-    "postedAt": "2025-04-11T14:13:51.339890Z",
+    "postedAt": "2026-09-28T14:17:33.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600g",
@@ -270,7 +270,7 @@
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5600-rx-6650-xt-8gb-baraki-alger-algerie-d57631821",
     "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/vor/vj2unDUS4mX0wivkuuZRVk6A4AApeL3Tt702otyQ.jpg",
-    "postedAt": "2026-09-09T22:04:46.478661Z",
+    "postedAt": "2026-09-09T22:04:46.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600",
@@ -307,7 +307,7 @@
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5600-gtx-1660-ti-6gb-baraki-alger-algerie-d57488634",
     "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/vor/OrjGoPxRfhM7w1uG1qdlEgFMUfcn05tiTr18UEJu.jpg",
-    "postedAt": "2026-09-01T22:21:01.630126Z",
+    "postedAt": "2026-09-01T22:21:01.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600",
@@ -344,7 +344,7 @@
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5600g-baraki-alger-algerie-d57488646",
     "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/vor/w3RQK6i2JOAz2OEJIKvKvNcpR3jfdYmsFhYykCLx.jpg",
-    "postedAt": "2026-09-01T22:21:35.206964Z",
+    "postedAt": "2026-09-05T15:54:49.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600g",
@@ -382,7 +382,7 @@
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gamer-ryzen-5-5600g-avec-a520m-ds3h-v2-gigabyte-bab-ezzouar-alger-algerie-d38704827",
     "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/nZWp2D/ajMJ4ky4UnmeXQnrJQLyt4ZsfXDxxgK48SlTWuZ4.jpg",
-    "postedAt": "2023-11-27T10:19:12.786315Z",
+    "postedAt": "2026-09-28T10:16:11.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600g",
@@ -414,80 +414,6 @@
   },
   {
     "id": "prebuild-12",
-    "title": "CONFIG PC GAMING AMD RYZEN 5 5600X AVEC RX 7600 8GB ASUS DUAL NEW",
-    "priceDa": 194000,
-    "store": "AT-informatics",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-amd-ryzen-5-5600x-avec-rx-7600-8gb-asus-dual-new-bab-ezzouar-alger-algerie-d52724173",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/nZWp2D/IJ2YS3urUrsYruMHq8ArIFYM2SeHWdt1IYX9zdps.jpg",
-    "postedAt": "2025-12-08T09:01:27.299339Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r5-5600x",
-        "name": "Ryzen 5 5600X",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rx7600-8gb",
-        "name": "RX 7600 8GB"
-      },
-      "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
-      },
-      "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-13",
-    "title": "PC GAMER RYZEN 5 5600X RAM 16GO SSD 512GO ASUS RX 9060 XT 16GO",
-    "priceDa": 257900,
-    "store": "Campus informatique",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-ryzen-5-5600x-ram-16go-ssd-512go-asus-rx-9060-xt-alger-centre-algerie-d57499707",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/Z7QvR/bb729Jher4CQQIq4Y5UFZpfowflKYoWlGlU5fRJf.jpg",
-    "postedAt": "2026-09-02T14:15:45.700462Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r5-5600x",
-        "name": "Ryzen 5 5600X",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rx9060xt-16gb",
-        "name": "RX 9060 XT 16GB"
-      },
-      "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
-      },
-      "ram": {
-        "id": "ram-vengeance-16-d4",
-        "name": "16GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-14",
     "title": "PC GAMER RYZEN 5 5600 RAM 16GO SSD 512GO COLORFUL RTX 3060 12GO",
     "priceDa": 192200,
     "store": "Campus informatique",
@@ -524,14 +450,14 @@
     }
   },
   {
-    "id": "prebuild-15",
-    "title": "PC GAMER AMD (Ryzen 5 5600GT / Ram 8Go / SSD 256Go)",
-    "priceDa": 80000,
+    "id": "prebuild-13",
+    "title": "PC GAMER AMD (Ryzen 5 5600GT / Ram 8Go / SSD 128Go)",
+    "priceDa": 75000,
     "store": "A&Y Info Tech",
     "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-amd-ryzen-5-5600gt-ram-8go-ssd-256go-baba-hassen-alger-algerie-d54182837",
-    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/5XOwY/33tiOEcZHJScwnfgqDU6hrCpOK4iXLQA53oWee6V.jpg",
-    "postedAt": "2026-02-28T22:57:24.231999Z",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-amd-ryzen-5-5600gt-ram-8go-ssd-128go-baba-hassen-alger-algerie-d56079250",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/5XOwY/3KRhYSHsxn2AxgECDyt5ttWpkc2YEVw2C4Xdcyt1.jpg",
+    "postedAt": "2026-06-18T13:29:03.837176Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600gt",
@@ -553,7 +479,7 @@
       },
       "storage": {
         "id": "ssd-nvme-512gb",
-        "name": "SSD 256GB"
+        "name": "SSD 512GB"
       },
       "psu": {
         "id": "psu-550-b",
@@ -562,52 +488,14 @@
     }
   },
   {
-    "id": "prebuild-16",
-    "title": "PC GAMER AMD (Ryzen 5 5600GT / Ram 16Go / SSD 256Go)",
-    "priceDa": 90000,
-    "store": "A&Y Info Tech",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-amd-ryzen-5-5600gt-ram-16go-ssd-256go-baba-hassen-alger-algerie-d54182840",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/5XOwY/pnFNX1izdfDOk8nEQN2lhkbt9fFHdUyQ9xBMJOvc.jpg",
-    "postedAt": "2026-02-28T22:57:47.831596Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r5-5600gt",
-        "name": "Ryzen 5 5600GT",
-        "brand": "AMD",
-        "igpu": true
-      },
-      "gpu": {
-        "id": "igpu",
-        "name": "Graphique Intégré"
-      },
-      "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
-      },
-      "ram": {
-        "id": "ram-vengeance-16-d4",
-        "name": "16GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 256GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-17",
+    "id": "prebuild-14",
     "title": "CONFIG PC AMD RYZEN 5 5600G AVEC A520M MSI 8GB RAM 256GB NVME",
     "priceDa": 72500,
     "store": "AT-informatics",
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-config-pc-amd-ryzen-5-5600g-avec-a520m-msi-8gb-ram-256gb-nvme-bab-ezzouar-alger-algerie-d56125939",
     "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/nZWp2D/Rs8txIfUSzlnD7d7kosidXN2AJsmkdwtvroJosaA.jpg",
-    "postedAt": "2026-06-21T08:31:13.522954Z",
+    "postedAt": "2026-08-29T10:37:37.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600g",
@@ -638,14 +526,14 @@
     }
   },
   {
-    "id": "prebuild-18",
+    "id": "prebuild-15",
     "title": "CONFIG PC AMD RYZEN 5 5600GT AVEC A520M-K ASUS PRIME",
     "priceDa": 94900,
     "store": "AT-informatics",
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-config-pc-amd-ryzen-5-5600gt-avec-a520m-k-asus-prime-bab-ezzouar-alger-algerie-d53794034",
     "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/nZWp2D/egVHKwsE3rFTbu6cpaTAZuKRKeDDQTqgVOfrKOdx.jpg",
-    "postedAt": "2026-02-05T08:55:49.019835Z",
+    "postedAt": "2026-08-29T10:37:35.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600gt",
@@ -676,14 +564,14 @@
     }
   },
   {
-    "id": "prebuild-19",
+    "id": "prebuild-16",
     "title": "CONFIG PC GAMER - RYZEN 5 5600GT / 8GB RAM DDR4 / 512GB",
     "priceDa": 99900,
     "store": "Computer Digital Company",
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/pc-de-bureau-config-gamer-ryzen-5-5600gt-8gb-ram-ddr4-512gb-birkhadem-alger-algerie-d54403229",
     "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/qYA12R/rR9zptK8N4Si6AN4EHzvk3DJcF9MOgN4MdMrzZjo.jpg",
-    "postedAt": "2026-03-15T12:48:28.579715Z",
+    "postedAt": "2026-09-27T11:59:36.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600gt",
@@ -714,7 +602,7 @@
     }
   },
   {
-    "id": "prebuild-20",
+    "id": "prebuild-17",
     "title": "PC GAMER RYZEN 5 5600 RTX 3060 12GB",
     "priceDa": 160000,
     "store": "TKI TEC",
@@ -751,7 +639,7 @@
     }
   },
   {
-    "id": "prebuild-21",
+    "id": "prebuild-18",
     "title": "pc gamer ryzen 5 5600x rtx 3060 12gb",
     "priceDa": 159000,
     "store": "TKI TEC",
@@ -788,7 +676,7 @@
     }
   },
   {
-    "id": "prebuild-22",
+    "id": "prebuild-19",
     "title": "PROMO #5 / RYZEN 5 5600 / RX 6600XT / PC GAMER",
     "priceDa": 158900,
     "store": "TECHMATE DZ",
@@ -825,7 +713,7 @@
     }
   },
   {
-    "id": "prebuild-23",
+    "id": "prebuild-20",
     "title": "PROMO #4 / RYZEN 5 5600 / RTX 2060SUPER / PC GAMER",
     "priceDa": 156900,
     "store": "TECHMATE DZ",
@@ -862,45 +750,7 @@
     }
   },
   {
-    "id": "prebuild-24",
-    "title": "PC Gamer Ryzen 5 5600GT 8Go 240Go 550W CASE RGB",
-    "priceDa": 89500,
-    "store": "IT Tidjara",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5600gt-8go-240go-550w-case-rgb-bab-ezzouar-alger-algerie-d54775391",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/g5QOl/WtmMoPxBo4sEKQCOjMBN9XjiUlYErV6Dyblp7KcH.jpg",
-    "postedAt": "2026-04-06T08:50:31.801182Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r5-5600gt",
-        "name": "Ryzen 5 5600GT",
-        "brand": "AMD",
-        "igpu": true
-      },
-      "gpu": {
-        "id": "igpu",
-        "name": "Graphique Intégré"
-      },
-      "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
-      },
-      "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 256GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-25",
+    "id": "prebuild-21",
     "title": "PC GAMER RYZEN 5 5600 RTX 2060 SUPER 8GB",
     "priceDa": 145000,
     "store": "TKI TEC",
@@ -937,7 +787,44 @@
     }
   },
   {
-    "id": "prebuild-26",
+    "id": "prebuild-22",
+    "title": "PC GAMER RYZEN 5 5600 SANS GPU !",
+    "priceDa": 90000,
+    "store": "TKI TEC",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5600-sans-gpu-baraki-alger-algerie-d56554451",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/vor/zlceRHSxOkZyVhsA47q1px5JtfvfaewYJYi1Swky.jpg",
+    "postedAt": "2026-07-14T01:34:48.086304Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600",
+        "name": "Ryzen 5 5600",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "igpu",
+        "name": "Graphique Intégré"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-23",
     "title": "CONFIG PC GAMER Ryzen 7 5700X - MSI B550M-A PRO - 16GB DDR4 3200MHz RGB 2xpCool AK400 Digital SE - FSP 700W 80+ - Galax AllSync RGB Case8GB Asgard - RX 6700 XT 12GB - SSD NVMe 512GB - Netac Dee",
     "priceDa": 209000,
     "store": "Techno Pro",
@@ -974,125 +861,14 @@
     }
   },
   {
-    "id": "prebuild-27",
-    "title": "PC Gamer Ryzen 7 5700X / RAM 16Go / NVME 512Go / RX 9060 XT (16Go)",
-    "priceDa": 250000,
-    "store": "A&Y Info Tech",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-7-5700x-ram-16go-nvme-512go-rx-9060-xt-baba-hassen-alger-algerie-d48942317",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/5XOwY/NraDhvIbt5lqPae5WkmQyk1C3fjWfTmDhzD0BOZq.jpg",
-    "postedAt": "2025-06-24T14:02:49.417414Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r7-5700x",
-        "name": "Ryzen 7 5700X",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rx9060xt-8gb",
-        "name": "RX 9060 XT 8GB"
-      },
-      "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
-      },
-      "ram": {
-        "id": "ram-vengeance-16-d4",
-        "name": "16GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-28",
-    "title": "CONFIG PC AMD RYZEN 7 5700X AVEC RTX 4060 EAGEL OC 8GB GIGABYTE NEW",
-    "priceDa": 209500,
-    "store": "AT-informatics",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-amd-ryzen-7-5700x-avec-rtx-4060-eagel-oc-8gb-gigabyte-new-bab-ezzouar-alger-algerie-d38331052",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/nZWp2D/WmG9YqHnFnEuOWNT4BCsmI5JcvgSyfBUdBSRirNm.jpg",
-    "postedAt": "2023-10-30T10:17:28.529189Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r7-5700x",
-        "name": "Ryzen 7 5700X",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rtx4060-8gb",
-        "name": "RTX 4060 8GB"
-      },
-      "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
-      },
-      "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-29",
-    "title": "PC GAMER RYZEN 7 5700X RTX 3050 8GB",
-    "priceDa": 150000,
-    "store": "TKI TEC",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-7-5700x-rtx-3050-8gb-baraki-alger-algerie-d57380655",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/vor/G8wAS1xP68JZOoywtaoGcx2jGpIl2ppCBGNEeIbM.jpg",
-    "postedAt": "2026-08-26T17:52:21.046652Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r7-5700x",
-        "name": "Ryzen 7 5700X",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rtx3050-6gb",
-        "name": "RTX 3050 6GB"
-      },
-      "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
-      },
-      "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-30",
-    "title": "PC GAMER RYZEN 7 5700X / RTX 3080 10GB",
-    "priceDa": 243000,
+    "id": "prebuild-24",
+    "title": "PC GAMING RYZEN 7 5700X + RTX 3080 10GB ZOTAC WHITE BUILD",
+    "priceDa": 259000,
     "store": "GAMING ONE",
     "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-7-5700x-rtx-3080-10gb-bab-ezzouar-alger-algerie-d55872670",
-    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/5yrgLq/cVyAXh2bJtQvmBWP3GczjLuGQJ2hbsDyQyk3r65r.jpg",
-    "postedAt": "2026-06-07T13:46:42.307841Z",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gaming-ryzen-7-5700x-rtx-3080-10gb-zotac-white-build-bab-ezzouar-alger-algerie-d57582993",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/5yrgLq/whf4B4HJtNomVbWLVPJS1oUo72kYL1amjwDXKTjT.jpg",
+    "postedAt": "2026-09-07T10:27:46.594163Z",
     "specs": {
       "cpu": {
         "id": "cpu-r7-5700x",
@@ -1122,7 +898,44 @@
     }
   },
   {
-    "id": "prebuild-31",
+    "id": "prebuild-25",
+    "title": "PC GAMER RYZEN 7 5700X RTX 3050 8GB",
+    "priceDa": 150000,
+    "store": "TKI TEC",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-7-5700x-rtx-3050-8gb-baraki-alger-algerie-d57380655",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/vor/G8wAS1xP68JZOoywtaoGcx2jGpIl2ppCBGNEeIbM.jpg",
+    "postedAt": "2026-08-26T17:52:20.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-5700x",
+        "name": "Ryzen 7 5700X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3050-6gb",
+        "name": "RTX 3050 6GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-26",
     "title": "PC GAMER RYZEN 7 5700X / RTX 3070 TI",
     "priceDa": 221900,
     "store": "GAMING ONE",
@@ -1159,7 +972,7 @@
     }
   },
   {
-    "id": "prebuild-32",
+    "id": "prebuild-27",
     "title": "PROMO #7 / RYZEN 5 5700X / RX 6700XT / PC GAMER",
     "priceDa": 183900,
     "store": "TECHMATE DZ",
@@ -1196,44 +1009,7 @@
     }
   },
   {
-    "id": "prebuild-33",
-    "title": "PC Gamer Ryzen 7 5700X - RX 7600 8GB - 16 Go RAM",
-    "priceDa": 219000,
-    "store": "Bzbook.Info",
-    "wilaya": "Djelfa",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-7-5700x-rx-7600-8gb-16-go-ram-djelfa-algerie-d53719589",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/pv3Ap/Fp06tzYXGI0jJz8Tr5NXo3GgWS7XTlVvKjDgvtH5.jpg",
-    "postedAt": "2026-02-01T11:09:34.072028Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r7-5700x",
-        "name": "Ryzen 7 5700X",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rx7600-8gb",
-        "name": "RX 7600 8GB"
-      },
-      "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
-      },
-      "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-34",
+    "id": "prebuild-28",
     "title": "CONFIG PC GAMER Ryzen 7 5700X3D - MSI RX 6700 XT 12GB - Gigabyte B550M AORUS ELITE - DeepCool LE520 Water Cooling - 16GB Corsair Vengeance RGB Pro White (2x8GB) - 512GB SSD - FSP 700W 80+ - Case Galax",
     "priceDa": 263000,
     "store": "Techno Pro",
@@ -1270,81 +1046,7 @@
     }
   },
   {
-    "id": "prebuild-35",
-    "title": "CONFIG PC GAMING AMD RYZEN 5 7500F AVEC RX 9060XT 16GB WHITE",
-    "priceDa": 250900,
-    "store": "AT-informatics",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-amd-ryzen-5-7500f-avec-rx-9060xt-16gb-white-bab-ezzouar-alger-algerie-d52695433",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/nZWp2D/Iz2lLx1deqMZzSnMAMGJCXqBwvzNgN7Uic9w251s.jpg",
-    "postedAt": "2025-12-07T08:48:33.948729Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r5-7500f",
-        "name": "Ryzen 5 7500F",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rx9060xt-16gb",
-        "name": "RX 9060 XT 16GB"
-      },
-      "mobo": {
-        "id": "mobo-b650m",
-        "name": "B650M AM5"
-      },
-      "ram": {
-        "id": "ram-vengeance-16-d5",
-        "name": "16GB DDR5"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-36",
-    "title": "CONFIG PC GAMER RYZEN 5 7600 - GIGABYTE GeForce RTX 3070 - Gigabyte B650M Gaming Plus Wifi - GSKILL Ripjaws S5 16 GB - SSD NVMe 520GB+ HDD 320GB - ARES C-301 (BLACK OR WHITE) OR ANTEC VX310",
-    "priceDa": 239000,
-    "store": "Techno Pro",
-    "wilaya": "Bouira",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gamer-ryzen-5-7600-gigabyte-geforce-rtx-3070-b650m-gaming-plus-wifi-gskill-ripjaws-s5-16-gb-ssd-nvme-520gb-hdd-320gb-ares-c-301-black-or-white-antec-vx310-mchedallah-bouira-algerie-d54208199",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/lY6r0J/UTDCFI7z3FOHazsywZh8M0k1tAdtEay51HhBjiPb.jpg",
-    "postedAt": "2026-03-02T13:52:18.795950Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r5-7600",
-        "name": "Ryzen 5 7600",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rtx3070-8gb",
-        "name": "RTX 3070 8GB"
-      },
-      "mobo": {
-        "id": "mobo-b650m",
-        "name": "B650M AM5"
-      },
-      "ram": {
-        "id": "ram-vengeance-16-d5",
-        "name": "16GB DDR5"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-37",
+    "id": "prebuild-29",
     "title": "CONFIG PC GAMER Ryzen 5 7600 - RTX 3070 8GB - Gigabyte B650M - 16GB DDR5 6000MHz GSkil - SSD NVMe 512GB - DeepCool AK400 Digital SE - Antec AX20 - Ares 650W 80+ Bronze",
     "priceDa": 229000,
     "store": "Techno Pro",
@@ -1381,44 +1083,7 @@
     }
   },
   {
-    "id": "prebuild-38",
-    "title": "CONFIG PC GAMING AMD RYZEN 5 7600 AVEC RTX 5060 8GB MSI NEW NO BOX",
-    "priceDa": 256600,
-    "store": "AT-informatics",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-amd-ryzen-5-7600-avec-rtx-5060-8gb-msi-new-no-box-bab-ezzouar-alger-algerie-d47302699",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/nZWp2D/pFJtz56tY9XWd5IpdSFnlhmZV9fMHKz66zZgKBJ2.jpg",
-    "postedAt": "2025-03-21T09:48:28.293935Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r5-7600",
-        "name": "Ryzen 5 7600",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rx7600-8gb",
-        "name": "RX 7600 8GB"
-      },
-      "mobo": {
-        "id": "mobo-b650m",
-        "name": "B650M AM5"
-      },
-      "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-39",
+    "id": "prebuild-30",
     "title": "PC Gamer Ryzen 5 5500 / RAM 16Go / NVME 512Go / RX 7600 8Go",
     "priceDa": 160000,
     "store": "A&Y Info Tech",
@@ -1428,8 +1093,8 @@
     "postedAt": "2026-09-02T12:29:41.396224Z",
     "specs": {
       "cpu": {
-        "id": "cpu-r5-5600",
-        "name": "Ryzen 5 5500",
+        "id": "cpu-r5-7600",
+        "name": "Ryzen 5 7600",
         "brand": "AMD"
       },
       "gpu": {
@@ -1437,8 +1102,8 @@
         "name": "RX 7600 8GB"
       },
       "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
       },
       "ram": {
         "id": "ram-value-8-d4",
@@ -1455,44 +1120,7 @@
     }
   },
   {
-    "id": "prebuild-40",
-    "title": "CONFIG PC GAMING AMD RYZEN 5 7600 AVEC RX 9060 XT 16GB ASUS DUAL WHITE",
-    "priceDa": 272600,
-    "store": "AT-informatics",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-amd-ryzen-5-7600-avec-rx-9060-xt-16gb-asus-dual-white-bab-ezzouar-alger-algerie-d37966101",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/nZWp2D/7qb1gr7PYvMDHmLtRczoGXZVBI420sk456I4TOkm.jpg",
-    "postedAt": "2023-10-05T19:39:00.169275Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r5-7600",
-        "name": "Ryzen 5 7600",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rx9060xt-16gb",
-        "name": "RX 9060 XT 16GB"
-      },
-      "mobo": {
-        "id": "mobo-b650m",
-        "name": "B650M AM5"
-      },
-      "ram": {
-        "id": "ram-vengeance-16-d5",
-        "name": "16GB DDR5"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-41",
+    "id": "prebuild-31",
     "title": "CONFIG PC GAMER Ryzen 7 7700X - GeForce RTX 3070 White - 16GB RGB RAM - 512GB NVMe SSD - FSP 700W Bronze PSU - DeepCool LE520 White Water Cooling - GALAX Revolution 07 Case",
     "priceDa": 273000,
     "store": "Techno Pro",
@@ -1529,31 +1157,31 @@
     }
   },
   {
-    "id": "prebuild-42",
-    "title": "CONFIG PC GAMER :INTEL i5-12400F/16GB/RTX 3060 12GB",
-    "priceDa": 210000,
-    "store": "MDI informatique",
+    "id": "prebuild-32",
+    "title": "PC GAMER RYZEN 7 7700 + RX 7900 GRE",
+    "priceDa": 459900,
+    "store": "GAMING ONE",
     "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gamer-intel-i5-12400f16gbrtx-3060-12gb-alger-centre-algerie-d54593831",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/xk80W3/jXxliDZ6xrYi0bfQVcSK3RFX1DJYTzwGsBXUnoN3.jpg",
-    "postedAt": "2026-03-28T08:16:24.030450Z",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-7-7700-rx-7900-gre-bab-ezzouar-alger-algerie-d57580827",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/5yrgLq/LFttqUklq5JcGYfjDpDQg4puinv7FQCgwPIbUE1b.jpg",
+    "postedAt": "2026-09-21T09:04:00.000Z",
     "specs": {
       "cpu": {
-        "id": "cpu-i5-12400f",
-        "name": "Core i5-12400F",
-        "brand": "Intel"
+        "id": "cpu-r9-7900x",
+        "name": "Ryzen 9 7900X",
+        "brand": "AMD"
       },
       "gpu": {
-        "id": "gpu-rtx3060-12gb",
-        "name": "RTX 3060 12GB"
+        "id": "gpu-rx7800xt-16gb",
+        "name": "RX 7900 GRE 16GB"
       },
       "mobo": {
-        "id": "mobo-h610m",
-        "name": "H610M LGA1700"
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
       },
       "ram": {
-        "id": "ram-vengeance-16-d4",
-        "name": "16GB DDR4"
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
       },
       "storage": {
         "id": "ssd-nvme-512gb",
@@ -1566,7 +1194,340 @@
     }
   },
   {
-    "id": "prebuild-43",
+    "id": "prebuild-33",
+    "title": "PC Gamer MSI Ryzen 7 7800X3D 32G 6400 1TB Nvme RTX 5080 16G",
+    "priceDa": 573000,
+    "store": "ShiftTech Store",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-msi-ryzen-7-7800x3d-32g-6400-1tb-nvme-rtx-5080-16g-bab-ezzouar-alger-algerie-d57603801",
+    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/DvrRA/SSnhNDlRdCtMNfLZwaWsVni6IG5D8vk1bN6Hl60z.jpg",
+    "postedAt": "2026-09-08T12:20:11.587529Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-7800x3d",
+        "name": "Ryzen 7 7800X3D",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-34",
+    "title": "PC GAMING HIGH-END | Ryzen 7 7800X3D / RX 7900 GRE | Ryzen 9 9950X3D / RTX 5080 | GAMING",
+    "priceDa": 379900,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gaming-high-end-ryzen-7-7800x3d-rx-7900-gre-9-9950x3d-rtx-5080-bab-ezzouar-alger-algerie-d57580983",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/5yrgLq/E3aOLtHxywZsnf2XXoBp3oUf6TGU1yORgctAmdYE.jpg",
+    "postedAt": "2026-09-14T12:15:11.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-7800x3d",
+        "name": "Ryzen 7 7800X3D",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-35",
+    "title": "PC GAMER RYZEN 7 7800X3D / RADEON 7900GRE 16GB XFX",
+    "priceDa": 387000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-7-7800x3d-radeon-7900gre-16gb-xfx-bab-ezzouar-alger-algerie-d55872493",
+    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/5yrgLq/0qGwmCUnlctHUN2hgHBnPVq0mH8Su9CYhgs7q2sU.jpg",
+    "postedAt": "2026-06-07T13:38:59.188017Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-7800x3d",
+        "name": "Ryzen 7 7800X3D",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx7800xt-16gb",
+        "name": "RX 7900 GRE 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-36",
+    "title": "PC GAMER - MSI PRO B850-S WIFI 6E - RYZEN 7 9800X3D - 32GB RGB DDR5 - 2TB SSD 990 PRO - WATERCOOLING 360MM - RTX 5080 16GB - BLACK",
+    "priceDa": 735000,
+    "store": "ADMIN Informatique",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-msi-pro-b850-s-wifi-6e-ryzen-7-9800x3d-32gb-rgb-ddr5-2tb-ssd-990-watercooling-360mm-rtx-5080-16gb-black-hussein-dey-alger-algerie-d55894534",
+    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/JjpK/tFDwtqXi8prkGUTxiAvl0K3x5eUaIPZ6Ugd4uLGV.jpg",
+    "postedAt": "2026-06-08T15:32:48.033142Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-9800x3d",
+        "name": "Ryzen 7 9800X3D",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b850m",
+        "name": "B850M AM5"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 2TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-37",
+    "title": "PC GAMER - MSI PRO B850-S WIFI 6E - RYZEN 7 9800X3D - 32GB RGB DDR5 - 2TB SSD 990 PRO - WATERCOOLING 360MM - RTX 5080 16GB - BLACK",
+    "priceDa": 735000,
+    "store": "FUTURE CITY INFORMATIQUE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-msi-pro-b850-s-wifi-6e-ryzen-7-9800x3d-32gb-rgb-ddr5-2tb-ssd-990-watercooling-360mm-rtx-5080-16gb-black-kouba-alger-algerie-d56003638",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/jqLzVz/NEcj9eM9yYCb9dQAi6Lrn6FO9PD3LpaKWP0apd9F.jpg",
+    "postedAt": "2026-06-14T11:47:47.983731Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-9800x3d",
+        "name": "Ryzen 7 9800X3D",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b850m",
+        "name": "B850M AM5"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 2TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-38",
+    "title": "PC GAMER - MSI PRO B850-S WIFI 6E - RYZEN 7 9800X3D - 32GB RGB DDR5 - 2TB SSD 990 PRO - WATERCOOLING 360MM - RTX 5080 16GB - BLACK",
+    "priceDa": 735000,
+    "store": "IT DEVICE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-msi-pro-b850-s-wifi-6e-ryzen-7-9800x3d-32gb-rgb-ddr5-2tb-ssd-990-watercooling-360mm-rtx-5080-16gb-black-kouba-alger-algerie-d55927516",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/M8LxoO/VUvESbVGl1bBDaHTQvFe2jWRvmKxKHsMnysUyAUp.jpg",
+    "postedAt": "2026-06-10T10:28:15.497917Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-9800x3d",
+        "name": "Ryzen 7 9800X3D",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b850m",
+        "name": "B850M AM5"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 2TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-39",
+    "title": "CONFIG PC GAMING AMD RYZEN 7 9800X3D AVEC RTX 5080 16GB ASUS TUF GAMING",
+    "priceDa": 685000,
+    "store": "AT-informatics",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-amd-ryzen-7-9800x3d-avec-rtx-5080-16gb-asus-tuf-bab-ezzouar-alger-algerie-d49323125",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/nZWp2D/r0MoZEeWsCHRKI8DRg8TRx41uTkPixFl0fw82MZY.jpg",
+    "postedAt": "2026-09-28T10:16:12.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-9800x3d",
+        "name": "Ryzen 7 9800X3D",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-40",
+    "title": "PC GAMER / RYZEN 7 9800X3D - RAM 32GO - SSD 1TO - MSI RTX 5080 OC 16GO",
+    "priceDa": 685000,
+    "store": "Campus informatique",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-ryzen-7-9800x3d-ram-32go-ssd-1to-msi-rtx-5080-oc-16go-alger-centre-algerie-d55489801",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/Z7QvR/6geuRObbrrvnwdUHFt5CUAKEyaMgZ1FsYSKytumb.jpg",
+    "postedAt": "2026-05-14T15:30:12.644750Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-9800x3d",
+        "name": "Ryzen 7 9800X3D",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-41",
+    "title": "PC GAMING i5-12400F + RTX 3050 8GB 16GB DDR4 / SSD 512GB",
+    "priceDa": 185000,
+    "store": "MC HARDEC",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gaming-i5-12400f-rtx-3050-8gb-16gb-ddr4-ssd-512gb-mohammadia-alger-algerie-d57078669",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/zvXz12/6FIifY6QDCEPmkqHVAtWodwQSms5XlnHlE7HvM4p.jpg",
+    "postedAt": "2026-08-10T16:33:50.364226Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i5-12400f",
+        "name": "Core i5-12400F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rtx3050-6gb",
+        "name": "RTX 3050 6GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-42",
     "title": "PC GAMER / I5 12400F - RAM 16GO - SSD 512GO - RTX 3060 12GO",
     "priceDa": 187200,
     "store": "Campus informatique",
@@ -1603,31 +1564,68 @@
     }
   },
   {
-    "id": "prebuild-44",
-    "title": "INFORMATICS CONFIG I512-96XT - PC Gamer | I5-12400F | ASUS PRIME B760M-K | 16GB DDR5| RX 9060 XT 16GB",
-    "priceDa": 274900,
-    "store": "Informatics",
+    "id": "prebuild-43",
+    "title": "PC GAMING INTEL CORE i5-14400F | RTX 4060 Ti 8GB",
+    "priceDa": 216000,
+    "store": "WELTINFO",
     "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-informatics-config-i512-96xt-pc-gamer-i5-12400f-asus-prime-b760m-k-16gb-ddr5-rx-9060-xt-dar-el-beida-alger-algerie-d47461988",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/VZg0X/nbX5eAI7VvVqQLLktfan0qrTsXBmDfUl6f7D888Y.jpg",
-    "postedAt": "2025-04-04T14:03:45.407973Z",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gaming-intel-core-i5-14400f-rtx-4060-ti-8gb-alger-centre-algerie-d56207578",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/AD7VB/TR3HbwiEqsQNSA9YkGM5hipDvKzrFfPXHWYWMgeZ.jpg",
+    "postedAt": "2026-06-25T12:36:54.311740Z",
     "specs": {
       "cpu": {
-        "id": "cpu-i5-12400f",
-        "name": "Core i5-12400F",
+        "id": "cpu-i5-14400f",
+        "name": "Core i5-14400F",
         "brand": "Intel"
       },
       "gpu": {
-        "id": "gpu-rx9060xt-16gb",
-        "name": "RX 9060 XT 16GB"
+        "id": "gpu-rtx4060ti-8gb",
+        "name": "RTX 4060 Ti 8GB"
       },
       "mobo": {
         "id": "mobo-h610m",
         "name": "H610M LGA1700"
       },
       "ram": {
-        "id": "ram-vengeance-16-d5",
-        "name": "16GB DDR5"
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-44",
+    "title": "UC UNITE CENTRALE HP PRODESK 400 G9 SFF Intel Core i7-13700 30 Mo de cache, jusqu à 5,20 GHz RAM 8GB DISQUE 512GB SSD Intel UHD Graphics 770",
+    "priceDa": 185000,
+    "store": "GCB INFORMATIQUE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-uc-unite-centrale-hp-prodesk-400-g9-sff-intel-core-i7-13700-30-mo-de-cache-jusqu-a-520-ghz-ram-8gb-disque-512gb-ssd-uhd-graphics-770-bab-ezzouar-alger-algerie-d56110774",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/N1pnN/wHXwjzlz6eJ2c3NXO50wyzC9CVyLzRhBhUPDNHBQ.jpg",
+    "postedAt": "2026-06-20T12:03:12.630824Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i7-13700f",
+        "name": "Core i7-13700F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "igpu",
+        "name": "Graphique Intégré"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
       },
       "storage": {
         "id": "ssd-nvme-512gb",
@@ -1641,117 +1639,6 @@
   },
   {
     "id": "prebuild-45",
-    "title": "CONFIG PC INTEL CORE I5 12400F AVEC RX 9060 XT 16GB GIGABYTE NEW",
-    "priceDa": 255900,
-    "store": "AT-informatics",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-intel-core-i5-12400f-avec-rx-9060-xt-16gb-gigabyte-new-bab-ezzouar-alger-algerie-d55155607",
-    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/nZWp2D/hTrxZTloXtjIONxmLHlO4TCPI2BfSH7OKbhd6I3P.jpg",
-    "postedAt": "2026-04-27T10:27:29.057809Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-i5-12400f",
-        "name": "Core i5-12400F",
-        "brand": "Intel"
-      },
-      "gpu": {
-        "id": "gpu-rx9060xt-16gb",
-        "name": "RX 9060 XT 16GB"
-      },
-      "mobo": {
-        "id": "mobo-h610m",
-        "name": "H610M LGA1700"
-      },
-      "ram": {
-        "id": "ram-vengeance-16-d4",
-        "name": "16GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-46",
-    "title": "PC Gamer I5-12400F / RAM 16Go / NVME 256Go / RTX 3060 12Go",
-    "priceDa": 185000,
-    "store": "A&Y Info Tech",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-i5-12400f-ram-16go-nvme-256go-rtx-3060-12go-baba-hassen-alger-algerie-d44316001",
-    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/5XOwY/KqcpeumoeHEI5sHnlkKOhUkIGWCbPDLomhbVZKF0.jpg",
-    "postedAt": "2024-10-07T13:06:55.897605Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-i5-12400f",
-        "name": "Core i5-12400F",
-        "brand": "Intel"
-      },
-      "gpu": {
-        "id": "gpu-rtx3060-12gb",
-        "name": "RTX 3060 12GB"
-      },
-      "mobo": {
-        "id": "mobo-h610m",
-        "name": "H610M LGA1700"
-      },
-      "ram": {
-        "id": "ram-vengeance-16-d4",
-        "name": "16GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 256GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-47",
-    "title": "CONFIG PC INTEL CORE I5 14400F AVEC RX 9060 XT 16GB GAMING GIGABYTE OC",
-    "priceDa": 265500,
-    "store": "AT-informatics",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-intel-core-i5-14400f-avec-rx-9060-xt-16gb-gaming-gigabyte-oc-bab-ezzouar-alger-algerie-d55155655",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/nZWp2D/lkf20OrZDHTwdpnHckOLtDXxP8uyvrLmH1ZoN3HN.jpg",
-    "postedAt": "2026-04-27T10:29:15.046907Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-i5-14400f",
-        "name": "Core i5-14400F",
-        "brand": "Intel"
-      },
-      "gpu": {
-        "id": "gpu-rx9060xt-16gb",
-        "name": "RX 9060 XT 16GB"
-      },
-      "mobo": {
-        "id": "mobo-h610m",
-        "name": "H610M LGA1700"
-      },
-      "ram": {
-        "id": "ram-vengeance-16-d4",
-        "name": "16GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-48",
     "title": "PC GAMER INTEL CORE i7-14700KF RTX 4070 12GB",
     "priceDa": 429000,
     "store": "WELTINFO",
@@ -1788,7 +1675,44 @@
     }
   },
   {
-    "id": "prebuild-49",
+    "id": "prebuild-46",
+    "title": "PC GAMER INTEL I9-14900KF / RTX 3080 10GB",
+    "priceDa": 490000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-intel-i9-14900kf-rtx-3080-10gb-bab-ezzouar-alger-algerie-d55872880",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/5yrgLq/0iJWF9AGR7oLI30FrSNBFIiYQBKsBUkIWHKSRgni.jpg",
+    "postedAt": "2026-06-07T13:56:44.378606Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i7-14700kf",
+        "name": "Core i9-14900K",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rtx3080-10gb",
+        "name": "RTX 3080 10GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-47",
     "title": "PC GAMER / I3 12100 - RAM 16GO - SSD 512GO - COLORFUL RTX 3060 12GO",
     "priceDa": 177200,
     "store": "Campus informatique",
@@ -1825,7 +1749,7 @@
     }
   },
   {
-    "id": "prebuild-50",
+    "id": "prebuild-48",
     "title": "CONFIG PC GAMER Intel Core i3-12100 cache 12 Mo, jusqu'à 4,30 GHz RAM 8GB 3200MHZ DISQUE SSD 256GB MX2 H610 ALIMENTATION 550W GeForce GTX 1660S 6GB BOITER MAGMA RGB",
     "priceDa": 109000,
     "store": "GCB INFORMATIQUE",
@@ -1862,51 +1786,14 @@
     }
   },
   {
-    "id": "prebuild-51",
-    "title": "PC Gamer I3-12100F / RAM 16Go / NVME 256Go / RTX 3060 12Go",
-    "priceDa": 165000,
-    "store": "A&Y Info Tech",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-i3-12100f-ram-16go-nvme-256go-rtx-3060-12go-baba-hassen-alger-algerie-d47636446",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/5XOwY/xXWDlPhsjKLqSIfUZPD20FMg2Z0SclbPHoRNN2A4.jpg",
-    "postedAt": "2025-04-13T15:12:53.917707Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-i3-12100f",
-        "name": "Core i3-12100F",
-        "brand": "Intel"
-      },
-      "gpu": {
-        "id": "gpu-rtx3060-12gb",
-        "name": "RTX 3060 12GB"
-      },
-      "mobo": {
-        "id": "mobo-h610m",
-        "name": "H610M LGA1700"
-      },
-      "ram": {
-        "id": "ram-vengeance-16-d4",
-        "name": "16GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 256GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-52",
-    "title": "CONFIG PC GAMER :INTEL i3-12100F/16GB/GTX 1660 SUPER",
-    "priceDa": 158000,
+    "id": "prebuild-49",
+    "title": "CONFIG PC GAMER :INTEL i3-12100F/16GB/RX 6500XT 4GB",
+    "priceDa": 128000,
     "store": "MDI informatique",
     "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gamer-intel-i3-12100f16gbgtx-1660-super-alger-centre-algerie-d54594068",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/xk80W3/qsBFDyHiy1J95ZbROle2z1r2vO2u0mvXgLanod8N.jpg",
-    "postedAt": "2026-03-28T08:30:59.038583Z",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gamer-intel-i3-12100f16gbrx-6500xt-4gb-alger-centre-algerie-d54905821",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/xk80W3/hMJWVkxBQhS6DRxCqErckymd0hnRQKiTMq024JJE.jpg",
+    "postedAt": "2026-04-13T08:40:34.764190Z",
     "specs": {
       "cpu": {
         "id": "cpu-i3-12100f",
@@ -1914,8 +1801,8 @@
         "brand": "Intel"
       },
       "gpu": {
-        "id": "gpu-gtx1660s-6gb",
-        "name": "GTX 1660 SUPER 6GB"
+        "id": "gpu-rx6600-8gb",
+        "name": "RX 6500 XT 4GB"
       },
       "mobo": {
         "id": "mobo-h610m",
@@ -1936,7 +1823,7 @@
     }
   },
   {
-    "id": "prebuild-53",
+    "id": "prebuild-50",
     "title": "CONFIG PC GAMER :INTEL CORE i3-12100F/16GB/RX 580 8GB",
     "priceDa": 123000,
     "store": "MDI informatique",
@@ -1973,51 +1860,51 @@
     }
   },
   {
-    "id": "prebuild-54",
-    "title": "PC Gamer Ryzen 5 5500 / RAM 16Go / NVME 256Go / RTX 3060 12Go",
-    "priceDa": 165000,
-    "store": "A&Y Info Tech",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5500-ram-16go-nvme-256go-rtx-3060-12go-baba-hassen-alger-algerie-d51716025",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/5XOwY/WMY3DxPgIZpUonpa5LzR7EryKyzIhAqiGXHpLD8q.jpg",
-    "postedAt": "2025-10-28T13:09:01.394468Z",
+    "id": "prebuild-51",
+    "title": "CONFIG PC GAMER i7-12700KF / RTX 3060 Ti 8GB / 16GB DDR4 / SSD 512GB / DeepCool AK620 / ARES 650W Bronze Plus / GALAX Revolution 07",
+    "priceDa": 209000,
+    "store": "Techno Pro",
+    "wilaya": "Bouira",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-config-gamer-i7-12700kf-rtx-3060-ti-8gb-16gb-ddr4-ssd-512gb-deepcool-ak620-ares-650w-bronze-plus-galax-revolution-07-mchedallah-bouira-algerie-d57082524",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/lY6r0J/7TXoNWnD8NQXNy0MeOM79oUHPb6Tdkm8Eb83KLYr.jpg",
+    "postedAt": "2026-08-10T19:31:25.651591Z",
     "specs": {
       "cpu": {
-        "id": "cpu-r5-5600",
-        "name": "Ryzen 5 5500",
-        "brand": "AMD"
+        "id": "cpu-i7-13700f",
+        "name": "Core i7-12700F",
+        "brand": "Intel"
       },
       "gpu": {
-        "id": "gpu-rtx3060-12gb",
-        "name": "RTX 3060 12GB"
+        "id": "gpu-rtx3060ti-8gb",
+        "name": "RTX 3060 Ti 8GB"
       },
       "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
       },
       "ram": {
-        "id": "ram-vengeance-16-d4",
-        "name": "16GB DDR4"
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
       },
       "storage": {
         "id": "ssd-nvme-512gb",
-        "name": "SSD 256GB"
+        "name": "SSD 512GB"
       },
       "psu": {
         "id": "psu-550-b",
-        "name": "550W Bronze"
+        "name": "650W Bronze"
       }
     }
   },
   {
-    "id": "prebuild-55",
+    "id": "prebuild-52",
     "title": "CONFIG PC INTEL CORE I5 12400F AVEC RTX 3060 12GB GALAX NEW",
     "priceDa": 188900,
     "store": "AT-informatics",
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-config-pc-intel-core-i5-12400f-avec-rtx-3060-12gb-galax-new-bab-ezzouar-alger-algerie-d55339444",
     "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/nZWp2D/OtEiKA4pTRxcugnzSo9Kqbe3HAIkncMwRATZuIzm.jpg",
-    "postedAt": "2026-05-07T09:13:49.246330Z",
+    "postedAt": "2026-08-29T10:37:36.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-i5-12400f",
@@ -2047,14 +1934,14 @@
     }
   },
   {
-    "id": "prebuild-56",
+    "id": "prebuild-53",
     "title": "PC GAMER RYZEN 5 5500 RTX 3060 TI 8GB",
     "priceDa": 159000,
     "store": "TKI TEC",
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5500-rtx-3060-ti-8gb-baraki-alger-algerie-d57311883",
     "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/vor/5lcNHcQnxMk0QmpzCJuW31QO60kZOGN2NfJ3OnBz.jpg",
-    "postedAt": "2026-08-23T00:02:37.535120Z",
+    "postedAt": "2026-08-24T01:04:52.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600",
@@ -2084,7 +1971,7 @@
     }
   },
   {
-    "id": "prebuild-57",
+    "id": "prebuild-54",
     "title": "PC GAMER - RYZEN 5 5500 - MSI B550M PRO-VDH - 16GO DDR4 ( 8x2 ) - 1TO SSD NVME GEN 4 - RTX 4060TI 8GO - PSU 650W SI SERIES - TEMPEST AURORA BLACK",
     "priceDa": 210000,
     "store": "ADMIN Informatique",
@@ -2121,14 +2008,14 @@
     }
   },
   {
-    "id": "prebuild-58",
+    "id": "prebuild-55",
     "title": "CONFIG PC GAMING INTEL CORE I5 14400F AVEC RTX 4060 8GB ASUS DUAL NEW",
     "priceDa": 201600,
     "store": "AT-informatics",
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-intel-core-i5-14400f-avec-rtx-4060-8gb-asus-dual-new-bab-ezzouar-alger-algerie-d49325903",
     "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/nZWp2D/wzOAB72ccOEVKGFy9sGHzrbQUqLFwsSYqrKWXd1w.jpg",
-    "postedAt": "2025-07-13T11:42:13.489915Z",
+    "postedAt": "2026-08-29T10:37:34.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-i5-14400f",
@@ -2158,14 +2045,14 @@
     }
   },
   {
-    "id": "prebuild-59",
+    "id": "prebuild-56",
     "title": "CONFIG PC INTEL I5 12400F AVEC RTX 4060 8GB GIGABYTE OC NEW",
     "priceDa": 198900,
     "store": "AT-informatics",
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-config-pc-intel-i5-12400f-avec-rtx-4060-8gb-gigabyte-oc-new-bab-ezzouar-alger-algerie-d42727564",
     "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/nZWp2D/0ugycGiiCnY5cvjPDIne1Nb7OZRDecfwHFx0Bngi.jpg",
-    "postedAt": "2024-07-18T11:07:35.822052Z",
+    "postedAt": "2026-08-29T10:37:33.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-i5-12400f",
@@ -2195,7 +2082,44 @@
     }
   },
   {
-    "id": "prebuild-60",
+    "id": "prebuild-57",
+    "title": "CONFIG PC AMD RYZEN 7 5700X AVEC RTX 4060 EAGEL OC 8GB GIGABYTE NEW",
+    "priceDa": 209500,
+    "store": "AT-informatics",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-amd-ryzen-7-5700x-avec-rtx-4060-eagel-oc-8gb-gigabyte-new-bab-ezzouar-alger-algerie-d38331052",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/nZWp2D/WmG9YqHnFnEuOWNT4BCsmI5JcvgSyfBUdBSRirNm.jpg",
+    "postedAt": "2026-08-29T10:37:32.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-5700x",
+        "name": "Ryzen 7 5700X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4060-8gb",
+        "name": "RTX 4060 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-58",
     "title": "PC GAMER INTEL I5-14600KF / RTX 4070 12GB",
     "priceDa": 338000,
     "store": "GAMING ONE",
@@ -2232,44 +2156,7 @@
     }
   },
   {
-    "id": "prebuild-61",
-    "title": "PC GAMER OFFER RYZEN 5 7500F RTX 3070 8GB",
-    "priceDa": 266000,
-    "store": "GAMING ONE",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-offer-ryzen-5-7500f-rtx-3070-8gb-bab-ezzouar-alger-algerie-d51945549",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/5yrgLq/n2fcp9g6B1xBVsEwuAeWlAvMdCDwvuOutqgklzmc.jpg",
-    "postedAt": "2025-11-06T09:52:39.301333Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r5-7500f",
-        "name": "Ryzen 5 7500F",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rtx3070-8gb",
-        "name": "RTX 3070 8GB"
-      },
-      "mobo": {
-        "id": "mobo-b650m",
-        "name": "B650M AM5"
-      },
-      "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-62",
+    "id": "prebuild-59",
     "title": "CONFIG PC GAMER - Ryzen 5 5500 / RX 580 8GB / 16GB RAM DDR4 / 256GB SSD SATA",
     "priceDa": 114500,
     "store": "SSH COMPUTER",
@@ -2306,81 +2193,7 @@
     }
   },
   {
-    "id": "prebuild-63",
-    "title": "CONFIG PC INTEL CORE I3 12100 AVEC RX 580 8GB AFOX",
-    "priceDa": 95900,
-    "store": "AT-informatics",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-intel-core-i3-12100-avec-rx-580-8gb-afox-bab-ezzouar-alger-algerie-d40904176",
-    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/nZWp2D/EsFKibCWTHlE1kplw0SMZOnW4tP0tPCI3Un8gQlp.jpg",
-    "postedAt": "2024-04-22T10:40:26.426886Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-i3-12100f",
-        "name": "Core i3-12100F",
-        "brand": "Intel"
-      },
-      "gpu": {
-        "id": "gpu-rx580-8gb",
-        "name": "RX 580 8GB"
-      },
-      "mobo": {
-        "id": "mobo-h610m",
-        "name": "H610M LGA1700"
-      },
-      "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-64",
-    "title": "PC Gamer 2025 Edition | FPS White Machine | Ryzen 7600X / RX 6600 / 32GB DDR5",
-    "priceDa": 250000,
-    "store": "CHB Store / COMPUTER HARD BUSINESS",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-2025-edition-fps-white-machine-ryzen-7600x-rx-6600-32gb-ddr5-hussein-dey-alger-algerie-d47532710",
-    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/Wwl6W/BdPQOhPkj2ndCXKMsMzvexBodPg8UDtoSHHorH4L.jpg",
-    "postedAt": "2025-04-07T21:35:52.968955Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-r5-7600x",
-        "name": "Ryzen 5 7600X",
-        "brand": "AMD"
-      },
-      "gpu": {
-        "id": "gpu-rx6600-8gb",
-        "name": "RX 6600 8GB"
-      },
-      "mobo": {
-        "id": "mobo-b650m",
-        "name": "B650M AM5"
-      },
-      "ram": {
-        "id": "ram-delta-32-d5",
-        "name": "32GB DDR5"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-65",
+    "id": "prebuild-60",
     "title": "PC GAMER RYZEN 5 5500 RX 6600 XT 8GB ASUS DUAL",
     "priceDa": 150000,
     "store": "TKI TEC",
@@ -2417,18 +2230,18 @@
     }
   },
   {
-    "id": "prebuild-66",
-    "title": "CONFIG PC GAMING RYZEN 5 5500 BOX AVEC AMD RX 7600 8GB ASUS DUAL NEW",
-    "priceDa": 184600,
+    "id": "prebuild-61",
+    "title": "CONFIG PC GAMING AMD RYZEN 5 5600X AVEC RX 7600 8GB ASUS DUAL NEW",
+    "priceDa": 192000,
     "store": "AT-informatics",
     "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-ryzen-5-5500-box-avec-amd-rx-7600-8gb-asus-dual-new-bab-ezzouar-alger-algerie-d40235682",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/nZWp2D/JB6KT56morSfOA4Rxg7ZMi0J9UD8xeB460jpAEvS.jpg",
-    "postedAt": "2024-03-13T10:45:16.443593Z",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-amd-ryzen-5-5600x-avec-rx-7600-8gb-asus-dual-new-bab-ezzouar-alger-algerie-d52724173",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/nZWp2D/IJ2YS3urUrsYruMHq8ArIFYM2SeHWdt1IYX9zdps.jpg",
+    "postedAt": "2026-09-28T10:16:13.000Z",
     "specs": {
       "cpu": {
-        "id": "cpu-r5-5600",
-        "name": "Ryzen 5 5500",
+        "id": "cpu-r5-7600",
+        "name": "Ryzen 5 7600",
         "brand": "AMD"
       },
       "gpu": {
@@ -2436,8 +2249,8 @@
         "name": "RX 7600 8GB"
       },
       "mobo": {
-        "id": "mobo-b550m-a-pro",
-        "name": "B550M AM4"
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
       },
       "ram": {
         "id": "ram-value-8-d4",
@@ -2454,7 +2267,44 @@
     }
   },
   {
-    "id": "prebuild-67",
+    "id": "prebuild-62",
+    "title": "CONFIG PC GAMING AMD RYZEN 5 7600 AVEC RX 9060 XT 16GB ASUS DUAL WHITE",
+    "priceDa": 272600,
+    "store": "AT-informatics",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-amd-ryzen-5-7600-avec-rx-9060-xt-16gb-asus-dual-white-bab-ezzouar-alger-algerie-d37966101",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/nZWp2D/7qb1gr7PYvMDHmLtRczoGXZVBI420sk456I4TOkm.jpg",
+    "postedAt": "2026-08-29T10:37:32.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-7600",
+        "name": "Ryzen 5 7600",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx7600-8gb",
+        "name": "RX 7600 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-63",
     "title": "PC GAMER RYZEN 5 7600X / RX 7800 XT 16GB",
     "priceDa": 316000,
     "store": "GAMING ONE",
@@ -2491,72 +2341,35 @@
     }
   },
   {
-    "id": "prebuild-68",
-    "title": "PC Gamer Intel I5-14400F / RAM 16Go / NVME 256Go / RX 9060 XT (8Go)",
-    "priceDa": 205000,
-    "store": "A&Y Info Tech",
+    "id": "prebuild-64",
+    "title": "PC GAMER RYZEN 5 3600 GTX 1660 SUPER 6GB",
+    "priceDa": 110000,
+    "store": "TKI TEC",
     "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-intel-i5-14400f-ram-16go-nvme-256go-rx-9060-xt-8go-baba-hassen-alger-algerie-d57497547",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/5XOwY/gCcIpXcTHq1NWs1GmsbPErZ9IcPrHRf96eKi5d6j.jpg",
-    "postedAt": "2026-09-02T12:47:24.910612Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-i5-14400f",
-        "name": "Core i5-14400F",
-        "brand": "Intel"
-      },
-      "gpu": {
-        "id": "gpu-rx9060xt-8gb",
-        "name": "RX 9060 XT 8GB"
-      },
-      "mobo": {
-        "id": "mobo-h610m",
-        "name": "H610M LGA1700"
-      },
-      "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 256GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "550W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-69",
-    "title": "PC Gamer Ryzen 5 5500 / RAM 16Go / NVME 256Go / RX 9060 XT (8Go)",
-    "priceDa": 185000,
-    "store": "A&Y Info Tech",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5500-ram-16go-nvme-256go-rx-9060-xt-8go-baba-hassen-alger-algerie-d51724561",
-    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/5XOwY/aYRGOMLGwdahsLXDhWX1ahUQuHIg0Rk0TvcTZCHQ.jpg",
-    "postedAt": "2025-10-28T18:16:20.194708Z",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-3600-gtx-1660-super-6gb-baraki-alger-algerie-d56474744",
+    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/vor/ujF2KFuPdKmjndDIxCNoT4ETnz8fE9L1qeOsPSvQ.jpg",
+    "postedAt": "2026-07-09T16:16:01.127477Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600",
-        "name": "Ryzen 5 5500",
+        "name": "Ryzen 5 3600",
         "brand": "AMD"
       },
       "gpu": {
-        "id": "gpu-rx9060xt-8gb",
-        "name": "RX 9060 XT 8GB"
+        "id": "gpu-gtx1660s-6gb",
+        "name": "GTX 1660 SUPER 6GB"
       },
       "mobo": {
         "id": "mobo-b550m-a-pro",
         "name": "B550M AM4"
       },
       "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
       },
       "storage": {
         "id": "ssd-nvme-512gb",
-        "name": "SSD 256GB"
+        "name": "SSD 512GB"
       },
       "psu": {
         "id": "psu-550-b",
@@ -2565,35 +2378,35 @@
     }
   },
   {
-    "id": "prebuild-70",
-    "title": "PC GAMER I3-12100F B660M-P 16GB 8GBX2 SSD 256GB GTX1650 4GB 600W BOITEIR",
-    "priceDa": 125900,
-    "store": "BUYMORE",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-i3-12100f-b660m-p-16gb-8gbx2-ssd-256gb-gtx1650-4gb-600w-boiteir-alger-centre-algerie-d34291891",
-    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/lGz4V/U0QswVkkdFQAiN6QDYc1MPKW03GnaJoQCz9tIMw4.jpg",
-    "postedAt": "2022-11-20T11:36:21.327406Z",
+    "id": "prebuild-65",
+    "title": "PROMO CONFIG PC GAMER PHOENIX AMD RYZEN7 7800X3D / WATER COOLING / 32GB (2 x 16GB) 6400MHZ / B650 / 2TB SSD M.2 / RTX 5080 16GB / 700W / 4X ARGB FANS",
+    "priceDa": 685000,
+    "store": "LICB+",
+    "wilaya": "Tlemcen",
+    "url": "https://www.ouedkniss.com/unites-centrales-promo-config-pc-gamer-phoenix-amd-ryzen7-7800x3d-water-cooling-32gb-2-x-16gb-6400mhz-b650-2tb-ssd-m2-rtx-5080-700w-4x-argb-fans-tlemcen-algerie-d56333812",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/voRVQ0/RjRIFmzp0oBIPIjgIz1Juggs3cnCCqL6ebUUEdiG.jpg",
+    "postedAt": "2026-07-02T09:18:13.031054Z",
     "specs": {
       "cpu": {
-        "id": "cpu-i3-12100f",
-        "name": "Core i3-12100F",
-        "brand": "Intel"
+        "id": "cpu-r7-7800x3d",
+        "name": "Ryzen 7 7800X3D",
+        "brand": "AMD"
       },
       "gpu": {
-        "id": "gpu-gtx1650-4gb",
-        "name": "GTX 1650 4GB"
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
       },
       "mobo": {
-        "id": "mobo-h610m",
-        "name": "H610M LGA1700"
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
       },
       "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
       },
       "storage": {
-        "id": "ssd-nvme-512gb",
-        "name": "SSD 256GB"
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 2TB"
       },
       "psu": {
         "id": "psu-550-b",
@@ -2602,7 +2415,7 @@
     }
   },
   {
-    "id": "prebuild-71",
+    "id": "prebuild-66",
     "title": "PROMO CONFIG PC GAMER VIPER AMD RYZEN5 5600GT / AIR COOLING ARGB / 16GB (2x8GB) DDR4 3200MHz / A520 / 500GB SSD / 550W / 4X ARGB FANS",
     "priceDa": 96900,
     "store": "LICB+",
@@ -2640,7 +2453,7 @@
     }
   },
   {
-    "id": "prebuild-72",
+    "id": "prebuild-67",
     "title": "PROMO CONFIG PC GAMER RAPTOR AMD RYZEN5 5500 / 16GB DDR4 3200MHZ / A520 / 256GB SSD / RTX 3050 6GB / 550W / 4X ARGB FANS",
     "priceDa": 142500,
     "store": "LICB+",
@@ -2677,31 +2490,31 @@
     }
   },
   {
-    "id": "prebuild-73",
-    "title": "Pc Gamer INTEL I5 14400F / RTX GALAX 4060 OC 8GB/ 32GB DDR4 3200MHz / B760M-P D4/ 512GB",
-    "priceDa": 199990,
-    "store": "ZAK PRO TECH",
-    "wilaya": "Blida",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-intel-i5-14400f-rtx-galax-4060-oc-8gb-32gb-ddr4-3200mhz-b760m-p-d4-512gb-boufarik-blida-algerie-d47836819",
-    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/wm7Zn8/8LZcE77rszu8CvZSvsMlrm0FbtukINdminxZtJz9.jpg",
-    "postedAt": "2025-04-23T15:54:15.482515Z",
+    "id": "prebuild-68",
+    "title": "PC Gamer 2025 Edition | FPS White Machine | Ryzen 7600X / RX 6600 / 32GB DDR5",
+    "priceDa": 250000,
+    "store": "CHB Store / COMPUTER HARD BUSINESS",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-2025-edition-fps-white-machine-ryzen-7600x-rx-6600-32gb-ddr5-hussein-dey-alger-algerie-d47532710",
+    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/Wwl6W/BdPQOhPkj2ndCXKMsMzvexBodPg8UDtoSHHorH4L.jpg",
+    "postedAt": "2026-09-30T16:30:45.000Z",
     "specs": {
       "cpu": {
-        "id": "cpu-i5-14400f",
-        "name": "Core i5-14400F",
-        "brand": "Intel"
+        "id": "cpu-r5-7600x",
+        "name": "Ryzen 5 7600X",
+        "brand": "AMD"
       },
       "gpu": {
-        "id": "gpu-rtx4060-8gb",
-        "name": "RTX 4060 8GB"
+        "id": "gpu-rx6600-8gb",
+        "name": "RX 6600 8GB"
       },
       "mobo": {
-        "id": "mobo-h610m",
-        "name": "H610M LGA1700"
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
       },
       "ram": {
-        "id": "ram-vengeance-32-d4",
-        "name": "32GB DDR4"
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
       },
       "storage": {
         "id": "ssd-nvme-512gb",
@@ -2714,7 +2527,81 @@
     }
   },
   {
-    "id": "prebuild-74",
+    "id": "prebuild-69",
+    "title": "GAMINGZONE CONFIG PC 970X-58A RYZEN7 9700X - RTX5080 VENTUS 16GB OC 3X - X670E GAMING PLUS WIFI - 32GB RGB 4X8GB 5600MHZ - NVME 512GB - 750WATTS GARANTIE 18 MOIS",
+    "priceDa": 609000,
+    "store": "GamingZone BY Divatech",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-gamingzone-config-pc-970x-58a-ryzen7-9700x-rtx5080-ventus-16gb-oc-3x-x670e-gaming-plus-wifi-32gb-rgb-4x8gb-5600mhz-nvme-512gb-750watts-garantie-18-mois-mohammadia-setif-alger-algerie-d55608706",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/oVYQoY/0SmYFz9OIgeorJDQy0ZULsgqoCzfuuzJJvCGg1XK.jpg",
+    "postedAt": "2026-05-20T17:59:35.717362Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-9700x",
+        "name": "Ryzen 7 9700X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-70",
+    "title": "CONFIG PC GAMER / WORKSTATION Ryzen 9 7900x3D / EVGA RTX 3080 / DDR5 16GB / ASUS ROG STRIX B650-A GAMING WIFI / FSP Hydro PRO 800W / SSD NVMe 512GB + HDD 320GB / Antec C5 Curve ARGB",
+    "priceDa": 398900,
+    "store": "Techno Pro",
+    "wilaya": "Bouira",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gamer-workstation-ryzen-9-7900x3d-evga-rtx-3080-ddr5-16gb-asus-rog-strix-b650-a-gaming-wifi-fsp-hydro-pro-800w-ssd-nvme-512gb-hdd-320gb-antec-c5-curve-argb-mchedallah-bouira-algerie-d54041474",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/lY6r0J/Gj4WALdePXkQLbxWbd9cvBLVrlg74MXDeeXDblMv.jpg",
+    "postedAt": "2026-10-02T10:01:23.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r9-7900x",
+        "name": "Ryzen 9 7900X3D",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3080-10gb",
+        "name": "RTX 3080 10GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-71",
     "title": "CONFIG PC GAMER :AMD RYZEN 5 5600X/16GB/RTX 3060 12GB",
     "priceDa": 190000,
     "store": "MDI informatique",
@@ -2751,23 +2638,97 @@
     }
   },
   {
-    "id": "prebuild-75",
-    "title": "PC Gamer Ryzen 7 5700X / RAM 16Go / NVME 512Go / RX 9060 XT (16Go)",
-    "priceDa": 250000,
+    "id": "prebuild-72",
+    "title": "CONFIG PC GAMER :INTEL i3-12100F/16GB/RX 6500XT 4GB",
+    "priceDa": 128000,
+    "store": "MDI informatique",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gamer-intel-i3-12100f16gbrx-6500xt-4gb-alger-centre-algerie-d54905821",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/xk80W3/hMJWVkxBQhS6DRxCqErckymd0hnRQKiTMq024JJE.jpg",
+    "postedAt": "2026-04-13T08:40:34.764190Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i3-12100f",
+        "name": "Core i3-12100F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rx6600-8gb",
+        "name": "RX 6500 XT 4GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 256GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "650W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-73",
+    "title": "CONFIG PC GAMER :INTEL i3-12100F/16GB/GTX 1660 SUPER",
+    "priceDa": 158000,
+    "store": "MDI informatique",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gamer-intel-i3-12100f16gbgtx-1660-super-alger-centre-algerie-d54594068",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/xk80W3/qsBFDyHiy1J95ZbROle2z1r2vO2u0mvXgLanod8N.jpg",
+    "postedAt": "2026-09-19T08:26:25.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i3-12100f",
+        "name": "Core i3-12100F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-gtx1660s-6gb",
+        "name": "GTX 1660 SUPER 6GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-74",
+    "title": "PC Gamer Ryzen 7 5700 / RAM 16Go / SSD 512Go / RX 6500 XT (8Go)",
+    "priceDa": 155000,
     "store": "A&Y Info Tech",
     "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-7-5700x-ram-16go-nvme-512go-rx-9060-xt-baba-hassen-alger-algerie-d48942317",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/5XOwY/NraDhvIbt5lqPae5WkmQyk1C3fjWfTmDhzD0BOZq.jpg",
-    "postedAt": "2025-06-24T14:02:49.417414Z",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-7-5700-ram-16go-ssd-512go-rx-6500-xt-8go-baba-hassen-alger-algerie-d56111461",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/5XOwY/HqXWF6XYxSVpy9gCIc7HLkXUhhRKD4iiKfkleY3K.jpg",
+    "postedAt": "2026-06-20T12:35:24.388506Z",
     "specs": {
       "cpu": {
         "id": "cpu-r7-5700x",
-        "name": "Ryzen 7 5700X",
+        "name": "Ryzen 7 5700",
         "brand": "AMD"
       },
       "gpu": {
-        "id": "gpu-rx9060xt-8gb",
-        "name": "RX 9060 XT 8GB"
+        "id": "gpu-rx6600-8gb",
+        "name": "RX 6500 XT 4GB"
       },
       "mobo": {
         "id": "mobo-b550m-a-pro",
@@ -2783,19 +2744,19 @@
       },
       "psu": {
         "id": "psu-550-b",
-        "name": "650W Bronze"
+        "name": "550W Bronze"
       }
     }
   },
   {
-    "id": "prebuild-76",
-    "title": "PC Gamer I3-12100F / RAM 16Go / NVME 512Go / RTX 3060 12Go",
-    "priceDa": 170000,
+    "id": "prebuild-75",
+    "title": "PC Gamer I3-12100F / RAM 16Go / NVME 256Go / RTX 3060 12Go",
+    "priceDa": 165000,
     "store": "A&Y Info Tech",
     "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-i3-12100f-ram-16go-nvme-512go-rtx-3060-12go-baba-hassen-alger-algerie-d51716549",
-    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/5XOwY/bC8aHt9DzoOsRi0jRy9OC09Uj7QpQmv3AgCwWBUx.jpg",
-    "postedAt": "2025-10-28T13:27:32.695988Z",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-i3-12100f-ram-16go-nvme-256go-rtx-3060-12go-baba-hassen-alger-algerie-d47636446",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/5XOwY/xXWDlPhsjKLqSIfUZPD20FMg2Z0SclbPHoRNN2A4.jpg",
+    "postedAt": "2026-09-02T12:19:11.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-i3-12100f",
@@ -2816,43 +2777,6 @@
       },
       "storage": {
         "id": "ssd-nvme-512gb",
-        "name": "SSD 512GB"
-      },
-      "psu": {
-        "id": "psu-550-b",
-        "name": "650W Bronze"
-      }
-    }
-  },
-  {
-    "id": "prebuild-77",
-    "title": "PC Gamer I5-12400F / RAM 16Go / NVME 256Go / RTX 3060 12Go",
-    "priceDa": 185000,
-    "store": "A&Y Info Tech",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-i5-12400f-ram-16go-nvme-256go-rtx-3060-12go-baba-hassen-alger-algerie-d44316001",
-    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/5XOwY/KqcpeumoeHEI5sHnlkKOhUkIGWCbPDLomhbVZKF0.jpg",
-    "postedAt": "2024-10-07T13:06:55.897605Z",
-    "specs": {
-      "cpu": {
-        "id": "cpu-i5-12400f",
-        "name": "Core i5-12400F",
-        "brand": "Intel"
-      },
-      "gpu": {
-        "id": "gpu-rtx3060-12gb",
-        "name": "RTX 3060 12GB"
-      },
-      "mobo": {
-        "id": "mobo-h610m",
-        "name": "H610M LGA1700"
-      },
-      "ram": {
-        "id": "ram-value-8-d4",
-        "name": "8GB DDR4"
-      },
-      "storage": {
-        "id": "ssd-nvme-512gb",
         "name": "SSD 256GB"
       },
       "psu": {
@@ -2862,14 +2786,14 @@
     }
   },
   {
-    "id": "prebuild-78",
-    "title": "PC Gamer Ryzen 5 5500 / RAM 16Go / NVME 256Go / RTX 3060 12Go",
-    "priceDa": 165000,
+    "id": "prebuild-76",
+    "title": "PC Gamer Ryzen 5 5500 / RAM 16Go / NVME 512Go / RTX 3060 12Go",
+    "priceDa": 170000,
     "store": "A&Y Info Tech",
     "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5500-ram-16go-nvme-256go-rtx-3060-12go-baba-hassen-alger-algerie-d51716025",
-    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/5XOwY/WMY3DxPgIZpUonpa5LzR7EryKyzIhAqiGXHpLD8q.jpg",
-    "postedAt": "2025-10-28T13:09:01.394468Z",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5500-ram-16go-nvme-512go-rtx-3060-12go-baba-hassen-alger-algerie-d51496270",
+    "image": "https://cdn9.ouedkniss.com/400/medias/announcements/images/5XOwY/GRiwAM2Dx0XP62oPpJzl0XvJsUFcA8w7qJWPt7cb.jpg",
+    "postedAt": "2026-09-02T12:19:11.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600",
@@ -2890,11 +2814,85 @@
       },
       "storage": {
         "id": "ssd-nvme-512gb",
-        "name": "SSD 256GB"
+        "name": "SSD 512GB"
       },
       "psu": {
         "id": "psu-550-b",
         "name": "650W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-77",
+    "title": "PC Gamer Intel I3 12100F / RAM 16Go / SSD 256Go / RX 6500 XT 8Go",
+    "priceDa": 135000,
+    "store": "A&Y Info Tech",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-intel-i3-12100f-ram-16go-ssd-256go-rx-6500-xt-8go-baba-hassen-alger-algerie-d46348825",
+    "image": "https://cdn8.ouedkniss.com/400/medias/announcements/images/5XOwY/wotY6GLGIukKwVUxx2PpQcRdyweEr1rK9aRafmEW.jpg",
+    "postedAt": "2026-09-02T12:17:19.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i3-12100f",
+        "name": "Core i3-12100F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rx6600-8gb",
+        "name": "RX 6500 XT 4GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 256GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-78",
+    "title": "PC Gamer Ryzen 5 5500 / RAM 16Go / SSD 128Go / RX 6500 XT 8Go",
+    "priceDa": 130000,
+    "store": "A&Y Info Tech",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5500-ram-16go-ssd-128go-rx-6500-xt-8go-baba-hassen-alger-algerie-d54182846",
+    "image": "https://cdn7.ouedkniss.com/400/medias/announcements/images/5XOwY/7u6fpHTnepl7YPL2pX9Q1CUMXlyiPTjBs9zEGQbP.jpg",
+    "postedAt": "2026-09-02T12:17:19.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600",
+        "name": "Ryzen 5 5500",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx6600-8gb",
+        "name": "RX 6500 XT 4GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
       }
     }
   },
@@ -3054,7 +3052,7 @@
     "wilaya": "Alger",
     "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5500-rx-6600-8gb-baraki-alger-algerie-d57718557",
     "image": "https://cdn8.ouedkniss.com/medias/announcements/images/vor/msnCIHLIq42xqbEHGZbHyIzSiE1z4DK3WZMHHgOL.jpg",
-    "postedAt": "2026-09-14T20:12:02.000Z",
+    "postedAt": "2026-09-29T23:19:29.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600",
@@ -3136,8 +3134,8 @@
         "brand": "AMD"
       },
       "gpu": {
-        "id": "gpu-rx9060xt-8gb",
-        "name": "RX 9060 XT 8GB"
+        "id": "gpu-rx7600-8gb",
+        "name": "RX 7600 8GB"
       },
       "mobo": {
         "id": "mobo-b650m",
@@ -3344,22 +3342,134 @@
   },
   {
     "id": "prebuild-91",
-    "title": "PC GAMER / I5 14600KF - RAM 16GO - SSD 512GO - ASUS RX 9060 XT 16GO",
-    "priceDa": 272500,
-    "store": "Campus informatique",
-    "wilaya": "Alger",
-    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-i5-14600kf-ram-16go-ssd-512go-asus-rx-9060-xt-alger-centre-algerie-d55598122",
-    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/Z7QvR/i0IPb0Rt4iTRNRmiYv8vQUGJf75hzfX5494Vsvuf.jpg",
-    "postedAt": "2026-05-20T09:20:20.000Z",
+    "title": "PROMO CONFIG PC GAMER RAPTOR AMD RYZEN5 5500 / 8GB DDR4 3200MHZ / A520 / 250GB SSD / RTX 3050 6GB / 550W / 4X ARGB FANS",
+    "priceDa": 137900,
+    "store": "LICB+",
+    "wilaya": "Tlemcen",
+    "url": "https://www.ouedkniss.com/unites-centrales-promo-config-pc-gamer-raptor-amd-ryzen5-5500-8gb-ddr4-3200mhz-a520-250gb-ssd-rtx-3050-6gb-550w-4x-argb-fans-tlemcen-algerie-d57839355",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/voRVQ0/ed0zQ44XovBlPWKJINZ8WFe15QlswUWVTaM8md8t.jpg",
+    "postedAt": "2026-09-21T15:31:03.000Z",
     "specs": {
       "cpu": {
-        "id": "cpu-i5-14600kf",
-        "name": "Core i5-14600KF",
+        "id": "cpu-r5-5600",
+        "name": "Ryzen 5 5500",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3050-6gb",
+        "name": "RTX 3050 6GB"
+      },
+      "mobo": {
+        "id": "mobo-a520m",
+        "name": "A520M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-92",
+    "title": "PC Gamer Ryzen 5 5600X / 1660 Super / Écran 144hz",
+    "priceDa": 140000,
+    "store": "oypxwuvpms0728",
+    "wilaya": "Ouargla",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-ryzen-5-5600x-1660-super-ecran-144hz-ouargla-algerie-d55234258",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/nZjxGW/AGcLuBtMIREkpGz45v2tXrP9aOoewPVoemYxSf9s.jpg",
+    "postedAt": "2026-06-15T21:36:08.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600x",
+        "name": "Ryzen 5 5600X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-gtx1660s-6gb",
+        "name": "GTX 1660 SUPER 6GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-93",
+    "title": "Pc gamer Ryzen 7 5700G",
+    "priceDa": 118000,
+    "store": "we8rcopblz0630",
+    "wilaya": "Skikda",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-ryzen-7-5700g-kerkera-skikda-algerie-d57925938",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/D9V18q/4bqJBuPwohPHceJykmisRepv4PedF4jOVwsUhdnF.jpg",
+    "postedAt": "2026-09-29T08:27:32.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-5700x",
+        "name": "Ryzen 7 5700G",
+        "brand": "AMD",
+        "igpu": true
+      },
+      "gpu": {
+        "id": "igpu",
+        "name": "Graphique Intégré"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-94",
+    "title": "PC Gamer gtx 1650 i3 10100F occasion + écran 75hz",
+    "priceDa": 109000,
+    "store": "mohamed45555",
+    "wilaya": "Skikda",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-gtx-1650-i3-10100f-occasion-ecran-75hz-skikda-algerie-d56804282",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/819DK3/m9dvc4Yvk81kTRRD3I1MDRKLSnEqakUa8IXkQwIO.jpg",
+    "postedAt": "2026-07-29T09:45:50.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i3-12100f",
+        "name": "Core i3-10100F",
         "brand": "Intel"
       },
       "gpu": {
-        "id": "gpu-rx9060xt-16gb",
-        "name": "RX 9060 XT 16GB"
+        "id": "gpu-gtx1650-4gb",
+        "name": "GTX 1650 4GB"
       },
       "mobo": {
         "id": "mobo-h610m",
@@ -3380,18 +3490,797 @@
     }
   },
   {
-    "id": "prebuild-92",
-    "title": "PC Gamer Neuf i5-14600KF + RTX 3080 10GB + Écran 24\" FHD 180Hz",
-    "priceDa": 350000,
-    "store": "mvgbrihhxf0309",
-    "wilaya": "El Oued",
-    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-neuf-i5-14600kf-rtx-3080-10gb-ecran-24-fhd-180hz-douar-el-ma-oued-algerie-d54319439",
-    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/qYPm2y/oflSyMkICd49ahIpM9FmNZP1ZaVvvz0BmqFxeHws.jpg",
-    "postedAt": "2026-03-11T17:02:21.000Z",
+    "id": "prebuild-95",
+    "title": "PC Gamer Ryzen 7 5700x Rx 6700xt 32 GO RAM, Ecran 2K",
+    "priceDa": 230000,
+    "store": "7wxd6q880h07s7jj4y1c0402",
+    "wilaya": "Tizi Ouzou",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-7-5700x-rx-6700xt-32-go-ram-ecran-2k-tizi-ouzou-algerie-d56585552",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/68pj2R/Z6aQ00ox6Q7nHwgkz18TBHYCogfnr3J149glZcSS.jpg",
+    "postedAt": "2026-07-24T07:10:03.000Z",
     "specs": {
       "cpu": {
-        "id": "cpu-i5-14600kf",
-        "name": "Core i5-14600KF",
+        "id": "cpu-r7-5700x",
+        "name": "Ryzen 7 5700X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx6700xt-12gb",
+        "name": "RX 6700 XT 12GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-vengeance-32-d4",
+        "name": "32GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-96",
+    "title": "PC GAMING RYZEN 5 5600G + ECRAN",
+    "priceDa": 93000,
+    "store": "djala23",
+    "wilaya": "Biskra",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gaming-ryzen-5-5600g-ecran-biskra-algerie-d57801279",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/Z4vo7J/q7lR3ok9Z1h4t9Kx1TOlMNlIvKLlhUHvQsdbVeG3.jpg",
+    "postedAt": "2026-09-19T16:48:28.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600g",
+        "name": "Ryzen 5 5600G",
+        "brand": "AMD",
+        "igpu": true
+      },
+      "gpu": {
+        "id": "igpu",
+        "name": "Graphique Intégré"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-97",
+    "title": "PC GAMER I3 12100 GTX 1650 4GB",
+    "priceDa": 99900,
+    "store": "TKI TEC",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-i3-12100-gtx-1650-4gb-baraki-alger-algerie-d56402344",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/vor/mbrB9N0trPwNn5BzMUs49lkbk7WastzdFhMs53c9.jpg",
+    "postedAt": "2026-07-12T12:57:27.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i3-12100f",
+        "name": "Core i3-12100F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-gtx1650-4gb",
+        "name": "GTX 1650 4GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-98",
+    "title": "CONFIG PC GAMING INTEL CORE I5 12600KF AVEC RTX 3050 6GB ASUS DUAL NEW BOX",
+    "priceDa": 178300,
+    "store": "AT-informatics",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-intel-core-i5-12600kf-avec-rtx-3050-6gb-asus-dual-new-box-bab-ezzouar-alger-algerie-d56019982",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/nZWp2D/mkqTLRM63oA1IyHmDoRevkkXDJptcRI81nbh5DTz.jpg",
+    "postedAt": "2026-09-28T10:16:16.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i5-13400f",
+        "name": "Core i5-12600K",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rtx3050-6gb",
+        "name": "RTX 3050 6GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-99",
+    "title": "PROMO CONFIG PC GAMER RAPTOR INTEL I5 12400F / RTX 3050 / 16GB DDR4 3200MHz / 256GB SSD / 550W / 4X ARGB FANS",
+    "priceDa": 154900,
+    "store": "LICB+",
+    "wilaya": "Tlemcen",
+    "url": "https://www.ouedkniss.com/unites-centrales-promo-config-pc-gamer-raptor-intel-i5-12400f-rtx-3050-16gb-ddr4-3200mhz-256gb-ssd-550w-4x-argb-fans-tlemcen-algerie-d56996565",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/voRVQ0/St8zGtehSqgQvzpbNUT43Ty82Y5hPunZUCeMIG76.jpg",
+    "postedAt": "2026-09-06T08:58:35.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i5-12400f",
+        "name": "Core i5-12400F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rtx3050-6gb",
+        "name": "RTX 3050 6GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 256GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-100",
+    "title": "PC GAMER RYZEN 5 5600X RTX 3060 TI 8GB",
+    "priceDa": 170000,
+    "store": "TKI TEC",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-5600x-rtx-3060-ti-8gb-baraki-alger-algerie-d57998958",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/vor/lAjNaKknMdK4l1u3LcYTCIMYQb6Wi6WdyQJlIFhT.jpg",
+    "postedAt": "2026-09-30T00:15:47.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600x",
+        "name": "Ryzen 5 5600X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3060ti-8gb",
+        "name": "RTX 3060 Ti 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-101",
+    "title": "PC GAMER I5 12400F RTX 3060 TI 1TB NVME",
+    "priceDa": 170000,
+    "store": "TKI TEC",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-i5-12400f-rtx-3060-ti-1tb-nvme-baraki-alger-algerie-d56416603",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/vor/TFlIVVgCFN5TDG3KBxbEc1dBTPApgtgemyz2Dw2y.jpg",
+    "postedAt": "2026-07-06T17:30:05.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i5-12400f",
+        "name": "Core i5-12400F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rtx3060ti-8gb",
+        "name": "RTX 3060 Ti 8GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-102",
+    "title": "CONFIG PC GAMER - I5 12400F / MSI RTX 3060 12G",
+    "priceDa": 169900,
+    "store": "ELECTRO STORE",
+    "wilaya": "Souk Ahras",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gamer-i5-12400f-msi-rtx-3060-12g-souk-ahras-algerie-d56059630",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/PNqBzW/151qWHD3PREuT4ZxDHlYCodxRLZHSyBb5Pzh5mtP.jpg",
+    "postedAt": "2026-06-29T13:27:08.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i5-12400f",
+        "name": "Core i5-12400F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rtx3060-12gb",
+        "name": "RTX 3060 12GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-103",
+    "title": "PC GAMER / RYZEN 5 7500F - RAM 16GO DDR5 - SSD 512GO - BIOSTAR RTX 3060 12GO",
+    "priceDa": 201500,
+    "store": "Campus informatique",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-ryzen-5-7500f-ram-16go-ddr5-ssd-512go-biostar-rtx-3060-12go-alger-centre-algerie-d51491386",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/Z7QvR/YVwBSGF9u87KGJkpH2BmmgQme0TPG0Nvz4PlIO9K.jpg",
+    "postedAt": "2026-05-26T08:48:50.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-7500f",
+        "name": "Ryzen 5 7500F",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3060-12gb",
+        "name": "RTX 3060 12GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-104",
+    "title": "CONFIG PC GAMING INTEL CORE I7 14700K AVEC RTX 5080 16GB MSI VENTUS 3X PLUS / Z790 STEEL LEGEND WIFI ASROCK",
+    "priceDa": 710000,
+    "store": "AT-informatics",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-intel-core-i7-14700k-avec-rtx-5080-16gb-msi-ventus-3x-plus-z790-steel-legend-wifi-asrock-bab-ezzouar-alger-algerie-d53536676",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/nZWp2D/BoJ0L9hoV2vsDolNaBJUy9gH6Pwgbhdycg4Ped9c.jpg",
+    "postedAt": "2026-08-29T10:37:35.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i7-14700kf",
+        "name": "Core i7-14700KF",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
+      },
+      "mobo": {
+        "id": "mobo-z790",
+        "name": "Z790 LGA1700"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-105",
+    "title": "CONFIG PC AMD RYZEN 7 5700G AVEC A520M-K ASUS PRIME",
+    "priceDa": 102900,
+    "store": "AT-informatics",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-amd-ryzen-7-5700g-avec-a520m-k-asus-prime-bab-ezzouar-alger-algerie-d38038847",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/nZWp2D/2XFE9ml4gnhy2nIF8a3G7hy84nGtZyz0iMUOTIor.jpg",
+    "postedAt": "2026-07-18T11:07:08.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-5700x",
+        "name": "Ryzen 7 5700G",
+        "brand": "AMD",
+        "igpu": true
+      },
+      "gpu": {
+        "id": "igpu",
+        "name": "Graphique Intégré"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-106",
+    "title": "PC GAMER RYZEN 5 7600 DDR5 32GB RAM",
+    "priceDa": 170000,
+    "store": "TKI TEC",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-7600-ddr5-32gb-ram-baraki-alger-algerie-d56582408",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/vor/lUpxFWGhvRRQM2QtPutYYNFgkYJQ9d2zc3SKqtpF.jpg",
+    "postedAt": "2026-07-20T12:49:51.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-7600",
+        "name": "Ryzen 5 7600",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx7600-8gb",
+        "name": "RX 7600 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-107",
+    "title": "CONFIG R5 5600G",
+    "priceDa": 99900,
+    "store": "bczdxawast0716",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-config-r5-5600g-reghaia-alger-algerie-d55703857",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/APEWRp/KxEXdjjCKeAimlceaWkETB1AaU3Vd2ouJ75o9UqA.jpg",
+    "postedAt": "2026-08-16T19:40:47.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r9-7900x",
+        "name": "Ryzen 9 7900X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4090-24gb",
+        "name": "RTX 5090 32GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 256GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "650W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-108",
+    "title": "PC GAMER À VENDRE RYZEN 5 5500",
+    "priceDa": 155000,
+    "store": "7fm3j2czka0604",
+    "wilaya": "Tipaza",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-a-vendre-ryzen-5-5500-tipaza-algerie-d57721146",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/4QQDOV/vb5EfvITrApfqVF4TJViFddymWiRie05cM56Xv1S.jpg",
+    "postedAt": "2026-09-15T09:16:43.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600",
+        "name": "Ryzen 5 5500",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx6600xt-8gb",
+        "name": "RX 6600 XT 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-109",
+    "title": "Pc Gaming Ryzen 5 sans GPU",
+    "priceDa": 92000,
+    "store": "PcRtx",
+    "wilaya": "Tlemcen",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gaming-ryzen-5-sans-gpu-tlemcen-algerie-d55701586",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/r8RK7L/F3hQSAs69ikRUqnIAQ2w9VR68UBkxFeB5c9rUSyP.jpg",
+    "postedAt": "2026-09-22T13:39:56.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600",
+        "name": "Ryzen 5 5500",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3060-12gb",
+        "name": "RTX 3060 12GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-110",
+    "title": "PC gamer",
+    "priceDa": 139000,
+    "store": "4dksel4al90919",
+    "wilaya": "El Bayadh",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-el-bayadh-algerie-d57805302",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/xn8v5J/R5IA8JcbrwCRDJGWLS4P3g6aMrSAVcN2MQRLygAI.jpg",
+    "postedAt": "2026-09-19T23:03:28.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-5700x",
+        "name": "Ryzen 7 5700X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx580-8gb",
+        "name": "RX 580 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-111",
+    "title": "PC GAMER A VENDRE",
+    "priceDa": 125000,
+    "store": "mljferswi01220",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-a-vendre-kouba-alger-algerie-d57179865",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/BgZn2k/6cdlIW6NNCj6mBipWwyCQSLMP3wCzNXz1sVHEaKT.jpg",
+    "postedAt": "2026-08-19T09:10:24.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i5-12400f",
+        "name": "Core i5-10400F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-gtx1660s-6gb",
+        "name": "GTX 1660 SUPER 6GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H510M LGA1200"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "650W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-112",
+    "title": "Pc gamer GTX 1660 + Ryzen 5 3600",
+    "priceDa": 79000,
+    "store": "sncdnhccc70816",
+    "wilaya": "Mila",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-gtx-1660-ryzen-5-3600-chelghoum-laid-mila-algerie-d57194697",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/K1A9XJ/msJgnNKyUDLaulLOnMOjNMSLPLm6pKd3362vwPqs.jpg",
+    "postedAt": "2026-08-16T22:13:42.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600",
+        "name": "Ryzen 5 3600",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-gtx1660s-6gb",
+        "name": "GTX 1660 6GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-113",
+    "title": "PC Gamer Ryzen 55600x + rx 7800 xt",
+    "priceDa": 265000,
+    "store": "bnritwrgnd0116",
+    "wilaya": "Mascara",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-55600x-rx-7800-xt-mascara-algerie-d57999810",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/y878oW/6HLNnglyw2VI7Ke8SovKP6CAIUY639vFjSv3e0T4.jpg",
+    "postedAt": "2026-09-30T09:48:04.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600x",
+        "name": "Ryzen 5 5600X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx7800xt-16gb",
+        "name": "RX 7800 XT 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b450m",
+        "name": "B450M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "650W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-114",
+    "title": "Gaming pc rx 6600 xt",
+    "priceDa": 165000,
+    "store": "5jfhurqzny1123",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gaming-rx-6600-xt-baba-hassen-alger-algerie-d57696807",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/o2LA3A/cSgVxU8qV9BDue8m8fHhN66nV76jtpq02JL7xmes.jpg",
+    "postedAt": "2026-09-13T22:11:14.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600",
+        "name": "Ryzen 5 3600",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx6600xt-8gb",
+        "name": "RX 6600 XT 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-115",
+    "title": "Pc gamer ryzen 5 4500 rx580",
+    "priceDa": 95000,
+    "store": "p7qb7imfcs0502",
+    "wilaya": "Sétif",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-5-4500-rx580-ksar-el-abtal-setif-algerie-d57526344",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/2xR96K/PVR71Njqj6CzD4qpFYsvfFDvn6ioKDS8AFGv8Ufq.jpg",
+    "postedAt": "2026-09-04T09:28:11.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600",
+        "name": "Ryzen 5 4500",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx580-8gb",
+        "name": "RX 580 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 256GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-116",
+    "title": "Pc gamer(pc gaming RTX 3080 + I5 12600kf)",
+    "priceDa": 310000,
+    "store": "s3r4wmckwq0702",
+    "wilaya": "Jijel",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gamerpc-gaming-rtx-3080-i5-12600kf-emir-abdelkader-jijel-algerie-d57647394",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/KO2VLR/rJKrrMIKsmiDYpnOg9kwKkVkAK3Fv53fFl4nwCP1.jpg",
+    "postedAt": "2026-09-11T19:28:06.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i5-13400f",
+        "name": "Core i5-12600K",
         "brand": "Intel"
       },
       "gpu": {
@@ -3417,14 +4306,125 @@
     }
   },
   {
-    "id": "prebuild-93",
-    "title": "PROMO CONFIG PC GAMER RAPTOR AMD RYZEN5 5500 / 8GB DDR4 3200MHZ / A520 / 250GB SSD / RTX 3050 6GB / 550W / 4X ARGB FANS",
-    "priceDa": 137900,
-    "store": "LICB+",
-    "wilaya": "Tlemcen",
-    "url": "https://www.ouedkniss.com/unites-centrales-promo-config-pc-gamer-raptor-amd-ryzen5-5500-8gb-ddr4-3200mhz-a520-250gb-ssd-rtx-3050-6gb-550w-4x-argb-fans-tlemcen-algerie-d57839355",
-    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/voRVQ0/ed0zQ44XovBlPWKJINZ8WFe15QlswUWVTaM8md8t.jpg",
-    "postedAt": "2026-09-21T15:31:03.000Z",
+    "id": "prebuild-117",
+    "title": "pc gamer",
+    "priceDa": 60000,
+    "store": "d1hfjj1biks26bgq6omn0205",
+    "wilaya": "Batna",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-batna-algerie-d57709476",
+    "image": "",
+    "postedAt": "2026-09-14T15:23:39.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i3-12100f",
+        "name": "Core i3-12100F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rx580-8gb",
+        "name": "RX 580 8GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-118",
+    "title": "Station pc gamer:MSI B650 +wifi/ R7 7700X/RTX 3060 12gb/32GB DDR5/coreliquid M240",
+    "priceDa": 390000,
+    "store": "e9875w55pr8sdlbvsc6q0223",
+    "wilaya": "Constantine",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-station-gamermsi-b650-wifi-r7-7700xrtx-3060-12gb32gb-ddr5coreliquid-m240-constantine-algerie-d49189916",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/1wvj4m/dMexPddHpvLTn6cS0XbqJIszKIfNYquwxL18pYDW.jpg",
+    "postedAt": "2026-08-24T05:37:38.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-7700x",
+        "name": "Ryzen 7 7700X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3070-8gb",
+        "name": "RTX 3070 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "650W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-119",
+    "title": "unite PC GAMER i5 12eme 12400f/ 16 Go ram ddr4 / 1 tb ssd nvme radeon RTX3070 8Go GDDR6",
+    "priceDa": 295000,
+    "store": "Confort PC",
+    "wilaya": "Oran",
+    "url": "https://www.ouedkniss.com/unites-centrales-unite-pc-gamer-i5-12eme-12400f-16-go-ram-ddr4-1-tb-ssd-nvme-radeon-rtx3070-8go-gddr6-oran-algerie-d43126986",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/oZ143/v8EqKwycrTUkSVKuwfU1dqZlA5jUSVR2l8yFVEER.jpg",
+    "postedAt": "2026-08-26T19:44:54.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i5-12400f",
+        "name": "Core i5-12400F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rtx3070-8gb",
+        "name": "RTX 3070 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b760m",
+        "name": "B760M LGA1700"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-120",
+    "title": "PC GAMER RYZEN 5 5500 RAM 32GO SSD 1500GO RTX 3060 12GB ARGB",
+    "priceDa": 235000,
+    "store": "CodeCanvas",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-ryzen-5-5500-ram-32go-ssd-1500go-rtx-3060-12gb-argb-alger-centre-algerie-d57385125",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/p8X2E1/sCtIElm5usUzWanldPWpZghnYRv7jbdAsN5aptt9.jpg",
+    "postedAt": "2026-08-27T21:10:37.000Z",
     "specs": {
       "cpu": {
         "id": "cpu-r5-5600",
@@ -3432,8 +4432,750 @@
         "brand": "AMD"
       },
       "gpu": {
-        "id": "gpu-rtx3050-6gb",
-        "name": "RTX 3050 6GB"
+        "id": "gpu-rtx3060-12gb",
+        "name": "RTX 3060 12GB"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-vengeance-32-d4",
+        "name": "32GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-121",
+    "title": "Un PC pour architecte est une station de travail polyvalente conçue pour articuler la modélisation et le rendu photoréaliste en temps",
+    "priceDa": 900000,
+    "store": "Technal Computer",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-un-pc-pour-architecte-est-une-station-de-travail-polyvalente-concue-articuler-la-modelisation-et-le-rendu-photorealiste-en-temps-kouba-alger-algerie-d57641334",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/n538x5/NyDRnrWuEh4OzN4xmZ5tpsT0y322tm7le2Fkiv3P.jpg",
+    "postedAt": "2026-10-01T09:10:07.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i7-14700kf",
+        "name": "Core i9-14900K",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
+      },
+      "mobo": {
+        "id": "mobo-z790",
+        "name": "Z790 LGA1700"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "850W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-122",
+    "title": "PC GAMER BEST PC BEST OFFER",
+    "priceDa": 479000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-offer-bab-ezzouar-alger-algerie-d57830673",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/5yrgLq/pzc86lG1OvB4WhAQOymoNx38pLYVcYpt2dFbktYg.jpg",
+    "postedAt": "2026-09-21T09:06:33.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-9700x",
+        "name": "Ryzen 7 9700X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4070tis-16gb",
+        "name": "RTX 4070 Ti SUPER 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-123",
+    "title": "PC GAMER BEST OFFER",
+    "priceDa": 309990,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-offer-bab-ezzouar-alger-algerie-d56822198",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/5yrgLq/CrxFJD5md3YQnBGiwPruJdIdKW2hTYpjqwblDovq.jpg",
+    "postedAt": "2026-09-21T09:04:00.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-7700",
+        "name": "Ryzen 7 7700",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3080-10gb",
+        "name": "RTX 3080 10GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "850W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-124",
+    "title": "Pc gamer best pc best offer PROMO",
+    "priceDa": 196900,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-best-offer-promo-bab-ezzouar-alger-algerie-d55245112",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/5yrgLq/CNeJ651FDdgXDAT1H85ncJzn39ltfqIGbIEUGa52.jpg",
+    "postedAt": "2026-09-21T09:03:09.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600",
+        "name": "Ryzen 5 5600",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3070-8gb",
+        "name": "RTX 3070 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b450m",
+        "name": "B450M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "650W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-125",
+    "title": "PC GAMER BEST OFFER",
+    "priceDa": 249000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-offer-bab-ezzouar-alger-algerie-d49534100",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/5yrgLq/E2T9BXuqsYymYeSdbkhQ4iBdCZEfriFsSUx4FSud.jpg",
+    "postedAt": "2026-09-21T09:03:09.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-9600x",
+        "name": "Ryzen 5 9600X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3070-8gb",
+        "name": "RTX 3070 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-126",
+    "title": "PC GAMER BEST PERFORMANCE",
+    "priceDa": 353900,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-performance-bab-ezzouar-alger-algerie-d57027438",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/5yrgLq/ngfNO4snDS5lJK00rQrrUQ3jPtMDxKwQPfaq9etu.jpg",
+    "postedAt": "2026-09-21T09:03:09.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-9700x",
+        "name": "Ryzen 7 9700X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3080-10gb",
+        "name": "RTX 3080 10GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-127",
+    "title": "PC GAMER BEST OFFER KILER F P S",
+    "priceDa": 335000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-offer-kiler-f-p-s-bab-ezzouar-alger-algerie-d51996913",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/5yrgLq/ZTfCmAbyVc7pVG9wniX5TLcgR9E8qYOSNb1HUCJp.jpg",
+    "postedAt": "2026-09-21T09:03:09.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-9600x",
+        "name": "Ryzen 5 9600X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx7800xt-16gb",
+        "name": "RX 7800 XT 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-128",
+    "title": "PC GAMER BEST OFFER",
+    "priceDa": 310000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-offer-bab-ezzouar-alger-algerie-d46355158",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/5yrgLq/gZk07HCo5XNv6R2yYvoXG0b9Z9CJ4GC4czkixHU8.jpg",
+    "postedAt": "2026-09-21T09:03:08.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-7600x",
+        "name": "Ryzen 5 7600X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3080-10gb",
+        "name": "RTX 3080 10GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "850W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-129",
+    "title": "PC GAMER | BEST PRICE / PERFORMANCE",
+    "priceDa": 319900,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-gamer-best-price-performance-bab-ezzouar-alger-algerie-d57743706",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/5yrgLq/kuMcqJA6nI1OSZ4I2DGBX2GtswKWJL1kqgOdyTNW.jpg",
+    "postedAt": "2026-09-16T09:20:07.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-9600x",
+        "name": "Ryzen 5 9600X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3080-10gb",
+        "name": "RTX 3080 10GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-130",
+    "title": "PC GAMER BEST OFFER",
+    "priceDa": 355000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-offer-bab-ezzouar-alger-algerie-d57743643",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/5yrgLq/YjeYa9wKpmk7gsFlBaQtIHbFluE5LN8GJpad3E7B.jpg",
+    "postedAt": "2026-09-16T09:16:18.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-7700x",
+        "name": "Ryzen 7 7700X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3080-10gb",
+        "name": "RTX 3080 10GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "850W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-131",
+    "title": "Pc gamer best pc best offer promotion",
+    "priceDa": 298000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-offer-promotion-bab-ezzouar-alger-algerie-d55244902",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/5yrgLq/1TPm7IpSfxgLkIcnXDcshuBGxCaQ5tMNCnA2gOXt.jpg",
+    "postedAt": "2026-09-14T12:15:10.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-7600x",
+        "name": "Ryzen 5 7600X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3080-10gb",
+        "name": "RTX 3080 10GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-132",
+    "title": "PC GAMER BEST OFFER",
+    "priceDa": 293000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-offer-bab-ezzouar-alger-algerie-d48030124",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/5yrgLq/La5BSzMVODvvlIB0RBCh2oitJbu7vY8ITnS7nLMz.jpg",
+    "postedAt": "2026-09-07T08:42:00.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-7600x",
+        "name": "Ryzen 5 7600X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx6700xt-12gb",
+        "name": "RX 6700 XT 12GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-133",
+    "title": "PC GAMER BEST OFFER",
+    "priceDa": 233000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-offer-bab-ezzouar-alger-algerie-d49534010",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/5yrgLq/ukyMqqFcWOYUgx8IFoMehWpBeBQZPeBC236JxcxB.jpg",
+    "postedAt": "2026-08-26T07:49:16.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-7500f",
+        "name": "Ryzen 5 7500F",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3070-8gb",
+        "name": "RTX 3070 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-134",
+    "title": "PC GAMER BEST OFFER",
+    "priceDa": 276000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-offer-bab-ezzouar-alger-algerie-d44878218",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/5yrgLq/m269ukThm43sGzchOSvpWGtw458AZKVHnI8nSleQ.jpg",
+    "postedAt": "2026-08-20T14:51:19.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-7600x",
+        "name": "Ryzen 5 7600X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx3070ti-8gb",
+        "name": "RTX 3070 Ti 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-135",
+    "title": "PC GAMER BEST OFFER",
+    "priceDa": 214000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-offer-bab-ezzouar-alger-algerie-d48888509",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/5yrgLq/7qMltZtcAlKHG8FrHB9eu8x7X1he6109LgsFiwvR.jpg",
+    "postedAt": "2026-08-20T14:51:19.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i5-14400f",
+        "name": "Core i5-14400F",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rtx3070ti-8gb",
+        "name": "RTX 3070 Ti 8GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-vengeance-32-d4",
+        "name": "32GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-750-gold",
+        "name": "750W Gold"
+      }
+    }
+  },
+  {
+    "id": "prebuild-136",
+    "title": "Pc gamer best for all works play games editing",
+    "priceDa": 343000,
+    "store": "GAMING ONE",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-best-for-all-works-play-games-editing-bab-ezzouar-alger-algerie-d54047339",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/5yrgLq/9Ji0PyiJPPSifj5NkL97v0vXG7gsXkmyMydww9d4.jpg",
+    "postedAt": "2026-08-20T14:51:19.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-i5-14600kf",
+        "name": "Core i5-14600KF",
+        "brand": "Intel"
+      },
+      "gpu": {
+        "id": "gpu-rtx3070ti-8gb",
+        "name": "RTX 3070 Ti 8GB"
+      },
+      "mobo": {
+        "id": "mobo-h610m",
+        "name": "H610M LGA1700"
+      },
+      "ram": {
+        "id": "ram-vengeance-32-d4",
+        "name": "32GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "650W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-137",
+    "title": "CONFIG PC GAMER Ryzen 7 5700G - ASGARD 8GB RAM RGB (8x1) - SSD 120Go + HDD 320Go - META V550 - OCYPUS GAMMA A40 Digital Black - Antec VX310",
+    "priceDa": 92500,
+    "store": "Techno Pro",
+    "wilaya": "Bouira",
+    "url": "https://www.ouedkniss.com/pc-de-bureau-config-gamer-ryzen-7-5700g-asgard-8gb-ram-rgb-8x1-ssd-120go-hdd-320go-meta-v550-ocypus-gamma-a40-digital-black-antec-vx310-mchedallah-bouira-algerie-d57605235",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/lY6r0J/8SugkonSXgIVGj01wTVx2HwQAZdHElVBxPDYUn3D.jpg",
+    "postedAt": "2026-09-25T14:16:56.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-5700x",
+        "name": "Ryzen 7 5700G",
+        "brand": "AMD",
+        "igpu": true
+      },
+      "gpu": {
+        "id": "igpu",
+        "name": "Graphique Intégré"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-138",
+    "title": "PC GAMING / RYZEN 7 5700G - RAM 16GO DDR4 - SSD 240 GO",
+    "priceDa": 97900,
+    "store": "WELTINFO",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gaming-ryzen-7-5700g-ram-16go-ddr4-ssd-240-go-alger-centre-algerie-d54684368",
+    "image": "https://cdn8.ouedkniss.com/medias/announcements/images/AD7VB/00miGUe9QB9oatH5jurvAAnW5jb7hUHlAb8jSTji.jpg",
+    "postedAt": "2026-09-29T08:24:33.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-5700x",
+        "name": "Ryzen 7 5700G",
+        "brand": "AMD",
+        "igpu": true
+      },
+      "gpu": {
+        "id": "igpu",
+        "name": "Graphique Intégré"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 256GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-139",
+    "title": "PC GAMER RYZEN 7",
+    "priceDa": 175000,
+    "store": "ULTRA TECH ALG",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-pc-gamer-ryzen-7-ain-naadja-alger-algerie-d56838251",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/9Qq8Dx/GR5quSmw0qjzWhZpe7e74NP7AwHYTOO40fsj4nFu.jpg",
+    "postedAt": "2026-10-01T21:19:50.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-7600",
+        "name": "Ryzen 5 7600",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rx7600-8gb",
+        "name": "RX 7600 8GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-value-8-d4",
+        "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "650W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-140",
+    "title": "Config PC \"Starter\"",
+    "priceDa": 84000,
+    "store": "Media plaza dz",
+    "wilaya": "Oran",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-starter-oran-algerie-d56446993",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/L77qkD/MANK3szdEFjS6fXkSIrpvieQu2grRXQ3S4aYtkZ3.jpg",
+    "postedAt": "2026-09-28T11:39:34.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600",
+        "name": "Ryzen 5 3600",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4060-8gb",
+        "name": "RTX 4060 8GB"
       },
       "mobo": {
         "id": "mobo-a520m",
@@ -3442,6 +5184,118 @@
       "ram": {
         "id": "ram-value-8-d4",
         "name": "8GB DDR4"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 256GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-141",
+    "title": "CONFIG PC GAMING AMD RYZEN 7 9700X AVEC RTX 5080 MSI VENTUS 16GB X3",
+    "priceDa": 659800,
+    "store": "AT-informatics",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/unites-centrales-config-pc-gaming-amd-ryzen-7-9700x-avec-rtx-5080-msi-ventus-16gb-x3-bab-ezzouar-alger-algerie-d56371876",
+    "image": "https://cdn7.ouedkniss.com/medias/announcements/images/nZWp2D/Tm16JAXaqcG4n28OiAWRafV0XbxFNDEZ1CZTIH6Q.jpg",
+    "postedAt": "2026-08-29T10:37:37.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-9700x",
+        "name": "Ryzen 7 9700X",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "gpu-rtx4080s-16gb",
+        "name": "RTX 5080 16GB"
+      },
+      "mobo": {
+        "id": "mobo-b650m",
+        "name": "B650M AM5"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d5",
+        "name": "16GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-512gb",
+        "name": "SSD 512GB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-142",
+    "title": "LENOVO LEGION 5 15AHP10 RYZEN 7 2026 16G DRR5 5600B 1TB SSD NVME RTX5060 GDDR7 15 OLED",
+    "priceDa": 328000,
+    "store": "Gm newtech",
+    "wilaya": "Alger",
+    "url": "https://www.ouedkniss.com/pc-portable-lenovo-legion-5-15ahp10-ryzen-7-2026-16g-drr5-5600b-1tb-ssd-nvme-rtx5060-gddr7-15-oled-hussein-dey-alger-algerie-d54902404",
+    "image": "https://cdn9.ouedkniss.com/medias/announcements/images/4Rnook/RhQTMmU1vrp3IFCuYVqTvqqBqoubfBZ3okHsNYv9.jpg",
+    "postedAt": "2026-09-03T06:54:10.000Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r5-5600",
+        "name": "Ryzen 5 5600",
+        "brand": "AMD"
+      },
+      "gpu": {
+        "id": "igpu",
+        "name": "Graphique Intégré"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-delta-32-d5",
+        "name": "32GB DDR5"
+      },
+      "storage": {
+        "id": "ssd-nvme-1tb-g4",
+        "name": "SSD NVMe 1TB"
+      },
+      "psu": {
+        "id": "psu-550-b",
+        "name": "550W Bronze"
+      }
+    }
+  },
+  {
+    "id": "prebuild-143",
+    "title": "PC GAMER RYZEN 7 5700G RAIDMAX DDR4 PRIX ALGERIE",
+    "priceDa": 102000,
+    "store": "AMI Informatique",
+    "wilaya": "Alger",
+    "url": "https://ami-dz.com/produit/pc-gamer-ryzen-7-5700g-raidmax-ddr4-prix-algerie/",
+    "image": "https://ami-dz.com/wp-content/uploads/2026/06/Raidmax-SITE-COVER.jpg-1.jpeg",
+    "postedAt": "2026-10-03T10:38:47.814Z",
+    "specs": {
+      "cpu": {
+        "id": "cpu-r7-5700x",
+        "name": "Ryzen 7 5700G",
+        "brand": "AMD",
+        "igpu": true
+      },
+      "gpu": {
+        "id": "igpu",
+        "name": "Graphique Intégré"
+      },
+      "mobo": {
+        "id": "mobo-b550m-a-pro",
+        "name": "B550M AM4"
+      },
+      "ram": {
+        "id": "ram-vengeance-16-d4",
+        "name": "16GB DDR4"
       },
       "storage": {
         "id": "ssd-nvme-512gb",

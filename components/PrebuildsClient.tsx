@@ -24,7 +24,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
   const [gpuFilter, setGpuFilter] = useState<"all" | "rtx40" | "rtx30" | "radeon" | "igpu">("all");
   const [selectedWilaya, setSelectedWilaya] = useState("all");
   const [dealOnly, setDealOnly] = useState(false);
-  const [sortBy, setSortBy] = useState<"savings" | "discount-pct" | "price-asc" | "price-desc" | "gpu-tier" | "cpu-tier">("savings");
+  const [sortBy, setSortBy] = useState<"savings" | "discount-pct" | "price-asc" | "price-desc" | "newest" | "gpu-tier" | "cpu-tier">("savings");
 
   // --- i18n: static import, picked at render time from the locale prop -------
   const t = useMemo(() => makeT(locale), [locale]);
@@ -118,6 +118,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
       .sort((a, b) => {
         if (sortBy === "price-asc") return a.priceDa - b.priceDa;
         if (sortBy === "price-desc") return b.priceDa - a.priceDa;
+        if (sortBy === "newest") return new Date(b.postedAt || 0).getTime() - new Date(a.postedAt || 0).getTime();
         if (sortBy === "savings") return b.valuation.savings - a.valuation.savings;
         if (sortBy === "discount-pct") return b.discountPct - a.discountPct;
         if (sortBy === "gpu-tier") return getGpuScore(b.specs.gpu.name) - getGpuScore(a.specs.gpu.name);
@@ -257,6 +258,7 @@ export default function PrebuildsClient({ prebuilds, offers, locale = DEFAULT_LO
             >
               <option value="savings">🔥 {t("prebuilds.sortSavings")}</option>
               <option value="discount-pct">📊 {t("prebuilds.sortDiscount")}</option>
+              <option value="newest">🕒 {t("prebuilds.sortNewest")}</option>
               <option value="price-asc">💰 {t("prebuilds.sortPriceAsc")}</option>
               <option value="price-desc">💎 {t("prebuilds.sortPriceDesc")}</option>
               <option value="gpu-tier">🎮 {t("prebuilds.sortGpuTier")}</option>

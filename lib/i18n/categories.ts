@@ -17,6 +17,7 @@ const CATEGORY_KEYS: Record<string, TKey> = {
   case: "cats.case",
   psu: "cats.psu",
   monitor: "cats.monitor",
+  printer: "cats.printer",
 };
 
 export const CATEGORY_SLUGS = Object.keys(CATEGORY_KEYS);

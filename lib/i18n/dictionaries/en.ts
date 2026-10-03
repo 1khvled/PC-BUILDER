@@ -83,6 +83,7 @@ export const en: Dictionary = {
   "cats.case": "PC Cases",
   "cats.psu": "Power Supplies (PSU)",
   "cats.monitor": "Gaming Monitors",
+  "cats.printer": "Printers",
 
   /* --------------------------------------------------------------------- nav */
   "nav.main": "Main navigation",
@@ -440,6 +441,7 @@ export const en: Dictionary = {
   "prebuilds.sortDiscount": "Biggest discount (%)",
   "prebuilds.sortPriceAsc": "Price: ascending",
   "prebuilds.sortPriceDesc": "Price: descending",
+  "prebuilds.sortNewest": "Newest listings",
   "prebuilds.sortGpuTier": "Most powerful graphics card",
   "prebuilds.sortCpuTier": "Most powerful processor",
   "prebuilds.liveSource": "Collected live from Algerian stores",
@@ -633,6 +635,16 @@ export const en: Dictionary = {
   "builder.toastUpdated": "Component updated.",
   "builder.toastReset": "Configurator reset.",
   "builder.toastDefault": "Reference gaming build loaded.",
+  "builder.savedLocal": "Saved locally in your browser (private)",
+  "builder.pickOffer": "Store offer:",
+  "builder.allOffers": "All store offers ({count})",
+  "builder.sortBy": "Sort by:",
+  "builder.sortPriceAsc": "Price: Low to High",
+  "builder.sortPriceDesc": "Price: High to Low",
+  "builder.sortName": "Name (A-Z)",
+  "builder.sortStock": "In Stock First",
+  "builder.toastOfferSelected": "Store offer selected & saved.",
+
 
   /* -------------------------------------------------------------- loading/404 */
   "loading.page": "Loading the page…",

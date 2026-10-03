@@ -194,6 +194,9 @@ export default function BuilderPage() {
   // Prerender-identical default first (hydration-safe); the shared URL —
   // then the saved local build — is applied in an effect below.
   const [picks, setPicks] = useState<Record<string, string>>(DEFAULT_BUILD);
+  const [selectedOffers, setSelectedOffers] = useState<Record<string, string>>({});
+  const isHydratedRef = useRef(false);
+  const [modalSort, setModalSort] = useState<"price-asc" | "price-desc" | "name" | "stock">("price-asc");
 
   // Restore once on mount: handle ?add=..., then ?p=..., then localStorage, then default.
   useEffect(() => {
@@ -236,8 +239,12 @@ export default function BuilderPage() {
 
       const localSaved = parsePicks(window.localStorage.getItem("dz_builder_picks"));
       if (localSaved) setPicks(localSaved);
+      const savedOffers = JSON.parse(window.localStorage.getItem("dz_builder_offers") || "{}");
+      if (savedOffers && typeof savedOffers === "object") setSelectedOffers(savedOffers);
     } catch {
       /* private mode etc. — stay on default */
+    } finally {
+      isHydratedRef.current = true;
     }
   }, []);
   const [activeModalCat, setActiveModalCat] = useState<string | null>(null);
@@ -318,9 +325,27 @@ export default function BuilderPage() {
 
   const result = useMemo(() => checkCompat(build), [build]);
 
+  const getSlotOffer = (category: string, product: Product | undefined) => {
+    if (!product) return undefined;
+    const catOffers = offers.filter((o) => o.productId === product.id && !isRuptured(o));
+    const allProdOffers = offers.filter((o) => o.productId === product.id);
+    const chosenUrl = selectedOffers[category];
+    if (chosenUrl) {
+      const match = allProdOffers.find((o) => o.url === chosenUrl);
+      if (match) return match;
+    }
+    return catOffers.length > 0 ? catOffers[0] : bestOffer(product.id, offers);
+  };
+
+  const handleSelectOffer = (category: string, offerUrl: string) => {
+    setSelectedOffers((prev) => ({ ...prev, [category]: offerUrl }));
+    triggerFlash(category);
+    showToast(t("builder.toastOfferSelected"));
+  };
+
   const total = useMemo(
-    () => Object.values(build).reduce((s, p) => s + (bestOffer(p.id, offers)?.priceDa ?? 0), 0),
-    [build, offers]
+    () => Object.entries(build).reduce((s, [cat, p]) => s + (getSlotOffer(cat, p)?.priceDa ?? 0), 0),
+    [build, offers, selectedOffers]
   );
   const animatedTotal = useAnimatedNumber(total, 300);
 
@@ -387,7 +412,12 @@ export default function BuilderPage() {
 
   const handleReset = () => {
     setPicks({});
-    showToast("Configurateur réinitialisé.");
+    setSelectedOffers({});
+    try {
+      window.localStorage.removeItem("dz_builder_picks");
+      window.localStorage.removeItem("dz_builder_offers");
+    } catch {}
+    showToast(t("builder.toastReset"));
   };
 
   const handleLoadDefault = () => {
@@ -429,6 +459,12 @@ export default function BuilderPage() {
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
             Prix les plus bas en Algérie relevés quotidiennement • Vérification automatique de compatibilité • 58 wilayas
           </p>
+          <div className="flex items-center gap-2 mt-2">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>{t("builder.savedLocal")}</span>
+            </span>
+          </div>
         </div>
 
         {/* Quick Toolbar with Print Button Next to Copier */}
@@ -566,7 +602,8 @@ export default function BuilderPage() {
         <div className="block md:hidden divide-y divide-slate-100 p-3 space-y-3 print:hidden overflow-hidden rounded-t-xl">
           {CATEGORIES.map((cat, catIdx) => {
             const product = build[cat.slug];
-            const best = product ? bestOffer(product.id, offers) : undefined;
+            const activeOffer = product ? getSlotOffer(cat.slug, product) : undefined;
+            const best = activeOffer;
             const allProductOffers = product ? offers.filter((o) => o.productId === product.id) : [];
             const otherCount = allProductOffers.length - 1;
 
@@ -642,6 +679,25 @@ export default function BuilderPage() {
                                 </Link>
                               )}
                             </div>
+                            {allProductOffers.length > 1 && (
+                              <div className="pt-1.5">
+                                <label htmlFor={`mob-offer-${cat.slug}`} className="text-[10px] text-slate-400 font-bold block mb-1">
+                                  {t("builder.pickOffer")}
+                                </label>
+                                <select
+                                  id={`mob-offer-${cat.slug}`}
+                                  value={activeOffer?.url || ""}
+                                  onChange={(e) => handleSelectOffer(cat.slug, e.target.value)}
+                                  className="w-full text-[11px] font-semibold text-slate-700 bg-slate-50 border border-slate-200 rounded px-2 py-1.5 focus:outline-none focus:border-[#2c87c3]"
+                                >
+                                  {allProductOffers.map((o) => (
+                                    <option key={o.url} value={o.url}>
+                                      {o.priceDa.toLocaleString("fr-DZ")} DA — {o.store} ({o.wilaya}) [{o.condition === "new" ? "Neuf" : "Occasion"}]
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            )}
                           </div>
                         ) : (
                           <span className="text-slate-400 text-xs">Prix non disponible</span>
@@ -698,7 +754,8 @@ export default function BuilderPage() {
             <tbody className="divide-y divide-slate-100 print:divide-slate-200">
               {CATEGORIES.map((cat, catIdx) => {
                 const product = build[cat.slug];
-                const best = product ? bestOffer(product.id, offers) : undefined;
+                const activeOffer = product ? getSlotOffer(cat.slug, product) : undefined;
+                const best = activeOffer;
                 const allProductOffers = product ? offers.filter((o) => o.productId === product.id) : [];
                 const otherCount = allProductOffers.length - 1;
 
@@ -780,6 +837,22 @@ export default function BuilderPage() {
                               </Link>
                             )}
                           </div>
+                          {allProductOffers.length > 1 && (
+                            <div className="mt-1.5 print:hidden">
+                              <select
+                                value={activeOffer?.url || ""}
+                                onChange={(e) => handleSelectOffer(cat.slug, e.target.value)}
+                                className="text-[11px] font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded px-2 py-1 focus:outline-none focus:border-[#2c87c3] max-w-[210px] truncate cursor-pointer"
+                                title={t("builder.pickOffer")}
+                              >
+                                {allProductOffers.map((o) => (
+                                  <option key={o.url} value={o.url}>
+                                    {o.priceDa.toLocaleString("fr-DZ")} DA — {o.store} ({o.wilaya}) [{o.condition === "new" ? "Neuf" : "Occasion"}]
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <button
@@ -925,16 +998,32 @@ export default function BuilderPage() {
               </Link>
             </div>
 
-            {/* Modal Search Bar */}
-            <div className="p-3 border-b border-slate-100 bg-white">
+            {/* Modal Search Bar & Sorting */}
+            <div className="p-3 border-b border-slate-100 bg-white flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               <input
                 type="text"
                 value={modalSearch}
                 onChange={(e) => setModalSearch(e.target.value)}
                 placeholder="Filtrer par marque, modèle…"
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2 text-xs text-slate-800 outline-none focus:border-[#2c87c3] focus:bg-white focus:shadow-[0_0_0_3px_rgba(44,135,195,0.15)] transition-all"
+                className="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2.5 min-h-[44px] text-base sm:text-xs text-slate-800 outline-none focus:border-[#2c87c3] focus:bg-white focus:shadow-[0_0_0_3px_rgba(44,135,195,0.15)] transition-all"
                 autoFocus
               />
+              <div className="flex items-center gap-1.5 shrink-0">
+                <label htmlFor="modal-sort-select-fr" className="text-[11px] font-bold uppercase tracking-wider text-slate-400 hidden sm:inline">
+                  {t("builder.sortBy")}
+                </label>
+                <select
+                  id="modal-sort-select-fr"
+                  value={modalSort}
+                  onChange={(e) => setModalSort(e.target.value as never)}
+                  className="w-full sm:w-auto text-xs font-semibold text-slate-700 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-2 min-h-[44px] focus:outline-none focus:border-[#2c87c3]"
+                >
+                  <option value="price-asc">💰 {t("builder.sortPriceAsc")}</option>
+                  <option value="price-desc">💎 {t("builder.sortPriceDesc")}</option>
+                  <option value="name">🔤 {t("builder.sortName")}</option>
+                  <option value="stock">✓ {t("builder.sortStock")}</option>
+                </select>
+              </div>
             </div>
 
             {/* Modal Product List */}
@@ -944,6 +1033,18 @@ export default function BuilderPage() {
                   if (!modalSearch.trim()) return true;
                   const q = modalSearch.toLowerCase();
                   return `${p.brand} ${p.model}`.toLowerCase().includes(q);
+                })
+                .sort((a, b) => {
+                  const aBest = bestOffer(a.id, offers)?.priceDa ?? Infinity;
+                  const bBest = bestOffer(b.id, offers)?.priceDa ?? Infinity;
+                  const aInStock = offers.some((o) => o.productId === a.id && !isRuptured(o));
+                  const bInStock = offers.some((o) => o.productId === b.id && !isRuptured(o));
+
+                  if (modalSort === "price-asc") return aBest - bBest;
+                  if (modalSort === "price-desc") return bBest - aBest;
+                  if (modalSort === "name") return `${a.brand} ${a.model}`.localeCompare(`${b.brand} ${b.model}`);
+                  if (modalSort === "stock") return (bInStock ? 1 : 0) - (aInStock ? 1 : 0) || aBest - bBest;
+                  return 0;
                 })
                 .map((product) => {
                   const pOffers = offers.filter((o) => o.productId === product.id);

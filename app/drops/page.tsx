@@ -14,7 +14,7 @@ const LOCALE: Locale = "en";
 const WINDOW_DAYS = 7;
 /** Minimum drop worth a row: 5% and 2,000 DA, same bar as /deals. */
 const MIN_PCT = 0.05;
-const MIN_SAVING = 2000;
+const MIN_SAVING = 1000;
 
 export const revalidate = 3600;
 

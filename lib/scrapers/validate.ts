@@ -22,6 +22,7 @@ export const CATEGORY_BANDS: Record<Category, Band> = {
   case: createBand(1000, 130000),
   psu: createBand(3500, 150000),
   monitor: createBand(3000, 400000),
+  printer: createBand(6000, 300000),
 };
 
 const GLOBAL_MIN_PRICE = 500;

@@ -27,13 +27,13 @@ function deals(products: Product[], offers: Offer[]): Deal[] {
   const out: Deal[] = [];
   for (const p of products) {
     const fresh = offers.filter((o) => o.productId === p.id && o.condition === "new" && !isRuptured(o));
-    if (fresh.length < 3) continue;
+    if (fresh.length < 2) continue;
     const prices = fresh.map((o) => o.priceDa).sort((a, b) => a - b);
     const best = prices[0];
     const avg = prices[Math.floor(prices.length / 2)]; // médiane : insensible aux prix absurdes
     const drop = (avg - best) / avg;
     const saving = avg - best;
-    if (drop < 0.08 || saving < 2000) continue;
+    if (drop < 0.05 || saving < 1000) continue;
     const winner = fresh.find((o) => o.priceDa === best);
     out.push({
       id: p.id, brand: p.brand, model: p.model, category: p.category,

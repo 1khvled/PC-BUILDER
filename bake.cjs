@@ -2,7 +2,7 @@
 // Usage: node bake.mjs  (reads full.json, writes lib/data/live.ts)
 const fs = require("fs");
 
-const full = JSON.parse(fs.readFileSync("full.json", "utf8"));
+const full = JSON.parse(fs.readFileSync(require('path').join(__dirname, "full.json"), "utf8"));
 const report = full.report;
 
 const WILAYA = {
@@ -14,12 +14,13 @@ const WILAYA = {
   "FUTURE CITY INFORMATIQUE": "Alger", "IT DEVICE": "Alger", "ADMIN Informatique": "Alger", "IFTA COMPUTER": "Alger",
   "PROMOTECH IT": "Alger", "DKTIQUE COMPUTER": "Alger", "Technal Computer": "Alger", BUYMORE: "Alger", HWstore: "Alger",
   "MDI informatique": "Alger", "AN-TECH": "Alger", "AGYN TECH DZ": "Tizi Ouzou", "KPC SOLUTIONS": "Alger",
-  "EL ASSLI HI TECH": "Alger", TRETEC: "Alger", "INFO TECH": "Alger"
+  "EL ASSLI HI TECH": "Alger", TRETEC: "Alger", "INFO TECH": "Alger",
+  "TeqniyaStore": "Alger", "Bytek Store": "Alger", "AMI Informatique": "Alger", "Ozinformatique": "Alger", "Promotech IT": "Alger"
 };
 const NOW = new Date().toISOString();
 
 // seed pairs win over live dupes (read from products.ts)
-const src = fs.readFileSync("lib/data/products.ts", "utf8");
+const src = fs.readFileSync(require('path').join(__dirname, "lib/data/products.ts"), "utf8");
 const seedPairs = new Set();
 for (const m of src.matchAll(/productId:\s*"([^"]+)",\s*store:\s*"([^"]+)"/g)) {
   seedPairs.add(m[1] + "|" + m[2]);
@@ -64,6 +65,28 @@ function clean(s) {
 
 // { id, cat, all[], any[], none[] } — match only within same category
 const RULES = [
+  // --- Printers (Side Products) ---
+  { cat: "printer", id: "printer-canon-g3411", any: ["g3411", "g3410"], none: ["tete", "tête", "encre", "cartouche", "ruban", "papier", "pad", "absorbeur", "batterie", "camera", "photo"] },
+  { cat: "printer", id: "printer-canon-g2411", any: ["g2411", "g2410"], none: ["tete", "tête", "encre", "cartouche", "ruban", "papier", "pad", "absorbeur"] },
+  { cat: "printer", id: "printer-canon-g3420", any: ["g3420", "g3430", "g3470"], none: ["tete", "tête", "encre", "cartouche"] },
+  { cat: "printer", id: "printer-canon-g2420", any: ["g2420", "g2460", "g2470"], none: ["tete", "tête", "encre", "cartouche"] },
+  { cat: "printer", id: "printer-canon-mf3010", any: ["mf3010", "mf 3010"], none: ["toner", "cartouche", "film", "rouleau", "tambour", "drum", "piece", "pièce"] },
+  { cat: "printer", id: "printer-canon-lbp6030", any: ["lbp6030", "lbp 6030", "lbp6018", "lbp 6018", "6030b", "6030w"], none: ["toner", "cartouche", "film", "rouleau", "tambour"] },
+  { cat: "printer", id: "printer-canon-mg2540", any: ["mg2540", "mg2541"], none: ["cartouche", "encre"] },
+  { cat: "printer", id: "printer-epson-l3250", any: ["l3250", "l3251"], none: ["tete", "tête", "encre", "cartouche", "bouteille", "tampon", "pad"] },
+  { cat: "printer", id: "printer-epson-l3210", any: ["l3210", "l3211"], none: ["tete", "tête", "encre", "cartouche", "bouteille", "tampon", "pad"] },
+  { cat: "printer", id: "printer-epson-l3150", any: ["l3150"], none: ["tete", "tête", "encre", "cartouche", "bouteille", "tampon", "pad"] },
+  { cat: "printer", id: "printer-epson-l3110", any: ["l3110"], none: ["tete", "tête", "encre", "cartouche", "bouteille", "tampon", "pad"] },
+  { cat: "printer", id: "printer-epson-l4260", any: ["l4260"], none: ["tete", "tête", "encre", "cartouche"] },
+  { cat: "printer", id: "printer-epson-l8050", any: ["l8050", "l805"], none: ["tete", "tête", "encre", "cartouche", "bouteille"] },
+  { cat: "printer", id: "printer-epson-m2170", any: ["m2170", "m2140"], none: ["bouteille", "encre"] },
+  { cat: "printer", id: "printer-hp-laser-107w", any: ["107w", "107a"], none: ["toner", "cartouche", "106a"] },
+  { cat: "printer", id: "printer-hp-mfp-135w", any: ["135w", "135a"], none: ["toner", "cartouche"] },
+  { cat: "printer", id: "printer-hp-smart-tank-580", all: ["smart", "tank"], any: ["580", "515", "516", "530", "670"], none: ["bouteille", "encre"] },
+  { cat: "printer", id: "printer-pantum-p2509", all: ["pantum"], any: ["p2509", "p2500", "p2502"], none: ["toner", "cartouche"] },
+  { cat: "printer", id: "printer-brother-hl1210w", all: ["brother"], any: ["1210", "1212"], none: ["toner", "tambour"] },
+  { cat: "printer", id: "printer-brother-dcpt520w", all: ["brother"], any: ["t520", "t720", "t420"], none: ["bouteille", "encre"] },
+
   { id: "cpu-r5-5600", cat: "cpu", all: ["ryzen", "5600"], none: ["5600g", "5600gt", "5600x", "5600f", "5600h", "5600u", "laptop", "notebook"] },
   { id: "cpu-i5-12400f", cat: "cpu", all: ["12400"], none: ["laptop", "notebook", "12400h", "12400u"] },
   { id: "cpu-r5-7600x", cat: "cpu", all: ["7600x"] },
@@ -382,10 +405,10 @@ const RULES = [
   { id: "gpu-rtx4070s-12gb", cat: "gpu", all: ["4070super"], none: ["laptop", "notebook", "portable", "ti"] },
   { id: "gpu-rtx4070tis-16gb", cat: "gpu", all: ["4070tisuper"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-gt1030-4gb", cat: "gpu", all: ["1030"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-arc-b580-12gb", cat: "gpu", all: ["b580"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-arc-a750-8gb", cat: "gpu", all: ["a750"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-arc-a580-8gb", cat: "gpu", all: ["a580"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-arc-a380-6gb", cat: "gpu", all: ["a380"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-arc-b580-12gb", cat: "gpu", all: ["b580"], any: ["arc", "intel", "asrock", "sparkle", "gunnir", "challenger", "gpu", "carte graphique"], none: ["laptop", "notebook", "portable", "samsung", "galaxy", "phone"] },
+  { id: "gpu-arc-a750-8gb", cat: "gpu", all: ["a750"], any: ["arc", "intel", "asrock", "sparkle", "gunnir", "challenger", "phantom", "gpu", "carte graphique"], none: ["laptop", "notebook", "portable", "samsung", "galaxy", "phone", "a750bn", "msi", "a7 2018", "toyota"] },
+  { id: "gpu-arc-a580-8gb", cat: "gpu", all: ["a580"], any: ["arc", "intel", "asrock", "sparkle", "gunnir", "challenger", "gpu", "carte graphique"], none: ["laptop", "notebook", "portable", "samsung", "galaxy", "phone"] },
+  { id: "gpu-arc-a380-6gb", cat: "gpu", all: ["a380"], any: ["arc", "intel", "asrock", "sparkle", "gunnir", "challenger", "gpu", "carte graphique"], none: ["laptop", "notebook", "portable", "samsung", "galaxy", "phone"] },
   { id: "gpu-rtx4060ti-16gb", cat: "gpu", all: ["4060ti", "16gb"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rtx4060ti-8gb", cat: "gpu", all: ["4060ti"], none: ["16gb", "laptop", "notebook", "portable"] },
   { id: "gpu-rtx3060-8gb", cat: "gpu", all: ["3060"], any: ["8gb", "08g", "8g"], none: ["12gb", "12g", "o12g", "ti", "laptop", "notebook", "portable"] },
@@ -482,8 +505,8 @@ const RULES = [
   { id: "case-gc7", cat: "case", all: ["gcm10"] },
   { id: "case-havit", cat: "case", all: ["havit"], any: ["case", "boitier", "chassis", "tour"], none: ["watercooling", "cooler", "f2002", "f2003", "f2005", "clavier", "souris", "keyboard", "mouse", "casque", "headset", "laptop", "notebook"] },
   { id: "case-infinita-i802", cat: "case", all: ["x606"] },
-  { id: "case-budget", cat: "case", all: ["cmt192"] },
-  { id: "case-budget", cat: "case", all: ["ares"] },
+  { id: "case-budget", cat: "case", any: ["cmt192", "ares", "budget", "haff", "m100a", "m100r"] },
+  { id: "case-generic-office", cat: "case", any: ["bureautique", "standard", "office", "simple", "generique", "advance", "mikuso", "delux", "datazone", "segotep", "golden field"] },
   { id: "case-gungnir", cat: "case", all: ["prospect"] },
   { id: "case-masterbox", cat: "case", all: ["haf500"] },
   { id: "case-masterbox", cat: "case", all: ["haf700"] },
@@ -737,6 +760,7 @@ const RULES = [
 function detectTitleCategory(title) {
   if (!title) return null;
   const t = " " + norm(title) + " ";
+  if (/\b(imprimante|ecotank|pixma|laserjet|laser\s*mfp|smart\s*tank|copieur|multifonction\s*laser|selphy|i-sensys|megatank)\b/i.test(t)) return "printer";
   if (/\b(ecran|moniteur|monitor|dalle|curved|incurv[eé]|ips\s*gaming|fast\s*ips|ultragear|odyssey|zowie|katana|msg24|msg27|msg32|24g4|27g4|24g2|27g2|g24i|g27i|vg249|vg279|g242f|g25f|gs27fa|mag\s*255f|255f|272f|mp242|mp271|mp275)\b|\b\d{2,3}hz\b/i.test(t)) return "monitor";
   if (/\b(alimentation|allimentation|alim|psu|power\s*supply|bloc\s*d|boite\s*d|80\s*plus|80plus|modulaire|semi\s*modulaire|full\s*modulaire|pk550|pk650|pk750|pl550|pl650|pl750|pn650|pn750|pn850|pn1200|a650bn|a750bn|a850gl|a1000g|mpb550|mpb650|mpb750|mpb850|rgps|vte|xtc|ngdp)\b|\b(400|450|500|550|600|650|700|750|800|850|1000|1050|1200|1250|1300)w\b/i.test(t)) return "psu";
   if (/\b(boitier|boîtier|chassis|case|aquarium|tour\s*atx|m-atx\s*case|mid\s*tower|4000d|5000d|h5\s*flow|h7\s*flow|h9\s*flow|ch560|cg580|cg530|cg380|ap201|magma|infinita|meshian|hurrikan|shield\s*m100|forge\s*320|pano\s*110)\b/i.test(t)) return "case";
@@ -898,7 +922,9 @@ const LAPTOP_VETO = /laptop|\blap\b|notebook|macbook|latitude|optiplex|thinkpad|
 // Catches tronçonneuses (all spellings including tronceneuse), meuleuses, grills, toasters, etc.
 const TOOL_VETO = /tron[cç][oe]n|troncen|meuleuse|disqueuse|\bscie\b|scie\s*sauteuse|scie\s*circulaire|mixeur|gaufre|gaufrier|panineuse|panini|plaque\s+de\s+cuisson|sandwich|\bcaf[eé]\b|cafeti[eè]re|bouilloire|grille[\s-]pain|moulinex|multismart|brandmann|perceuse|visseuse|boulonneuse|perforateur|marteau\s*piqueur|ponceuse|soudeur|soudeuse|poste\s*[aà]\s*souder|aspirateur|tondeuse|\brabot\b|compresseur|[ée]lectrog[eè]ne|onduleur|multiprise|rallonge|cuisine|kitchen|cuisson|four\b|micro[\s-]ondes|hachoir|presse[\s-]agrumes|taille[\s-]haie|d[ée]broussailleuse|fer\s+[aà]\s+repasser|s[eè]che[\s-]cheveux|marmite|cocotte|115mm|125mm|makita|dewalt|ingco|crown\b|dwt\b|total\s*tools/i;
 // Non-PC category slugs from Ouedkniss announcement URLs
-const NON_PC_SLUG_VETO = /materiel-electrique|grills-panineuses|electromenager|grille-pain|outillage|bricolage|art-table|cuisine|vaisselle|jardin|auto|moto|vetement|chaussures|bebe|sport|pc-portable|pc-portables|memoires-pc-portables|pieces-detachees-pc-portable|accessoires-pc-portable/i;
+const NON_PC_SLUG_VETO = /materiel-electrique|grills-panineuses|electromenager|grille-pain|outillage|bricolage|art-table|cuisine|vaisselle|jardin|auto|moto|vetement|chaussures|bebe|sport|pc-portable|pc-portables|memoires-pc-portables|pieces-detachees-pc-portable|accessoires-pc-portable|smartphones?|t[eé]l[eé]phones?|pi[eè]ces?-de-rechange|optiques?-eclairage|accessoires?-t[eé]l[eé]phone|t[eé]l[eé]phonie|automobiles?|v[eé]hicules?|tablettes?-tactiles?/i;
+const PHONE_CAR_VETO = /\b(?:smartphones?|t[eé]l[eé]phones?|afficheur\b|vitre\b|nappe\b|connecteur\s*de\s*charge|chassis\b|d[eé]blocage|d[eé]verrouillage|r[eé]paration\s*(?:phone|t[eé]l[eé]phone)|auto[\s-]?pi[eè]ces?|phare\b|optique\b|pare[\s-]choc|vidange|pneu\b|plaquette\s*de\s*frein|amortisseur)\b/i;
+const NON_PC_BRAND_VETO = /\b(?:samsung|galaxy|iphone|oppo|xiaomi|redmi|huawei|infinix|realme|vivo|tecno|honor|oneplus|toyota|renault|peugeot|hyundai|kia|volkswagen|d4d|hilux)\b/i;
 // Laptop RAM markers (strictly reject SODIMM / laptop RAM from desktop catalog)
 const LAPTOP_RAM_MARKERS = /\blap\b|laptop|sodimm|so-dimm|so\s*dimm|portable|portatif|pc-portable|memoires-pc-portables/i;
 // Server RAM markers: reject ECC Registered / RDIMM / server memory from consumer desktop RAM
@@ -925,6 +951,10 @@ const PREBUILT_VETO = /unite\s+(gamer|asus|gaming)|kit\s+upgrade|forssa|\(.*conf
 const MONITOR_LAPTOP_VETO = /laptop|\blap\b|notebook|macbook|latitude|thinkpad|ideapad|vivobook|zenbook|elitebook|probook|thinkbook|yoga\b|surface\s*pro|pavilion|zephyrus|tuf\s*[af]\d{2}|\b\d{4,5}(?:hx|hs|h|u)\b|1[3-7][,.]\d|sodimm|so-dimm|so\s*dimm|portable|portatif|pc-portable/i;
 function isVetoed(category, title, url = "") {
   if (url && NON_PC_SLUG_VETO.test(url)) return true;
+  if (PHONE_CAR_VETO.test(title) || (url && PHONE_CAR_VETO.test(url))) return true;
+  if (category !== "ssd" && category !== "monitor" && category !== "printer") {
+    if (NON_PC_BRAND_VETO.test(title)) return true;
+  }
   if (BUNDLE_VETO.test(title) || TOOL_VETO.test(title)) return true;
   if (CONFIG_ONLY_VETO.test(title)) return true;
   if (KIT_VETO.test(title)) return true;
@@ -1329,7 +1359,7 @@ function matchRule(category, title) {
 // ---- price-sanity gates (ditch total, never extras) ----
 // Bands mirror lib/scrapers/validate.ts CATEGORY_BANDS so scrape-time and
 // bake-time agree. Per-product band = seed median x[0.4, 2.5].
-const CAT_BANDS = { cpu: [1000, 250000], cooler: [500, 90000], motherboard: [4000, 200000], ram: [1000, 300000], ssd: [800, 160000], gpu: [2000, 1500000], case: [1000, 130000], psu: [3500, 150000], monitor: [3000, 400000] };
+const CAT_BANDS = { cpu: [1000, 250000], cooler: [500, 90000], motherboard: [4000, 200000], ram: [1000, 300000], ssd: [800, 160000], gpu: [2000, 1500000], case: [1000, 130000], psu: [3500, 150000], monitor: [3000, 400000], printer: [6000, 300000] };
 // Stable reference: lib/data/price-meds.json (frozen medians, versioned).
 // Reading them from the regenerating seed made bake oscillate (medians lag
 // one bake behind and borderline rows flip-flop forever). Refresh the file
@@ -1342,7 +1372,7 @@ const SEED_MEDS = (() => {
     if (med.size > 0) return med;
   } catch { /* fall through to seed */ }
   try {
-    const seed = JSON.parse(fs.readFileSync("supabase-seed.json", "utf8"));
+    const seed = JSON.parse(fs.readFileSync(require('path').join(__dirname, "supabase-seed.json"), "utf8"));
     const by = new Map();
     for (const o of seed.offers || []) {
       if (!o || !o.p || typeof o.d !== "number") continue;
@@ -1356,7 +1386,8 @@ const SEED_MEDS = (() => {
 })();
 function isAbsurd(category, pid, price) {
   if (!price || price < 1500) return true;
-  if (/^(?:1000|1111|1234|12345|123456|9999|99999|1000000)$/.test(String(price))) return true;
+  if (/^(?:1000|1111|11111|111111|1234|12345|123456|9999|99999|999999|1000000)$/.test(String(price))) return true;
+  if (pid === "printer-canon-lbp6030" && price > 65000) return true;
   const b = CAT_BANDS[category];
   if (!b) return false;
   if (price < b[0] || price > b[1]) return true;
@@ -1492,7 +1523,9 @@ for (const o of report["ouedkniss:all"] || []) {
     }
     continue;
   }
-  const isNew = /neuf|new|blister|jamais|scell/i.test(title);
+  const isUsed = /\b(used|occasion|reconditionn[eé]|r[eé]cup[eé]ration|bon [eé]tat|tr[eè]s bon [eé]tat|[789]\/10|مستعمل)\b/i.test(title + " " + (o.description || ""));
+  const isExplicitNew = /neuf|new|blister|jamais|scell|الجديد/i.test(title + " " + (o.description || ""));
+  const cond = (o.isFromStore !== false) ? (isUsed ? "used" : "new") : (isExplicitNew ? "new" : "used");
   // canonical match only — tools/laptops/appliances are completely vetoed
   const isVeto = isVetoed(category, title, o.url);
   if (isBundle(title, o.description)) {
@@ -1502,7 +1535,7 @@ for (const o of report["ouedkniss:all"] || []) {
       if (sub.length === 1 && !isAbsurd(sub[0].cat, sub[0].pid, part.price)) {
         if (seenOkUrl.has(o.url + "#" + sub[0].pid)) continue;
         seenOkUrl.add(o.url + "#" + sub[0].pid);
-        matched.push({ productId: sub[0].pid, store: realStore, wilaya: realWilaya, titleRaw: (title + " | " + part.label).slice(0, 120), priceDa: part.price, url: o.url, stock: o.stock || "En stock", condition: isNew ? "new" : "used", image: o.image || "", scrapedAt: NOW });
+        matched.push({ productId: sub[0].pid, store: realStore, wilaya: realWilaya, titleRaw: (title + " | " + part.label).slice(0, 120), priceDa: part.price, url: o.url, stock: o.stock || "En stock", condition: cond, image: o.image || "", scrapedAt: NOW });
         split = true;
       }
     }
@@ -1514,10 +1547,10 @@ for (const o of report["ouedkniss:all"] || []) {
   if (pid) {
     if (seenOkUrl.has(o.url)) continue; // same ad twice in feed: keep first assignment
     seenOkUrl.add(o.url);
-    matched.push({ productId: pid, store: realStore, wilaya: realWilaya, titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: o.stock || "En stock", condition: isNew ? "new" : "used", image: o.image || "", scrapedAt: NOW });
+    matched.push({ productId: pid, store: realStore, wilaya: realWilaya, titleRaw: title.slice(0, 120), priceDa: o.priceDa, url: o.url, stock: o.stock || "En stock", condition: cond, image: o.image || "", scrapedAt: NOW });
   } else if (!isVeto && !EXTRA_JUNK.test(title) && (!o.query || isQueryRelevant(o.query, title)) && okExtra < 150) {
     okExtra++;
-    pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: realStore, wilaya: realWilaya, url: o.url, image: o.image || "", condition: isNew ? "new" : "used", postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: o.isFromStore ? 1 : 0 });
+    pushExtra(category, { category, title: title.slice(0, 120), priceDa: o.priceDa, store: realStore, wilaya: realWilaya, url: o.url, image: o.image || "", condition: cond, postedAt: o.postedAt || "", seller: (o.seller || "").slice(0, 40), isStore: o.isFromStore ? 1 : 0 });
   }
 }
 
@@ -1570,16 +1603,16 @@ export const LIVE_EXTRA: LiveExtra[] = [
 ${extras.map(extraSrc).join("\n")}
 ];
 `;
-fs.writeFileSync("lib/data/live.ts", out);
+fs.writeFileSync(require('path').join(__dirname, "lib/data/live.ts"), out);
 // one photo per product: first matched STORE image (Ouedkniss last, often lazy/broken)
 const imgSrc = {};
 const ordered = [...matched.filter((m) => m.store !== "Ouedkniss"), ...matched.filter((m) => m.store === "Ouedkniss")];
 for (const m of ordered) {
   if (m.image && !imgSrc[m.productId]) imgSrc[m.productId] = m.image;
 }
-fs.writeFileSync("lib/data/live-images-src.json", JSON.stringify(imgSrc, null, 1));
+fs.writeFileSync(require('path').join(__dirname, "lib/data/live-images-src.json"), JSON.stringify(imgSrc, null, 1));
 // compact Supabase seed (offers + one history snapshot; extras are re-scraped, never stored)
-const prodSrc = fs.readFileSync("lib/data/products.ts", "utf8");
+const prodSrc = fs.readFileSync(require('path').join(__dirname, "lib/data/products.ts"), "utf8");
 const seedProducts = [...prodSrc.matchAll(/id:\s*"([^"]+)",\s*category:\s*"([^"]+)",\s*brand:\s*"([^"]+)",\s*model:\s*"([^"]+)"/g)]
   .map((m) => ({ id: m[1], category: m[2], brand: m[3], model: m[4] }));
 const storeWilayaMap = new Map();
@@ -1600,6 +1633,6 @@ const seed = {
     w: o.stock === "Rupture" ? "out" : o.stock === "En stock" ? "in" : o.stock === "Ouedkniss" ? "ouedkniss" : (o.stock || "in"),
   })),
 };
-fs.writeFileSync("supabase-seed.json", JSON.stringify(seed));
+fs.writeFileSync(require('path').join(__dirname, "supabase-seed.json"), JSON.stringify(seed));
 const seedKB = Math.round(Buffer.byteLength(JSON.stringify(seed)) / 1024);
 console.log("matched offers:", matched.length, "capped:", capped.length, "extras:", extras.length, "products hit:", byPid.size, "with photo:", Object.keys(imgSrc).length, "seed:", seedKB + "KB");

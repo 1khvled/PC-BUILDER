@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CATEGORIES, minOf } from "@/lib/data/products";
+import { ALL_CATEGORIES as CATEGORIES, minOf } from "@/lib/data/products";
 import { getOffers, getProducts } from "@/lib/data/catalog";
 import CategoryCatalogClient from "@/components/CategoryCatalogClient";
 import BytekAd from "@/components/BytekAd";

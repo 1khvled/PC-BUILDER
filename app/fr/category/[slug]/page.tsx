@@ -4,7 +4,7 @@ import BytekAd from "@/components/BytekAd";
 import AskAI from "@/components/AskAI";
 import { categoryPrompt } from "@/lib/ai/prompt";
 import { notFound } from "next/navigation";
-import { CATEGORIES, minOf } from "@/lib/data/products";
+import { ALL_CATEGORIES as CATEGORIES, minOf } from "@/lib/data/products";
 import { getOffers, getProducts } from "@/lib/data/catalog";
 import CategoryCatalogClient from "@/components/CategoryCatalogClient";
 import LocaleSwitcher from "@/components/LocaleSwitcher";

@@ -12,7 +12,7 @@ import { getT } from "@/lib/i18n/server";
 const LOCALE: Locale = "fr";
 const WINDOW_DAYS = 7;
 const MIN_PCT = 0.05;
-const MIN_SAVING = 2000;
+const MIN_SAVING = 1000;
 
 export const revalidate = 3600;
 
