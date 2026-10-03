@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { PRODUCTS, bestOffer, isRuptured, productImage, type Offer, type Product } from "@/lib/data/products";
+import { CATEGORIES, PRODUCTS, bestOffer, isRuptured, productImage, type Offer, type Product } from "@/lib/data/products";
 import { useOffers } from "@/lib/data/use-offers";
 import { LIVE_EXTRA } from "@/lib/data/live";
 import { DEFAULT_LOCALE, formatNumber, formatPrice, localizedHref, type Locale } from "@/lib/i18n/config";
@@ -64,6 +64,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
   const label = useMemo(() => categoryLabel(slug, t), [slug, t]);
   // Slugs stay in the URL; only the prefix follows the locale.
   const href = (path: string) => localizedHref(path, locale);
+  const isBuilderCategory = useMemo(() => CATEGORIES.some((c) => c.slug === slug), [slug]);
 
   // Load saved viewMode and preferred wilaya from localStorage
   useState(() => {
@@ -615,17 +616,19 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
 
                     <div className="flex items-center gap-1.5 pt-1">
                       <CompareToggle productId={p.id} locale={locale} />
-                      <Link
-                        href={href(`/builder?add=${p.category}:${p.id}`)}
-                        className={`px-2.5 py-1.5 min-h-[36px] rounded-lg border text-xs font-semibold transition-colors flex items-center shrink-0 ${
-                          isRupturedProduct
-                            ? "border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400"
-                            : "border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-700 dark:border-slate-700 dark:text-slate-300"
-                        }`}
-                        title={isRupturedProduct ? t("category.addBuilderBrokenTitle") : t("common.addToBuilder")}
-                      >
-                        {isRupturedProduct ? t("category.addBuilderBroken") : t("category.addBuilder")}
-                      </Link>
+                      {isBuilderCategory && (
+                        <Link
+                          href={href(`/builder?add=${p.category}:${p.id}`)}
+                          className={`px-2.5 py-1.5 min-h-[36px] rounded-lg border text-xs font-semibold transition-colors flex items-center shrink-0 ${
+                            isRupturedProduct
+                              ? "border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400"
+                              : "border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-700 dark:border-slate-700 dark:text-slate-300"
+                          }`}
+                          title={isRupturedProduct ? t("category.addBuilderBrokenTitle") : t("common.addToBuilder")}
+                        >
+                          {isRupturedProduct ? t("category.addBuilderBroken") : t("category.addBuilder")}
+                        </Link>
+                      )}
                       <Link
                         href={href(`/product/${p.id}`)}
                         className={`flex-1 px-3 py-1.5 min-h-[36px] rounded-lg text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1 text-center shrink-0 ${
@@ -774,13 +777,15 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                         <td className="px-4 py-3.5 text-right">
                           <div className="inline-flex items-center justify-end gap-1.5">
                             <CompareToggle productId={p.id} locale={locale} />
-                            <Link
-                              href={href(`/builder?add=${p.category}:${p.id}`)}
-                              className="inline-flex items-center justify-center px-2.5 py-2 min-h-[40px] rounded-lg border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] text-slate-700 font-semibold text-xs transition-colors"
-                              title={t("common.addToBuilder")}
-                            >
-                              {t("category.addBuilder")}
-                            </Link>
+                            {isBuilderCategory && (
+                              <Link
+                                href={href(`/builder?add=${p.category}:${p.id}`)}
+                                className="inline-flex items-center justify-center px-2.5 py-2 min-h-[40px] rounded-lg border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] text-slate-700 font-semibold text-xs transition-colors"
+                                title={t("common.addToBuilder")}
+                              >
+                                {t("category.addBuilder")}
+                              </Link>
+                            )}
                             <Link
                               href={href(`/product/${p.id}`)}
                               className={`inline-flex items-center justify-center px-3 py-2 min-h-[40px] rounded-lg text-white font-semibold text-xs transition-colors ${

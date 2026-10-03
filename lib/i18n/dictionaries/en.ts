@@ -94,6 +94,7 @@ export const en: Dictionary = {
   "nav.livePricesDz": "Live prices Algeria (DA)",
   "nav.toolsConfig": "Tools & Config",
   "nav.componentsPc": "PC components",
+  "nav.sideProducts": "Peripherals & Hardware",
   "nav.transparency": "Transparency",
 
   /* ------------------------------------------------------------------ footer */
@@ -212,6 +213,8 @@ export const en: Dictionary = {
   "home.step3Text": "Direct link to the store, cash on delivery, shipping to all 58 wilayas.",
   "home.step3Cta": "Open the Builder",
   "home.browseByCategory": "Browse by category",
+  "home.sideProductsTag": "Side Products",
+  "home.sideProductsDesc": "Office hardware & peripherals outside PC Builder",
   "home.guidesTitle": "Algeria gaming buying guides",
   "home.allGuides": "All guides →",
   "home.builderBadge": "Configurator",

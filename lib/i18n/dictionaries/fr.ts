@@ -93,6 +93,7 @@ export const fr = {
   "nav.livePricesDz": "Prix live Algérie (DA)",
   "nav.toolsConfig": "Outils & Config",
   "nav.componentsPc": "Composants PC",
+  "nav.sideProducts": "Périphériques & Matériel",
   "nav.transparency": "Transparence",
 
   /* ------------------------------------------------------------------ footer */
@@ -206,6 +207,8 @@ export const fr = {
   "home.step3Text": "Lien direct vers la boutique, paiement à la livraison, expédition 58 wilayas.",
   "home.step3Cta": "Lancer le Builder",
   "home.browseByCategory": "Parcourir par catégorie",
+  "home.sideProductsTag": "Périphériques",
+  "home.sideProductsDesc": "Matériel bureautique hors configurateur PC",
   "home.guidesTitle": "Guides d'achat gaming DZ",
   "home.allGuides": "Tous les guides →",
   "home.builderBadge": "Configurateur",

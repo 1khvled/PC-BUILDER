@@ -1,7 +1,7 @@
 import Link from "next/link";
 import HomeRecentStrip from "@/components/HomeRecentStrip";
 import CurrencyConverter from "@/components/CurrencyConverter";
-import { CATEGORIES, bestOffer, minOf, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
+import { CATEGORIES, SIDE_CATEGORIES, bestOffer, minOf, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { LIVE_EXTRA } from "@/lib/data/live";
 import { GUIDES } from "@/lib/data/guides";
@@ -85,6 +85,14 @@ function CategorySvg({ slug }: { slug: string }) {
           <rect x="3" y="4" width="18" height="12" rx="2" />
           <line x1="8" y1="20" x2="16" y2="20" />
           <line x1="12" y1="16" x2="12" y2="20" />
+        </svg>
+      );
+    case "printer":
+      return (
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <polyline points="6 9 6 2 18 2 18 9" />
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+          <rect x="6" y="14" width="12" height="8" />
         </svg>
       );
     default:
@@ -328,6 +336,42 @@ export default async function Home() {
               );
             })}
           </div>
+          {SIDE_CATEGORIES.length > 0 && (
+            <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider">
+                  Périphériques
+                </span>
+                <span className="text-xs text-slate-500">Matériel bureautique hors configurateur PC</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {SIDE_CATEGORIES.map((c) => {
+                  const items = products.filter((p) => p.category === c.slug);
+                  const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
+                  const minPrice = minOf(prices);
+                  return (
+                    <Link
+                      key={c.slug}
+                      href={`/fr/category/${c.slug}`}
+                      className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-[#2c87c3] hover:text-[#2c87c3] text-xs font-semibold transition-all shadow-sm group"
+                    >
+                      <CategorySvg slug={c.slug} />
+                      <span>{c.label}</span>
+                      <span className="text-[11px] text-slate-400 font-normal">
+                        ({items.length} modèle{items.length > 1 ? "s" : ""})
+                      </span>
+                      {minPrice ? (
+                        <span className="text-emerald-700 font-bold text-[11px]">
+                          • dès {fmt(minPrice)}
+                        </span>
+                      ) : null}
+                      <span className="text-slate-300 group-hover:text-[#2c87c3] group-hover:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Guides & Builder CTA */}

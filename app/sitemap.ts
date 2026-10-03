@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { listGuides } from "@/lib/data/guides-en";
-import { CATEGORIES } from "@/lib/data/products";
+import { ALL_CATEGORIES as CATEGORIES } from "@/lib/data/products";
 import { getProducts } from "@/lib/data/catalog";
 import { absoluteUrl, localizedPath } from "@/lib/i18n/config";
 

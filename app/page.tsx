@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import HomeRecentStrip from "@/components/HomeRecentStrip";
 import CurrencyConverter from "@/components/CurrencyConverter";
 import Link from "next/link";
-import { CATEGORIES, bestOffer, minOf, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
+import { CATEGORIES, SIDE_CATEGORIES, bestOffer, minOf, productImage, isRuptured, type Product, type Offer } from "@/lib/data/products";
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { LIVE_EXTRA } from "@/lib/data/live";
 import { listGuides } from "@/lib/data/guides-en";
@@ -304,6 +304,42 @@ export default async function EnglishHome() {
               );
             })}
           </div>
+          {SIDE_CATEGORIES.length > 0 && (
+            <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider">
+                  {t("home.sideProductsTag")}
+                </span>
+                <span className="text-xs text-slate-500">{t("home.sideProductsDesc")}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {SIDE_CATEGORIES.map((c) => {
+                  const items = products.filter((p) => p.category === c.slug);
+                  const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
+                  const minPrice = minOf(prices);
+                  return (
+                    <Link
+                      key={c.slug}
+                      href={`/category/${c.slug}`}
+                      className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-[#2c87c3] hover:text-[#2c87c3] text-xs font-semibold transition-all shadow-sm group"
+                    >
+                      <CategoryIcon slug={c.slug} className="w-4 h-4 text-slate-500 group-hover:text-[#2c87c3]" />
+                      <span>{categoryLabel(c.slug, t)}</span>
+                      <span className="text-[11px] text-slate-400 font-normal">
+                        ({t("common.modelsCounted", { count: items.length, plural: pluralSuffix(items.length) })})
+                      </span>
+                      {minPrice ? (
+                        <span className="text-emerald-700 font-bold text-[11px]">
+                          • {t("common.fromPrice", { price: formatPrice(minPrice, LOCALE) })}
+                        </span>
+                      ) : null}
+                      <span className="text-slate-300 group-hover:text-[#2c87c3] group-hover:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Guides & Builder CTA */}
