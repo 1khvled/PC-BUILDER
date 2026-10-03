@@ -272,11 +272,11 @@ export async function searchOuedknissFull(
       const st = String(item.status || "").toUpperCase();
       if (st && st !== "PUBLISHED" && st !== "ACTIVE" && st !== "EDITED") continue;
 
-      // 2. Freshness check: reject dead/expired listings older than 3 months (90 days)
+      // 2. Freshness check: reject dead/expired listings older than 6 months (180 days)
       const postDate = item.refreshedAt || item.createdAt;
       if (postDate) {
         const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
-        if (!isNaN(ageDays) && ageDays > 90) continue; // 3 months max
+        if (!isNaN(ageDays) && ageDays > 180) continue; // 6 months max (disregard old post, keep store)
       }
 
       // 3. Price validation: clean numeric price, reject placeholders

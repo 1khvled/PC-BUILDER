@@ -79,7 +79,7 @@ function normalizeAnnouncement(a, queryLabel = "category-sweep") {
   const postDate = a.refreshedAt || a.createdAt;
   if (postDate) {
     const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
-    if (isNaN(ageDays) || ageDays > 90) return null; // 3 months max
+    if (isNaN(ageDays) || ageDays > 180) return null; // 6 months max (disregard old post, keep store)
   }
 
   let p = a.price;

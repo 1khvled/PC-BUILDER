@@ -1468,13 +1468,13 @@ for (const o of report["ouedkniss:all"] || []) {
   let category = (qCat === "gpu" && tCat) ? tCat : (tCat || qCat);
   if (!title || !o.priceDa) continue;
 
-    // Filter out dead/expired listings: reject deals older than 3 months (90 days) or invalid URLs
+    // Filter out dead/expired listings: reject deals older than 6 months (180 days) or invalid URLs
   if (!o.url || (!/-d\d+/.test(o.url) && !o.url.startsWith("http"))) continue;
   const postDate = o.postedAt || o.day || "";
   if (postDate) {
     if (postDate < "2025-10-01") continue;
     const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
-    if (!isNaN(ageDays) && ageDays > 90) continue; // max 3 months
+    if (!isNaN(ageDays) && ageDays > 180) continue; // max 6 months (disregard old post, keep store) // max 3 months
   }
 
   // Query-title relevance: reject if title has nothing to do with the search query

@@ -64,7 +64,7 @@ function getArg(flag, defaultValue = null) {
 }
 const hasFlag = (flag) => argv.includes(flag);
 
-const MAX_AGE_DAYS = parseInt(getArg("--max-days", "90"), 10); // 3 months
+const MAX_AGE_DAYS = parseInt(getArg("--max-days", "180"), 10); // 6 months default
 const LIMIT_STORES = getArg("--limit") ? parseInt(getArg("--limit"), 10) : Infinity;
 const ONLY_STORES = getArg("--stores") ? getArg("--stores").split(",").map(s => s.trim()) : [];
 const AUTO_PUSH = hasFlag("--push");
@@ -80,7 +80,7 @@ function normalizeAnnouncement(a, queryLabel = "sweep") {
   const st = String(a.status || "").toUpperCase();
   if (st && st !== "PUBLISHED" && st !== "ACTIVE" && st !== "EDITED") return null;
 
-  // Strict Freshness: reject deals older than MAX_AGE_DAYS (90 days / 3 months default)
+  // Strict Freshness: reject deals older than MAX_AGE_DAYS (180 days / 6 months default) on per-post basis
   const postDate = a.refreshedAt || a.createdAt;
   if (!postDate) return null;
   const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
@@ -145,22 +145,23 @@ async function fetchStorePage(storeId, page = 1) {
     const rawItems = ann?.data || [];
     const hasMore = Boolean(ann?.paginatorInfo?.hasMorePages);
 
-    let hitStale = false;
+    let staleCount = 0;
     const validOffers = [];
     for (const raw of rawItems) {
       const postDate = raw.refreshedAt || raw.createdAt;
       if (postDate) {
         const ageDays = (Date.now() - new Date(postDate).getTime()) / (24 * 60 * 60 * 1000);
         if (ageDays > MAX_AGE_DAYS) {
-          hitStale = true; // Hit stale threshold
-          continue;
+          staleCount++;
+          continue; // Disregard this specific old post, keep scanning store
         }
       }
       const norm = normalizeAnnouncement(raw, `store:${storeId}`);
       if (norm) validOffers.push(norm);
     }
 
-    return { items: validOffers, hasMore: hasMore && !hitStale, hitStale };
+    const allStale = rawItems.length > 0 && staleCount === rawItems.length;
+    return { items: validOffers, hasMore: hasMore && !allStale, hitStale: allStale };
   } catch (err) {
     return { items: [], hasMore: false, hitStale: false };
   }
@@ -269,7 +270,7 @@ async function main() {
 
   const initialCount = full.report["ouedkniss:all"].length;
 
-  // Prune any legacy offers in full.json older than 3 months (90 days)
+  // Prune any legacy offers in full.json older than 6 months (180 days)
   const nowMs = Date.now();
   const maxMs = MAX_AGE_DAYS * 24 * 60 * 60 * 1000;
   const freshExisting = full.report["ouedkniss:all"].filter(o => {
