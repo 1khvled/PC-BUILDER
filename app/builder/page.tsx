@@ -1108,7 +1108,7 @@ export default function EnglishBuilderPage() {
           above the floating toast so it never covers the summary, and hidden
           in print because a sponsor has no business on a shopping list. */}
       <div className="print:hidden">
-        <BytekAd variant="strip" locale={LOCALE} placement="en-builder-bottom" />
+        <BytekAd variant="peripherals" locale={LOCALE} placement="en-builder-peripherals" />
       </div>
       <div className="print:hidden">
         <AskAI

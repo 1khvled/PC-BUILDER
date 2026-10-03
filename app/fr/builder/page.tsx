@@ -1129,7 +1129,7 @@ export default function BuilderPage() {
       )}
 
       <div className="print:hidden">
-        <BytekAd variant="strip" locale="fr" placement="fr-builder-bottom" />
+        <BytekAd variant="peripherals" locale="fr" placement="fr-builder-peripherals" />
       </div>
       <div className="print:hidden">
         <AskAI

@@ -2,7 +2,7 @@ import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
 import { makeT } from "@/lib/i18n/runtime";
 
 interface BytekAdProps {
-  variant?: "banner" | "compact" | "card" | "strip";
+  variant?: "banner" | "compact" | "card" | "strip" | "peripherals";
   /**
    * UI locale, passed as a prop by the server page so the first paint is already
    * translated. Defaults to French for the unprefixed routes.
@@ -25,7 +25,7 @@ const STORE_URL = "https://bytekstore.shop/";
 /** `as const` so the keys stay literal and `t()` stays type-checked. */
 const TRUST_POINTS = ["ad.pointStock", "ad.pointWilayas", "ad.pointCods"] as const;
 function storeHref(placement: string) {
-  return `${STORE_URL}?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=sponsor&utm_content=${encodeURIComponent(placement)}`;
+  return `${STORE_URL}products?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=sponsor&utm_content=${encodeURIComponent(placement)}`;
 }
 
 /** Light tile so the dark navy wordmark stays legible on the dark ad surface. */
@@ -133,6 +133,151 @@ export default function BytekAd({
         </span>
         <span className="mt-2 block text-[10px] leading-relaxed text-slate-500">{t("ad.independence")}</span>
       </a>
+    );
+  }
+
+  if (variant === "peripherals") {
+    return (
+      <aside
+        aria-label="Bytek Store Esports Peripherals"
+        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c0f1d] via-[#14162e] to-[#090b14] text-white p-5 sm:p-7 border border-indigo-500/35 shadow-xl"
+      >
+        {/* Ambient glows */}
+        <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-10 -mb-10 w-48 h-48 bg-[#2c87c3]/15 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-80" />
+
+        <div className="relative z-10 space-y-4">
+          {/* Header Row */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+            <div className="flex items-center gap-3">
+              <BytekLogo className="h-7 sm:h-8 w-auto" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-extrabold uppercase tracking-widest border border-indigo-500/40">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+                {t("ad.partner")}
+              </span>
+            </div>
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-extrabold text-xs shadow-md transition-all self-start sm:self-auto group"
+            >
+              <span>{t("bytek.shopAll")}</span>
+              <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+            </a>
+          </div>
+
+          <div>
+            <h3 className="text-base sm:text-xl font-black text-white tracking-tight">
+              {t("bytek.peripheralsTitle")}
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-300/90 mt-1 max-w-3xl leading-relaxed">
+              {t("bytek.peripheralsSubtitle")}
+            </p>
+          </div>
+
+          {/* 4 Cards Grid: Mice, Keyboards, Audio, Controllers */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-1">
+            <a
+              href={`${STORE_URL}wireless-gaming-mouse-algeria?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=peripherals_mice&utm_content=${encodeURIComponent(placement)}`}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="text-xl mb-1">🖱️</div>
+                <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
+                  {t("bytek.catMice")}
+                </div>
+                <div className="text-[11px] text-slate-400 mt-0.5 line-clamp-2 leading-snug">
+                  {t("bytek.catMiceDesc")}
+                </div>
+              </div>
+              <div className="mt-2 text-[10px] text-indigo-400 font-bold flex items-center gap-1">
+                <span>{t("bytek.shopMice")}</span>
+                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+              </div>
+            </a>
+
+            <a
+              href={`${STORE_URL}gaming-keyboards-algeria?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=peripherals_keyboards&utm_content=${encodeURIComponent(placement)}`}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="text-xl mb-1">⌨️</div>
+                <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
+                  {t("bytek.catKeyboards")}
+                </div>
+                <div className="text-[11px] text-slate-400 mt-0.5 line-clamp-2 leading-snug">
+                  {t("bytek.catKeyboardsDesc")}
+                </div>
+              </div>
+              <div className="mt-2 text-[10px] text-indigo-400 font-bold flex items-center gap-1">
+                <span>{t("bytek.shopKeyboards")}</span>
+                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+              </div>
+            </a>
+
+            <a
+              href={`${STORE_URL}gaming-headsets-algeria?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=peripherals_audio&utm_content=${encodeURIComponent(placement)}`}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="text-xl mb-1">🎧</div>
+                <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
+                  {t("bytek.catAudio")}
+                </div>
+                <div className="text-[11px] text-slate-400 mt-0.5 line-clamp-2 leading-snug">
+                  {t("bytek.catAudioDesc")}
+                </div>
+              </div>
+              <div className="mt-2 text-[10px] text-indigo-400 font-bold flex items-center gap-1">
+                <span>{t("bytek.shopAudio")}</span>
+                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+              </div>
+            </a>
+
+            <a
+              href={`${STORE_URL}gaming-controllers-algeria?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=peripherals_controllers&utm_content=${encodeURIComponent(placement)}`}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="text-xl mb-1">🎮</div>
+                <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
+                  {t("bytek.catControllers")}
+                </div>
+                <div className="text-[11px] text-slate-400 mt-0.5 line-clamp-2 leading-snug">
+                  {t("bytek.catControllersDesc")}
+                </div>
+              </div>
+              <div className="mt-2 text-[10px] text-indigo-400 font-bold flex items-center gap-1">
+                <span>{t("bytek.shopControllers")}</span>
+                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+              </div>
+            </a>
+          </div>
+
+          {/* Trust strip */}
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 text-[11px] text-slate-400 border-t border-white/5">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              {TRUST_POINTS.map((k) => (
+                <span key={k} className="inline-flex items-center gap-1.5 text-slate-300 font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  {t(k)}
+                </span>
+              ))}
+            </div>
+            <span className="text-[10px] text-slate-500">{t("ad.independence")}</span>
+          </div>
+        </div>
+      </aside>
     );
   }
 

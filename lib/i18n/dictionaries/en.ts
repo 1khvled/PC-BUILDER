@@ -732,6 +732,28 @@ export const en: Dictionary = {
   "footer.telegramDesc": "Exclusive coupons, Choice deals, and handpicked tech gear shipping to Algeria. Never miss a discount!",
   "footer.telegramCta": "Join @DzAliexpress0",
   "footer.linkTelegram": "AliExpress Deals (Telegram)",
+  /* ------------------------------------------------------------- bytek marketing */
+  "bytek.peripheralsTitle": "Gaming Peripherals & Esports Gear at Bytek Store",
+  "bytek.peripheralsSubtitle": "Complete your battle station with pro-grade gear: 8K wireless mice, Rapid Trigger magnetic keyboards, wireless headsets and PC/mobile controllers.",
+  "bytek.catMice": "8K Gaming Mice",
+  "bytek.catMiceDesc": "8000Hz polling rate, ultra-lightweight, PTFE skates",
+  "bytek.catKeyboards": "Rapid Trigger Keyboards",
+  "bytek.catKeyboardsDesc": "Hall Effect magnetic switches Madlions & Dareu",
+  "bytek.catAudio": "Wireless Gaming Headsets",
+  "bytek.catAudioDesc": "Competitive spatial audio, crystal-clear microphones",
+  "bytek.catControllers": "Wireless Controllers",
+  "bytek.catControllersDesc": "EasySMX Hall Effect anti-drift sticks for PC & phone",
+  "bytek.shopMice": "Shop Mice",
+  "bytek.shopKeyboards": "Shop Keyboards",
+  "bytek.shopAudio": "Shop Headsets",
+  "bytek.shopControllers": "Shop Controllers",
+  "bytek.shopAll": "Browse full Bytek Store catalog",
+  "nav.esportPeripherals": "Gaming Peripherals",
+  "nav.partnerStore": "Partner Store",
+  "nav.mousesKeyboards": "Mice, Keyboards, Headsets & Controllers",
+  "nav.bytekTagline": "Bytek Store • Delivery to 58 Wilayas",
+  "nav.bytekPill": "Mice & Keyboards",
+
 
 };
 

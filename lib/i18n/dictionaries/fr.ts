@@ -733,6 +733,28 @@ export const fr = {
   "footer.telegramDesc": "Coupons exclusifs, promotions Choice et sélections tech expédiées en Algérie. Ne ratez aucune baisse de prix !",
   "footer.telegramCta": "Rejoindre @DzAliexpress0",
   "footer.linkTelegram": "Bons plans AliExpress (Telegram)",
+  /* ------------------------------------------------------------- bytek marketing */
+  "bytek.peripheralsTitle": "Périphériques Gaming & Setup Esport chez Bytek Store",
+  "bytek.peripheralsSubtitle": "Complétez votre PC avec du matériel esport d'élite : souris 8K sans fil, claviers magnétiques Rapid Trigger, casques et manettes PC/mobile.",
+  "bytek.catMice": "Souris Gamer 8K",
+  "bytek.catMiceDesc": "Capteurs 8000Hz, ultra-légères, patins PTFE",
+  "bytek.catKeyboards": "Claviers Rapid Trigger",
+  "bytek.catKeyboardsDesc": "Switches magnétiques Hall Effect Madlions & Dareu",
+  "bytek.catAudio": "Casques Gamer Sans Fil",
+  "bytek.catAudioDesc": "Audio spatial compétitif, micros clairs",
+  "bytek.catControllers": "Manettes Sans Fil",
+  "bytek.catControllersDesc": "EasySMX Hall Effect anti-drift pour PC et mobile",
+  "bytek.shopMice": "Catalogue Souris",
+  "bytek.shopKeyboards": "Catalogue Claviers",
+  "bytek.shopAudio": "Catalogue Casques",
+  "bytek.shopControllers": "Catalogue Manettes",
+  "bytek.shopAll": "Voir tout chez Bytek Store",
+  "nav.esportPeripherals": "Périphériques Gaming",
+  "nav.partnerStore": "Boutique Partenaire",
+  "nav.mousesKeyboards": "Souris, Claviers, Casques & Manettes",
+  "nav.bytekTagline": "Bytek Store • Livraison 58 Wilayas",
+  "nav.bytekPill": "Souris & Claviers",
+
 
 };
 

@@ -666,6 +666,31 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                         <span className="text-[10px] text-slate-300 group-hover/item:text-[#2c87c3] group-hover/item:translate-x-0.5 transition-transform">→</span>
                       </Link>
                     </div>
+                    <div className="border-t border-slate-100 pt-1 pb-1 bg-indigo-50/20">
+                      <div className="px-4 py-1.5 text-[10px] font-extrabold text-indigo-600 uppercase tracking-widest bg-indigo-50/60 flex items-center justify-between">
+                        <span>{t("nav.esportPeripherals")}</span>
+                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-500/15 text-indigo-700 font-bold border border-indigo-500/25">
+                          {t("nav.partnerStore")}
+                        </span>
+                      </div>
+                      <a
+                        role="menuitem"
+                        href="https://bytekstore.shop/products?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=menu_peripherals"
+                        target="_blank"
+                        rel="noopener noreferrer sponsored"
+                        onClick={() => setCatDropdownOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2 text-xs text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 font-medium transition-colors group/item"
+                      >
+                        <span className="w-6 h-6 rounded-md bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+                          🖱️
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-bold text-slate-800 group-hover/item:text-indigo-700">{t("nav.mousesKeyboards")}</div>
+                          <div className="text-[10px] text-slate-400 truncate">{t("nav.bytekTagline")}</div>
+                        </div>
+                        <span className="text-[10px] text-indigo-400 group-hover/item:text-indigo-600 group-hover/item:translate-x-0.5 transition-transform">↗</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
               )}
@@ -712,6 +737,19 @@ const headerSearchCache = new Map<string, ProductResult[]>();
           </nav>
 
           <div className="hidden sm:flex items-center gap-3 text-xs font-medium py-1">
+            <a
+              href="https://bytekstore.shop/products?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=subnav_peripherals"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition-all shadow-2xs group shrink-0"
+              title={t("bytek.peripheralsTitle")}
+            >
+              <span>🖱️</span>
+              <span>{t("nav.bytekPill")}</span>
+              <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-indigo-500/15 text-indigo-700 font-mono">
+                Bytek
+              </span>
+            </a>
             <a
               href="https://t.me/DzAliexpress0"
               target="_blank"
@@ -879,6 +917,16 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 </span>
                 <span className="leading-tight">{categoryLabel("printer", t)}</span>
               </Link>
+              <a
+                href="https://bytekstore.shop/products?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=mobile_drawer_peripherals"
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-2 py-2.5 rounded-lg bg-indigo-950/70 hover:bg-indigo-900/90 text-indigo-200 hover:text-white transition-colors text-center border border-indigo-500/40 flex flex-col items-center justify-center gap-1 min-h-[60px]"
+              >
+                <span className="text-base" aria-hidden="true">🖱️</span>
+                <span className="leading-tight text-[10px] font-bold">{t("nav.mousesKeyboards")}</span>
+              </a>
             </div>
           </div>
 
