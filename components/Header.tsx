@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Thumb from "./Thumb";
 import ThemeToggle from "./ThemeToggle";
 import LocaleSwitcher from "./LocaleSwitcher";
+import AliExpressDealsBanner, { TelegramIcon } from "./AliExpressDealsBanner";
 import { useI18n } from "@/lib/i18n/client";
 import { categoryLabel } from "@/lib/i18n/categories";
 import { formatPrice, localizedHref, stripLocalePrefix } from "@/lib/i18n/config";
@@ -394,6 +395,9 @@ const headerSearchCache = new Map<string, ProductResult[]>();
           scrolled ? "shadow-[0_6px_24px_-8px_rgba(17,17,28,0.35)]" : ""
         }`}
       >
+        {/* Top Announcement Bar — AliExpress Telegram Channel */}
+        <AliExpressDealsBanner variant="topbar" locale={locale} />
+
       {/* Top Header Row — navy glass bar */}
       <div className="bg-[#11111c] border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
@@ -707,12 +711,27 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             </Link>
           </nav>
 
-          <div className="hidden sm:flex items-center gap-2 text-xs font-medium text-slate-500 py-1">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-            </span>
-            <span>{t("header.livePrices")}</span>
+          <div className="hidden sm:flex items-center gap-3 text-xs font-medium py-1">
+            <a
+              href="https://t.me/DzAliexpress0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-sky-500/10 via-sky-500/15 to-blue-500/10 hover:from-sky-500/20 hover:to-blue-500/20 text-[#0088cc] border border-sky-400/30 text-xs font-bold transition-all shadow-2xs group shrink-0"
+              title={t("aliexpress.bannerTitle")}
+            >
+              <TelegramIcon className="w-3.5 h-3.5 fill-current" />
+              <span>{t("aliexpress.navPill")}</span>
+              <span className="text-[9px] font-black uppercase px-1 py-0.2 rounded bg-amber-400/20 text-amber-600 font-mono">
+                🔥 {t("aliexpress.navBadge")}
+              </span>
+            </a>
+            <div className="flex items-center gap-2 text-slate-500">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span>{t("header.livePrices")}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -861,6 +880,30 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 <span className="leading-tight">{categoryLabel("printer", t)}</span>
               </Link>
             </div>
+          </div>
+
+          {/* Mobile Telegram Promo Card */}
+          <div className="pt-3 border-t border-white/10">
+            <a
+              href="https://t.me/DzAliexpress0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block p-3 rounded-xl bg-gradient-to-r from-[#0088cc]/25 via-[#0077b5]/35 to-[#0088cc]/15 border border-[#0088cc]/40 text-white hover:border-sky-400 transition-all"
+            >
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#0088cc] flex items-center justify-center text-white shrink-0 shadow-xs">
+                  <TelegramIcon className="w-4 h-4 fill-white" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-xs text-white truncate">{t("aliexpress.mobileTitle")}</span>
+                    <span className="text-[9px] px-1 py-0.2 rounded bg-amber-400 text-slate-900 font-extrabold uppercase font-mono">🔥</span>
+                  </div>
+                  <p className="text-[11px] text-slate-300 truncate mt-0.5">{t("aliexpress.mobileDesc")}</p>
+                </div>
+                <span className="text-xs text-sky-300 font-bold shrink-0">→</span>
+              </div>
+            </a>
           </div>
 
           <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-3 text-xs">

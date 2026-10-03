@@ -4,6 +4,7 @@ import { isRuptured, productImage, type Offer, type Product } from "@/lib/data/p
 import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import BytekAd from "@/components/BytekAd";
+import AliExpressDealsBanner from "@/components/AliExpressDealsBanner";
 import EmptyState from "@/components/EmptyState";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, formatNumber, formatPrice, languageAlternates } from "@/lib/i18n/config";
@@ -98,6 +99,9 @@ export default async function DealsPage() {
       </p>
       <div className="mt-4 mb-4">
         <BytekAd variant="strip" locale="fr" placement="fr-deals" />
+      </div>
+      <div className="my-5">
+        <AliExpressDealsBanner variant="banner" locale="fr" />
       </div>
       {list.length === 0 ? (
         <EmptyState type="products" title="Aucun bon plan en ce moment — revenez après le prochain relevé." />

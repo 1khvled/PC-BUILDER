@@ -4,6 +4,7 @@ import { isRuptured, productImage } from "@/lib/data/products";
 import { getOffers, getPriceHistory, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import Thumb from "@/components/Thumb";
 import BytekAd from "@/components/BytekAd";
+import AliExpressDealsBanner from "@/components/AliExpressDealsBanner";
 import EmptyState from "@/components/EmptyState";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { OG_LOCALE, formatPrice, languageAlternates, type Locale } from "@/lib/i18n/config";
@@ -129,6 +130,9 @@ export default async function DropsPage() {
       </header>
 
       <BytekAd variant="strip" locale={LOCALE} placement="en-drops" />
+      <div className="my-5">
+        <AliExpressDealsBanner variant="banner" locale={LOCALE} />
+      </div>
 
       {drops.length === 0 ? (
         <div className="mt-6">

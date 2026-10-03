@@ -7,6 +7,7 @@ import { LIVE_EXTRA } from "@/lib/data/live";
 import { GUIDES } from "@/lib/data/guides";
 import Thumb from "@/components/Thumb";
 import BytekAd from "@/components/BytekAd";
+import AliExpressDealsBanner from "@/components/AliExpressDealsBanner";
 
 export const revalidate = 60;
 
@@ -373,6 +374,9 @@ export default async function Home() {
             </div>
           )}
         </section>
+
+        {/* AliExpress Deals & Coupons Telegram Channel */}
+        <AliExpressDealsBanner variant="banner" locale="fr" />
 
         {/* Guides & Builder CTA */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">

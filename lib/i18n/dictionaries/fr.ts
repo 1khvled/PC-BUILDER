@@ -715,6 +715,25 @@ export const fr = {
   "chart.ceiling": "Plafond",
   "chart.stores": "Boutiques :",
   "chart.hoverHint": "Survolez un point pour voir le détail de l'offre.",
+  /* -------------------------------------------------------- aliexpress marketing */
+  "aliexpress.topbar": "Bons plans & Codes Promo AliExpress DZ : Économisez sur vos pièces & accessoires !",
+  "aliexpress.topbarCta": "Rejoindre Telegram",
+  "aliexpress.navPill": "Bons Plans AliExpress",
+  "aliexpress.navBadge": "Promo",
+  "aliexpress.mobileTitle": "Canal Telegram AliExpress DZ",
+  "aliexpress.mobileDesc": "Coupons exclusifs, promos Choice et hardware livrés en Algérie.",
+  "aliexpress.bannerTitle": "Bons plans & Codes Promo AliExpress pour l'Algérie",
+  "aliexpress.bannerDesc": "Ne payez plus vos composants et accessoires au prix fort. Rejoignez notre canal Telegram dédié aux sélections et codes promos vérifiés livrables en Algérie.",
+  "aliexpress.badge1": "Codes promos quotidiens",
+  "aliexpress.badge2": "Livraison Algérie vérifiée",
+  "aliexpress.badge3": "Composants & Périphériques",
+  "aliexpress.cta": "Rejoindre le canal Telegram @DzAliexpress0",
+  "footer.telegramTitle": "Canal Telegram AliExpress DZ",
+  "footer.telegramBadge": "Bons Plans",
+  "footer.telegramDesc": "Coupons exclusifs, promotions Choice et sélections tech expédiées en Algérie. Ne ratez aucune baisse de prix !",
+  "footer.telegramCta": "Rejoindre @DzAliexpress0",
+  "footer.linkTelegram": "Bons plans AliExpress (Telegram)",
+
 };
 
 export type Dictionary = typeof fr;

@@ -714,6 +714,25 @@ export const en: Dictionary = {
   "chart.ceiling": "Ceiling",
   "chart.stores": "Stores:",
   "chart.hoverHint": "Hover a point to see the offer details.",
+  /* -------------------------------------------------------- aliexpress marketing */
+  "aliexpress.topbar": "AliExpress DZ Deals & Promo Codes: Save big on PC parts & tech gear!",
+  "aliexpress.topbarCta": "Join Telegram",
+  "aliexpress.navPill": "AliExpress Deals",
+  "aliexpress.navBadge": "Deals",
+  "aliexpress.mobileTitle": "AliExpress DZ Telegram Channel",
+  "aliexpress.mobileDesc": "Exclusive coupons, Choice promos & PC parts delivered to Algeria.",
+  "aliexpress.bannerTitle": "AliExpress Deals & Promo Codes for Algeria",
+  "aliexpress.bannerDesc": "Never overpay for hardware and tech gear. Join our dedicated Telegram channel for handpicked deals, working coupons, and items shipping to Algeria.",
+  "aliexpress.badge1": "Daily promo codes",
+  "aliexpress.badge2": "Algeria shipping verified",
+  "aliexpress.badge3": "PC Parts & Accessories",
+  "aliexpress.cta": "Join Telegram Channel @DzAliexpress0",
+  "footer.telegramTitle": "AliExpress DZ Telegram Channel",
+  "footer.telegramBadge": "Hot Deals",
+  "footer.telegramDesc": "Exclusive coupons, Choice deals, and handpicked tech gear shipping to Algeria. Never miss a discount!",
+  "footer.telegramCta": "Join @DzAliexpress0",
+  "footer.linkTelegram": "AliExpress Deals (Telegram)",
+
 };
 
 export default en;

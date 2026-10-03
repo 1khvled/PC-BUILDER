@@ -8,6 +8,7 @@ import { LIVE_EXTRA } from "@/lib/data/live";
 import { listGuides } from "@/lib/data/guides-en";
 import Thumb from "@/components/Thumb";
 import BytekAd from "@/components/BytekAd";
+import AliExpressDealsBanner from "@/components/AliExpressDealsBanner";
 import CategoryIcon from "@/components/CategoryIcon";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import { formatPrice, languageAlternates, OG_LOCALE, SITE_URL, localizedHref } from "@/lib/i18n/config";
@@ -341,6 +342,9 @@ export default async function EnglishHome() {
             </div>
           )}
         </section>
+
+        {/* AliExpress Deals & Coupons Telegram Channel */}
+        <AliExpressDealsBanner variant="banner" locale={LOCALE} />
 
         {/* Guides & Builder CTA */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
