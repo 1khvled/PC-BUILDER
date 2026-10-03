@@ -453,6 +453,17 @@ const RULES = [
   { id: "case-hybrok-ares", cat: "case", all: ["hybrok"], any: ["ares", "astro", "b02", "c202", "c301", "moon", "rs6", "shadow"], none: ["titan", "ghost", "hacker", "race", "hl240", "psu", "alimentation", "power"] },
   { id: "case-ghost5", cat: "case", all: ["ghost"], none: ["hybrok"] },
   { id: "case-infinity-dark", cat: "case", all: ["infinity"], none: ["gamemax", "raidmax"] },
+  { id: "case-lianli-lancool-205", cat: "case", all: ["lian li", "lancool"] },
+  { id: "case-lianli-o11-dynamic", cat: "case", all: ["lian li", "o11"] },
+  { id: "case-nzxt-h6-flow", cat: "case", all: ["nzxt", "h6"] },
+  { id: "case-nzxt-h7-flow", cat: "case", all: ["nzxt", "h7"] },
+  { id: "case-deepcool-matrexx-55", cat: "case", all: ["matrexx"] },
+  { id: "case-deepcool-cc560", cat: "case", any: ["cc560", "cc360"] },
+  { id: "case-deepcool-cg380", cat: "case", any: ["cg380", "cg530", "cg330"] },
+  { id: "case-sog-deathmatch", cat: "case", all: ["deathmatch"] },
+  { id: "case-sog-rogue", cat: "case", all: ["rogue"] },
+  { id: "case-mars-mcart", cat: "case", all: ["mars"], any: ["mc-art", "mcart", "mc-concept", "concept"] },
+  { id: "case-cougar-duoface", cat: "case", all: ["cougar"], any: ["duoface", "purity", "darkblader"] },
   { id: "case-gamma-c60", cat: "case", all: ["gamma"] },
   { id: "case-magma-v02", cat: "case", all: ["magma"], any: ["v02", "8202", "v8202", "mi1", "mi 1"] },
   { id: "case-magma-t9", cat: "case", all: ["magma", "t9"] },
@@ -578,6 +589,29 @@ const RULES = [
   { id: "psu-deepcool-pn850m", cat: "psu", all: ["deepcool", "850w"], any: ["pn850", "pn850m", "gold", "pcie 5", "pcie5"] },
   { id: "psu-fsp-hyper650", cat: "psu", all: ["fsp"], any: ["hyper", "hydro", "650w", "700w"] },
   { id: "psu-thermaltake-smart600", cat: "psu", all: ["thermaltake", "600w"], any: ["smart", "rgb", "tr2"] },
+  { id: "psu-msi-mag-a650bn", cat: "psu", all: ["mag"], any: ["a650bn", "a550bn", "a750bn"], none: ["laptop", "acer"] },
+  { id: "psu-msi-mag-a750gl", cat: "psu", all: ["mag"], any: ["a750gl", "a850gl", "a1000g"], none: ["laptop", "acer", "ecran"] },
+  { id: "psu-corsair-cv650", cat: "psu", all: ["corsair"], any: ["cv650", "cv550", "cv450"] },
+  { id: "psu-corsair-cx750", cat: "psu", all: ["corsair"], any: ["cx750", "cx650", "cx550"] },
+  { id: "psu-corsair-rm750e", cat: "psu", all: ["corsair"], any: ["rm750e", "rm850e", "rm1000e", "rm750x", "rm850x"] },
+  { id: "psu-acer-ac650w", cat: "psu", all: ["acer"], any: ["ac650", "ac 650", "ac550", "ac 550"], none: ["laptop", "nitro", "predator", "msi", "mag", "asus"] },
+  { id: "psu-acer-ac750w", cat: "psu", all: ["acer"], any: ["ac750", "ac 750", "ac850", "ac 850"], none: ["laptop", "nitro", "predator", "1000w", "ac1000", "msi", "mag", "asus"] },
+  { id: "psu-acer-ac1000-gold", cat: "psu", all: ["acer"], any: ["ac1000", "ac 1000"], none: ["laptop", "nitro", "predator"] },
+  { id: "psu-hybrok-550w", cat: "psu", all: ["hybrok"], any: ["550w", "550", "psu550"], none: ["case", "boitier", "650w", "750w", "850w", "gold", "titan", "ghost", "ares"] },
+  { id: "psu-hybrok-650w", cat: "psu", all: ["hybrok"], any: ["650w", "650", "psu650"], none: ["case", "boitier", "550w", "750w", "850w", "gold", "titan", "ghost", "ares"] },
+  { id: "psu-hybrok-750w", cat: "psu", all: ["hybrok"], any: ["750w", "750", "psu750"], none: ["case", "boitier", "550w", "650w", "850w", "gold", "titan", "ghost", "ares"] },
+  { id: "psu-hybrok-750-gold", cat: "psu", all: ["hybrok", "gold"], any: ["750w", "750"], none: ["case", "boitier", "850w", "titan", "ghost"] },
+  { id: "psu-hybrok-850-gold", cat: "psu", all: ["hybrok", "gold"], any: ["850w", "850"], none: ["case", "boitier", "750w", "titan", "ghost"] },
+  { id: "psu-gamdias-aura-gp550", cat: "psu", all: ["gamdias"], any: ["gp550", "550w", "550"], none: ["case", "boitier", "650w", "gp650"] },
+  { id: "psu-gamdias-aura-gp650", cat: "psu", all: ["gamdias"], any: ["gp650", "650w", "650"], none: ["case", "boitier", "550w", "gp550"] },
+  { id: "psu-cm-mwe-750", cat: "psu", all: ["mwe"], any: ["750w", "750", "850w", "850"], none: ["650w", "650", "550w"] },
+  { id: "psu-asus-tuf-650b", cat: "psu", all: ["asus", "tuf"], any: ["650b", "750b", "850g", "650w", "750w", "850w"], none: ["carte", "motherboard", "b550", "b650", "b760", "laptop", "ecran"] },
+  { id: "psu-gigabyte-p650b", cat: "psu", all: ["gigabyte"], any: ["p650b", "p650ss", "p650", "p750gm", "ap750gm", "p750"], none: ["carte", "motherboard", "b550", "b650", "b760", "laptop"] },
+  { id: "psu-raidmax-cobra-750", cat: "psu", all: ["raidmax", "cobra"], any: ["750w", "750", "850w", "850"] },
+  { id: "psu-raidmax-genesis-1000", cat: "psu", all: ["raidmax", "genesis"], any: ["1000w", "1000"] },
+  { id: "psu-deepcool-pn1000m", cat: "psu", any: ["pn1000m", "pn 1000m", "pn1000", "pn1200m"] },
+  { id: "psu-deepcool-pf500", cat: "psu", any: ["pf500", "pf500x", "pf 500"] },
+  { id: "psu-deepcool-pf600", cat: "psu", any: ["pf600", "pf600x", "pf 600", "pf700"] },
 
   // Generic PSU Fallbacks
   { id: "psu-450-b", cat: "psu", all: ["450w"] },
@@ -666,6 +700,21 @@ const RULES = [
   { id: "mon-gamemax-24", cat: "monitor", all: ["gamemax"], any: ["gmx24", "24", "144hz", "165hz", "180hz"] },
   { id: "mon-philips-evnia24", cat: "monitor", all: ["philips"], any: ["evnia", "24", "165hz", "180hz"] },
 
+  // Dedicated Gaming & Office Monitors
+  { id: "mon-game-rev-ragnarok24", cat: "monitor", all: ["ragnarok"], any: ["ecran", "moniteur", "monitor", "revolution", "24"], none: ["ssd", "disque", "hadix", "nvme"] },
+  { id: "mon-msi-g274f", cat: "monitor", all: ["msi"], any: ["g274f", "g274", "mag 274f", "mag274f"], none: ["laptop", "pc portable", "4k", "qhd", "274qpf", "274upf"] },
+  { id: "mon-msi-g244f", cat: "monitor", all: ["msi"], any: ["g244f", "g244", "g2412", "g241", "mag 256f", "mag 256"], none: ["laptop", "pc portable"] },
+  { id: "mon-msi-mp275", cat: "monitor", all: ["msi"], any: ["mp275", "mp245", "mp243"] },
+  { id: "mon-aoc-24b36x", cat: "monitor", all: ["aoc"], any: ["24b36x", "24b1xh2", "24b2"] },
+  { id: "mon-aoc-q27g4", cat: "monitor", all: ["aoc"], any: ["q27g42ze", "q27g4", "q27g2", "q27u3cv"] },
+  { id: "mon-asus-vg27aq", cat: "monitor", all: ["asus"], any: ["vg27aq", "vg27aq3a", "vg27aqml5a", "vg27a"] },
+  { id: "mon-benq-mobiuz-ex240", cat: "monitor", all: ["benq"], any: ["ex240n", "ex240", "ex2510", "mobiuz"] },
+  { id: "mon-benq-gw2790", cat: "monitor", all: ["benq"], any: ["gw2790e", "gw2790", "gw2490"] },
+  { id: "mon-hybrok-hp24-100", cat: "monitor", all: ["hybrok"], any: ["hp24ips100", "hp24", "24ips100", "hg24ips100"] },
+  { id: "mon-hybrok-hg27-180", cat: "monitor", all: ["hybrok"], any: ["hg27cuf", "hg27", "27cuf"] },
+  { id: "mon-cm-ga2501", cat: "monitor", any: ["ga2501", "ga 2501"] },
+  { id: "mon-vulpes-aura24", cat: "monitor", all: ["vulpes"], any: ["aura", "sakura"] },
+
   // MSI Models
   { id: "mon-mag255f", cat: "monitor", any: ["255f", "mag 255f", "mag255f"] },
   { id: "mon-25-300", cat: "monitor", any: ["255pxf", "255xf"] },
@@ -675,7 +724,7 @@ const RULES = [
   { id: "mon-27-120", cat: "monitor", any: ["mp275", "mp275 e2", "mp271a"] },
   { id: "mon-24-180", cat: "monitor", any: ["g244f", "g244", "g2412", "g241", "g242"], none: ["g242f", "27", "laptop", "tv", "televiseur"] },
   { id: "mon-24-200", cat: "monitor", any: ["g242f", "g25f2", "gs25f2"] },
-  { id: "mon-27-qhd165", cat: "monitor", any: ["g274qpf", "g274", "g272qpf"] },
+  { id: "mon-27-qhd165", cat: "monitor", any: ["g274qpf", "g272qpf"] },
   { id: "mon-34-uw", cat: "monitor", any: ["401qr", "341cqpx", "mag 401qr"] },
 
   // Gigabyte & Acer Models
@@ -761,7 +810,7 @@ function detectTitleCategory(title) {
   if (/\b(imprimante|ecotank|pixma|laserjet|laser\s*mfp|smart\s*tank|copieur|multifonction\s*laser|selphy|i-sensys|megatank)\b/i.test(t)) return "printer";
   if (/\b(ecran|moniteur|monitor|dalle|curved|incurv[eé]|ips\s*gaming|fast\s*ips|ultragear|odyssey|zowie|katana|msg24|msg27|msg32|24g4|27g4|24g2|27g2|g24i|g27i|vg249|vg279|g242f|g25f|gs27fa|mag\s*255f|255f|272f|mp242|mp271|mp275)\b|\b\d{2,3}hz\b/i.test(t)) return "monitor";
   if (/\b(alimentation|allimentation|alim|psu|power\s*supply|bloc\s*d|boite\s*d|80\s*plus|80plus|modulaire|semi\s*modulaire|full\s*modulaire|pk550|pk650|pk750|pl550|pl650|pl750|pn650|pn750|pn850|pn1200|a650bn|a750bn|a850gl|a1000g|mpb550|mpb650|mpb750|mpb850|rgps|vte|xtc|ngdp)\b|\b(400|450|500|550|600|650|700|750|800|850|1000|1050|1200|1250|1300)w\b/i.test(t)) return "psu";
-  if (/\b(boitier|boîtier|chassis|case|aquarium|tour\s*atx|m-atx\s*case|mid\s*tower|4000d|5000d|h5\s*flow|h7\s*flow|h9\s*flow|ch560|cg580|cg530|cg380|ap201|magma|infinita|meshian|hurrikan|shield\s*m100|forge\s*320|pano\s*110)\b/i.test(t)) return "case";
+  if (/\b(boitier|boîtier|chassis|case|aquarium|tour\s*atx|m-atx\s*case|mid\s*tower|midi\s*tower|montech|lancool|4000d|5000d|h5\s*flow|h6\s*flow|h7\s*flow|h9\s*flow|ch560|cg580|cg530|cg380|ap201|magma|infinita|meshian|hurrikan|shield\s*m100|forge\s*320|pano\s*110)\b/i.test(t)) return "case";
   if (/\b(watercooling|water\s*cooling|ventirad|cooler|refroidisseur|dissipateur|aio|ak400|ak500|ak620|ak700|ag400|ag500|ag620|le500|le520|le720|ls720|lt520|lt720|peerless|phantom\s*spirit|liquid\s*freezer|hyper\s*212)\b/i.test(t)) return "cooler";
   if (/\b(carte\s*m[eè]re|motherboard|mobo|b450|b550|b650|a520|a620|b760|h610|z790|z890|b850|x670|x870|h510|h410|h310|h110|a320|z390|z490|z590|z690)\b/i.test(t)) return "motherboard";
   if (/\b(ddr[45]|ram|m[eé]moire|spectrix|vengeance|fury\s*beast|t-force|trident)\b/i.test(t)) return "ram";
