@@ -612,6 +612,8 @@ const RULES = [
   { id: "psu-deepcool-pn1000m", cat: "psu", any: ["pn1000m", "pn 1000m", "pn1000", "pn1200m"] },
   { id: "psu-deepcool-pf500", cat: "psu", any: ["pf500", "pf500x", "pf 500"] },
   { id: "psu-deepcool-pf600", cat: "psu", any: ["pf600", "pf600x", "pf 600", "pf700"] },
+  { id: "psu-ares-650w", cat: "psu", all: ["ares"], any: ["650w", "650 wtt", "650"], none: ["case", "boitier", "c301", "astro", "b02", "c202"] },
+  { id: "psu-capsys-200w", cat: "psu", all: ["capsys"], any: ["200w", "450w", "standard", "atx"], none: ["case", "boitier", "ps421"] },
 
   // Generic PSU Fallbacks
   { id: "psu-450-b", cat: "psu", all: ["450w"] },
@@ -635,11 +637,15 @@ const RULES = [
   { id: "psu-1250-gold", cat: "psu", all: ["1250w"] },
   { id: "psu-1300-plat", cat: "psu", all: ["1300w"] },
   // ---- Brand / Model Specific Monitor Rules (EVALUATED FIRST) ----
-  // MATOS Katana & MSG
+  // MATOS Katana & MSG & Specific Models
+  { id: "mon-matos-rocket540", cat: "monitor", all: ["matos"], any: ["mr540", "540hz", "rocket"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-matos-shooter24", cat: "monitor", all: ["matos"], any: ["msg244h", "shooter"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-matos-msg270", cat: "monitor", all: ["matos"], any: ["msg270", "msg-27", "msg27-01"], none: ["katana", "msg24", "laptop", "tv", "televiseur"] },
+  { id: "mon-matos-katana49", cat: "monitor", all: ["matos", "katana"], any: ["49", "ol02", "super ultrawide", "5120x1440"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-matos-katana", cat: "monitor", all: ["matos", "katana"], any: ["24", "165", "180", "ips"], none: ["27", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-matos-katana27", cat: "monitor", all: ["matos", "katana"], any: ["27", "240"], none: ["49", "laptop", "tv", "televiseur"] },
   { id: "mon-matos-katana", cat: "monitor", all: ["katana"], any: ["matos", "ecran"], none: ["27", "240", "49", "gf66", "gf76", "laptop", "tv", "televiseur"] },
-  { id: "mon-matos-msg24", cat: "monitor", all: ["matos"], any: ["msg24", "msg 24", "msg-24", "shooter"], none: ["msg27", "katana", "27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-matos-msg24", cat: "monitor", all: ["matos"], any: ["msg24", "msg 24", "msg-24"], none: ["msg27", "katana", "27", "32", "laptop", "tv", "televiseur"] },
   { id: "mon-matos-msg27", cat: "monitor", all: ["matos"], any: ["msg27", "msg 27", "msg-27", "delta", "scorpio", "storm", "msg2712", "msg 273"], none: ["msg24", "katana", "24", "laptop", "tv", "televiseur"] },
   { id: "mon-matos-msg24", cat: "monitor", any: ["msg24", "msg 24", "msg-24"], none: ["msg27", "katana", "27", "32", "laptop", "tv", "televiseur"] },
   { id: "mon-matos-msg27", cat: "monitor", any: ["msg27", "msg 27", "msg-27", "msg2712", "msg 273"], none: ["msg24", "katana", "24", "laptop", "tv", "televiseur"] },
@@ -653,8 +659,17 @@ const RULES = [
   { id: "mon-redmi-g24", cat: "monitor", all: ["redmi"], any: ["g24", "g 24", "165hz", "180hz"], none: ["laptop", "tv", "televiseur"] },
 
   // Dahua
-  { id: "mon-dahua-lm24", cat: "monitor", all: ["dahua"], any: ["lm24", "lm24-e231", "e231", "24"], none: ["27", "laptop", "tv", "televiseur"] },
-  { id: "mon-dahua-lm27", cat: "monitor", all: ["dahua"], any: ["lm27", "lm27-e231", "e231", "e240a", "27"], none: ["24", "laptop", "tv", "televiseur"] },
+  { id: "mon-dahua-lm24-curved", cat: "monitor", all: ["dahua"], any: ["e230c", "r230c", "curved 24", "incurv 24"], none: ["27", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-dahua-lm27-curved", cat: "monitor", all: ["dahua"], any: ["e230c", "r230c", "curved 27", "incurv 27"], none: ["24", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-dahua-lm32-curved", cat: "monitor", all: ["dahua"], any: ["lm32", "32-e230c", "c301b", "curved 32"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-dahua-lm24", cat: "monitor", all: ["dahua"], any: ["lm24", "lm24-e231", "e231", "24"], none: ["27", "32", "e230c", "r230c", "laptop", "tv", "televiseur"] },
+  { id: "mon-dahua-lm27", cat: "monitor", all: ["dahua"], any: ["lm27", "lm27-e231", "e231", "e240a", "27"], none: ["24", "32", "e230c", "r230c", "laptop", "tv", "televiseur"] },
+
+  // Maxipower & Hikvision
+  { id: "mon-maxipower-mp24", cat: "monitor", all: ["maxipower"], any: ["mp24", "24"], none: ["mp22", "mp20", "22", "20", "laptop", "tv", "televiseur"] },
+  { id: "mon-maxipower-mp22", cat: "monitor", all: ["maxipower"], any: ["mp22", "22", "mp21"], none: ["mp24", "24", "laptop", "tv", "televiseur"] },
+  { id: "mon-hikvision-27", cat: "monitor", all: ["hikvision"], any: ["27", "d5027"], none: ["ssd", "disque", "camera", "laptop", "tv", "televiseur"] },
+  { id: "mon-hikvision-24", cat: "monitor", all: ["hikvision"], any: ["24", "d5024", "d5023"], none: ["ssd", "disque", "camera", "laptop", "tv", "televiseur"] },
 
   // Redragon
   { id: "mon-redragon-ruby", cat: "monitor", all: ["redragon"], any: ["ruby", "gm24", "gm-24"], none: ["emerald", "27", "laptop", "tv", "televiseur"] },
@@ -1286,7 +1301,7 @@ function unitRedirect(category, title, matched, has) {
   }
   if (category === "monitor") {
     // Specific brand models are canonical and must not be mutated by unitRedirect
-    if (/^mon-(matos|xiaomi|redmi|dahua|redragon|samsung|lg|aoc|asus|benq|viewsonic|koorui|titan|gamemax|philips|mag255f)\b/.test(matched)) {
+    if (/^mon-(matos|xiaomi|redmi|dahua|redragon|samsung|lg|aoc|asus|benq|viewsonic|koorui|titan|gamemax|philips|mag255f|maxipower|hikvision)\b/.test(matched)) {
       return matched;
     }
     // Monitor Hz validation: never drop valid monitors using naive id numbers (e.g. mon-mag255f or mon-315)
@@ -1406,7 +1421,7 @@ function matchRule(category, title) {
 // ---- price-sanity gates (ditch total, never extras) ----
 // Bands mirror lib/scrapers/validate.ts CATEGORY_BANDS so scrape-time and
 // bake-time agree. Per-product band = seed median x[0.4, 2.5].
-const CAT_BANDS = { cpu: [1000, 250000], cooler: [500, 90000], motherboard: [4000, 200000], ram: [1000, 300000], ssd: [800, 160000], gpu: [2000, 1500000], case: [1000, 130000], psu: [3500, 150000], monitor: [3000, 400000], printer: [6000, 300000] };
+const CAT_BANDS = { cpu: [1000, 250000], cooler: [500, 90000], motherboard: [4000, 200000], ram: [1000, 300000], ssd: [800, 160000], gpu: [2000, 1500000], case: [1000, 130000], psu: [2000, 150000], monitor: [3000, 400000], printer: [6000, 300000] };
 // Stable reference: lib/data/price-meds.json (frozen medians, versioned).
 // Reading them from the regenerating seed made bake oscillate (medians lag
 // one bake behind and borderline rows flip-flop forever). Refresh the file
@@ -1539,12 +1554,13 @@ const seenOkUrl = new Set();
 for (const o of report["ouedkniss:all"] || []) {
   const qKey = (o.query || "").toLowerCase().trim();
   const title = clean(o.title);
-  if (!title || !o.priceDa) continue;
+  const priceDa = o.priceDa || o.price;
+  if (!title || !priceDa) continue;
+  o.priceDa = priceDa;
   const tCat = detectTitleCategory(title);
   const qCat = detectQueryCategory(qKey);
   // Title-detected category takes precedence when query defaulted to 'gpu' or differs
   let category = (qCat === "gpu" && tCat) ? tCat : (tCat || qCat);
-  if (!title || !o.priceDa) continue;
 
     // Filter out dead/expired listings: reject deals older than 6 months (180 days) or invalid URLs
   if (!o.url || (!/-d\d+/.test(o.url) && !o.url.startsWith("http"))) continue;
@@ -1660,8 +1676,8 @@ for (const m of ordered) {
 fs.writeFileSync(require('path').join(__dirname, "lib/data/live-images-src.json"), JSON.stringify(imgSrc, null, 1));
 // compact Supabase seed (offers + one history snapshot; extras are re-scraped, never stored)
 const prodSrc = fs.readFileSync(require('path').join(__dirname, "lib/data/products.ts"), "utf8");
-const seedProducts = [...prodSrc.matchAll(/id:\s*"([^"]+)",\s*category:\s*"([^"]+)",\s*brand:\s*"([^"]+)",\s*model:\s*"([^"]+)"/g)]
-  .map((m) => ({ id: m[1], category: m[2], brand: m[3], model: m[4] }));
+const seedProducts = [...prodSrc.matchAll(/id:\s*"([^"]+)",\s*category:\s*"([^"]+)",\s*brand:\s*"([^"]+)",\s*model:\s*"((?:[^"\\]|\\.)*)"/g)]
+  .map((m) => ({ id: m[1], category: m[2], brand: m[3], model: m[4].replace(/\\"/g, '"') }));
 const storeWilayaMap = new Map();
 for (const o of matched) {
   if (!storeWilayaMap.has(o.store) || storeWilayaMap.get(o.store) === "Alger") {

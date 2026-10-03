@@ -612,6 +612,21 @@ export const PRODUCTS: Product[] = [
   { id: "mon-cm-ga2501", category: "monitor", brand: "Cooler Master", model: "GA2501 24.5\" Full HD IPS 100Hz", specs: { size: 25, hz: 100 } },
   { id: "mon-msi-mp275", category: "monitor", brand: "MSI", model: "PRO MP275 E14L 27\" IPS 100Hz/144Hz Eye-Care", specs: { size: 27, hz: 100 } },
   { id: "mon-vulpes-aura24", category: "monitor", brand: "Vulpes", model: "Aura / Sakura 24\" 165Hz IPS Gaming", specs: { size: 24, hz: 165 } },
+  // ---- Local & Budget Algerian Monitors (Dahua, MATOS, Maxipower, Hikvision) ----
+  { id: "mon-dahua-lm24-curved", category: "monitor", brand: "Dahua", model: "LM24-E230C 24\" Curved Fast VA/IPS 180Hz", specs: { size: 24, hz: 180 } },
+  { id: "mon-dahua-lm27-curved", category: "monitor", brand: "Dahua", model: "LM27-E230C 27\" Curved Fast VA/IPS 180Hz", specs: { size: 27, hz: 180 } },
+  { id: "mon-dahua-lm32-curved", category: "monitor", brand: "Dahua", model: "LM32-E230C 32\" Curved 165Hz Gaming", specs: { size: 32, hz: 165 } },
+  { id: "mon-matos-rocket540", category: "monitor", brand: "Matos", model: "Rocket MR540 24.5\" 540Hz eSport Fast IPS", specs: { size: 25, hz: 540 } },
+  { id: "mon-matos-shooter24", category: "monitor", brand: "Matos", model: "Shooter MSG244H 24\" FHD 180Hz Fast IPS", specs: { size: 24, hz: 180 } },
+  { id: "mon-matos-msg270", category: "monitor", brand: "Matos", model: "MSG270 / MSG-27 27\" 165Hz IPS RGB", specs: { size: 27, hz: 165 } },
+  { id: "mon-matos-katana49", category: "monitor", brand: "Matos", model: "Katana OL02 49\" QD-OLED Dual QHD 240Hz 32:9", specs: { size: 49, hz: 240 } },
+  { id: "mon-maxipower-mp24", category: "monitor", brand: "Maxipower", model: "MP24HV 24\" Full HD 75Hz", specs: { size: 24, hz: 75 } },
+  { id: "mon-maxipower-mp22", category: "monitor", brand: "Maxipower", model: "MP22HV 21.5\" Full HD 75Hz", specs: { size: 22, hz: 75 } },
+  { id: "mon-hikvision-27", category: "monitor", brand: "Hikvision", model: "DS-D5027F2 27\" 100Hz Full HD IPS", specs: { size: 27, hz: 100 } },
+  { id: "mon-hikvision-24", category: "monitor", brand: "Hikvision", model: "DS-D5024FN 24\" Full HD 60Hz/75Hz", specs: { size: 24, hz: 75 } },
+  // ---- Local & Budget Algerian PSUs (Ares, Capsys) ----
+  { id: "psu-ares-650w", category: "psu", brand: "Ares", model: "Ares 650W 80+ Bronze Gaming PSU", specs: { wattage: 650, rating: "Bronze" } },
+  { id: "psu-capsys-200w", category: "psu", brand: "Capsys", model: "Capsys 200W / 450W Standard Desktop PSU", specs: { wattage: 200, rating: "Standard" } },
   // --- Side Products: Printers (Not included in System Builder) ---
   { id: "printer-canon-g3411", category: "printer", brand: "Canon", model: "PIXMA G3411 / G3410 MegaTank WiFi", specs: { type: "inktank", color: true, wifi: true, ppm: 8.8 } },
   { id: "printer-canon-g2411", category: "printer", brand: "Canon", model: "PIXMA G2411 / G2410 MegaTank", specs: { type: "inktank", color: true, wifi: false, ppm: 8.8 } },
