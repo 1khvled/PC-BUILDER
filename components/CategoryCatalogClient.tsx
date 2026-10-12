@@ -301,17 +301,17 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
       <div className="panel p-4 space-y-3.5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* Search inside category */}
-          <div className="relative flex-1 min-w-[220px] max-w-sm">
+          <div className="relative flex-1 min-w-[200px] max-w-sm">
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("category.searchPlaceholder", { cat: label })}
               aria-label={t("category.searchPlaceholder", { cat: label })}
-              className="w-full bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-[#2c87c3] focus:shadow-[0_0_0_3px_rgba(44,135,195,0.15)] rounded-full pl-9 pr-9 py-2.5 text-base sm:text-xs text-slate-900 outline-none transition-all placeholder:text-slate-400 min-h-[44px]"
+              className="w-full bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-[#2c87c3] focus:shadow-[0_0_0_3px_rgba(44,135,195,0.15)] rounded-full pl-8 pr-8 py-1.5 text-xs text-slate-900 outline-none transition-all placeholder:text-slate-400 h-8"
             />
             <svg
-              className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"
+              className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -323,7 +323,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             {search && (
               <button
                 onClick={() => setSearch("")}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs p-2 min-h-[36px] min-w-[36px] inline-flex items-center justify-center rounded-full"
+                className="absolute right-1 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs p-1 h-6 w-6 inline-flex items-center justify-center rounded-full"
                 aria-label={t("category.clearSearch")}
               >
                 ✕
@@ -335,7 +335,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
           <div className="inline-flex rounded-full border border-slate-200 p-0.5 bg-slate-50 text-xs">
             <button
               onClick={() => handleViewModeChange("cards")}
-              className={`px-3.5 py-2 min-h-[40px] rounded-full font-semibold transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-full font-semibold transition-colors flex items-center gap-1.5 h-7 ${
                 viewMode === "cards" ? "bg-white text-slate-900 shadow-sm border border-slate-200" : "text-slate-600 hover:text-slate-900"
               }`}
               title={t("category.viewCardsTitle")}
@@ -350,7 +350,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             </button>
             <button
               onClick={() => handleViewModeChange("table")}
-              className={`px-3.5 py-2 min-h-[40px] rounded-full font-semibold transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1 rounded-full font-semibold transition-colors flex items-center gap-1.5 h-7 ${
                 viewMode === "table" ? "bg-white text-slate-900 shadow-sm border border-slate-200" : "text-slate-600 hover:text-slate-900"
               }`}
               title={t("category.viewTableTitle")}
@@ -366,13 +366,13 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
         </div>
 
         {/* Filter Controls Row */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-slate-100 text-xs">
-          <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center justify-between gap-2.5 pt-2 border-t border-slate-100 text-xs">
+          <div className="flex flex-wrap items-center gap-2">
             {/* Condition Toggle: All, New, Used */}
             <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 p-0.5">
               <button
                 onClick={() => setCondition("all")}
-                className={`px-3 py-2 min-h-[40px] inline-flex items-center rounded-full font-semibold transition-colors ${
+                className={`px-2.5 py-1 inline-flex items-center rounded-full font-semibold transition-colors h-7 ${
                   condition === "all" ? "bg-slate-900 text-white shadow-sm" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -380,7 +380,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               </button>
               <button
                 onClick={() => setCondition("new")}
-                className={`px-3 py-2 min-h-[40px] inline-flex items-center rounded-full font-semibold transition-colors ${
+                className={`px-2.5 py-1 inline-flex items-center rounded-full font-semibold transition-colors h-7 ${
                   condition === "new" ? "bg-emerald-600 text-white shadow-sm" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -388,7 +388,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               </button>
               <button
                 onClick={() => setCondition("used")}
-                className={`px-3 py-2 min-h-[40px] inline-flex items-center rounded-full font-semibold transition-colors ${
+                className={`px-2.5 py-1 inline-flex items-center rounded-full font-semibold transition-colors h-7 ${
                   condition === "used" ? "bg-amber-600 text-white shadow-sm" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
@@ -399,7 +399,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             {/* In-Stock Only Quick Filter */}
             <button
               onClick={() => setInStockOnly(!inStockOnly)}
-              className={`px-3 py-2 min-h-[40px] rounded-full font-semibold transition-all flex items-center gap-1.5 border ${
+              className={`px-2.5 py-1 rounded-full font-semibold transition-all flex items-center gap-1.5 border h-8 ${
                 inStockOnly
                   ? "bg-emerald-700 text-white border-emerald-700 shadow-sm"
                   : "bg-white text-slate-700 border-slate-200 hover:border-emerald-500"
@@ -417,7 +417,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                   value={store}
                   onChange={(e) => setStore(e.target.value)}
                   aria-label={t("category.filterByStore")}
-                  className="border border-slate-200 rounded-full px-3 py-2 min-h-[40px] bg-white text-slate-700 font-medium outline-none cursor-pointer hover:border-slate-300 transition-colors"
+                  className="border border-slate-200 rounded-full px-2.5 py-1 h-8 bg-white text-slate-700 font-medium outline-none cursor-pointer hover:border-slate-300 transition-colors"
                 >
                   <option value="all">{t("category.allStores", { count: availableStores.length })}</option>
                   {availableStores.map((s) => (
@@ -436,7 +436,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
                   value={wilaya}
                   onChange={(e) => setWilaya(e.target.value)}
                   aria-label={t("category.filterByWilaya")}
-                  className="border border-slate-200 rounded-full px-3 py-2 min-h-[40px] bg-white text-slate-700 font-medium outline-none cursor-pointer hover:border-slate-300 transition-colors"
+                  className="border border-slate-200 rounded-full px-2.5 py-1 h-8 bg-white text-slate-700 font-medium outline-none cursor-pointer hover:border-slate-300 transition-colors"
                 >
                   <option value="all">{t("category.allWilayas", { count: availableWilayas.length })}</option>
                   {availableWilayas.map((w) => (
@@ -449,21 +449,14 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             )}
           </div>
 
-          {/* Sort Dropdown
-
-              It leads the filter row on purpose. With the filter pills ahead of
-              it, this control wrapped onto a third line on a 360px screen and
-              fell below the fold: the one control that decides the order of
-              150+ prices was the hardest one to reach. The caption is also the
-              select's accessible name on every viewport - it used to be
-              `hidden sm:inline`, so on a phone the select had no name at all. */}
+          {/* Sort Dropdown */}
           <div className="flex items-center gap-2 order-first w-full sm:order-none sm:w-auto sm:ml-auto">
             <span className="text-slate-400 font-medium shrink-0">{t("category.sortBy")}</span>
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value as SortOption)}
               aria-label={t("category.sortBy")}
-              className="flex-1 sm:flex-none border border-slate-200 rounded-full px-3 py-2 min-h-[40px] bg-white text-slate-700 font-semibold outline-none cursor-pointer hover:border-slate-300 transition-colors"
+              className="flex-1 sm:flex-none border border-slate-200 rounded-full px-2.5 py-1 h-8 bg-white text-slate-700 font-semibold outline-none cursor-pointer hover:border-slate-300 transition-colors"
             >
               <option value="price-asc">{t("category.sortPriceAsc")}</option>
               <option value="price-desc">{t("category.sortPriceDesc")}</option>
@@ -474,7 +467,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             {isFiltered && (
               <button
                 onClick={resetFilters}
-                className="text-xs text-rose-600 hover:underline font-semibold px-2 py-2 min-h-[40px] shrink-0"
+                className="text-xs text-rose-600 hover:underline font-semibold px-2 py-1 h-8 shrink-0"
                 title={t("common.resetTitle")}
               >
                 {t("common.reset")}

@@ -100,9 +100,6 @@ export default async function DealsPage() {
       <div className="mt-4 mb-4">
         <BytekAd variant="strip" locale="fr" placement="fr-deals" />
       </div>
-      <div className="my-5">
-        <AliExpressDealsBanner variant="banner" locale="fr" />
-      </div>
       {list.length === 0 ? (
         <EmptyState type="products" title="Aucun bon plan en ce moment — revenez après le prochain relevé." />
       ) : (
@@ -111,12 +108,12 @@ export default async function DealsPage() {
           <Link
             key={d.id}
             href={`/fr/product/${d.id}`}
-            className="bg-white rounded p-4 shadow-sm border flex gap-3 items-center min-h-[44px] hover:border-[#2c87c3]/50 hover:shadow-card-hover transition-colors"
+            className="bg-white rounded-xl p-3.5 shadow-sm border border-slate-200/90 flex gap-3 items-center hover:border-[#2c87c3]/60 hover:shadow-card-hover transition-all"
           >
-            <Thumb src={productImage(productsMap.get(d.id)!)} alt={d.model} size={56} />
+            <Thumb src={productImage(productsMap.get(d.id)!)} alt={d.model} size={52} />
             <div className="min-w-0 flex-1">
-              <div className="font-bold text-sm truncate">{d.brand} {d.model}</div>
-              <div className="text-xs text-slate-400">
+              <div className="font-bold text-sm text-slate-900 truncate">{d.brand} {d.model}</div>
+              <div className="text-xs text-slate-500 mt-0.5">
                 {t("deals.metaLine", {
                   median: formatNumber(d.avg, LOCALE),
                   count: d.n,
@@ -125,8 +122,8 @@ export default async function DealsPage() {
               </div>
             </div>
             <div className="text-right shrink-0">
-              <div className="font-extrabold text-emerald-700">{formatPrice(d.best, LOCALE)}</div>
-              <div className="text-[11px] font-bold text-white bg-emerald-600 rounded-full px-2 py-0.5 inline-block mt-0.5">
+              <div className="font-extrabold text-emerald-700 tabular-nums">{formatPrice(d.best, LOCALE)}</div>
+              <div className="text-[10px] font-bold text-white bg-emerald-600 rounded-full px-2 py-0.5 inline-block mt-0.5">
                 -{Math.round(d.drop * 100)}% (−{formatNumber(d.saving, LOCALE)})
               </div>
             </div>
@@ -134,6 +131,9 @@ export default async function DealsPage() {
         ))}
       </div>
       )}
+      <div className="mt-8">
+        <AliExpressDealsBanner variant="strip" locale="fr" />
+      </div>
     </main>
   );
 }

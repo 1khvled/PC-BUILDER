@@ -129,9 +129,8 @@ export default async function DropsPage() {
         </p>
       </header>
 
-      <BytekAd variant="strip" locale={LOCALE} placement="en-drops" />
-      <div className="my-5">
-        <AliExpressDealsBanner variant="banner" locale={LOCALE} />
+      <div className="mt-4 mb-4">
+        <BytekAd variant="strip" locale={LOCALE} placement="en-drops" />
       </div>
 
       {drops.length === 0 ? (
@@ -176,6 +175,9 @@ export default async function DropsPage() {
           ))}
         </ul>
       )}
+      <div className="mt-8">
+        <AliExpressDealsBanner variant="strip" locale={LOCALE} />
+      </div>
     </main>
   );
 }

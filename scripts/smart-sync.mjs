@@ -89,7 +89,9 @@ export async function smartSync() {
       console.log(`[SmartSync] Projected database footprint: ~${Math.round(seed.offers.length * 150 / 1024)} KB.`);
       return { ok: true, status: "dry_run", offers: seed.offers.length };
     }
-    throw new Error("Missing Supabase credentials (SUPABASE_URL / SUPABASE_SERVICE_KEY).");
+    console.warn("[SmartSync] Notice: SUPABASE_URL / SUPABASE_SERVICE_KEY credentials not found in environment.");
+    console.warn("[SmartSync] Skipping remote Supabase upsert. Seed file is verified locally.");
+    return { ok: true, status: "skipped_no_credentials", offers: seed.offers.length };
   }
 
   // 1. Freshness Check: check latest update date in Supabase

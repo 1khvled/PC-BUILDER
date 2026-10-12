@@ -110,9 +110,8 @@ export default async function FrenchDropsPage() {
         </p>
       </header>
 
-      <BytekAd variant="strip" locale={LOCALE} placement="fr-drops" />
-      <div className="my-5">
-        <AliExpressDealsBanner variant="banner" locale={LOCALE} />
+      <div className="mt-4 mb-4">
+        <BytekAd variant="strip" locale={LOCALE} placement="fr-drops" />
       </div>
 
       {drops.length === 0 ? (
@@ -157,6 +156,9 @@ export default async function FrenchDropsPage() {
           ))}
         </ul>
       )}
+      <div className="mt-8">
+        <AliExpressDealsBanner variant="strip" locale={LOCALE} />
+      </div>
     </main>
   );
 }
