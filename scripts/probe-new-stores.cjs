@@ -4,6 +4,9 @@ const http = require('http');
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36";
 
 const CANDIDATES = [
+  "https://salaminformatique.com",
+  "https://bsinformatiquedz.com",
+  "https://global-networks.net",
   "https://elasslihitech.com",
   "https://tiza-informatique.com",
   "https://primecomputerdz.dz",
