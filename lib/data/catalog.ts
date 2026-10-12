@@ -145,8 +145,10 @@ export async function getScrapedAt(): Promise<string> {
           .order("day", { ascending: false })
           .limit(1)
           .maybeSingle();
-        const day = (data as { day?: string } | null)?.day;
-        const res = day ? `${day}T00:00:00.000Z` : SCRAPED_AT;
+        const dbDay = (data as { day?: string } | null)?.day;
+        const localDay = SCRAPED_AT.slice(0, 10);
+        const day = dbDay && dbDay >= localDay ? dbDay : localDay;
+        const res = `${day}T00:00:00.000Z`;
         cachedScrapedAt = { data: res, timestamp: Date.now() };
         return res;
       } finally {

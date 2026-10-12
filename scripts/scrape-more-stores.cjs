@@ -59,8 +59,8 @@ const QUERY = `query SearchQuery($q: String, $filter: SearchFilterInput) {
 let STORES = [];
 try {
   const discovered = JSON.parse(fs.readFileSync('scripts/discovered-stores.json', 'utf8'));
-  // Target stores 80 to 200 across Algerian wilayas (120 stores)
-  STORES = discovered.slice(80, 200).map(s => ({ id: s.id, name: s.name, wilaya: s.wilaya }));
+  // Target top 120 stores across all Algerian wilayas
+  STORES = discovered.slice(0, 120).map(s => ({ id: s.id, name: s.name, wilaya: s.wilaya }));
 } catch {
   console.log("Could not load discovered-stores.json, using fallback.");
   STORES = [

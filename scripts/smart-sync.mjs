@@ -137,7 +137,7 @@ export async function smartSync() {
   console.log("[SmartSync] Fetching existing offers for diff calculation...");
   let existingOffers = [];
   try {
-    existingOffers = await fetchAll("offers?select=product_id,store_id,cond,price_da,stock,url");
+    existingOffers = await fetchAll("offers?select=product_id,store_id,cond,price_da,stock,url,day");
   } catch (e) {
     console.log("[SmartSync] Could not fetch existing offers (table might be empty):", e.message);
   }
@@ -186,12 +186,13 @@ export async function smartSync() {
       newOffersToUpsert.push(row);
       historyToAppend.push({ product_id: o.p, store_id: sId, price_da: o.d, day: seed.day });
     } else {
-      // Check if price or stock changed
+      // Check if price or stock changed or day needs updating to latest snapshot
       const priceChanged = existing.price_da !== o.d;
       const stockChanged = existing.stock !== (o.w || "");
       const urlChanged = existing.url !== (o.u || "");
+      const dayChanged = existing.day !== seed.day;
 
-      if (priceChanged || stockChanged || urlChanged) {
+      if (priceChanged || stockChanged || urlChanged || dayChanged) {
         newOffersToUpsert.push(row);
         if (priceChanged) {
           historyToAppend.push({ product_id: o.p, store_id: sId, price_da: o.d, day: seed.day });
@@ -206,13 +207,15 @@ export async function smartSync() {
   const seedKeys = new Set(seed.offers.map((o) => `${o.p}|${storeIdMap[o.s]}|${o.c}`));
   const obsoleteOffers = existingOffers.filter((o) => !seedKeys.has(`${o.product_id}|${o.store_id}|${o.cond}`));
   if (obsoleteOffers.length > 0) {
-    console.log(`[SmartSync] Pruning ${obsoleteOffers.length} stale/invalid offers from database...`);
-    for (const obs of obsoleteOffers) {
-      try {
-        await api(`offers?product_id=eq.${obs.product_id}&store_id=eq.${obs.store_id}&cond=eq.${obs.cond}`, "DELETE");
-      } catch (e) {
-        console.log(`[SmartSync] Failed to delete obsolete offer ${obs.product_id}:`, e.message);
-      }
+    console.log(`[SmartSync] Pruning ${obsoleteOffers.length} stale/invalid offers from database in parallel batches...`);
+    const BATCH = 35;
+    for (let i = 0; i < obsoleteOffers.length; i += BATCH) {
+      const slice = obsoleteOffers.slice(i, i + BATCH);
+      await Promise.all(
+        slice.map((obs) =>
+          api(`offers?product_id=eq.${obs.product_id}&store_id=eq.${obs.store_id}&cond=eq.${obs.cond}`, "DELETE").catch(() => null)
+        )
+      );
     }
   }
 

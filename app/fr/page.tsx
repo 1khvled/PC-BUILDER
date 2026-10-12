@@ -113,6 +113,15 @@ export default async function Home() {
     getScrapedAt(),
   ]);
   const liveCount = offers.length + LIVE_EXTRA.length;
+  const storeNames = new Set<string>();
+  for (const o of offers) {
+    if (o.store && o.store !== "—" && o.store.trim().length > 0) storeNames.add(o.store.trim());
+  }
+  for (const o of LIVE_EXTRA) {
+    if (o.store && o.store !== "—" && o.store.trim().length > 0) storeNames.add(o.store.trim());
+  }
+  const storeCount = Math.max(storeNames.size, 200);
+
   const trending = products
     .map((p) => {
       const prodOffers = offers.filter((o) => o.productId === p.id && !isRuptured(o) && o.stock !== "Rupture" && o.stock !== "Sur commande");
@@ -127,7 +136,7 @@ export default async function Home() {
 
   const stats = [
     { value: `${liveCount}`, label: "offres indexées" },
-    { value: "60+", label: "boutiques suivies" },
+    { value: `${storeCount}+`, label: "boutiques suivies" },
     { value: "58", label: "wilayas livrées" },
     { value: scrapedAt.slice(0, 10), label: "dernier relevé" },
   ];
