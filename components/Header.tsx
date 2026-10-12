@@ -374,10 +374,10 @@ const headerSearchCache = new Map<string, ProductResult[]>();
   };
 
   const navLinkClass = (active: boolean) =>
-    `relative px-3.5 py-2.5 rounded-lg transition-colors flex items-center gap-1.5 min-h-[40px] ${
+    `relative px-2.5 lg:px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 text-xs font-semibold whitespace-nowrap ${
       active
-        ? "text-[#2c87c3] font-bold bg-blue-50"
-        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+        ? "text-[#2c87c3] font-bold bg-blue-50/80"
+        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
     }`;
 
   return (
@@ -400,24 +400,24 @@ const headerSearchCache = new Map<string, ProductResult[]>();
 
       {/* Top Header Row — navy glass bar */}
       <div className="bg-[#11111c] border-b border-white/[0.06]">
-        <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
+        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
           {/* Brand Logo & Name */}
-          <Link href="/" className="flex items-center gap-3 shrink-0 group">
-            <div className="h-10 px-3 py-1.5 rounded-xl bg-[#08090f] border border-blue-500/40 ring-1 ring-cyan-500/20 shadow-[0_0_15px_rgba(0,140,255,0.25)] flex items-center justify-center transition-all group-hover:scale-105 group-hover:border-cyan-400 group-hover:shadow-[0_0_22px_rgba(0,212,255,0.4)]">
-              <img src="/brand/logo.webp" alt="DZ PartPicker" className="h-6 w-auto object-contain" />
+          <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
+            <div className="h-8.5 px-2.5 py-1 rounded-lg bg-[#08090f] border border-blue-500/30 ring-1 ring-cyan-500/15 shadow-[0_0_12px_rgba(0,140,255,0.2)] flex items-center justify-center transition-all group-hover:scale-102 group-hover:border-cyan-400 group-hover:shadow-[0_0_18px_rgba(0,212,255,0.35)]">
+              <img src="/brand/logo.webp" alt="DZ PartPicker" className="h-5 sm:h-5.5 w-auto object-contain" />
             </div>
             <div className="leading-tight">
-              <div className="font-black tracking-tight text-white text-[17px] flex items-center gap-1.5">
+              <div className="font-extrabold tracking-tight text-white text-[15px] sm:text-base flex items-center gap-1.5">
                 <span>DZ PartPicker</span>
               </div>
-              <div className="text-[11px] text-slate-400 -mt-0.5 hidden sm:block">
+              <div className="text-[10.5px] text-slate-400 -mt-0.5 hidden sm:block">
                 {t("header.tagline")}
               </div>
             </div>
           </Link>
 
           {/* Live Search Box (Client-side debounced with dropdown) */}
-          <div ref={searchContainerRef} className="relative flex-1 max-w-lg mx-2 hidden md:block">
+          <div ref={searchContainerRef} className="relative flex-1 max-w-md lg:max-w-lg mx-2 hidden md:block">
             <div className="relative flex items-center" role="search">
               <input
                 ref={inputRef}
@@ -432,10 +432,10 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 onFocus={() => query.trim() && setIsOpen(true)}
                 onKeyDown={handleKeyDown}
                 placeholder={t("search.placeholder")}
-                className="w-full bg-white border border-white/20 rounded-full pl-10 pr-9 py-2 text-sm text-[#191b2a] outline-none placeholder:text-slate-400 shadow-[0_2px_10px_rgba(0,0,0,0.25)] transition-shadow focus:border-[#2c87c3] focus:shadow-[0_0_0_3px_rgba(44,135,195,0.25)]"
+                className="w-full bg-white/95 hover:bg-white focus:bg-white border border-white/20 rounded-full pl-9 pr-9 py-1.5 text-xs sm:text-sm text-[#191b2a] outline-none placeholder:text-slate-400 shadow-[0_2px_8px_rgba(0,0,0,0.2)] transition-all focus:border-[#2c87c3] focus:shadow-[0_0_0_3px_rgba(44,135,195,0.25)]"
               />
               <svg
-                className="w-4 h-4 text-slate-400 absolute left-3.5 pointer-events-none"
+                className="w-3.5 h-3.5 text-slate-400 absolute left-3 pointer-events-none"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -447,7 +447,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
               </svg>
               {loading && (
-                <div className="w-4 h-4 absolute right-3.5 border-2 border-slate-300 border-t-[#2c87c3] rounded-full animate-spin" />
+                <div className="w-3.5 h-3.5 absolute right-3 border-2 border-slate-300 border-t-[#2c87c3] rounded-full animate-spin" />
               )}
               {query && !loading && (
                 <button
@@ -456,10 +456,15 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                     setIsOpen(false);
                   }}
                   aria-label={t("search.clear")}
-                  className="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-2 rounded-full"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 rounded-full text-xs"
                 >
                   ✕
                 </button>
+              )}
+              {!query && !loading && (
+                <kbd className="hidden lg:inline-flex items-center justify-center h-4.5 px-1.5 text-[10px] font-mono text-slate-400 bg-slate-100 border border-slate-200 rounded pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 shadow-2xs">
+                  /
+                </kbd>
               )}
             </div>
 
@@ -516,11 +521,11 @@ const headerSearchCache = new Map<string, ProductResult[]>();
           </div>
 
           {/* Right Actions: Wilaya selector */}
-          <div className="flex items-center gap-2.5 text-sm shrink-0">
+          <div className="flex items-center gap-2 text-sm shrink-0">
             {/* Wilaya selector */}
             <div className="relative hidden lg:flex items-center">
               <svg
-                className="w-3.5 h-3.5 text-slate-400 absolute left-3 pointer-events-none"
+                className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 pointer-events-none"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -533,7 +538,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 value={wilaya}
                 onChange={(e) => handleWilayaChange(e.target.value)}
                 aria-label={t("header.wilayaLabel")}
-                className="border border-white/15 rounded-full pl-8 pr-8 py-1.5 text-xs bg-white/10 hover:bg-white/15 text-slate-100 font-medium outline-none cursor-pointer appearance-none transition-colors min-h-[32px]"
+                className="border border-white/15 rounded-full pl-7 pr-7 py-1 text-xs bg-white/10 hover:bg-white/15 text-slate-100 font-medium outline-none cursor-pointer appearance-none transition-colors h-[30px]"
               >
                 {wilayas.map((w) => (
                   <option key={w} value={w} className="text-slate-900">
@@ -541,7 +546,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                   </option>
                 ))}
               </select>
-              <span className="absolute right-3 pointer-events-none text-slate-400 text-[10px]">▾</span>
+              <span className="absolute right-2.5 pointer-events-none text-slate-400 text-[10px]">▾</span>
             </div>
 
             {/* Pas de comptes utilisateurs — aucun bouton login/register. */}
@@ -552,12 +557,12 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             {/* Mobile hamburger menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg border border-white/15 text-slate-200 hover:bg-white/10 transition-colors min-h-[40px] min-w-[40px] inline-flex items-center justify-center"
+              className="md:hidden p-1.5 rounded-lg border border-white/15 text-slate-200 hover:bg-white/10 transition-colors h-[30px] w-[30px] inline-flex items-center justify-center shrink-0"
               aria-label={t("header.menu")}
               aria-expanded={mobileMenuOpen}
               aria-controls="dz-mobile-drawer"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {mobileMenuOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 ) : (
@@ -570,20 +575,15 @@ const headerSearchCache = new Map<string, ProductResult[]>();
       </div>
 
       {/* Sub-Navigation Bar (PCPartPicker signature 2nd tier menu) */}
-      <div className="hidden sm:block border-b border-slate-200/80 bg-white relative z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-600">
-          {/* NOTE: deliberately no overflow-x-auto here. A non-visible
-              overflow-x forces overflow-y to auto as well, which turns this nav
-              into a ~40px-tall clip box; the "Produits" panel is 421px and was
-              being cut off entirely (it opened, but nothing was ever painted).
-              Links wrap onto a second row on narrow screens instead. */}
-          <nav aria-label={t("nav.main")} className="flex flex-wrap items-center gap-1 sm:gap-1.5 py-1.5 -mx-4 px-4 sm:mx-0 sm:px-0 touch-manipulation">
+      <div className="hidden sm:block border-b border-slate-200/80 bg-white relative z-30 shadow-2xs">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between gap-3 text-xs font-semibold text-slate-600">
+          <nav aria-label={t("nav.main")} className="flex items-center gap-0.5 sm:gap-1 py-1 -mx-2 px-2 sm:mx-0 sm:px-0 touch-manipulation">
             <Link
               href={href("/builder")}
               aria-current={isActive("/builder") ? "page" : undefined}
               className={navLinkClass(isActive("/builder"))}
             >
-              <svg className="w-4 h-4 text-[#2c87c3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg className="w-3.5 h-3.5 text-[#2c87c3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="4" y="4" width="16" height="16" rx="2" />
                 <path d="M9 9h6v6H9z" />
               </svg>
@@ -591,14 +591,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             </Link>
 
             {/* Products Dropdown
-
-                Click is the single source of truth for opening. Previously this
-                also opened on onMouseEnter while the button toggled on click,
-                so on a desktop mouse the hover opened the menu and the very
-                next click toggled it back shut — clicking could never leave it
-                open. Hover now only *traverses* an already-open menu (mouse
-                users can slide across to the submenu instead of arrowing),
-                and touch/keyboard get the same click-to-open behaviour. */}
+                Click is the single source of truth for opening. */}
             <div
               className="relative"
               ref={catDropdownRef}
@@ -626,22 +619,22 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 <div
                   id="dz-cat-menu"
                   role="menu"
-                  className="absolute left-0 top-full pt-1.5 w-72 z-[100] animate-modal-pop"
+                  className="absolute left-0 top-full pt-1 w-64 z-[100] animate-modal-pop"
                 >
-                  <div className="bg-white border border-slate-200/80 rounded-2xl shadow-dropdown overflow-hidden">
-                    <div className="px-4 py-2.5 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest bg-slate-50/80 border-b border-slate-100">
+                  <div className="bg-white border border-slate-200/80 rounded-xl shadow-dropdown overflow-hidden">
+                    <div className="px-3.5 py-2 text-[9.5px] font-extrabold text-slate-400 uppercase tracking-widest bg-slate-50/80 border-b border-slate-100">
                       {t("header.productCategories", { count: CATEGORIES.length })}
                     </div>
-                    <div className="py-1.5">
+                    <div className="py-1">
                       {CATEGORIES.map((cat) => (
                         <Link
                           key={cat.slug}
                           role="menuitem"
                           href={href(`/category/${cat.slug}`)}
                           onClick={() => setCatDropdownOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-[#2c87c3] font-medium transition-colors group/item"
+                          className="flex items-center gap-2.5 px-3 py-1.5 text-xs text-slate-700 hover:bg-blue-50 hover:text-[#2c87c3] font-medium transition-colors group/item"
                         >
-                          <span className="w-6 h-6 rounded-md bg-slate-100 group-hover/item:bg-[#2c87c3] group-hover/item:text-white text-slate-500 flex items-center justify-center transition-colors shrink-0">
+                          <span className="w-5.5 h-5.5 rounded-md bg-slate-100 group-hover/item:bg-[#2c87c3] group-hover/item:text-white text-slate-500 flex items-center justify-center transition-colors shrink-0">
                             <CatIcon slug={cat.slug} className="w-3.5 h-3.5" />
                           </span>
                           <span className="flex-1">{categoryLabel(cat.slug, t)}</span>
@@ -650,16 +643,16 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                       ))}
                     </div>
                     <div className="border-t border-slate-100 pt-1 pb-1">
-                      <div className="px-4 py-1.5 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest bg-slate-50/60">
+                      <div className="px-3 py-1 text-[9.5px] font-extrabold text-slate-400 uppercase tracking-widest bg-slate-50/60">
                         {t("nav.sideProducts")}
                       </div>
                       <Link
                         role="menuitem"
                         href={href("/category/printer")}
                         onClick={() => setCatDropdownOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-[#2c87c3] font-medium transition-colors group/item"
+                        className="flex items-center gap-2.5 px-3 py-1.5 text-xs text-slate-700 hover:bg-blue-50 hover:text-[#2c87c3] font-medium transition-colors group/item"
                       >
-                        <span className="w-6 h-6 rounded-md bg-slate-100 group-hover/item:bg-[#2c87c3] group-hover/item:text-white text-slate-500 flex items-center justify-center transition-colors shrink-0">
+                        <span className="w-5.5 h-5.5 rounded-md bg-slate-100 group-hover/item:bg-[#2c87c3] group-hover/item:text-white text-slate-500 flex items-center justify-center transition-colors shrink-0">
                           <CatIcon slug="printer" className="w-3.5 h-3.5" />
                         </span>
                         <span className="flex-1">{categoryLabel("printer", t)}</span>
@@ -667,9 +660,9 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                       </Link>
                     </div>
                     <div className="border-t border-slate-100 pt-1 pb-1 bg-indigo-50/20">
-                      <div className="px-4 py-1.5 text-[10px] font-extrabold text-indigo-600 uppercase tracking-widest bg-indigo-50/60 flex items-center justify-between">
+                      <div className="px-3 py-1 text-[9.5px] font-extrabold text-indigo-600 uppercase tracking-widest bg-indigo-50/60 flex items-center justify-between">
                         <span>{t("nav.esportPeripherals")}</span>
-                        <span className="text-[9px] px-1.5 py-0.5 rounded bg-indigo-500/15 text-indigo-700 font-bold border border-indigo-500/25">
+                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-indigo-500/15 text-indigo-700 font-bold border border-indigo-500/25">
                           {t("nav.partnerStore")}
                         </span>
                       </div>
@@ -679,13 +672,13 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                         target="_blank"
                         rel="noopener noreferrer sponsored"
                         onClick={() => setCatDropdownOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2 text-xs text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 font-medium transition-colors group/item"
+                        className="flex items-center gap-2.5 px-3 py-1.5 text-xs text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 font-medium transition-colors group/item"
                       >
-                        <span className="w-6 h-6 rounded-md bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+                        <span className="w-5.5 h-5.5 rounded-md bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 text-xs">
                           🖱️
                         </span>
                         <div className="flex-1 min-w-0">
-                          <div className="font-bold text-slate-800 group-hover/item:text-indigo-700">{t("nav.mousesKeyboards")}</div>
+                          <div className="font-bold text-slate-800 group-hover/item:text-indigo-700 text-xs">{t("nav.mousesKeyboards")}</div>
                           <div className="text-[10px] text-slate-400 truncate">{t("nav.bytekTagline")}</div>
                         </div>
                         <span className="text-[10px] text-indigo-400 group-hover/item:text-indigo-600 group-hover/item:translate-x-0.5 transition-transform">↗</span>
@@ -702,7 +695,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               className={navLinkClass(isSection("/prebuilds"))}
             >
               <span>{t("common.prebuilds")}</span>
-              <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 ml-1">{t("nav.new")}</span>
+              <span className="text-[8.5px] font-black uppercase px-1 py-0.2 rounded bg-emerald-100 text-emerald-700 ml-0.5">{t("nav.new")}</span>
             </Link>
 
             <Link
@@ -736,39 +729,23 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             </Link>
           </nav>
 
-          <div className="hidden sm:flex items-center gap-3 text-xs font-medium py-1">
+          <div className="hidden sm:flex items-center gap-2.5 text-xs font-medium py-1 shrink-0">
             <a
               href="https://bytekstore.shop/products?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=subnav_peripherals"
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold transition-all shadow-2xs group shrink-0"
+              className="hidden xl:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/70 text-[11px] font-semibold transition-all group shrink-0"
               title={t("bytek.peripheralsTitle")}
             >
-              <span>🖱️</span>
+              <span className="text-xs">🖱️</span>
               <span>{t("nav.bytekPill")}</span>
-              <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-indigo-500/15 text-indigo-700 font-mono">
-                Bytek
-              </span>
             </a>
-            <a
-              href="https://t.me/DzAliexpress0"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gradient-to-r from-sky-500/10 via-sky-500/15 to-blue-500/10 hover:from-sky-500/20 hover:to-blue-500/20 text-[#0088cc] border border-sky-400/30 text-xs font-bold transition-all shadow-2xs group shrink-0"
-              title={t("aliexpress.bannerTitle")}
-            >
-              <TelegramIcon className="w-3.5 h-3.5 fill-current" />
-              <span>{t("aliexpress.navPill")}</span>
-              <span className="text-[9px] font-black uppercase px-1 py-0.2 rounded bg-amber-400/20 text-amber-600 font-mono">
-                🔥 {t("aliexpress.navBadge")}
-              </span>
-            </a>
-            <div className="flex items-center gap-2 text-slate-500">
+            <div className="flex items-center gap-1.5 text-slate-500 text-[11px] font-medium shrink-0">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
               </span>
-              <span>{t("header.livePrices")}</span>
+              <span className="hidden md:inline">{t("header.livePrices")}</span>
             </div>
           </div>
         </div>
@@ -881,7 +858,12 @@ const headerSearchCache = new Map<string, ProductResult[]>();
             <Link
               href={href("/benchmarks")}
               aria-current={isSection("/benchmarks") ? "page" : undefined}
-              className={navLinkClass(isSection("/benchmarks"))}
+              onClick={() => setMobileMenuOpen(false)}
+              className={`py-3 px-2 rounded-lg text-center transition-colors border min-h-[44px] flex items-center justify-center ${
+                isSection("/benchmarks")
+                  ? "bg-white/20 text-white border-white/25"
+                  : "bg-white/10 hover:bg-white/15 text-slate-200 border-white/10"
+              }`}
             >
               {t("nav.benchmarks")}
             </Link>

@@ -28,14 +28,14 @@ export default function AliExpressDealsBanner({
     return (
       <aside
         aria-label="AliExpress Telegram Channel"
-        className={`bg-gradient-to-r from-[#0077b5] via-[#0088cc] to-[#229ed9] text-white text-[11px] sm:text-xs py-1.5 px-3 font-semibold shadow-inner border-b border-white/10 ${className}`}
+        className={`bg-gradient-to-r from-[#0070a8] via-[#0088cc] to-[#1d98d2] text-white text-[11px] py-1 px-3 font-medium shadow-2xs border-b border-white/10 ${className}`}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between sm:justify-center gap-2 sm:gap-3 flex-wrap">
+        <div className="max-w-7xl mx-auto flex items-center justify-between sm:justify-center gap-2 sm:gap-2.5 flex-wrap">
           <div className="flex items-center gap-1.5 min-w-0">
-            <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-              <TelegramIcon className="w-3 h-3 fill-white" />
+            <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+              <TelegramIcon className="w-2.5 h-2.5 fill-white" />
             </span>
-            <span className="px-1.5 py-0.5 rounded bg-amber-400 text-slate-900 text-[10px] font-black uppercase tracking-wider shrink-0">
+            <span className="px-1.5 py-0.2 rounded bg-amber-400 text-slate-950 text-[9.5px] font-black uppercase tracking-wider shrink-0">
               {t("aliexpress.navBadge")}
             </span>
             <span className="truncate">{t("aliexpress.topbar")}</span>
@@ -44,7 +44,7 @@ export default function AliExpressDealsBanner({
             href={TELEGRAM_CHANNEL_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[#0088cc] hover:bg-white/90 font-bold text-[11px] transition-colors shrink-0 shadow-xs"
+            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[#0088cc] hover:bg-white/95 font-bold text-[10.5px] transition-all shrink-0 shadow-2xs"
           >
             <span>{t("aliexpress.topbarCta")}</span>
             <span aria-hidden="true">→</span>
