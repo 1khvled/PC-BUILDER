@@ -513,3 +513,32 @@ html.dark ::-webkit-scrollbar-thumb {
     color: #191b2a !important;
   }
 }
+
+/* --- Topbar Moving Announcement Ticker --- */
+@keyframes dzTicker {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.dz-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: dzTicker 36s linear infinite;
+  will-change: transform;
+}
+
+.dz-ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dz-ticker-track {
+    animation: none;
+    transform: none;
+  }
+}
+

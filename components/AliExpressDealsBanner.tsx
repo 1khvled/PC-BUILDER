@@ -25,30 +25,107 @@ export default function AliExpressDealsBanner({
   const t = makeT(locale);
 
   if (variant === "topbar") {
+    const BYTEK_URL =
+      "https://bytekstore.shop/?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=sponsor&utm_content=topbar_ticker";
+    const isFr = locale === "fr";
+
+    const tickerItems = [
+      {
+        id: "telegram-main",
+        badge: isFr ? "PROMO" : "DEALS",
+        badgeClass: "bg-amber-400 text-slate-950",
+        icon: <TelegramIcon className="w-3 h-3 fill-[#0088cc]" />,
+        text: isFr
+          ? "Bons plans & Codes Promo AliExpress DZ : Économisez sur vos pièces & accessoires !"
+          : "AliExpress DZ Deals & Promo Codes: Save big on PC parts & tech gear!",
+        cta: isFr ? "Rejoindre Telegram" : "Join Telegram",
+        href: TELEGRAM_CHANNEL_URL,
+      },
+      {
+        id: "bytek-main",
+        badge: isFr ? "PARTENAIRE" : "SPONSOR",
+        badgeClass: "bg-indigo-500/30 text-indigo-200 border border-indigo-400/30",
+        icon: (
+          <span className="w-3.5 h-3.5 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-[11px] leading-none">
+            ⚡
+          </span>
+        ),
+        text: isFr
+          ? "Bytek Store • Souris & Périphériques Esport en Algérie (Livraison 58 Wilayas)"
+          : "Bytek Store • Esports mice & pro gaming peripherals in Algeria (58 Wilayas)",
+        cta: isFr ? "Boutique Bytek" : "Shop Bytek",
+        href: BYTEK_URL,
+      },
+      {
+        id: "telegram-drops",
+        badge: "DROPS",
+        badgeClass: "bg-sky-400/20 text-sky-200 border border-sky-400/40",
+        icon: <TelegramIcon className="w-3 h-3 fill-[#38bdf8]" />,
+        text: isFr
+          ? "Canal Telegram @DzAliexpress0 • Coupons exclusifs & promos Choice livrés en Algérie"
+          : "Telegram Channel @DzAliexpress0 • Exclusive coupons & Choice promos shipped to Algeria",
+        cta: "@DzAliexpress0",
+        href: TELEGRAM_CHANNEL_URL,
+      },
+      {
+        id: "bytek-trust",
+        badge: isFr ? "EXPÉDITION 58W" : "58 WILAYAS COD",
+        badgeClass: "bg-emerald-500/20 text-emerald-300 border border-emerald-400/40",
+        icon: (
+          <span className="w-3.5 h-3.5 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-[10px] leading-none font-bold">
+            ✓
+          </span>
+        ),
+        text: isFr
+          ? "Bytek Store : Stock 100% réel en Algérie • Expédition express & Paiement à la livraison"
+          : "Bytek Store: 100% verified real stock in Algeria • Express shipping & Cash on delivery",
+        cta: "bytekstore.shop",
+        href: BYTEK_URL,
+      },
+    ];
+
+    // Duplicate list once to achieve seamless -50% CSS infinite marquee
+    const fullTrack = [...tickerItems, ...tickerItems];
+
     return (
       <aside
-        aria-label="AliExpress Telegram Channel"
-        className={`bg-gradient-to-r from-[#0070a8] via-[#0088cc] to-[#1d98d2] text-white text-[11px] py-1 px-3 font-medium shadow-2xs border-b border-white/10 ${className}`}
+        aria-label="Announcements & Deals Ticker"
+        className={`relative overflow-hidden bg-gradient-to-r from-[#0b0e17] via-[#131627] to-[#0b0e17] text-white text-[11px] py-1.5 font-medium shadow-xs border-b border-indigo-500/20 ${className}`}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between sm:justify-center gap-2 sm:gap-2.5 flex-wrap">
-          <div className="flex items-center gap-1.5 min-w-0">
-            <span className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-              <TelegramIcon className="w-2.5 h-2.5 fill-white" />
-            </span>
-            <span className="px-1.5 py-0.2 rounded bg-amber-400 text-slate-950 text-[9.5px] font-black uppercase tracking-wider shrink-0">
-              {t("aliexpress.navBadge")}
-            </span>
-            <span className="truncate">{t("aliexpress.topbar")}</span>
-          </div>
-          <a
-            href={TELEGRAM_CHANNEL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[#0088cc] hover:bg-white/95 font-bold text-[10.5px] transition-all shrink-0 shadow-2xs"
-          >
-            <span>{t("aliexpress.topbarCta")}</span>
-            <span aria-hidden="true">→</span>
-          </a>
+        {/* Left and right fade gradient masks */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-[#0b0e17] to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-[#0b0e17] to-transparent z-10" />
+
+        {/* Bottom micro accent line */}
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
+
+        {/* Ticker scrolling track */}
+        <div className="dz-ticker-track flex items-center gap-6 sm:gap-10">
+          {fullTrack.map((item, idx) => (
+            <a
+              key={`${item.id}-${idx}`}
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 group shrink-0 px-2.5 py-0.5 rounded-full bg-white/[0.04] hover:bg-white/[0.09] border border-white/[0.06] hover:border-white/20 transition-all text-slate-200 hover:text-white"
+            >
+              <span className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                {item.icon}
+              </span>
+              <span
+                className={`px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider shrink-0 ${item.badgeClass}`}
+              >
+                {item.badge}
+              </span>
+              <span className="text-[11px] font-medium tracking-tight whitespace-nowrap">
+                {item.text}
+              </span>
+              <span className="inline-flex items-center gap-0.5 text-[10.5px] font-bold text-sky-400 group-hover:text-cyan-300 group-hover:translate-x-0.5 transition-all shrink-0">
+                <span>{item.cta}</span>
+                <span aria-hidden="true">→</span>
+              </span>
+            </a>
+          ))}
         </div>
       </aside>
     );
