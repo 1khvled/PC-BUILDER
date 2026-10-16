@@ -38,11 +38,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Market Store Scrapers
+      - name: Run Market Store Scrapers & Ouedkniss Resweep
         run: |
           echo "Sweeping Algerian hardware stores and standalone shops..."
           node scripts/scrape-woo-stores.cjs || true
           node scripts/scrape-more-stores.cjs || true
+          echo "Resweeping Ouedkniss stores and pruning deleted/stale offers..."
+          node scripts/resweep-and-prune.cjs --seed-only || true
 
       - name: Bake Scraped Catalog
         run: |
