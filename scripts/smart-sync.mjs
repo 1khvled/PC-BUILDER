@@ -34,7 +34,7 @@ const FORCE = process.argv.includes("--force");
 const URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/[\r\n]/g, "").trim();
 const KEY = (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").replace(/[\r\n]/g, "").trim();
 
-const CHUNK_SIZE = 60;
+const CHUNK_SIZE = 100;
 
 async function api(path, method = "GET", body = null, extraHeaders = {}) {
   const res = await fetch(`${URL}/rest/v1/${path}`, {

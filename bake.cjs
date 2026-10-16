@@ -1617,7 +1617,7 @@ for (const o of report["ouedkniss:all"] || []) {
   }
 }
 
-// cap 6 cheapest per canonical product (bundle size)
+// cap 20 cheapest per canonical product (preserve deep market data across 200+ Algerian stores)
 const byPid = new Map();
 for (const m of matched) {
   if (!byPid.has(m.productId)) byPid.set(m.productId, []);
@@ -1627,9 +1627,9 @@ const capped = [];
 const isOut = (m) => /rupture|out of stock|sold out|épuisé|epuisé|indisponible|0\s*en\s*stock|stock\s*[=:]\s*0/i.test(m.stock || "");
 for (const arr of byPid.values()) {
   // Available offers first: a rupture price must never push a live price
-  // out of the 6-offer cap, nor become the row's displayed minimum.
+  // out of the cap, nor become the row's displayed minimum.
   arr.sort((a, b) => (isOut(a) - isOut(b)) || (a.priceDa - b.priceDa));
-  capped.push(...arr.slice(0, 6));
+  capped.push(...arr.slice(0, 20));
 }
 
 const esc = (s) => JSON.stringify(s);
