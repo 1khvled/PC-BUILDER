@@ -30,9 +30,11 @@ if (fs.existsSync(envLocalPath)) {
 }
 
 const DRY = process.argv.includes("--dry-run");
-const FORCE = process.argv.includes("--force");
-const URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/[\r\n]/g, "").trim();
-const KEY = (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").replace(/[\r\n]/g, "").trim();
+const DEFAULT_URL = "https://sculmoqvdfcohnvtsrsb.supabase.co";
+const DEFAULT_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjdWxtb3F2ZGZjb2hudnRzcnNiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4OTI1MzUzOSwiZXhwIjoyMTA0ODI5NTM5fQ.E3z8bCYuPwQ2apMz5Swk0nDQb0t5D3w4PERWsppj06Y";
+
+const URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_URL).replace(/[\r\n]/g, "").trim();
+const KEY = (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_KEY).replace(/[\r\n]/g, "").trim();
 
 const CHUNK_SIZE = 100;
 

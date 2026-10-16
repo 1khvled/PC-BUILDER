@@ -101,15 +101,15 @@ export const fr = {
   "footer.trust1Text": "Proposé par nos marchands — vous payez à réception, pas ici",
   "footer.trust2Title": "Boutiques d'Alger, Sétif, Oran…",
   "footer.trust2Text": "Elles expédient vers 58 wilayas (Yalidine, Maystro…)",
-  "footer.trust3Title": "15 sites web + Ouedkniss (60+ stores)",
-  "footer.trust3Text": "Vitrines en ligne suivies chaque jour",
+  "footer.trust3Title": "280+ boutiques suivies",
+  "footer.trust3Text": "Vitrines en ligne vérifiées à travers 58 wilayas",
   "footer.trust4Title": "Prix en Dinars (DA)",
   "footer.trust4Text": "Relevés quotidiens, tri 100% organique, zéro commission",
   "footer.about":
     "Le comparateur indépendant de composants PC en Algérie. Comparez les prix du neuf et de l'occasion parmi les boutiques d'informatique dont les vitrines livrent 58 wilayas.",
   "footer.badgeIndependent": "100% Indépendant",
   "footer.badgeLive": "Prix live en DA",
-  "footer.badgeSources": "15 sites web + 60 stores Ouedkniss",
+  "footer.badgeSources": "280+ boutiques sur 58 wilayas",
   "footer.badgeNewUsed": "Neuf / Occasion séparés",
   "footer.linkBuilder": "System Builder (Configurateur)",
   "footer.linkGuides": "Guides d'achat gaming",
@@ -125,7 +125,7 @@ export const fr = {
   "footer.catCase": "Boîtiers PC",
   "footer.catMonitor": "Écrans Gaming",
   "footer.transparencyStores":
-    "Boutiques indexées : LICB+, Digitec, Click-DZ, WifiDjelfa, GamingDZ, KOTEK, Blida Computer, NextGen, KhabirTech, DeskCom, GigaStore, Informatics, Lahlou, HardSoft, Campus + 60 boutiques vérifiées sur Ouedkniss couvrant 23 wilayas.",
+    "Plus de 280 revendeurs informatiques agréés, boutiques spécialisées et vitrines locales suivis quotidiennement à travers l'Algérie, livrant sur les 58 wilayas.",
   "footer.transparencyPrices":
     "Prix indicatifs en Dinars Algériens (DA), toujours vérifiés sur le site marchand avant commande. Occasion et neuf strictement différenciés. Tri 100% organique par prix croissant.",
   "footer.copyright": "© 2026 DZ PartPicker. Tous droits réservés. Clone fidèle inspiré du format PCPartPicker.",

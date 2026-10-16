@@ -45,10 +45,10 @@ export default function BackToTop() {
     <button
       onClick={scrollToTop}
       aria-label={BACK_TO_TOP[locale]}
-      className="fixed bottom-[calc(3.5rem+env(safe-area-inset-bottom,0px)+0.75rem)] right-4 sm:bottom-6 sm:right-6 z-40 p-3 rounded-full bg-white text-slate-700 hover:text-[#2c87c3] border border-slate-200 shadow-lg no-print min-h-[44px] min-w-[44px] inline-flex items-center justify-center focus-visible:ring-2 focus-visible:ring-[#2c87c3] focus-visible:outline-hidden"
+      className="fixed bottom-[calc(3.5rem+env(safe-area-inset-bottom,0px)+0.75rem)] right-4 sm:bottom-6 sm:right-6 z-40 p-2.5 rounded-full bg-[#121624]/90 hover:bg-[#1a2035] text-slate-300 hover:text-white border border-white/15 hover:border-cyan-400/50 shadow-xl backdrop-blur-md no-print min-h-[40px] min-w-[40px] inline-flex items-center justify-center transition-all hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-hidden"
     >
       <svg
-        className="w-5 h-5"
+        className="w-4.5 h-4.5"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
