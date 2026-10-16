@@ -47,6 +47,45 @@ function BytekLogo({ className = "h-7 w-auto" }: { className?: string }) {
   );
 }
 
+function MouseVector({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="5" y="2" width="14" height="20" rx="7" />
+      <path d="M12 6v4" />
+    </svg>
+  );
+}
+
+function KeyboardVector({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M7 16h10" />
+    </svg>
+  );
+}
+
+function HeadsetVector({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
+      <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
+    </svg>
+  );
+}
+
+function GamepadVector({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="6" y1="12" x2="10" y2="12" />
+      <line x1="8" y1="10" x2="8" y2="14" />
+      <line x1="15" y1="13" x2="15.01" y2="13" />
+      <line x1="18" y1="11" x2="18.01" y2="11" />
+      <rect x="2" y="6" width="20" height="12" rx="6" />
+    </svg>
+  );
+}
+
 export default function BytekAd({
   variant = "banner",
   locale = DEFAULT_LOCALE,
@@ -186,7 +225,9 @@ export default function BytekAd({
               className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="text-xl mb-1">🖱️</div>
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-400/20 text-indigo-300 flex items-center justify-center mb-2">
+                  <MouseVector className="w-4 h-4" />
+                </div>
                 <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
                   {t("bytek.catMice")}
                 </div>
@@ -207,7 +248,9 @@ export default function BytekAd({
               className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="text-xl mb-1">⌨️</div>
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-400/20 text-indigo-300 flex items-center justify-center mb-2">
+                  <KeyboardVector className="w-4 h-4" />
+                </div>
                 <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
                   {t("bytek.catKeyboards")}
                 </div>
@@ -228,7 +271,9 @@ export default function BytekAd({
               className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="text-xl mb-1">🎧</div>
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-400/20 text-indigo-300 flex items-center justify-center mb-2">
+                  <HeadsetVector className="w-4 h-4" />
+                </div>
                 <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
                   {t("bytek.catAudio")}
                 </div>
@@ -249,7 +294,9 @@ export default function BytekAd({
               className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="text-xl mb-1">🎮</div>
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-400/20 text-indigo-300 flex items-center justify-center mb-2">
+                  <GamepadVector className="w-4 h-4" />
+                </div>
                 <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
                   {t("bytek.catControllers")}
                 </div>

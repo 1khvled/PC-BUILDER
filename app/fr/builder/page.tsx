@@ -14,91 +14,9 @@ import { makeT } from "@/lib/i18n/runtime";
 import BuildPerformanceCard from "@/components/BuildPerformanceCard";
 import { recommendedPsu } from "@/lib/compat/watt";
 import Thumb from "@/components/Thumb";
+import CategoryIcon from "@/components/CategoryIcon";
 import { useAnimatedNumber } from "@/lib/use-animated-number";
 import { DEFAULT_USD_DA } from "@/lib/fx";
-
-function CategoryIcon({ slug }: { slug: string }) {
-  switch (slug) {
-    case "cpu":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="4" y="4" width="16" height="16" rx="2" />
-          <rect x="9" y="9" width="6" height="6" />
-          <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" />
-        </svg>
-      );
-    case "cooler":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="9" />
-          <circle cx="12" cy="12" r="2.5" />
-          <path d="M12 9.5V3M14.5 12H21M12 14.5V21M9.5 12H3" />
-        </svg>
-      );
-    case "motherboard":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="3" width="18" height="18" rx="2" />
-          <rect x="7" y="7" width="4" height="4" />
-          <path d="M15 7h2M15 10h2M7 15h10M7 18h5" />
-        </svg>
-      );
-    case "ram":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="7" width="20" height="10" rx="1" />
-          <path d="M6 17v2M10 17v2M14 17v2M18 17v2M6 11h2M11 11h2M16 11h2" />
-        </svg>
-      );
-    case "ssd":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="4" y="5" width="16" height="14" rx="2" />
-          <path d="M7 9h10M7 12h4M16 15h1" />
-        </svg>
-      );
-    case "gpu":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="2" y="6" width="20" height="12" rx="2" />
-          <circle cx="8.5" cy="12" r="2.5" />
-          <circle cx="15.5" cy="12" r="2.5" />
-          <path d="M2 10h2M2 14h2M6 18v2M10 18v2" />
-        </svg>
-      );
-    case "case":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="5" y="3" width="14" height="18" rx="2" />
-          <circle cx="12" cy="7" r="1" fill="currentColor" />
-          <path d="M9 11h6M9 14h6M9 17h6" />
-        </svg>
-      );
-    case "psu":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="4" width="18" height="16" rx="2" />
-          <circle cx="10" cy="12" r="3.5" />
-          <path d="M16 8h2M16 12h2M16 16h2" />
-        </svg>
-      );
-    case "monitor":
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="3" y="4" width="18" height="12" rx="2" />
-          <line x1="8" y1="20" x2="16" y2="20" />
-          <line x1="12" y1="16" x2="12" y2="20" />
-        </svg>
-      );
-    default:
-      return (
-        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="4" y="4" width="16" height="16" rx="2" />
-          <path d="M9 9h6v6H9z" />
-        </svg>
-      );
-  }
-}
 
 function SpecPills({ product }: { product: Product }) {
   const specs = product.specs;
@@ -662,9 +580,13 @@ export default function BuilderPage() {
                               href={best.url}
                               target="_blank"
                               rel="noreferrer"
-                              className="font-semibold text-slate-700 hover:text-[#2c87c3] text-[11px] block truncate"
+                              className="font-semibold text-slate-700 hover:text-[#2c87c3] text-[11px] inline-flex items-center gap-1 truncate max-w-full"
                             >
-                              🏪 {best.store} · {best.wilaya}
+                              <svg className="w-3 h-3 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                <polyline points="9 22 9 12 15 12 15 22" />
+                              </svg>
+                              <span className="truncate">{best.store} · {best.wilaya}</span>
                             </a>
                             <div className="flex items-center gap-1.5">
                               <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -953,13 +875,13 @@ export default function BuilderPage() {
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-gradient-to-b from-slate-50 to-white">
               <div className="flex items-center gap-3">
-                <span className="w-9 h-9 rounded-xl bg-gradient-to-b from-[#3a94d2] to-[#2c87c3] text-white flex items-center justify-center shadow-[0_4px_12px_-4px_rgba(44,135,195,0.5)] shrink-0">
-                  <CategoryIcon slug={activeModalCat} />
+                <span className="w-9 h-9 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-sm">
+                  <CategoryIcon slug={activeModalCat} className="w-4 h-4 text-cyan-400" />
                 </span>
                 <div>
-                  <h3 className="font-extrabold text-base text-slate-900">
+                  <h2 className="font-extrabold text-base text-slate-900">
                     Choisir : {CATEGORIES.find((c) => c.slug === activeModalCat)?.label}
-                  </h3>
+                  </h2>
                   <p className="text-xs text-slate-500">
                     Sélectionnez parmi les produits indexés en Algérie
                   </p>

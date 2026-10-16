@@ -15,7 +15,7 @@ let cachedOffers: { data: Offer[]; timestamp: number } | null = null;
 let cachedProducts: { data: Product[]; timestamp: number } | null = null;
 let cachedScrapedAt: { data: string; timestamp: number } | null = null;
 const cachedHistory = new Map<string, { data: PricePoint[]; timestamp: number }>();
-const CACHE_TTL_MS = 60 * 1000; // 1 minute in-memory cache
+const CACHE_TTL_MS = 120 * 1000; // 2 minutes in-memory server cache
 
 // Single-flight promise deduplication to prevent concurrent hammering of Supabase
 let inFlightOffers: Promise<Offer[]> | null = null;

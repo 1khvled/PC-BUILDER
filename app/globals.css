@@ -187,9 +187,9 @@
 
   /* ---- Skeleton shimmer ---- */
   .dz-skeleton {
-    background: linear-gradient(90deg, #eaebef 25%, #f6f6f8 50%, #eaebef 75%);
-    background-size: 800px 100%;
-    animation: dz-shimmer 1.3s infinite linear;
+    background: linear-gradient(90deg, #f1f3f6 0%, #e1e6ee 50%, #f1f3f6 100%);
+    background-size: 200% 100%;
+    animation: dz-shimmer 1.6s ease-in-out infinite;
   }
 
   /* Print styles */
@@ -231,8 +231,8 @@
   100% { transform: scale(1); }
 }
 @keyframes dz-shimmer {
-  0% { background-position: -800px 0; }
-  100% { background-position: 800px 0; }
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 @layer components {
@@ -263,8 +263,7 @@
   .animate-modal-pop,
   .animate-backdrop-fade,
   .animate-toast-in,
-  .animate-icon-pop,
-  .dz-skeleton {
+  .animate-icon-pop {
     animation: none !important;
   }
   .btn-press {
@@ -502,8 +501,8 @@ html.dark ::-webkit-scrollbar-thumb {
 
 /* --- Skeletons --- */
 .dark .dz-skeleton {
-  background: linear-gradient(90deg, #1a1e28 25%, #232833 50%, #1a1e28 75%);
-  background-size: 800px 100%;
+  background: linear-gradient(90deg, #131722 0%, #1c2233 50%, #131722 100%);
+  background-size: 200% 100%;
 }
 
 /* --- Print always stays on the light sheet --- */
@@ -527,18 +526,11 @@ html.dark ::-webkit-scrollbar-thumb {
 .dz-ticker-track {
   display: flex;
   width: max-content;
-  animation: dzTicker 36s linear infinite;
+  animation: dzTicker 30s linear infinite;
   will-change: transform;
 }
 
 .dz-ticker-track:hover {
   animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dz-ticker-track {
-    animation: none;
-    transform: none;
-  }
 }
 

@@ -105,7 +105,9 @@ export default async function EnglishDealsPage() {
       {list.length === 0 ? (
         <EmptyState type="products" title={t("deals.empty")} />
       ) : (
-        <div className="grid md:grid-cols-2 gap-3 mt-2">
+        <section aria-labelledby="deals-heading">
+          <h2 id="deals-heading" className="sr-only">{t("deals.h1")}</h2>
+          <div className="grid md:grid-cols-2 gap-3 mt-2">
           {list.map((d) => (
             <Link
               key={d.id}
@@ -132,6 +134,7 @@ export default async function EnglishDealsPage() {
             </Link>
           ))}
         </div>
+        </section>
       )}
       <div className="mt-8">
         <AliExpressDealsBanner variant="strip" locale={LOCALE} />

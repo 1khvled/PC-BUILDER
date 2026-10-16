@@ -192,21 +192,26 @@ export default async function EnglishProductPage({ params }: { params: { id: str
                   <span>{t("product.bestPrice", { price: formatPrice(best.priceDa, LOCALE) })}</span>
                 </span>
               ) : null}
-              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-slate-50 text-slate-600 border border-slate-200">
-                📦 {t("common.storesIndexed", { count: offers.length, plural: offers.length > 1 ? "s" : "" })}
+              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-slate-50 text-slate-600 border border-slate-200 inline-flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                  <line x1="12" y1="22.08" x2="12" y2="12" />
+                </svg>
+                <span>{t("common.storesIndexed", { count: offers.length, plural: offers.length > 1 ? "s" : "" })}</span>
               </span>
             </div>
 
             {/* Global Out-of-stock Alert Banner */}
             {allRuptured && (
-              <div className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 flex items-start gap-3">
+              <div role="alert" className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 flex items-start gap-3">
                 <div className="w-6 h-6 rounded-full bg-rose-200 text-rose-800 flex items-center justify-center font-extrabold text-xs shrink-0 mt-0.5">
                   ✕
                 </div>
                 <div>
-                  <h3 className="font-extrabold text-sm text-rose-950">
+                  <div className="font-extrabold text-sm text-rose-950">
                     {t("product.ruptureAlertTitle")}
-                  </h3>
+                  </div>
                   <p className="text-xs text-rose-800/90 mt-0.5 leading-relaxed">
                     {t("product.ruptureAlertText")}
                   </p>

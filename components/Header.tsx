@@ -145,6 +145,15 @@ function CatIcon({ slug, className = "w-4 h-4" }: { slug: string; className?: st
   }
 }
 
+function MouseIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="5" y="2" width="14" height="20" rx="7" />
+      <path d="M12 6v4" />
+    </svg>
+  );
+}
+
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
@@ -390,13 +399,14 @@ const headerSearchCache = new Map<string, ProductResult[]>();
       >
         {t("header.skipToContent")}
       </a>
+      {/* Top Announcement Bar — Scrolls away naturally when the user scrolls down */}
+      <AliExpressDealsBanner variant="topbar" locale={locale} />
+
       <header
         className={`sticky top-0 z-40 no-print transition-shadow duration-200 ${
           scrolled ? "shadow-[0_6px_24px_-8px_rgba(17,17,28,0.35)]" : ""
         }`}
       >
-        {/* Top Announcement Bar — AliExpress Telegram Channel */}
-        <AliExpressDealsBanner variant="topbar" locale={locale} />
 
       {/* Top Header Row — navy glass bar */}
       <div className="bg-[#11111c] border-b border-white/[0.06]">
@@ -511,7 +521,12 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                   </>
                 ) : (
                   <div className="p-8 text-center text-sm text-slate-500">
-                    <div className="text-2xl mb-2">🔍</div>
+                    <div className="w-10 h-10 mx-auto mb-2.5 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+                      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                      </svg>
+                    </div>
                     <div className="mb-1 font-semibold text-slate-700">{t("search.empty", { query })}</div>
                     <div className="text-xs text-slate-400">{t("search.emptyHint")}</div>
                   </div>
@@ -674,8 +689,8 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                         onClick={() => setCatDropdownOpen(false)}
                         className="flex items-center gap-2.5 px-3 py-1.5 text-xs text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 font-medium transition-colors group/item"
                       >
-                        <span className="w-5.5 h-5.5 rounded-md bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0 text-xs">
-                          🖱️
+                        <span className="w-5.5 h-5.5 rounded-md bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+                          <MouseIcon className="w-3.5 h-3.5" />
                         </span>
                         <div className="flex-1 min-w-0">
                           <div className="font-bold text-slate-800 group-hover/item:text-indigo-700 text-xs">{t("nav.mousesKeyboards")}</div>
@@ -714,13 +729,6 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               {t("common.deals")}
             </Link>
             <Link
-              href={href("/drops")}
-              aria-current={isSection("/drops") ? "page" : undefined}
-              className={navLinkClass(isSection("/drops"))}
-            >
-              {t("drops.h1")}
-            </Link>
-            <Link
               href={href("/benchmarks")}
               aria-current={isSection("/benchmarks") ? "page" : undefined}
               className={navLinkClass(isSection("/benchmarks"))}
@@ -734,10 +742,10 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               href="https://bytekstore.shop/products?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=subnav_peripherals"
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="hidden xl:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/70 text-[11px] font-semibold transition-all group shrink-0"
+              className="hidden xl:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/70 text-[11px] font-semibold transition-all group shrink-0"
               title={t("bytek.peripheralsTitle")}
             >
-              <span className="text-xs">🖱️</span>
+              <MouseIcon className="w-3 h-3 text-indigo-600" />
               <span>{t("nav.bytekPill")}</span>
             </a>
             <div className="flex items-center gap-1.5 text-slate-500 text-[11px] font-medium shrink-0">
@@ -844,18 +852,6 @@ const headerSearchCache = new Map<string, ProductResult[]>();
               {t("common.deals")}
             </Link>
             <Link
-              href={href("/drops")}
-              aria-current={isSection("/drops") ? "page" : undefined}
-              onClick={() => setMobileMenuOpen(false)}
-              className={`py-3 px-2 rounded-lg text-center transition-colors border min-h-[44px] flex items-center justify-center ${
-                isSection("/drops")
-                  ? "bg-white/20 text-white border-white/25"
-                  : "bg-white/10 hover:bg-white/15 text-slate-200 border-white/10"
-              }`}
-            >
-              {t("drops.h1")}
-            </Link>
-            <Link
               href={href("/benchmarks")}
               aria-current={isSection("/benchmarks") ? "page" : undefined}
               onClick={() => setMobileMenuOpen(false)}
@@ -904,9 +900,11 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 target="_blank"
                 rel="noopener noreferrer sponsored"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-2 py-2.5 rounded-lg bg-indigo-950/70 hover:bg-indigo-900/90 text-indigo-200 hover:text-white transition-colors text-center border border-indigo-500/40 flex flex-col items-center justify-center gap-1 min-h-[60px]"
+                className="px-2 py-2.5 rounded-lg bg-indigo-950/70 hover:bg-indigo-900/90 text-indigo-200 hover:text-white transition-colors text-center border border-indigo-500/40 flex flex-col items-center justify-center gap-1.5 min-h-[60px]"
               >
-                <span className="text-base" aria-hidden="true">🖱️</span>
+                <span className="w-5 h-5 text-indigo-400 flex items-center justify-center" aria-hidden="true">
+                  <MouseIcon className="w-4 h-4" />
+                </span>
                 <span className="leading-tight text-[10px] font-bold">{t("nav.mousesKeyboards")}</span>
               </a>
             </div>
@@ -927,7 +925,7 @@ const headerSearchCache = new Map<string, ProductResult[]>();
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-1.5">
                     <span className="font-bold text-xs text-white truncate">{t("aliexpress.mobileTitle")}</span>
-                    <span className="text-[9px] px-1 py-0.2 rounded bg-amber-400 text-slate-900 font-extrabold uppercase font-mono">🔥</span>
+                    <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-400 text-slate-950 font-black uppercase tracking-wider">HOT</span>
                   </div>
                   <p className="text-[11px] text-slate-300 truncate mt-0.5">{t("aliexpress.mobileDesc")}</p>
                 </div>

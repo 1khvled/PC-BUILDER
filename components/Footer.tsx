@@ -170,6 +170,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href={href("/prebuilds")} className="text-slate-400 hover:text-white transition-colors inline-block text-xs">
+                  {t("common.prebuilds")}
+                </Link>
+              </li>
+              <li>
                 <Link href={href("/guides")} className="text-slate-400 hover:text-white transition-colors inline-block text-xs">
                   {t("footer.linkGuides")}
                 </Link>
@@ -177,6 +182,16 @@ export default function Footer() {
               <li>
                 <Link href={href("/deals")} className="text-slate-400 hover:text-white transition-colors inline-block text-xs">
                   {t("footer.linkDeals")}
+                </Link>
+              </li>
+              <li>
+                <Link href={href("/benchmarks")} className="text-slate-400 hover:text-white transition-colors inline-block text-xs">
+                  {t("nav.benchmarks")}
+                </Link>
+              </li>
+              <li>
+                <Link href={href("/compare")} className="text-slate-400 hover:text-white transition-colors inline-block text-xs">
+                  {t("compare.title")}
                 </Link>
               </li>
               <li>

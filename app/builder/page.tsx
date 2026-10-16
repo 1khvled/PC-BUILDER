@@ -621,9 +621,13 @@ export default function EnglishBuilderPage() {
                               href={best.url}
                               target="_blank"
                               rel="noreferrer"
-                              className="font-semibold text-slate-700 hover:text-[#2c87c3] text-[11px] block truncate"
+                              className="font-semibold text-slate-700 hover:text-[#2c87c3] text-[11px] inline-flex items-center gap-1 truncate max-w-full"
                             >
-                              🏪 {best.store} · {best.wilaya}
+                              <svg className="w-3 h-3 text-slate-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                <polyline points="9 22 9 12 15 12 15 22" />
+                              </svg>
+                              <span className="truncate">{best.store} · {best.wilaya}</span>
                             </a>
                             <div className="flex items-center gap-1.5">
                               <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -925,13 +929,13 @@ export default function EnglishBuilderPage() {
             {/* Modal Header */}
             <div className="p-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-gradient-to-b from-slate-50 to-white">
               <div className="flex items-center gap-3">
-                <span className="w-9 h-9 rounded-xl bg-gradient-to-b from-[#3a94d2] to-[#2c87c3] text-white flex items-center justify-center shadow-[0_4px_12px_-4px_rgba(44,135,195,0.5)] shrink-0">
-                  <CategoryIcon slug={activeModalCat} className="w-4 h-4" />
+                <span className="w-9 h-9 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-sm">
+                  <CategoryIcon slug={activeModalCat} className="w-4 h-4 text-cyan-400" />
                 </span>
                 <div>
-                  <h3 className="font-extrabold text-base text-slate-900">
+                  <h2 className="font-extrabold text-base text-slate-900">
                     {t("builder.chooseTitle", { label: categoryLabel(activeModalCat, t) })}
-                  </h3>
+                  </h2>
                   <p className="text-xs text-slate-500">
                     {t("builder.chooseSubtitle")}
                   </p>

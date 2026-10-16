@@ -95,6 +95,16 @@ export default async function EnglishCategoryPage({ params }: { params: { slug: 
         </span>
       </nav>
 
+      {/* Category Page Title & Description */}
+      <div className="border-b border-slate-200/80 pb-3">
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+          {label}
+        </h1>
+        <p className="text-xs sm:text-sm text-slate-500 mt-1">
+          {t("category.metaDescription", { label })}
+        </p>
+      </div>
+
       {/* Interactive Client Catalog with Toolbar & Denser Cards */}
       <CategoryCatalogClient
         slug={params.slug}

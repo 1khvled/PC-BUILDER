@@ -1,33 +1,32 @@
 export default function CategoryLoading() {
   return (
     <main className="max-w-7xl mx-auto px-4 py-6 space-y-6" aria-busy="true">
-      {/* Breadcrumb — matches the real breadcrumb row */}
+      {/* Breadcrumb */}
       <div className="dz-skeleton rounded-md h-4 w-56" aria-hidden="true" />
 
-      {/* h1 + model-count pill */}
-      <div className="flex items-center gap-2.5" aria-hidden="true">
-        <div className="dz-skeleton rounded-lg h-8 w-52" />
-        <div className="dz-skeleton rounded-full h-6 w-20" />
+      {/* h1 + subtitle */}
+      <div className="space-y-2 border-b border-slate-200/80 pb-3" aria-hidden="true">
+        <div className="dz-skeleton rounded-lg h-8 w-56" />
+        <div className="dz-skeleton rounded-md h-4 w-96 max-w-full" />
       </div>
 
-      {/* Toolbar: search + view toggle, then the filter/sort row */}
+      {/* Toolbar: search + view toggle, then filter row */}
       <div className="panel p-4 space-y-3.5">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="dz-skeleton rounded-full h-11 w-full max-w-sm" />
-          <div className="dz-skeleton rounded-full h-10 w-32" />
+          <div className="dz-skeleton rounded-full h-9 w-full max-w-sm" />
+          <div className="dz-skeleton rounded-full h-8 w-28" />
         </div>
-        <div className="flex flex-wrap items-center gap-2 pt-2.5 border-t border-slate-100">
-          <div className="dz-skeleton rounded-full h-10 w-32" />
-          <div className="dz-skeleton rounded-full h-10 w-24" />
-          <div className="dz-skeleton rounded-full h-10 w-40" />
+        <div className="flex flex-wrap items-center gap-2 pt-2.5 border-t border-slate-100 dark:border-white/10">
+          <div className="dz-skeleton rounded-full h-8 w-28" />
+          <div className="dz-skeleton rounded-full h-8 w-24" />
+          <div className="dz-skeleton rounded-full h-8 w-36" />
         </div>
       </div>
 
-      {/* Card grid — same 1-col-below-md / 3-col-above shape as the real list,
-          so nothing jumps when the data lands. */}
+      {/* Card grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-xl p-4 border border-slate-200/90 bg-white flex flex-col gap-3">
+          <div key={i} className="rounded-xl p-4 border border-slate-200/90 dark:border-white/10 bg-white dark:bg-[#121623] flex flex-col gap-3">
             <div className="flex items-center gap-1.5">
               <div className="dz-skeleton rounded-md h-5 w-16" />
               <div className="dz-skeleton rounded-full h-5 w-14" />
@@ -42,12 +41,12 @@ export default function CategoryLoading() {
                 </div>
               </div>
             </div>
-            <div className="pt-3 border-t border-slate-100 flex items-end justify-between gap-2">
+            <div className="pt-3 border-t border-slate-100 dark:border-white/10 flex items-end justify-between gap-2">
               <div className="space-y-1.5">
                 <div className="dz-skeleton rounded h-3 w-14" />
                 <div className="dz-skeleton rounded-md h-5 w-24" />
               </div>
-              <div className="dz-skeleton rounded-lg h-11 w-32" />
+              <div className="dz-skeleton rounded-lg h-9 w-28" />
             </div>
           </div>
         ))}
@@ -55,7 +54,7 @@ export default function CategoryLoading() {
 
       <div className="flex items-center gap-2 text-xs text-slate-400" role="status" aria-live="polite">
         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-        <span>Loading the page…</span>
+        <span>Loading components...</span>
       </div>
     </main>
   );

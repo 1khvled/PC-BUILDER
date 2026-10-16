@@ -315,7 +315,7 @@ export default async function Home() {
             <span className="w-1 h-5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
             <h2 className="text-lg font-extrabold tracking-tight">Parcourir par catégorie</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {CATEGORIES.map((c) => {
               const items = products.filter((p) => p.category === c.slug);
               const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
@@ -326,33 +326,42 @@ export default async function Home() {
                 <Link
                   key={c.slug}
                   href={`/fr/category/${c.slug}`}
-                  className="panel p-4 flex items-center gap-4 group hover:border-[#2c87c3]/60 hover:shadow-card-hover transition-all"
+                  className="group bg-white dark:bg-[#121623] rounded-xl border border-slate-200/90 dark:border-white/[0.08] p-3.5 sm:p-4 flex items-center gap-3.5 hover:border-[#2c87c3]/70 hover:shadow-card-hover transition-all duration-150"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-b from-[#3a94d2] to-[#2c87c3] text-white flex items-center justify-center shrink-0 shadow-[0_4px_12px_-4px_rgba(44,135,195,0.5)] group-hover:scale-105 transition-transform">
+                  <div className="w-11 h-11 rounded-lg bg-slate-100 dark:bg-white/[0.06] border border-slate-200/70 dark:border-white/10 text-slate-700 dark:text-slate-200 flex items-center justify-center shrink-0 group-hover:bg-[#2c87c3]/10 group-hover:text-[#2c87c3] group-hover:border-[#2c87c3]/30 transition-all">
                     <CategorySvg slug={c.slug} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-bold text-sm group-hover:text-[#2c87c3] transition-colors">
+                    <div className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-[#2c87c3] transition-colors tracking-tight">
                       {c.label}
                     </div>
-                    <div className="text-xs text-slate-500 mt-1">
-                      {items.length} modèle{items.length > 1 ? "s" : ""}
-                      {minPrice ? <span className="text-emerald-700 font-semibold"> • dès {fmt(minPrice)}</span> : ""}
-                      {extraN > 0 && <span className="text-amber-700 font-semibold"> • +{extraN} live</span>}
+                    <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 flex items-center gap-1.5 flex-wrap">
+                      <span>{items.length} modèle{items.length > 1 ? "s" : ""}</span>
+                      {minPrice ? (
+                        <>
+                          <span className="text-slate-300 dark:text-slate-600">•</span>
+                          <span className="text-emerald-700 dark:text-emerald-400 font-semibold">
+                            dès {fmt(minPrice)}
+                          </span>
+                        </>
+                      ) : null}
+                      {extraN > 0 && <span className="text-amber-600 dark:text-amber-400 font-semibold">• +{extraN} live</span>}
                     </div>
                   </div>
-                  <span className="text-slate-300 group-hover:text-[#2c87c3] group-hover:translate-x-1 transition-all text-lg font-bold" aria-hidden="true">→</span>
+                  <svg className="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-[#2c87c3] group-hover:translate-x-0.5 transition-all shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
                 </Link>
               );
             })}
           </div>
           {SIDE_CATEGORIES.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between flex-wrap gap-3">
+            <div className="mt-4 pt-4 border-t border-slate-100 dark:border-white/10 flex items-center justify-between flex-wrap gap-3">
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-semibold uppercase text-[10px] tracking-wider">
+                <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-semibold uppercase text-[10px] tracking-wider">
                   Périphériques
                 </span>
-                <span className="text-xs text-slate-500">Matériel bureautique hors configurateur PC</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">Matériel bureautique hors configurateur PC</span>
               </div>
               <div className="flex items-center gap-2">
                 {SIDE_CATEGORIES.map((c) => {
@@ -363,7 +372,7 @@ export default async function Home() {
                     <Link
                       key={c.slug}
                       href={`/fr/category/${c.slug}`}
-                      className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:border-[#2c87c3] hover:text-[#2c87c3] text-xs font-semibold transition-all shadow-sm group"
+                      className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-[#121623] hover:border-[#2c87c3] text-slate-700 dark:text-slate-200 hover:text-[#2c87c3] text-xs font-semibold transition-all shadow-2xs group"
                     >
                       <CategorySvg slug={c.slug} />
                       <span>{c.label}</span>
@@ -371,11 +380,13 @@ export default async function Home() {
                         ({items.length} modèle{items.length > 1 ? "s" : ""})
                       </span>
                       {minPrice ? (
-                        <span className="text-emerald-700 font-bold text-[11px]">
+                        <span className="text-emerald-700 dark:text-emerald-400 font-bold text-[11px]">
                           • dès {fmt(minPrice)}
                         </span>
                       ) : null}
-                      <span className="text-slate-300 group-hover:text-[#2c87c3] group-hover:translate-x-0.5 transition-transform" aria-hidden="true">→</span>
+                      <svg className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-[#2c87c3] group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
                     </Link>
                   );
                 })}
