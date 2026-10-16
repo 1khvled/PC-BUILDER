@@ -181,7 +181,7 @@ const RULES = [
   { id: "cooler-le520", cat: "cooler", all: ["le520"] },
   { id: "cooler-le520", cat: "cooler", all: ["le500"] },
   { id: "cooler-lt520", cat: "cooler", all: ["lt520"] },
-  { id: "cooler-assassin4", cat: "cooler", all: ["assassin"] },
+  { id: "cooler-assassin4", cat: "cooler", all: ["assassin"], any: ["iv", "deepcool", "assassin 4", "assassin iv", "wh"], none: ["peerless", "thermalright", "x120", "ax120", "king", "spirit", "refined", "laptop", "notebook"] },
   { id: "cooler-ml240-core", cat: "cooler", all: ["masterliquid", "240"], none: ["atmos"] },
   { id: "cooler-ml240-core", cat: "cooler", all: ["240l", "core"] },
   { id: "cooler-hyper622", cat: "cooler", all: ["622", "halo"] },
@@ -264,28 +264,28 @@ const RULES = [
   { id: "mobo-h81", cat: "motherboard", any: ["h81da", "h81m", "h81j", "h81 "], none: ["laptop", "notebook"] },
   { id: "mobo-h61", cat: "motherboard", any: ["h61", "h61n", "ih61"], none: ["laptop", "notebook"] },
   { id: "ram-64gb-d5-6000", cat: "ram", all: ["64gb", "ddr5"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-48gb-d5-6000", cat: "ram", all: ["48gb", "ddr5"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-48gb-d5-6000", cat: "ram", all: ["48gb", "ddr5"], any: ["corsair", "vengeance"], none: ["teamgroup", "crucial", "kingston", "gskill", "g.skill", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-24gb-d5", cat: "ram", all: ["24gb", "ddr5"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-32gb-d5-6400", cat: "ram", all: ["32gb", "ddr5", "6400"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-32gb-d5-6000", cat: "ram", all: ["32gb", "ddr5", "6000"], none: ["6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-32gb-d5-5600", cat: "ram", all: ["32gb", "ddr5", "5600"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-delta-32-d5", cat: "ram", all: ["32gb", "ddr5"], none: ["5600", "6000", "6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-16gb-d5-6400", cat: "ram", all: ["16gb", "ddr5", "6400"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-16gb-d5-6000", cat: "ram", all: ["16gb", "ddr5", "6000"], none: ["6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-32gb-d5-6400", cat: "ram", all: ["32gb", "ddr5", "6400"], any: ["lancer", "xpg", "adata"], none: ["corsair", "crucial", "kingston", "gskill", "g.skill", "teamgroup", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-32gb-d5-6000", cat: "ram", all: ["32gb", "ddr5", "6000"], any: ["corsair", "vengeance"], none: ["6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-32gb-d5-5600", cat: "ram", all: ["32gb", "ddr5", "5600"], any: ["teamgroup", "elite"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-delta-32-d5", cat: "ram", all: ["32gb", "ddr5"], any: ["teamgroup", "t-force", "delta"], none: ["5600", "6000", "6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-16gb-d5-6400", cat: "ram", all: ["16gb", "ddr5", "6400"], any: ["teamgroup", "t-force", "delta"], none: ["crucial", "corsair", "adata", "kingston", "gskill", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-16gb-d5-6000", cat: "ram", all: ["16gb", "ddr5", "6000"], any: ["gskill", "g.skill", "trident", "z5"], none: ["6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-96gb-d5", cat: "ram", all: ["48gb", "ddr5"], any: ["96gb"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-lexar-thor-16gb-3200", cat: "ram", all: ["lexar", "thor"], any: ["16gb", "16g", "2x8gb", "2x8g"], none: ["32gb", "32g", "64gb", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-lexar-thor-32gb-3200", cat: "ram", all: ["lexar", "thor"], any: ["32gb", "32g", "2x16gb", "2x16g"], none: ["16gb", "16g", "64gb", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-lexar-ares-32gb-6000", cat: "ram", all: ["lexar", "ares"], any: ["32gb", "32g", "6000", "ddr5"], none: ["16gb", "16g", "64gb", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-16gb-d5-5600", cat: "ram", all: ["16gb", "ddr5", "5600"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-vengeance-16-d5", cat: "ram", all: ["16gb", "ddr5"], none: ["32gb", "5600", "6000", "6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-8gb-d5-5600", cat: "ram", all: ["8gb", "ddr5"], none: ["16gb", "32gb", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-32gb-d4-3600", cat: "ram", all: ["32gb", "ddr4", "3600"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-16gb-d5-5600", cat: "ram", all: ["16gb", "ddr5", "5600"], any: ["kingston", "fury", "beast"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-vengeance-16-d5", cat: "ram", all: ["16gb", "ddr5"], any: ["corsair", "vengeance"], none: ["32gb", "5600", "6000", "6400", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-8gb-d5-5600", cat: "ram", all: ["8gb", "ddr5"], any: ["adata"], none: ["16gb", "32gb", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-32gb-d4-3600", cat: "ram", all: ["32gb", "ddr4", "3600"], any: ["gskill", "g.skill", "ripjaws"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-vengeance-32-d4", cat: "ram", all: ["32gb", "ddr4"], none: ["3600", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-value-8-d4", cat: "ram", all: ["8gb"], any: ["3200", "2666", "2400"], none: ["16gb", "32gb", "3600", "4800", "5600", "6000", "ddr5", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-vengeance-16-d5", cat: "ram", all: ["16gb"], any: ["4800", "5600"], none: ["32gb", "6000", "6400", "ddr4", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-16gb-d4-3600", cat: "ram", all: ["16gb", "ddr4", "3600"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-16gb-d4-3600", cat: "ram", all: ["16gb", "ddr4", "3600"], any: ["gskill", "g.skill", "ripjaws"], none: ["dahua", "adata", "corsair", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-vengeance-16-d4", cat: "ram", all: ["16gb", "ddr4"], none: ["32gb", "3600", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
-  { id: "ram-8gb-d4-3600", cat: "ram", all: ["8gb", "ddr4", "3600"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
+  { id: "ram-8gb-d4-3600", cat: "ram", all: ["8gb", "ddr4", "3600"], any: ["dahua", "c600"], none: ["gskill", "g.skill", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-value-8-d4", cat: "ram", all: ["8gb", "ddr4"], none: ["16gb", "32gb", "3600", "laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-4gb-d4-2666", cat: "ram", all: ["4gb", "ddr4"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
   { id: "ram-8gb-d3-1600", cat: "ram", all: ["ddr3"], none: ["laptop", "lap", "sodimm", "notebook", "portable", "portatif"] },
@@ -357,27 +357,27 @@ const RULES = [
     { id: "gpu-rx5500xt-4gb", cat: "gpu", all: ["5500xt"], any: ["4gb", "4g", "4go"], none: ["8gb", "8g", "8go", "laptop", "notebook", "portable"] },
   { id: "gpu-rx5500xt-8gb", cat: "gpu", all: ["5500xt"], none: ["4gb", "4g", "4go", "laptop", "notebook", "portable"] },
   { id: "gpu-rx5500-4gb", cat: "gpu", all: ["5500"], none: ["5500xt", "ryzen", "r5", "cpu", "5500u", "5500m", "laptop", "notebook", "portable"] },
-  { id: "gpu-rx590-8gb", cat: "gpu", all: ["590"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-rx570-4gb", cat: "gpu", all: ["570"], any: ["4gb", "4g", "4go"], none: ["8gb", "8g", "8go", "5700", "laptop", "notebook", "portable"] },
-  { id: "gpu-rx570-8gb", cat: "gpu", all: ["570"], none: ["4gb", "4g", "4go", "5700", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx590-8gb", cat: "gpu", any: ["rx 590", "rx590", "rx-590", "radeon 590"], none: ["fuji", "canon", "cartouche", "toner", "imprimante", "encre", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx570-4gb", cat: "gpu", any: ["rx 570", "rx570", "rx-570", "radeon 570", "570 4gb", "570 4g", "570 4go"], none: ["8gb", "8g", "8go", "5700", "fuji", "canon", "cartouche", "toner", "imprimante", "encre", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx570-8gb", cat: "gpu", any: ["rx 570", "rx570", "rx-570", "radeon 570", "570 8gb", "570 8g", "570 8go"], none: ["4gb", "4g", "4go", "5700", "fuji", "canon", "cartouche", "toner", "imprimante", "encre", "laptop", "notebook", "portable"] },
   { id: "gpu-gtx1650s-4gb", cat: "gpu", any: ["1650 super", "1650super", "1650s"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-rx580-4gb", cat: "gpu", all: ["580"], any: ["4gb", "4g", "4go"], none: ["8gb", "8g", "8go", "laptop", "notebook", "portable"] },
-  { id: "gpu-rx580-8gb", cat: "gpu", any: ["rx 580", "rx580", "580 8gb", "580 8g", "580 8go", "2048sp"], none: ["laptop", "notebook", "portable"] },
+  { id: "gpu-rx580-4gb", cat: "gpu", any: ["rx 580", "rx580", "rx-580", "radeon 580", "580 4gb", "580 4g", "580 4go"], none: ["8gb", "8g", "8go", "fuji", "canon", "cartouche", "toner", "imprimante", "encre", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx580-8gb", cat: "gpu", any: ["rx 580", "rx580", "580 8gb", "580 8g", "580 8go", "2048sp"], none: ["fuji", "canon", "cartouche", "toner", "imprimante", "encre", "laptop", "notebook", "portable"] },
   { id: "gpu-rx7900xtx-24gb", cat: "gpu", all: ["7900xtx"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7900xt-20gb", cat: "gpu", all: ["7900xt"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7800xt-16gb", cat: "gpu", all: ["7800xt"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7700xt-12gb", cat: "gpu", all: ["7700xt"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx7600xt-16gb", cat: "gpu", all: ["7600xt"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-rx7600-8gb", cat: "gpu", all: ["7600"], none: ["7600xt", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx7600-8gb", cat: "gpu", any: ["rx 7600", "rx7600", "rx-7600", "radeon 7600", "7600 8gb", "7600 8g"], none: ["7600xt", "ryzen", "cpu", "processeur", "am5", "processor", "laptop", "notebook", "portable"] },
   { id: "gpu-rx6900xt-16gb", cat: "gpu", all: ["6900xt"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx6800xt-16gb", cat: "gpu", all: ["6800xt"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-rx6800-16gb", cat: "gpu", all: ["6800"], none: ["6800xt", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx6800-16gb", cat: "gpu", any: ["rx 6800", "rx6800", "rx-6800", "radeon 6800"], none: ["6800xt", "ryzen", "cpu", "laptop", "notebook", "portable"] },
   { id: "gpu-rx6750xt-12gb", cat: "gpu", all: ["6750xt"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx6700xt-12gb", cat: "gpu", all: ["6700xt"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx6700-10gb", cat: "gpu", all: ["6700"], none: ["6700xt", "6750xt", "laptop", "notebook", "portable"] },
   { id: "gpu-rx6650xt-8gb", cat: "gpu", all: ["6650xt"], none: ["laptop", "notebook", "portable"] },
   { id: "gpu-rx6600xt-8gb", cat: "gpu", all: ["6600xt"], none: ["laptop", "notebook", "portable"] },
-  { id: "gpu-rx6600-8gb", cat: "gpu", all: ["6600"], none: ["6600xt", "6650xt", "laptop", "notebook", "portable"] },
+  { id: "gpu-rx6600-8gb", cat: "gpu", any: ["rx 6600", "rx6600", "rx-6600", "radeon 6600"], none: ["6600xt", "6650xt", "laptop", "notebook", "portable"] },
   { id: "gpu-rx9070-16gb", cat: "gpu", all: ["9070"], none: ["9070xt", "laptop", "notebook", "portable"] },
   { id: "gpu-rtx5060-8gb", cat: "gpu", all: ["5060"], none: ["5060ti", "laptop", "notebook", "portable", "ti"] },
   { id: "gpu-rtx4070ti-12gb", cat: "gpu", all: ["4070ti"], none: ["super", "laptop", "notebook", "portable"] },
@@ -467,14 +467,14 @@ const RULES = [
   { id: "case-gamma-c60", cat: "case", all: ["gamma"] },
   { id: "case-magma-v02", cat: "case", all: ["magma"], any: ["v02", "8202", "v8202", "mi1", "mi 1"] },
   { id: "case-magma-t9", cat: "case", all: ["magma", "t9"] },
-  { id: "case-nox-hummer", cat: "case", all: ["nox"] },
-  { id: "case-xigmatek-aura", cat: "case", all: ["xigmatek"], any: ["aura", "gaming", "aquarius", "omero", "endorphin", "anubis", "master", "case", "boitier", "chassis", "tour"], none: ["psu", "alimentation", "cooler", "fan", "laptop", "notebook"] },
+  { id: "case-nox-hummer", cat: "case", all: ["nox", "hummer"], none: ["casque", "headset", "audio", "souris", "clavier", "mouse", "keyboard"] },
+  { id: "case-xigmatek-aura", cat: "case", all: ["xigmatek", "aura"], none: ["psu", "alimentation", "cooler", "fan", "laptop", "notebook"] },
   { id: "case-mars", cat: "case", all: ["mars"], any: ["case", "boitier", "chassis", "tour", "mc", "mcv", "mcp", "gaming"], none: ["mpb", "mpiii", "mpvu", "psu", "alimentation", "power", "clavier", "souris", "mouse", "keyboard", "cooler", "laptop", "notebook"] },
   { id: "case-gamemax-vista", cat: "case", all: ["gamemax", "vista"] },
   { id: "case-gamemax-infinity", cat: "case", all: ["gamemax", "infinity"] },
   { id: "case-gamemax-precision", cat: "case", all: ["gamemax", "precision"] },
   { id: "case-gamemax-moonlight", cat: "case", all: ["gamemax", "moonlight"] },
-  { id: "case-gamemax", cat: "case", all: ["gamemax"], any: ["case", "boitier", "chassis", "tour", "ninja", "optical", "brufen", "abyss", "nova", "expedition", "diamond"], none: ["vista", "infinity", "precision", "moonlight", "psu", "alimentation", "power", "vp", "gmx", "ecran", "monitor", "ventilateur", "fan", "laptop", "notebook"] },
+  { id: "case-gamemax", cat: "case", all: ["gamemax"], any: ["vista", "vista mw", "vista mb"], none: ["infinity", "precision", "moonlight", "psu", "alimentation", "power", "vp", "gmx", "ecran", "monitor", "ventilateur", "fan", "laptop", "notebook"] },
   { id: "case-masterbox", cat: "case", all: ["masterbox"] },
   { id: "case-masterbox", cat: "case", all: ["mastercase"] },
   { id: "case-gungnir", cat: "case", all: ["gungnir"] },
@@ -522,15 +522,11 @@ const RULES = [
   { id: "hdd-1tb", cat: "hdd", all: ["hdd", "1tb"], none: ["laptop", "notebook"] },
   { id: "ssd-sata-512gb", cat: "ssd", all: ["512gb"], any: ["ssd"], none: ["nvme", "gen3", "gen4", "gen5", "m2", "laptop", "notebook"] },
   { id: "ssd-nvme-256gb", cat: "ssd", all: ["256"], any: ["nvme", "m2", "ssd"], none: ["sata", "1tb", "2tb", "laptop", "notebook"] },
-  { id: "ram-32gb-d5-6000", cat: "ram", all: ["32gb"], any: ["6000", "6400"], none: ["ddr4", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-16gb-d5-6000", cat: "ram", all: ["16gb"], any: ["6000", "6400"], none: ["ddr4", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-16gb-d4-3600", cat: "ram", all: ["16gb", "3600"], none: ["ddr5", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-vengeance-32-d4", cat: "ram", all: ["32gb", "3200"], none: ["ddr5", "3600", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-vengeance-16-d4", cat: "ram", all: ["16gb", "3200"], none: ["ddr5", "3600", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-vengeance-16-d4", cat: "ram", all: ["spectrix"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-vengeance-16-d4", cat: "ram", all: ["d60g"], none: ["8gb", "laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-value-8-d4", cat: "ram", all: ["d60g", "8gb"], none: ["laptop", "sodimm", "notebook", "portable"] },
-  { id: "ram-vengeance-16-d4", cat: "ram", all: ["d50"], none: ["laptop", "sodimm", "notebook", "portable"] },
+  { id: "ram-32gb-d5-6000", cat: "ram", all: ["32gb", "ddr5"], any: ["6000", "6000mhz"], none: ["6400", "ddr4", "laptop", "sodimm", "notebook", "portable"] },
+  { id: "ram-16gb-d5-6000", cat: "ram", all: ["16gb", "ddr5"], any: ["6000", "6000mhz"], none: ["6400", "ddr4", "laptop", "sodimm", "notebook", "portable"] },
+  { id: "ram-16gb-d4-3600", cat: "ram", all: ["16gb", "3600"], none: ["ddr5", "dahua", "adata", "crucial", "laptop", "sodimm", "notebook", "portable"] },
+  { id: "ram-vengeance-32-d4", cat: "ram", all: ["32gb", "ddr4"], any: ["vengeance", "corsair", "lpx"], none: ["ddr5", "3600", "laptop", "sodimm", "notebook", "portable"] },
+  { id: "ram-vengeance-16-d4", cat: "ram", all: ["16gb", "ddr4"], any: ["vengeance", "corsair", "lpx"], none: ["ddr5", "3600", "spectrix", "d60g", "d50", "d41", "laptop", "sodimm", "notebook", "portable"] },
   { id: "mon-27-100", cat: "monitor", all: ["mp271a"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-25-120", cat: "monitor", all: ["ga25fc"], none: ["laptop", "tv", "televiseur"] },
   { id: "mon-24-100", cat: "monitor", all: ["mp242a"], none: ["laptop", "tv", "televiseur"] },
@@ -555,8 +551,8 @@ const RULES = [
   
   // Popular Algerian Market PSUs
   { id: "psu-mwe650-b", cat: "psu", all: ["mwe"], any: ["650w", "650", "mwe650", "v2", "v3", "bronze"] },
-  { id: "psu-antec-atom550", cat: "psu", all: ["550w"], any: ["antec", "atom", "b550", "vp550"], none: ["motherboard", "carte mere", "b450", "b650"] },
-  { id: "psu-antec-atom650", cat: "psu", all: ["650w"], any: ["antec", "atom", "b650", "csk650"], none: ["motherboard", "carte mere", "b450", "b550"] },
+  { id: "psu-antec-atom550", cat: "psu", all: ["antec", "550w"], any: ["atom", "b550", "vp550", "csk550"], none: ["motherboard", "carte mere", "b450", "b650"] },
+  { id: "psu-antec-atom650", cat: "psu", all: ["antec", "650w"], any: ["atom", "b650", "csk650", "vp650"], none: ["motherboard", "carte mere", "b450", "b550"] },
   { id: "psu-redragon-rgps500", cat: "psu", all: ["redragon", "500w"], any: ["rgps", "bronze", "80+"] },
   { id: "psu-redragon-rgps600", cat: "psu", all: ["redragon", "600w"], any: ["rgps", "bronze", "80+"] },
   { id: "psu-redragon-rgps750", cat: "psu", all: ["redragon", "750w"], any: ["rgps", "gold", "bronze"] },
@@ -579,8 +575,8 @@ const RULES = [
   { id: "psu-deepcool-pf750", cat: "psu", all: ["deepcool", "750w"], any: ["pf750", "pf750d"] },
   { id: "psu-deepcool-pl650d", cat: "psu", all: ["deepcool", "650w"], any: ["pl650", "pl650d"] },
   { id: "psu-deepcool-pl750d", cat: "psu", all: ["deepcool", "750w"], any: ["pl750", "pl750d"] },
-  { id: "psu-1stplayer-black-sir-500w", cat: "psu", all: ["500w"], any: ["black sir", "ps 500", "ps500"] },
-  { id: "psu-1stplayer-black-sir-600w", cat: "psu", all: ["600w"], any: ["black sir", "ps 600", "ps600"] },
+  { id: "psu-1stplayer-black-sir-500w", cat: "psu", all: ["black sir", "500w"], none: ["z420", "z620", "z820", "hp", "dell", "lenovo", "server", "serveur", "workstation"] },
+  { id: "psu-1stplayer-black-sir-600w", cat: "psu", all: ["black sir", "600w"], none: ["z420", "z620", "z820", "hp", "dell", "lenovo", "server", "serveur", "workstation"] },
   { id: "psu-gamemax-gp650", cat: "psu", all: ["gamemax", "650w"], any: ["gp650", "gp 650", "gp"] },
   { id: "psu-deepcool-pk550d", cat: "psu", all: ["deepcool", "550w"], any: ["pk550", "pk550d", "pl550", "bronze"] },
   { id: "psu-deepcool-pk650d", cat: "psu", all: ["deepcool", "650w"], any: ["pk650", "pk650d", "pl650", "bronze"] },
@@ -646,16 +642,16 @@ const RULES = [
   { id: "mon-matos-katana27", cat: "monitor", all: ["matos", "katana"], any: ["27", "240"], none: ["49", "laptop", "tv", "televiseur"] },
   { id: "mon-matos-katana", cat: "monitor", all: ["katana"], any: ["matos", "ecran"], none: ["27", "240", "49", "gf66", "gf76", "laptop", "tv", "televiseur"] },
   { id: "mon-matos-msg24", cat: "monitor", all: ["matos"], any: ["msg24", "msg 24", "msg-24"], none: ["msg27", "katana", "27", "32", "laptop", "tv", "televiseur"] },
-  { id: "mon-matos-msg27", cat: "monitor", all: ["matos"], any: ["msg27", "msg 27", "msg-27", "delta", "scorpio", "storm", "msg2712", "msg 273"], none: ["msg24", "katana", "24", "laptop", "tv", "televiseur"] },
+  { id: "mon-matos-msg27", cat: "monitor", all: ["matos"], any: ["msg27", "msg 27", "msg-27", "delta", "scorpio", "msg2712", "msg 273"], none: ["msg24", "katana", "24", "storm", "ol03", "oled", "mini led", "explorer", "5k", "laptop", "tv", "televiseur"] },
   { id: "mon-matos-msg24", cat: "monitor", any: ["msg24", "msg 24", "msg-24"], none: ["msg27", "katana", "27", "32", "laptop", "tv", "televiseur"] },
-  { id: "mon-matos-msg27", cat: "monitor", any: ["msg27", "msg 27", "msg-27", "msg2712", "msg 273"], none: ["msg24", "katana", "24", "laptop", "tv", "televiseur"] },
+  { id: "mon-matos-msg27", cat: "monitor", any: ["msg27", "msg 27", "msg-27", "msg2712", "msg 273"], none: ["msg24", "katana", "24", "storm", "ol03", "oled", "mini led", "explorer", "5k", "laptop", "tv", "televiseur"] },
 
   // Xiaomi & Redmi
   { id: "mon-xiaomi-g24", cat: "monitor", any: ["g24i", "g24", "g 24"], all: ["xiaomi"], none: ["redmi", "27", "pad", "tablet", "laptop", "tv", "televiseur"] },
   { id: "mon-xiaomi-g24", cat: "monitor", all: ["g24i"], none: ["redmi", "27", "pad", "tablet", "laptop", "tv", "televiseur"] },
   { id: "mon-xiaomi-g27", cat: "monitor", any: ["g27i", "g27", "g 27"], all: ["xiaomi"], none: ["curve", "incurv", "pad", "tablet", "laptop", "tv", "televiseur"] },
   { id: "mon-xiaomi-g27", cat: "monitor", all: ["g27i"], none: ["curve", "incurv", "pad", "tablet", "laptop", "tv", "televiseur"] },
-  { id: "mon-xiaomi-curve30", cat: "monitor", any: ["xiaomi", "mi"], any: ["curve 30", "curved 30", "wfhd"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-xiaomi-curve30", cat: "monitor", all: ["30"], any: ["xiaomi", "mi"], none: ["24", "27", "laptop", "tv", "televiseur"] },
   { id: "mon-redmi-g24", cat: "monitor", all: ["redmi"], any: ["g24", "g 24", "165hz", "180hz"], none: ["laptop", "tv", "televiseur"] },
 
   // Dahua
@@ -683,7 +679,7 @@ const RULES = [
 
   // LG UltraGear
   { id: "mon-lg-ultragear24", cat: "monitor", all: ["ultragear"], any: ["24", "24gn", "24gs", "24gq", "24mr"], none: ["27", "32", "laptop", "tv", "televiseur"] },
-  { id: "mon-lg-ultragear27", cat: "monitor", all: ["ultragear"], any: ["27", "27gn", "27gp", "27gr", "27gs"], none: ["24", "32", "laptop", "tv", "televiseur"] },
+  { id: "mon-lg-ultragear27", cat: "monitor", all: ["ultragear"], any: ["27gn", "27gp", "27gr", "27gs", "27gl", "27gq"], none: ["oled", "woled", "480hz", "240hz", "24", "32", "laptop", "tv", "televiseur"] },
 
   // AOC Gaming
   { id: "mon-aoc-24g4", cat: "monitor", any: ["24g4", "24g4e", "24g4x", "24g4hre", "24g2", "24g2sp", "24g2se"], none: ["27", "laptop", "tv", "televiseur"] },
@@ -717,7 +713,7 @@ const RULES = [
 
   // Dedicated Gaming & Office Monitors
   { id: "mon-game-rev-ragnarok24", cat: "monitor", all: ["ragnarok"], any: ["ecran", "moniteur", "monitor", "revolution", "24"], none: ["ssd", "disque", "hadix", "nvme"] },
-  { id: "mon-msi-g274f", cat: "monitor", all: ["msi"], any: ["g274f", "g274", "mag 274f", "mag274f"], none: ["laptop", "pc portable", "4k", "qhd", "274qpf", "274upf"] },
+  { id: "mon-msi-g274f", cat: "monitor", all: ["msi"], any: ["g274f", "g274", "mag 274f", "mag274f"], none: ["oled", "qd-oled", "mini led", "mini-led", "laptop", "pc portable", "4k", "qhd", "274qpf", "274upf", "274qp", "274urdfw", "240hz"] },
   { id: "mon-msi-g244f", cat: "monitor", all: ["msi"], any: ["g244f", "g244", "g2412", "g241", "mag 256f", "mag 256"], none: ["laptop", "pc portable"] },
   { id: "mon-msi-mp275", cat: "monitor", all: ["msi"], any: ["mp275", "mp245", "mp243"] },
   { id: "mon-aoc-24b36x", cat: "monitor", all: ["aoc"], any: ["24b36x", "24b1xh2", "24b2"] },
@@ -726,7 +722,7 @@ const RULES = [
   { id: "mon-benq-mobiuz-ex240", cat: "monitor", all: ["benq"], any: ["ex240n", "ex240", "ex2510", "mobiuz"] },
   { id: "mon-benq-gw2790", cat: "monitor", all: ["benq"], any: ["gw2790e", "gw2790", "gw2490"] },
   { id: "mon-hybrok-hp24-100", cat: "monitor", all: ["hybrok"], any: ["hp24ips100", "hp24", "24ips100", "hg24ips100"] },
-  { id: "mon-hybrok-hg27-180", cat: "monitor", all: ["hybrok"], any: ["hg27cuf", "hg27", "27cuf"] },
+  { id: "mon-hybrok-hg27-180", cat: "monitor", all: ["hybrok"], any: ["hg27cuf", "hg27", "27cuf"], none: ["oled", "280hz", "500hz", "mini led", "laptop", "tv", "televiseur"] },
   { id: "mon-cm-ga2501", cat: "monitor", any: ["ga2501", "ga 2501"] },
   { id: "mon-vulpes-aura24", cat: "monitor", all: ["vulpes"], any: ["aura", "sakura"] },
 
@@ -760,7 +756,7 @@ const RULES = [
   { id: "mon-24-100", cat: "monitor", all: ["24", "100hz"], none: ["27", "32", "34", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-24-120", cat: "monitor", all: ["24", "120hz"], none: ["27", "32", "34", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-24-144", cat: "monitor", all: ["24", "144hz"], none: ["27", "32", "34", "49", "laptop", "tv", "televiseur"] },
-  { id: "mon-24-165", cat: "monitor", all: ["24", "165hz"], none: ["27", "32", "34", "49", "laptop", "tv", "televiseur"] },
+  { id: "mon-24-165", cat: "monitor", all: ["24", "165hz"], any: ["acer", "kg241"], none: ["matos", "samsung", "dahua", "lg", "asus", "msi", "27", "32", "34", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-24-180", cat: "monitor", any: ["180hz", "180mhz"], all: ["24"], none: ["27", "32", "34", "49", "55", "65", "laptop", "tv", "televiseur"] },
   { id: "mon-24-180", cat: "monitor", all: ["180hz"], any: ["24", "23 8", "24 5", "23 6", "25"], none: ["27", "32", "34", "49", "55", "65", "laptop", "tv", "televiseur"] },
   { id: "mon-24-200", cat: "monitor", all: ["200hz"], any: ["24", "23 8", "24 5"], none: ["27", "32", "34", "49", "55", "65", "laptop", "tv", "televiseur"] },
@@ -769,12 +765,12 @@ const RULES = [
   { id: "mon-27-100", cat: "monitor", all: ["27", "100hz"], none: ["24", "32", "34", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-27-120", cat: "monitor", all: ["27", "120hz"], none: ["24", "32", "34", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-27-165", cat: "monitor", all: ["27", "165hz"], none: ["24", "32", "34", "49", "laptop", "tv", "televiseur"] },
-  { id: "mon-27-180", cat: "monitor", all: ["27"], any: ["180hz", "180mhz"], none: ["24", "32", "34", "49", "laptop", "tv", "televiseur"] },
+  { id: "mon-27-180", cat: "monitor", all: ["27"], any: ["27g4", "27g42e"], none: ["24", "32", "34", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-27-200", cat: "monitor", all: ["27", "200hz"], none: ["24", "32", "34", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-27-240", cat: "monitor", all: ["27", "240hz"], none: ["24", "32", "34", "49", "laptop", "tv", "televiseur"] },
   { id: "mon-27-280", cat: "monitor", all: ["27"], any: ["280hz", "300hz", "310hz", "380hz"], none: ["24", "32", "34", "49", "laptop", "tv", "televiseur"] },
-  { id: "mon-27-qhd165", cat: "monitor", all: ["27"], any: ["qhd", "2k", "1440p", "1440"], none: ["laptop", "tv", "televiseur", "32", "34", "49"] },
-  { id: "mon-27-4k", cat: "monitor", all: ["27"], any: ["4k", "uhd", "2160"], none: ["laptop", "tv", "televiseur", "32", "34", "49"] },
+  { id: "mon-27-qhd165", cat: "monitor", all: ["27"], any: ["qhd", "2k", "1440p", "1440"], none: ["oled", "woled", "480hz", "240hz", "mini led", "laptop", "tv", "televiseur", "32", "34", "49"] },
+  { id: "mon-27-4k", cat: "monitor", all: ["27"], any: ["4k", "uhd", "2160"], none: ["oled", "woled", "mini led", "laptop", "tv", "televiseur", "32", "34", "49"] },
 
   { id: "mon-office-24", cat: "monitor", all: ["24"], any: ["75hz", "60hz"], none: ["27", "32", "34", "49", "120hz", "144hz", "165hz", "180hz", "laptop", "tv", "televiseur"] },
   { id: "mon-office-22", cat: "monitor", all: ["22"], any: ["75hz", "60hz", "100hz"], none: ["24", "27", "32", "34", "49", "laptop", "tv", "televiseur"] },
@@ -782,10 +778,10 @@ const RULES = [
   { id: "mon-22-100", cat: "monitor", all: ["22", "100hz"], none: ["24", "27", "32", "laptop", "tv", "televiseur"] },
 
   { id: "mon-32-qhd180", cat: "monitor", all: ["32"], any: ["180hz", "280hz", "165hz", "240hz", "qhd", "2k"], none: ["24", "27", "34", "49", "4k", "uhd", "2160", "laptop", "tv", "televiseur"] },
-  { id: "mon-32-4k240", cat: "monitor", all: ["32"], any: ["4k", "uhd", "2160", "oled"], none: ["24", "27", "34", "49", "laptop", "tv", "televiseur"] },
-  { id: "mon-34-oled", cat: "monitor", all: ["34", "oled"], none: ["24", "27", "32", "49", "laptop", "tv", "televiseur"] },
-  { id: "mon-34-uw", cat: "monitor", any: ["34", "40", "ultrawide", "uwqhd", "21 9", "3440"], none: ["laptop", "tv", "televiseur"] },
-  { id: "mon-49-superwide", cat: "monitor", any: ["49", "32 9", "5120x1440", "dqhd"], none: ["laptop", "tv", "televiseur"] },
+  { id: "mon-32-4k240", cat: "monitor", all: ["32", "4k"], any: ["fo32u2", "fo32u2p", "mo32u", "gigabyte"], none: ["24", "27", "34", "49", "laptop", "tv", "televiseur"] },
+  { id: "mon-34-oled", cat: "monitor", all: ["34", "oled"], any: ["mo34wqc", "gigabyte", "aorus"], none: ["msi", "341cqpx", "24", "27", "32", "49", "laptop", "tv", "televiseur"] },
+  { id: "mon-34-uw", cat: "monitor", all: ["msi"], any: ["401qr", "mag 401qr", "ultrawide", "uwqhd"], none: ["asus", "tuf", "laptop", "tv", "televiseur"] },
+  { id: "mon-49-superwide", cat: "monitor", all: ["aoc"], any: ["pd49", "49", "dqhd"], none: ["matos", "katana", "samsung", "odyssey", "g9", "laptop", "tv", "televiseur"] },
   // --- Dedicated Cooler Rules ---
   { id: "cooler-lt240", cat: "cooler", any: ["lt240", "lt 240"], none: ["360"] },
   { id: "cooler-deepcool-ld240", cat: "cooler", any: ["ld240", "ld 240"] },
@@ -915,7 +911,7 @@ const EXTRA_JUNK = /laptop|notebook|macbook|printer|imprimante|scanner|projecteu
 // page (a CPU ad priced the B550 board). Vetoed rows skip matchRule and fall
 // through to the existing extras path, never canonical. Genuine standalone
 // store titles never contain these words (verified against live bake output).
-const BUNDLE_VETO = /\bbundle\b|\bpack\b|\bcombo\b|\blot de\b/i;
+const BUNDLE_VETO = /\bbundle\b|\bcombo\b|\blot\s+de\b|\bpack\s+de\b|\b\d+\s*[xX]\s+(?:alimentation|alim|carte|boitier|ventilateur|cpu|ram|disque|ecran|imprimante|lot|pack|piece|pcs)\b/i;
 // ---- "en configuration seulement" / tray-in-config veto ----
 // NOT purchasable standalone: store only sells inside a full build (config).
 // Booking them as solo offers shows phantom cheap prices.
@@ -1017,6 +1013,7 @@ function isVetoed(category, title, url = "") {
   if (PHONE_CAR_VETO.test(title) || (url && PHONE_CAR_VETO.test(url))) return true;
   if (PERIPHERAL_AUDIO_VETO.test(title) || (url && PERIPHERAL_AUDIO_VETO.test(url))) return true;
   if (category === "printer" && /\b(?:bouteille|cartouche|toner|ruban|encre\s*seul|papier)\b/i.test(title)) return true;
+  if (category !== "printer" && /\b(?:bouteille\s*d['']encre|cartouche|toner|ruban\s*encreur|densitom[eè]tre|photolaboratoire)\b/i.test(title)) return true;
   if (category !== "ssd" && category !== "monitor" && category !== "printer") {
     if (NON_PC_BRAND_VETO.test(title)) return true;
   }
@@ -1025,8 +1022,11 @@ function isVetoed(category, title, url = "") {
   if (KIT_VETO.test(title)) return true;
   if (FULLPC_VETO.test(title) || PREBUILT_VETO.test(title)) return true;
   if (isCrossCategoryTitle(title)) return true;
+  if (/\b(?:en\s*panne|pour\s*pi[eè]ces?|hs\b|hors\s*service|defectueux|d[eé]fectueuse|bloqu[eé]|sans\s*afficheur|r[eé]paration\s*de|boite\s*vide|carton\s*seul|emballage\s*seul|sans\s*(?:gpu|carte|processeur|cpu))\b/i.test(title)) return true;
+  if (/\b(?:pate\s*thermique|thermal\s*paste|thermal\s*pad|liquid\s*metal|support\s*gpu|gpu\s*holder|riser\s*pcie|vertical\s*gpu\s*mount)\b/i.test(title)) return true;
   if (category === "monitor") {
     if (MONITOR_LAPTOP_VETO.test(title) || MONITOR_LAPTOP_VETO.test(url)) return true;
+    if (/\b(?:smart\s*tv|t[eé]l[eé]viseur|d[eé]mo\s*satellite|r[eé]cepteur|dalle\s*(?:pc\s*portable|laptop))\b/i.test(title)) return true;
   } else {
     if (LAPTOP_VETO.test(title) || LAPTOP_VETO.test(url)) return true;
   }
@@ -1039,8 +1039,10 @@ function isVetoed(category, title, url = "") {
     if (MOBOPSU_VETO.test(title)) return true;
     if (/\bxeon\b|\bepyc\b|\bdual\s*socket\b|\blga\s*3647\b|\blga\s*4189\b|pour\s+serveur|\bserveur\b|\bserver\b|poweredge|proliant/i.test(title)) return true;
   }
-  if (category === "motherboard" && MOBOPSU_VETO.test(title)) return true;
-  if (category === "psu" && !isLegitPsu(title, url)) return true;
+  if (category === "psu") {
+    if (/\b(?:z420|z620|z820|z440|z640|z840|t5810|t7810|poweredge|proliant|dps-\d{3,4}|server\s*power\s*supply|alim\s*serveur)\b/i.test(title)) return true;
+    if (!isLegitPsu(title, url)) return true;
+  }
   return false;
 }
 // ---- variant-capacity guard (SSD/RAM) ----
@@ -1394,6 +1396,7 @@ function unitRedirect(category, title, matched, has) {
     if (!rid || +rid !== want) continue;
     const rest = (r.all || []).filter((x) => !new RegExp(`^${want}`).test(x));
     if (!rest.every(has)) continue;
+    if (r.any && !r.any.some(has)) continue;
     if ((r.none || []).some(has)) continue;
     return r.id;
   }
@@ -1430,12 +1433,11 @@ const CAT_BANDS = { cpu: [1000, 250000], cooler: [500, 90000], motherboard: [400
 // one bake behind and borderline rows flip-flop forever). Refresh the file
 // manually when the catalog genuinely shifts, never per-bake.
 const SEED_MEDS = (() => {
+  const med = new Map();
   try {
-    const med = new Map();
-    const ref = JSON.parse(fs.readFileSync("lib/data/price-meds.json", "utf8"));
+    const ref = JSON.parse(fs.readFileSync(require('path').join(__dirname, "lib/data/price-meds.json"), "utf8"));
     for (const [k, v] of Object.entries(ref)) if (typeof v === "number") med.set(k, v);
-    if (med.size > 0) return med;
-  } catch { /* fall through to seed */ }
+  } catch { /* ignore */ }
   try {
     const seed = JSON.parse(fs.readFileSync(require('path').join(__dirname, "supabase-seed.json"), "utf8"));
     const by = new Map();
@@ -1444,10 +1446,14 @@ const SEED_MEDS = (() => {
       if (!by.has(o.p)) by.set(o.p, []);
       by.get(o.p).push(o.d);
     }
-    const med = new Map();
-    for (const [k, v] of by) { v.sort((a, b) => a - b); med.set(k, v[Math.floor(v.length / 2)]); }
-    return med;
-  } catch { return new Map(); }
+    for (const [k, v] of by) {
+      if (!med.has(k) && v.length > 0) {
+        v.sort((a, b) => a - b);
+        med.set(k, v[Math.floor(v.length / 2)]);
+      }
+    }
+  } catch { /* ignore */ }
+  return med;
 })();
 function isAbsurd(category, pid, price) {
   if (!price || price < 1500) return true;
