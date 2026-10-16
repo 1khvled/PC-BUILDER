@@ -813,7 +813,7 @@ const RULES = [
   { id: "case-xigmatek-cubi", cat: "case", all: ["xigmatek", "cubi"] },
   { id: "case-xigmatek-lux-s", cat: "case", all: ["xigmatek"], any: ["lux s", "lux-s", "luxs"] },
   { id: "case-cm-cosmos", cat: "case", all: ["cosmos"] },
-  { id: "case-capsys-classic", cat: "case", any: ["capsys", "ps 421", "ps421"] },
+  { id: "case-capsys-classic", cat: "case", all: ["capsys"], any: ["boitier", "case", "chassis", "tour", "ps421", "ps 421", "bureau", "classic", "standard", "desktop"], none: ["casque", "headset", "ecouteur", "souris", "clavier", "mouse", "keyboard", "audio"] },
   { id: "case-budget", cat: "case", any: ["haff", "budget"], none: ["cmt192", "m100r", "m100a", "titan", "ares"] },
 ];
 

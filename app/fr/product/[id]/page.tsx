@@ -2,17 +2,18 @@ import type { Metadata } from "next";
 import RecordVisit from "@/components/RecordVisit";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { bestOffer, isRuptured, minOf, productImage } from "@/lib/data/products";
-import { getOffers, getPriceHistory, getProduct, getProducts, getScrapedAt } from "@/lib/data/catalog";
-import Thumb from "@/components/Thumb";
+import { bestOffer, isRuptured, minOf, maxOf, productImage } from "@/lib/data/products";
+import { getOffers, getPriceHistory, getProduct, getScrapedAt } from "@/lib/data/catalog";
+import ProductHeroGallery from "@/components/ProductHeroGallery";
+import ProductSpecsCard from "@/components/ProductSpecsCard";
 import ProductOffersTable from "@/components/ProductOffersTable";
-import PriceChart from "@/components/PriceChart";
-import FbResolveForm from "@/components/FbResolveForm";
+import ProductShareButton from "@/components/ProductShareButton";
 import BytekAd from "@/components/BytekAd";
 import AskAI from "@/components/AskAI";
 import { productPrompt } from "@/lib/ai/prompt";
+import PriceChart from "@/components/PriceChart";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
-import { OG_LOCALE, formatNumber, languageAlternates } from "@/lib/i18n/config";
+import { OG_LOCALE, SITE_URL, formatNumber, formatPrice, languageAlternates } from "@/lib/i18n/config";
 import { categoryLabel } from "@/lib/i18n/categories";
 import { getT } from "@/lib/i18n/server";
 
@@ -29,6 +30,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   const offers = allOffers.filter((o) => o.productId === product.id && !isRuptured(o));
   const minPrice = minOf(offers.map((o) => o.priceDa));
 
+  const name = `${product.brand} ${product.model}`;
   const title = minPrice
     ? t("product.metaTitlePrice", { brand: product.brand, model: product.model, price: formatNumber(minPrice, LOCALE) })
     : t("product.metaTitle", { brand: product.brand, model: product.model });
@@ -43,6 +45,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
       model: product.model,
       category: product.category,
     }).split(",").map((k) => k.trim()),
+    alternates: languageAlternates(`/product/${product.id}`),
     openGraph: {
       title,
       description: t("product.metaOgDescription", { brand: product.brand, model: product.model }),
@@ -50,7 +53,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
       type: "article",
       locale: OG_LOCALE.fr,
       siteName: "DZ PartPicker",
-      images: imgUrl ? [{ url: imgUrl, alt: `${product.brand} ${product.model}` }] : undefined,
+      images: imgUrl ? [{ url: imgUrl, alt: name }] : undefined,
     },
     twitter: {
       card: "summary_large_image",
@@ -58,11 +61,11 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
       description: t("product.metaOgDescription", { brand: product.brand, model: product.model }),
       images: imgUrl ? [imgUrl] : undefined,
     },
-    alternates: languageAlternates(`/product/${product.id}`),
   };
 }
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
+  const t = await getT(LOCALE);
   const [product, allOffers, history, scrapedAt] = await Promise.all([
     getProduct(params.id),
     getOffers(),
@@ -73,15 +76,19 @@ export default async function ProductPage({ params }: { params: { id: string } }
   if (!product) {
     notFound();
   }
+
   const offers = allOffers.filter((o) => o.productId === product.id).sort((a, b) => a.priceDa - b.priceDa);
-  // Hero = best NEW + available offer, never a dead/used listing while a live one exists
   const best = bestOffer(product.id, allOffers) ?? offers[0];
+  const name = `${product.brand} ${product.model}`;
+  const catLabel = categoryLabel(product.category, t);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: `${product.brand} ${product.model}`,
+    name,
     brand: product.brand,
-    category: product.category,
+    category: catLabel,
+    inLanguage: "fr-DZ",
     image: productImage(product),
     offers: offers.slice(0, 20).map((o) => ({
       "@type": "Offer",
@@ -97,20 +104,18 @@ export default async function ProductPage({ params }: { params: { id: string } }
       url: o.url,
     })),
   };
+
   const breadcrumbsJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    inLanguage: "fr-DZ",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Accueil", item: "https://dzpartpicker.dz/" },
-      { "@type": "ListItem", position: 2, name: product.category, item: `https://dzpartpicker.dz/category/${product.category}` },
-      { "@type": "ListItem", position: 3, name: `${product.brand} ${product.model}`, item: `https://dzpartpicker.dz/product/${product.id}` },
+      { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE_URL}/fr` },
+      { "@type": "ListItem", position: 2, name: catLabel, item: `${SITE_URL}/fr/category/${product.category}` },
+      { "@type": "ListItem", position: 3, name, item: `${SITE_URL}/fr/product/${product.id}` },
     ],
   };
 
-  const specs = Object.entries(product.specs);
-
-  // Stats ignore ruptures: a dead listing must never set the min/max or the "savings".
-  // offers is already sorted ascending, filter preserves that order.
   const liveOffers = offers.filter((o) => !isRuptured(o));
   const allRuptured = offers.length > 0 && liveOffers.length === 0;
   const statsPool = liveOffers.length > 0 ? liveOffers : offers;
@@ -129,380 +134,352 @@ export default async function ProductPage({ params }: { params: { id: string } }
     lowestUsedOffer.priceDa < best.priceDa
   );
 
+  const day = scrapedAt.slice(0, 10);
+  const specs = Object.entries(product.specs);
+
   return (
-    <main className="max-w-7xl mx-auto px-4 py-6 space-y-8">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-8">
       <RecordVisit productId={product.id} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsJsonLd) }} />
-      {/* Breadcrumbs */}
-      <nav aria-label="Fil d'Ariane" className="flex items-center gap-2 text-xs text-slate-500">
-        <Link href="/fr" className="hover:text-slate-900 transition-colors">
-          Accueil
-        </Link>
-        <span>/</span>
-        <Link href={`/fr/category/${product.category}`} className="hover:text-slate-900 capitalize transition-colors">
-          {product.category}
-        </Link>
-        <span>/</span>
-        <span className="text-slate-900 font-semibold truncate">
-          {product.brand} {product.model}
-        </span>
-        <span className="ml-auto shrink-0">
-          <LocaleSwitcher pathname={`/product/${product.id}`} />
-        </span>
-      </nav>
 
-      {/* Main Product Layout with Sticky Buy Box */}
+      {/* Modern Breadcrumb & Quick Action Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-slate-200/60">
+        <nav aria-label={t("common.breadcrumb")} className="flex items-center gap-2 text-xs text-slate-500 min-w-0">
+          <Link href="/fr" className="hover:text-slate-900 transition-colors flex items-center gap-1 font-medium">
+            <svg className="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            <span>{t("common.home")}</span>
+          </Link>
+          <span className="text-slate-300">/</span>
+          <Link href={`/fr/category/${product.category}`} className="hover:text-slate-900 transition-colors font-medium">
+            {catLabel}
+          </Link>
+          <span className="text-slate-300">/</span>
+          <span className="text-slate-900 font-bold truncate">
+            {product.brand} {product.model}
+          </span>
+        </nav>
+
+        <div className="flex items-center gap-2 ml-auto">
+          <ProductShareButton
+            title={`${name} — Prix en Algérie`}
+            label="Partager"
+            copiedLabel="Lien Copié !"
+          />
+          <LocaleSwitcher pathname={`/fr/product/${product.id}`} />
+        </div>
+      </div>
+
+      {/* Main Grid: Left Stage (8 cols) + Right Sticky Buy Box (4 cols) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Gallery Hero + Specs + Offers (8 cols) */}
-        <div className="lg:col-span-8 space-y-8">
-          {/* Gallery Hero with Badges */}
-          <div className="bg-white rounded border border-slate-200 p-6 sm:p-8 relative overflow-hidden">
-            {/* Top Badges Row */}
-            <div className="flex flex-wrap items-center gap-2 mb-6">
-              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-50 text-[#2c87c3] border border-blue-100">
-                {product.category}
-              </span>
-              <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
-                Réf : {product.id}
-              </span>
-              {allRuptured ? (
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-200 flex items-center gap-1.5 shadow-sm">
-                  <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
-                  <span>Rupture de stock globale</span>
-                </span>
-              ) : best ? (
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  <span>Meilleur prix : {best.priceDa.toLocaleString("fr-DZ")} DA</span>
-                </span>
-              ) : null}
-              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-slate-50 text-slate-600 border border-slate-200 inline-flex items-center gap-1.5">
-                <svg className="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                  <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                  <line x1="12" y1="22.08" x2="12" y2="12" />
-                </svg>
-                <span>{offers.length} boutique{offers.length > 1 ? "s" : ""} indexée{offers.length > 1 ? "s" : ""}</span>
-              </span>
-            </div>
-
-            {/* Global Rupture Alert Banner */}
-            {allRuptured && (
-              <div role="alert" className="mb-6 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-rose-200 text-rose-800 flex items-center justify-center font-extrabold text-xs shrink-0 mt-0.5">
-                  ✕
-                </div>
-                <div>
-                  <div className="font-extrabold text-sm text-rose-950">
-                    Composant actuellement en rupture de stock chez toutes les boutiques
-                  </div>
-                  <p className="text-xs text-rose-800/90 mt-0.5 leading-relaxed">
-                    Aucun marchand n&apos;a ce produit en stock pour le moment. Les offres listées ci-dessous correspondent aux derniers prix relevés avant rupture.
-                  </p>
-                </div>
+        {/* Left Column: Product Showcase + Specs + Live Offers + Price Chart */}
+        <div className="lg:col-span-8 order-2 lg:order-none space-y-8 min-w-0">
+          {/* Hero Header Card */}
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-7 shadow-xs">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
+              {/* Product Media Showcase Gallery */}
+              <div className="md:col-span-5">
+                <ProductHeroGallery
+                  src={productImage(product)}
+                  alt={name}
+                  brand={product.brand}
+                  categoryLabel={catLabel}
+                  isRuptured={allRuptured}
+                  locale="fr"
+                />
               </div>
-            )}
 
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-8">
-              {/* Image Container with Badges */}
-              <div className="relative group shrink-0">
-                <div className="p-3 rounded bg-slate-50 border border-slate-200/80 shadow-inner">
-                  <Thumb src={productImage(product)} alt={product.model} size={132} />
+              {/* Product Identity & Live Market Highlights */}
+              <div className="md:col-span-7 space-y-4">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                    <span className="text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                      {product.brand}
+                    </span>
+                    <span className="text-[11px] font-mono font-semibold text-slate-500 bg-slate-50 px-2 py-0.5 rounded-md border border-slate-200/80">
+                      RÉF : {product.id}
+                    </span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 leading-tight">
+                    {name}
+                  </h1>
                 </div>
-                {best && (
-                  <div className="absolute -bottom-2 -right-2 bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-md border border-slate-700">
-                    Prix vérifiés DA
+
+                {/* 4-Stat Live Market Intelligence Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                      Meilleur Prix
+                    </span>
+                    <span className="text-sm font-black text-emerald-700 tabular-nums">
+                      {best ? formatPrice(best.priceDa, LOCALE) : "N/D"}
+                    </span>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                      Boutiques
+                    </span>
+                    <span className="text-sm font-black text-slate-900">
+                      {offers.length} {offers.length > 1 ? "magasins" : "magasin"}
+                    </span>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                      Écart Max
+                    </span>
+                    <span className="text-sm font-black text-slate-900 tabular-nums">
+                      {priceStats && priceStats.diff > 0 ? `+${formatNumber(priceStats.diff, LOCALE)} DA` : "0 DA"}
+                    </span>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">
+                      Livraison
+                    </span>
+                    <span className="text-sm font-black text-slate-900">
+                      58 Wilayas
+                    </span>
+                  </div>
+                </div>
+
+                {/* Quick Spec Highlights */}
+                {specs.length > 0 && (
+                  <div className="pt-2 flex flex-wrap gap-1.5">
+                    {specs.slice(0, 4).map(([k, v]) => (
+                      <span
+                        key={k}
+                        className="inline-flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-md bg-slate-100/90 text-slate-800 border border-slate-200/60"
+                      >
+                        <span className="text-slate-400 capitalize">{k.replace(/_/g, " ")}:</span>
+                        <b className="font-bold text-slate-900">{Array.isArray(v) ? v.join(", ") : String(v)}</b>
+                      </span>
+                    ))}
                   </div>
                 )}
-              </div>
-
-              {/* Title & Key Highlights */}
-              <div className="min-w-0 flex-1 text-center sm:text-left">
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  {product.brand}
-                </div>
-                <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 mt-0.5 leading-tight">
-                  {product.brand} {product.model}
-                </h1>
-
-                <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed">
-                  Prix relevés en Algérie, triés par prix croissant.
-                </p>
-
-                {/* Highlight Specs Chips */}
-                <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 mt-4">
-                  {specs.slice(0, 5).map(([k, v]) => (
-                    <span
-                      key={k}
-                      className="text-xs px-3 py-1 rounded bg-slate-100 text-slate-700 font-medium border border-slate-200/60"
-                    >
-                      <b className="text-slate-900 capitalize">{k} :</b> {String(v)}
-                    </span>
-                  ))}
-                </div>
               </div>
             </div>
           </div>
 
-          {/* Upgraded Spec Table */}
-          <section className="bg-white rounded border border-slate-200 overflow-hidden">
-            <div className="p-4 sm:p-5 bg-slate-50/80 border-b border-slate-200 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-[#2c87c3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="4" y="4" width="16" height="16" rx="2" />
-                  <line x1="8" y1="2" x2="8" y2="6" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="4" y1="10" x2="20" y2="10" />
-                </svg>
-                <h2 className="font-extrabold text-base text-slate-900 tracking-tight">
-                  Fiche Technique Détaillée
-                </h2>
-              </div>
-              <span className="text-xs text-slate-400 font-medium">Données constructeur</span>
-            </div>
-
-            <div className="divide-y divide-slate-100">
-              <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 text-xs sm:text-sm">
-                <div className="p-4 flex items-center justify-between bg-white hover:bg-slate-50/60 transition-colors">
-                  <span className="text-slate-500 font-medium">Catégorie</span>
-                  <span className="font-bold text-slate-900 capitalize">{product.category}</span>
-                </div>
-                <div className="p-4 flex items-center justify-between bg-white hover:bg-slate-50/60 transition-colors">
-                  <span className="text-slate-500 font-medium">Fabricant / Marque</span>
-                  <span className="font-bold text-slate-900">{product.brand}</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 text-xs sm:text-sm">
-                <div className="p-4 flex items-center justify-between bg-slate-50/40 hover:bg-slate-50 transition-colors">
-                  <span className="text-slate-500 font-medium">Modèle exact</span>
-                  <span className="font-bold text-slate-900">{product.model}</span>
-                </div>
-                <div className="p-4 flex items-center justify-between bg-slate-50/40 hover:bg-slate-50 transition-colors">
-                  <span className="text-slate-500 font-medium">Identifiant interne</span>
-                  <span className="text-xs font-semibold text-slate-700 bg-slate-200/70 px-2 py-0.5 rounded">
-                    {product.id}
-                  </span>
-                </div>
-              </div>
-
-              {specs.map(([key, val], idx) => (
-                <div
-                  key={key}
-                  className={`grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 text-xs sm:text-sm ${
-                    idx % 2 === 0 ? "bg-white" : "bg-slate-50/40"
-                  } hover:bg-blue-50/30 transition-colors`}
-                >
-                  <div className="p-4 flex items-center justify-between sm:col-span-1">
-                    <span className="text-slate-500 font-medium capitalize">{key.replace(/_/g, " ")}</span>
-                  </div>
-                  <div className="p-4 flex items-center justify-between sm:col-span-1">
-                    <span className="font-bold text-slate-900">{String(val)}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Sponsor: peripherals sit next to component pricing, so the ad goes
-              above the offers table where purchase intent is highest. */}
-          <BytekAd variant="strip" locale="fr" placement="fr-product-offers" />
-          {/* Dynamic Sortable Offers Table */}
-          <section id="offers" className="space-y-3 scroll-mt-24">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-lg font-bold text-slate-900 tracking-tight">
-                Comparatif des prix marchands en Algérie
-              </h2>
-              <span className="text-xs text-slate-400">
-                Relevé le {scrapedAt.slice(0, 10)} • Tri organique par prix croissant
-              </span>
-            </div>
-            <ProductOffersTable offers={offers} locale="fr" />
-            <AskAI
+          {/* Technical Specifications Section */}
+          <section id="specs" className="scroll-mt-24">
+            <ProductSpecsCard
+              category={product.category}
+              categoryLabel={catLabel}
+              brand={product.brand}
+              model={product.model}
+              id={product.id}
+              specs={product.specs}
               locale="fr"
-              placement="fr-product"
-              prompt={productPrompt({
-                brand: product.brand,
-                model: product.model,
-                category: product.category,
-                bestPrice: best ? best.priceDa : null,
-                bestStore: best ? best.store : null,
-                offersCount: offers.length,
-                locale: "fr",
-              })}
             />
           </section>
 
-          {/* Price History (PCPartPicker signature) */}
-          <section className="bg-white rounded border border-slate-200 p-4 sm:p-5 space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="font-extrabold text-base text-slate-900 tracking-tight">
-                Historique des prix
-              </h2>
-              <span className="text-xs text-slate-400">
-                {history.length} relevé{history.length > 1 ? "s" : ""} • toutes boutiques
-              </span>
+          {/* Store Comparison Matrix */}
+          <section id="offers" className="space-y-4 scroll-mt-24">
+            <BytekAd variant="strip" locale="fr" placement="fr-product-offers" />
+            <ProductOffersTable offers={offers} locale={LOCALE} />
+          </section>
+
+          {/* Historical Price Analytics Card */}
+          <section className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-xs space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-blue-50 text-[#2c87c3] border border-blue-100">
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                  </svg>
+                </span>
+                <div>
+                  <h2 className="font-extrabold text-base text-slate-900 tracking-tight">
+                    {t("product.historyTitle")}
+                  </h2>
+                  <p className="text-[11px] text-slate-500">
+                    {t("product.historyMeta", { count: history.length, plural: history.length > 1 ? "s" : "" })}
+                  </p>
+                </div>
+              </div>
             </div>
             <PriceChart points={history} currentOffers={offers} />
           </section>
 
-          {/* Facebook Marketplace Paste Box */}
-          <div className="bg-white rounded border border-slate-200 p-5 sm:p-6">
-            <div className="flex items-center gap-2.5">
-              <span className="w-7 h-7 rounded bg-blue-600 text-white flex items-center justify-center text-xs font-bold">
-                f
-              </span>
-              <h2 className="font-bold text-sm text-slate-900">
-                Résoudre une annonce Facebook Marketplace à la demande
-              </h2>
+          {/* System Builder CTA Banner */}
+          <section className="rounded-2xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 p-6 text-white shadow-md relative overflow-hidden">
+            <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:16px_16px] opacity-15 pointer-events-none" />
+            <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                  <span>⚡ Vérification de Compatibilité PC</span>
+                </div>
+                <h3 className="text-lg font-black tracking-tight text-white">
+                  Vous intégrez ce composant dans votre configuration ?
+                </h3>
+                <p className="text-xs text-slate-300 max-w-xl leading-relaxed">
+                  Vérifiez instantanément la compatibilité des dimensions, du socket et de la puissance avec le reste de vos pièces dans notre configurateur.
+                </p>
+              </div>
+              <Link
+                href={`/fr/builder?add=${product.category}:${product.id}`}
+                className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#2c87c3] to-[#1e5c85] hover:from-[#3597d8] hover:to-[#246e9f] text-white text-xs font-black shadow-md transition-all active:scale-95"
+              >
+                <span>Ajouter au Builder</span>
+                <span>🛠️</span>
+              </Link>
             </div>
-            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-              Collez le lien d&apos;une annonce Facebook Marketplace pour vérifier son tarif et son historique face aux prix neufs du marché algérien (résolution à la demande, sans scraper permanent).
-            </p>
-            <FbResolveForm />
-          </div>
+          </section>
+
+          {/* Ask AI Widget */}
+          <AskAI
+            locale={LOCALE}
+            placement="fr-product"
+            prompt={productPrompt({
+              brand: product.brand,
+              model: product.model,
+              category: product.category,
+              bestPrice: best ? best.priceDa : null,
+              bestStore: best ? best.store : null,
+              offersCount: offers.length,
+              locale: LOCALE,
+            })}
+          />
         </div>
 
         {/* Right Column: Sticky Buy Box (4 cols) */}
-        <div className="lg:col-span-4 lg:sticky lg:top-20 space-y-4">
-          <div className="bg-white rounded border border-slate-200 shadow-md p-6 space-y-5">
-            {/* Header / Price */}
+        <div className="lg:col-span-4 lg:sticky lg:top-24 order-1 lg:order-none space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md p-5 sm:p-6 space-y-5">
+            {/* Header: Best Price */}
             <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                {allRuptured
-                  ? "Dernier tarif constaté (Épuisé)"
-                  : hasCheaperUsed
-                  ? "Meilleur prix neuf constaté"
-                  : best?.condition === "used"
-                  ? "Meilleur prix occasion"
-                  : "Meilleur tarif constaté"}
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  {allRuptured
+                    ? t("product.lastPriceLabel")
+                    : hasCheaperUsed
+                    ? t("product.bestNewPriceLabel")
+                    : best?.condition === "used"
+                    ? t("product.bestUsedPriceLabel")
+                    : t("product.bestLabel")}
+                </span>
+                {best && (
+                  <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-full ${
+                    best.condition === "new" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"
+                  }`}>
+                    {best.condition === "new" ? t("common.new") : t("common.used")}
+                  </span>
+                )}
               </div>
+
               {best ? (
                 <>
                   <div
-                    className={`text-3xl sm:text-4xl font-extrabold tracking-tight mt-1 ${
+                    className={`text-3xl sm:text-4xl font-black tracking-tight mt-1 tabular-nums ${
                       allRuptured ? "text-slate-400 line-through" : "text-emerald-700"
                     }`}
                   >
-                    {best.priceDa.toLocaleString("fr-DZ")} DA
+                    {formatPrice(best.priceDa, LOCALE)}
                   </div>
-                  <div className="text-xs text-slate-600 mt-1 flex flex-wrap items-center gap-1.5">
-                    <span>chez</span>
-                    <b className="text-slate-900 font-bold">{best.store}</b>
-                    <span className="text-slate-400">({best.wilaya})</span>
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${best.condition === "new" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"}`}>
-                      {best.condition === "new" ? "Neuf" : "Occasion"}
-                    </span>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${isRuptured(best) ? "bg-rose-100 text-rose-800 border border-rose-200" : "bg-emerald-100 text-emerald-800 border border-emerald-200"}`}>
-                      {isRuptured(best) ? "✕ Rupture" : "✓ En stock"}
+
+                  {/* Store & Wilaya row */}
+                  <div className="text-xs text-slate-600 mt-2 flex flex-wrap items-center gap-1.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                    <span className="text-slate-400">{t("common.at")}</span>
+                    <b className="text-slate-900 font-extrabold">{best.store}</b>
+                    <span className="text-slate-400">•</span>
+                    <span className="text-slate-600 font-medium">📍 {best.wilaya}</span>
+                    <span className={`ml-auto text-[10px] px-2 py-0.5 rounded-full font-bold ${
+                      isRuptured(best) ? "bg-rose-100 text-rose-800" : "bg-emerald-100 text-emerald-800"
+                    }`}>
+                      {isRuptured(best) ? `✕ Rupture` : `✓ En stock`}
                     </span>
                   </div>
+
                   {hasCheaperUsed && lowestUsedOffer && (
-                    <div className="mt-2 text-xs text-amber-800 dark:text-amber-200 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded p-2.5 flex items-center justify-between">
-                      <span className="font-semibold">Occasion disponible dès {lowestUsedOffer.priceDa.toLocaleString("fr-DZ")} DA</span>
-                      <a href="#offers" className="font-bold text-amber-900 dark:text-amber-100 underline hover:text-[#2c87c3] shrink-0 ml-2">
-                        Voir offres ↓
+                    <div className="mt-2 text-xs text-amber-800 bg-amber-50/80 border border-amber-200 rounded-xl p-2.5 flex items-center justify-between">
+                      <span className="font-semibold">{t("product.usedFrom", { price: formatPrice(lowestUsedOffer.priceDa, LOCALE) })}</span>
+                      <a href="#offers" className="font-bold text-amber-900 underline hover:text-[#2c87c3] shrink-0 ml-2">
+                        {t("common.viewOffers")} ↓
                       </a>
                     </div>
                   )}
-                  {isRuptured(best) && (
-                    <div className="text-xs text-rose-700 font-bold mt-2 bg-rose-50 border border-rose-200 rounded p-2.5 flex items-start gap-1.5">
-                      <span className="shrink-0">✕</span>
-                      <span>Offre constatée en rupture de stock par le marchand.</span>
-                    </div>
-                  )}
-                  {best.condition === "used" && !hasCheaperUsed && (
-                    <div className="text-xs text-amber-700 font-semibold mt-1.5">
-                      Offre d'occasion — exigez test + facture (voir guide Ouedkniss).
-                    </div>
-                  )}
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    Stock relevé le {scrapedAt.slice(0, 10)} — confirmez toujours sur la boutique.
-                  </div>
                 </>
               ) : (
                 <div className="text-sm text-rose-600 font-bold mt-2">
-                  Aucun marchand actuellement en stock
+                  {t("product.noStoreInStock")}
                 </div>
               )}
             </div>
 
             {/* Primary Action Buttons */}
             {best && (
-              <div className="space-y-2.5 pt-1">
+              <div className="space-y-2.5">
                 <a
                   href={best.url}
                   target="_blank"
-                  rel="noreferrer"
-                  aria-label={isRuptured(best) ? `Voir quand même l'offre en rupture chez ${best.store}` : `Commander sur ${best.store}`}
-                  className={`w-full text-center py-3 px-4 rounded text-white font-bold text-sm shadow-md transition-colors flex items-center justify-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isRuptured(best)
-                    ? "bg-rose-600 hover:bg-rose-700 active:bg-rose-800 focus-visible:ring-rose-500"
-                    : "bg-[#2c87c3] hover:bg-[#1e5c85] active:bg-[#153f5b] focus-visible:ring-[#2c87c3]"}`}
+                  rel="noreferrer sponsored"
+                  aria-label={isRuptured(best) ? t("product.seeOutOfStockOnAria", { store: best.store }) : t("product.orderOnAria", { store: best.store })}
+                  className={`w-full text-center py-3.5 px-4 rounded-xl text-white font-extrabold text-sm shadow-md transition-all flex items-center justify-center gap-2 active:scale-98 ${
+                    isRuptured(best)
+                      ? "bg-slate-700 hover:bg-slate-800"
+                      : "bg-gradient-to-r from-[#2c87c3] to-[#1e5c85] hover:from-[#3296d6] hover:to-[#226895]"
+                  }`}
                 >
-                  <span>{isRuptured(best) ? `Voir l'offre sur ${best.store} (En rupture)` : `Commander sur ${best.store}`}</span>
-                  <span>↗</span>
+                  <span>{isRuptured(best) ? t("product.seeOutOfStockOn", { store: best.store }) : t("product.orderOn", { store: best.store })}</span>
+                  <span className="text-base leading-none">↗</span>
                 </a>
 
                 <Link
                   href={`/fr/builder?add=${product.category}:${product.id}`}
-                  className="w-full text-center py-2.5 px-4 rounded border border-slate-200 hover:border-[#2c87c3] hover:bg-blue-50/50 text-slate-800 font-semibold text-xs transition-colors flex items-center justify-center gap-1.5"
+                  className="w-full text-center py-2.5 px-4 rounded-xl border border-slate-200 hover:border-[#2c87c3] hover:bg-blue-50/50 text-slate-800 font-bold text-xs transition-colors flex items-center justify-center gap-1.5 shadow-2xs"
                 >
-                  <span>+ Ajouter au System Builder</span>
+                  <span>{t("product.addToBuilder")}</span>
                 </Link>
               </div>
             )}
 
-            {/* Price Range Comparison info */}
+            {/* Price Intelligence & Savings Breakdown */}
             {priceStats && priceStats.diff > 0 && (
-              <div className="p-3.5 rounded bg-slate-50 border border-slate-200/80 text-xs space-y-1.5">
-                {hasCheaperUsed && best ? (
-                  <>
-                    <div className="flex justify-between text-slate-600">
-                      <span>Prix le plus bas (neuf) :</span>
-                      <b className="text-emerald-700">{best.priceDa.toLocaleString("fr-DZ")} DA</b>
-                    </div>
-                    <div className="flex justify-between text-slate-600">
-                      <span>Prix le plus bas (occasion) :</span>
-                      <b className="text-amber-700">{priceStats.min.toLocaleString("fr-DZ")} DA</b>
-                    </div>
-                  </>
-                ) : (
-                  <div className="flex justify-between text-slate-600">
-                    <span>Prix le plus bas :</span>
-                    <b className="text-emerald-700">{priceStats.min.toLocaleString("fr-DZ")} DA</b>
-                  </div>
-                )}
+              <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs space-y-2">
+                <div className="flex justify-between text-slate-600">
+                  <span>Prix le plus bas :</span>
+                  <b className="text-emerald-700">{formatPrice(priceStats.min, LOCALE)}</b>
+                </div>
                 <div className="flex justify-between text-slate-600">
                   <span>Prix le plus haut :</span>
-                  <b className="text-slate-800">{priceStats.max.toLocaleString("fr-DZ")} DA</b>
+                  <b className="text-slate-800">{formatPrice(priceStats.max, LOCALE)}</b>
                 </div>
-                <div className="flex justify-between text-slate-800 font-bold pt-1 border-t border-slate-200">
+                <div className="flex justify-between text-slate-900 font-extrabold pt-1.5 border-t border-slate-200">
                   <span>Économie possible :</span>
-                  <span className="text-emerald-700">+{priceStats.diff.toLocaleString("fr-DZ")} DA</span>
+                  <span className="text-emerald-700 font-black">+{formatPrice(priceStats.diff, LOCALE)}</span>
                 </div>
-                {!priceStats.live && (
-                  <div className="text-[11px] text-red-600 font-semibold">
-                    Toutes les offres sont en rupture — prix à titre indicatif.
-                  </div>
-                )}
               </div>
             )}
 
-            <p className="pt-2 border-t border-slate-100 text-xs text-slate-500">
-              ✓ Indépendant, sans commission • Relevé le {scrapedAt.slice(0, 10)}
-            </p>
+            {/* Algerian Trust & Delivery Assurances */}
+            <div className="pt-2 border-t border-slate-100 space-y-1.5 text-[11px] text-slate-500">
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">🚚</span>
+                <span>Livraison 58 Wilayas disponible (Yalidine, Maystro...)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">💵</span>
+                <span>Paiement à la livraison directement avec la boutique</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">✓</span>
+                <span>Prix vérifiés en Dinars Algériens (DA) • Relevé du {day}</span>
+              </div>
+            </div>
           </div>
+
+          {/* Cross-Sell Sponsor Card */}
           <a
             href="https://bytekstore.shop/?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=sponsor&utm_content=fr-product-buybox"
             target="_blank"
             rel="noopener noreferrer sponsored"
-            className="block rounded-lg border border-indigo-200/70 bg-indigo-50/50 px-3 py-2 text-[11px] leading-relaxed text-slate-600 transition-colors hover:border-indigo-300 hover:bg-indigo-50"
+            className="block rounded-xl border border-indigo-200/70 bg-gradient-to-r from-indigo-50/60 to-purple-50/40 p-3 text-[11px] leading-relaxed text-slate-600 transition-colors hover:border-indigo-300 shadow-2xs"
           >
-            <span className="mr-1.5 rounded bg-indigo-500/15 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-widest text-indigo-600">
-              Sponsor
+            <span className="mr-1.5 rounded-md bg-indigo-600 text-white px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider">
+              {t("ad.sponsor")}
             </span>
-            Besoin d'une souris, d'un clavier ou d'un casque avec ? Bytek Store stocke des périphériques esport en Algérie.
+            {t("ad.buybox")}
           </a>
         </div>
       </div>
