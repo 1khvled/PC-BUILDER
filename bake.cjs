@@ -1008,12 +1008,15 @@ const MOBOPSU_VETO = /psu|\balimentation\b|80\s*plus|modulaire|bronze|gold|antec
 // prebuilt markers so "Desktop Processor" CPU singles and "configurable"
 // RGB copy survive: desktop needs a brand, config needs the "u".
 const PREBUILT_VETO = /unite\s+(gamer|asus|gaming)|kit\s+upgrade|forssa|\(.*configu|configu\w*\s+(uniquement|only)|desktop\s+(hp|lenovo|dell|asus|tower|sff|neo|think|pro\b)|pc\s+(high-tech|de\s+bureau)|tour\s+gamer/i;
+const PERIPHERAL_AUDIO_VETO = /\b(?:casque|headset|ecouteur|ecouteurs|earphone|earphones|airpod|airpods|earbud|earbuds|microphone|micro[\s-]casque|clavier|keyboard|souris|mouse\b|tapis\s*de\s*souris|mousepad|chaise\s*gamer|fauteuil\s*gamer|bureau\s*gamer|gaming\s*chair|gaming\s*desk|pochette|coque|etui|anti-choc|verre\s*tremp[eé])\b/i;
 // Single gate, run on the RAW cleaned title BEFORE matchRule. Vetoed rows
 // bypass extras caps exactly like bundles (replaces BUNDLE_VETO at call-sites).
 const MONITOR_LAPTOP_VETO = /laptop|\blap\b|notebook|macbook|latitude|thinkpad|ideapad|vivobook|zenbook|elitebook|probook|thinkbook|yoga\b|surface\s*pro|pavilion|zephyrus|tuf\s*[af]\d{2}|\b\d{4,5}(?:hx|hs|h|u)\b|1[3-7][,.]\d|sodimm|so-dimm|so\s*dimm|portable|portatif|pc-portable/i;
 function isVetoed(category, title, url = "") {
   if (url && NON_PC_SLUG_VETO.test(url)) return true;
   if (PHONE_CAR_VETO.test(title) || (url && PHONE_CAR_VETO.test(url))) return true;
+  if (PERIPHERAL_AUDIO_VETO.test(title) || (url && PERIPHERAL_AUDIO_VETO.test(url))) return true;
+  if (category === "printer" && /\b(?:bouteille|cartouche|toner|ruban|encre\s*seul|papier)\b/i.test(title)) return true;
   if (category !== "ssd" && category !== "monitor" && category !== "printer") {
     if (NON_PC_BRAND_VETO.test(title)) return true;
   }
