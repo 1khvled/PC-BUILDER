@@ -63,9 +63,17 @@ module.exports = {
     },
     extend: {
       fontFamily: {
+        // The fallback inside var() is load-bearing. `next/font` emits the
+        // `--font-sans` definition as a generated class whose name is a build
+        // hash (e.g. `__variable_3ccf5d`). If a deploy serves HTML built with
+        // one hash and a stylesheet built with another, the custom property is
+        // simply undefined on <html> -- and because `var()` with no fallback is
+        // invalid at computed-value time, `font-family` collapses to `inherit`
+        // and the ENTIRE site renders in the browser default serif. That is
+        // exactly what production did. With a fallback the worst case is
+        // system sans, which is an acceptable failure.
         sans: [
-          "var(--font-sans)",
-          "-apple-system",
+          "var(--font-sans, -apple-system)",
           "BlinkMacSystemFont",
           "'Segoe UI'",
           "Roboto",

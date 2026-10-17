@@ -137,9 +137,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     // English is the site default and owns the unprefixed routes, so <html lang>
     // is server-rendered here rather than patched by script after the fact.
-    <html lang={HTML_LANG.en} data-locale="en" className={`h-full ${sans.variable}`} suppressHydrationWarning>
+    //
+    // `sans.variable` is a generated class whose name is a build hash. Applying
+    // it here is what normally defines `--font-sans`. The inline script below
+    // re-asserts the property directly on <html> as a backstop, so a deploy
+    // that serves HTML and CSS built from different font-module hashes cannot
+    // leave `--font-sans` undefined -- which would silently drop the entire
+    // site back to the browser default serif.
+    <html
+      lang={HTML_LANG.en}
+      data-locale="en"
+      className={`h-full ${sans.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
+        <style
+          dangerouslySetInnerHTML={{
+            // `sans.style.fontFamily` is the exact stack next/font resolved
+            // for this build (e.g. `"__Inter_3ccf5d","__Inter_Fallback_3ccf5d"`),
+            // which is the same string it writes into the `__variable_*` class.
+            __html: `:root,html{--font-sans:${sans.style.fontFamily}}`,
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col antialiased font-sans overflow-x-hidden selection:bg-[#2c87c3] selection:text-white">
         <>
