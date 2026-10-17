@@ -168,23 +168,21 @@ export default function AliExpressDealsBanner({
     return (
       <aside
         aria-label="AliExpress Deals"
-        className={`group block rounded-xl border border-white/[0.08] bg-gradient-to-r from-[#0c0f18] via-[#101524] to-[#0a0c14] p-3.5 sm:p-4 text-white hover:border-[#0088cc]/50 transition-all shadow-md ${className}`}
+        className={`group block rounded-lg border border-line bg-surface p-3.5 transition-colors hover:border-[#0a63c9]/40 sm:p-4 ${className}`}
       >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-lg bg-[#0088cc]/15 border border-[#0088cc]/30 flex items-center justify-center text-[#38bdf8] shrink-0">
-              <TelegramIcon className="w-4.5 h-4.5 fill-current" />
+        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#0088cc]/10 text-[#0077b3] dark:text-[#38bdf8]">
+              <TelegramIcon className="h-4 w-4 fill-current" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.2 rounded bg-sky-500/15 text-sky-300 font-bold text-[9.5px] uppercase tracking-wider border border-sky-400/20">
-                  Telegram
-                </span>
-                <span className="font-semibold text-sm text-slate-100 truncate">
+                <span className="tag">Telegram</span>
+                <span className="truncate text-sm font-semibold text-ink">
                   {t("aliexpress.bannerTitle")}
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-0.5 line-clamp-1">
+              <p className="mt-0.5 line-clamp-1 text-xs text-ink-3">
                 {t("aliexpress.bannerDesc")}
               </p>
             </div>
@@ -193,71 +191,71 @@ export default function AliExpressDealsBanner({
             href={TELEGRAM_CHANNEL_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-[#0088cc] hover:bg-[#007cb8] text-white text-xs font-semibold transition-all shrink-0"
+            className="btn btn-primary shrink-0 px-4 py-2"
           >
             <span>{t("aliexpress.cta")}</span>
-            <span aria-hidden="true" className="group-hover:translate-x-0.5 transition-transform">→</span>
           </a>
         </div>
       </aside>
     );
   }
 
-  // Full Rich Banner variant (Redesigned: Clean Hardware Aesthetic, Zero AI Slop)
+  // Full Rich Banner variant.
+  //
+  // Same reasoning as the Bytek placements: this was a navy gradient slab with
+  // tinted glass pills, which on the near-black dark canvas read as a blue
+  // rectangle floating in space. It is now a plain surface with an accent
+  // edge and flat tags.
   return (
     <aside
       aria-label="AliExpress Deals & Coupons Channel"
-      className={`rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#0c0f18] via-[#101524] to-[#0a0d15] p-5 sm:p-6 text-white shadow-xl relative overflow-hidden ${className}`}
+      className={`relative overflow-hidden rounded-lg border border-line bg-surface p-5 sm:p-6 ${className}`}
     >
-      {/* Subtle architectural gradient shimmer */}
-      <div className="absolute top-0 right-0 w-80 h-40 bg-gradient-to-b from-[#0088cc]/8 to-transparent pointer-events-none rounded-tr-2xl" />
+      <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#0088cc]" aria-hidden="true" />
 
-      <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
-        <div className="space-y-3 max-w-2xl">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#0088cc]/15 border border-[#0088cc]/30 text-[#38bdf8] text-[11px] font-bold tracking-wide">
-              <TelegramIcon className="w-3.5 h-3.5 fill-current" />
+      <div className="relative z-10 flex flex-col justify-between gap-5 pl-2 sm:pl-3 md:flex-row md:items-center">
+        <div className="max-w-2xl space-y-2.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="tag">
+              <TelegramIcon className="h-3.5 w-3.5 fill-current" />
               <span>@DzAliexpress0</span>
             </span>
-            <span className="px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 border border-white/10 text-[10px] font-semibold uppercase tracking-wider">
-              {t("aliexpress.navBadge")}
-            </span>
+            <span className="tag">{t("aliexpress.navBadge")}</span>
           </div>
 
-          <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white">
+          <h2 className="text-lg font-semibold tracking-tight text-ink sm:text-xl">
             {t("aliexpress.bannerTitle")}
           </h2>
 
-          <p className="text-xs sm:text-sm text-slate-300/90 leading-relaxed">
+          <p className="text-[13px] leading-relaxed text-ink-2">
             {t("aliexpress.bannerDesc")}
           </p>
 
-          <div className="flex flex-wrap gap-2 pt-1 text-xs">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-slate-300 font-medium">
-              <TicketIcon className="w-3.5 h-3.5 text-[#38bdf8]" />
+          <div className="flex flex-wrap gap-1.5 pt-0.5 text-xs">
+            <span className="tag">
+              <TicketIcon className="h-3.5 w-3.5 text-[#0a63c9] dark:text-[#5b9cf5]" />
               <span>{t("aliexpress.badge1")}</span>
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-slate-300 font-medium">
-              <ShieldCheckIcon className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="tag">
+              <ShieldCheckIcon className="h-3.5 w-3.5 text-[#0a7a4a] dark:text-[#4ade9b]" />
               <span>{t("aliexpress.badge2")}</span>
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-slate-300 font-medium">
-              <CpuIcon className="w-3.5 h-3.5 text-indigo-400" />
+            <span className="tag">
+              <CpuIcon className="h-3.5 w-3.5 text-[#0a63c9] dark:text-[#5b9cf5]" />
               <span>{t("aliexpress.badge3")}</span>
             </span>
           </div>
         </div>
 
-        <div className="shrink-0 flex flex-col sm:flex-row md:flex-col gap-2.5 justify-center">
+        <div className="flex shrink-0 flex-col justify-center gap-2.5 sm:flex-row md:flex-col">
           <a
             href={TELEGRAM_CHANNEL_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0088cc] hover:bg-[#007cb8] text-white font-bold text-xs tracking-wide transition-all shadow-[0_2px_12px_rgba(0,136,204,0.3)] hover:shadow-[0_4px_18px_rgba(0,136,204,0.5)] group"
+            className="btn btn-primary px-5 py-2.5"
           >
-            <TelegramIcon className="w-4 h-4 fill-current" />
+            <TelegramIcon className="h-4 w-4 fill-current" />
             <span>{t("aliexpress.cta")}</span>
-            <span aria-hidden="true" className="group-hover:translate-x-1 transition-transform">→</span>
           </a>
         </div>
       </div>

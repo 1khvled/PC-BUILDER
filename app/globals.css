@@ -2,6 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===========================================================================
+   INSTRUMENT DESIGN SYSTEM
+   ---------------------------------------------------------------------------
+   The site is a price database, so the interface is built like an instrument:
+   hairline rules instead of shadows, one accent colour instead of a gradient
+   per widget, monospace for anything numeric, and a flat 4/6px radius scale.
+
+   Everything below is expressed through CSS custom properties, redeclared
+   wholesale in `html.dark`. That is deliberate: the palette does NOT rely on
+   the `.dark .bg-*` remap block further down (which exists to patch the ~500
+   legacy light-mode utility call sites). New components read the vars, so they
+   are correct in both themes on their first render with no `dark:` variants.
+   =========================================================================== */
+
+:root {
+  --dz-canvas: #fafafa;
+  --dz-surface: #ffffff;
+  --dz-subtle: #f5f5f6;
+  --dz-sunken: #efeff1;
+
+  --dz-ink: #0b0b0d;
+  --dz-ink-2: #4f4f58;
+  --dz-ink-3: #6b6b74;
+  --dz-ink-4: #9a9aa3;
+
+  --dz-line: #e5e5e8;
+  --dz-line-strong: #d2d2d8;
+  --dz-line-soft: #f0f0f2;
+
+  --dz-accent: #0a63c9;
+  --dz-accent-hover: #084a97;
+  --dz-accent-soft: #eaf2fc;
+
+  --dz-ok: #0a7a4a;
+  --dz-ok-soft: #e9f7f0;
+  --dz-warn: #8a5d00;
+  --dz-warn-soft: #fdf6e6;
+  --dz-bad: #b42318;
+  --dz-bad-soft: #fdf0ef;
+
+  --dz-focus: #0a63c9;
+
+  color-scheme: light;
+}
+
+html.dark {
+  --dz-canvas: #0a0a0c;
+  --dz-surface: #101014;
+  --dz-subtle: #16161b;
+  --dz-sunken: #1c1c22;
+
+  --dz-ink: #f4f4f5;
+  --dz-ink-2: #a8a8b1;
+  --dz-ink-3: #8b8b93;
+  --dz-ink-4: #5f5f68;
+
+  --dz-line: #232328;
+  --dz-line-strong: #32323a;
+  --dz-line-soft: #1a1a1f;
+
+  --dz-accent: #5b9cf5;
+  --dz-accent-hover: #85b6f8;
+  --dz-accent-soft: #10243c;
+
+  --dz-ok: #4ade9b;
+  --dz-ok-soft: #0c2418;
+  --dz-warn: #f0c168;
+  --dz-warn-soft: #241c0b;
+  --dz-bad: #f98a80;
+  --dz-bad-soft: #2b1512;
+
+  --dz-focus: #5b9cf5;
+
+  color-scheme: dark;
+}
+
 @layer base {
   html {
     -webkit-tap-highlight-color: transparent;
@@ -17,16 +93,24 @@
        land hidden underneath. */
     --dz-header-h: 4.25rem;
     scroll-padding-top: var(--dz-header-h);
+    background-color: var(--dz-canvas);
+    /* The top announcement ticker is `width: max-content` by design, and it is
+       the widest thing on a phone. `overflow-x: hidden` on <body> does NOT
+       stop it: the root element is `visible`, so the viewport still pans
+       sideways by the overflow amount (measured 42px at 390px wide). `clip`
+       on <html> is the correct fix -- unlike `hidden` it does not turn the
+       root into a scroll container, so the sticky header keeps working. */
+    overflow-x: clip;
   }
   @media (min-width: 640px) {
     html {
-      --dz-header-h: 7rem;
+      --dz-header-h: 6.5rem;
     }
   }
   body {
     font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f4f4f3;
-    color: #191b2a;
+    background-color: var(--dz-canvas);
+    color: var(--dz-ink);
   }
   /* One rule, every form: iOS Safari zooms the whole viewport the moment a
      focused field computes below 16px, which leaves the reader zoomed into the
@@ -40,7 +124,13 @@
       font-size: 16px !important;
     }
   }
-  .tabular-nums {
+
+  /* Every figure in the product is compared against another figure, so digits
+     must occupy identical width everywhere or columns shear as values change.
+     This is set on the root rather than applied per-element. */
+  .tabular-nums,
+  table,
+  [class*='tabular'] {
     font-variant-numeric: tabular-nums;
   }
 
@@ -48,6 +138,9 @@
      on its own line is the classic giveaway of an unstyled heading). */
   h1, h2, h3, h4, h5, h6 {
     text-wrap: balance;
+    /* Headlines are set tight. Loose leading on a big heading is the second
+       most reliable "AI wrote this" signal after a gradient fill. */
+    letter-spacing: -0.022em;
   }
   p {
     text-wrap: pretty;
@@ -61,18 +154,18 @@
 
   /* Accessible focus rings */
   *:focus-visible {
-    outline: 2px solid #2c87c3;
+    outline: 2px solid var(--dz-focus);
     outline-offset: 2px;
   }
   ::selection {
-    background: rgba(44, 135, 195, 0.18);
+    background: color-mix(in srgb, var(--dz-accent) 20%, transparent);
   }
 
   /* Slim, theme-matched scrollbars on desktop */
   @media (min-width: 1024px) {
     * {
       scrollbar-width: thin;
-      scrollbar-color: #c3c7d0 transparent;
+      scrollbar-color: var(--dz-line-strong) transparent;
     }
     ::-webkit-scrollbar {
       width: 10px;
@@ -82,112 +175,393 @@
       background: transparent;
     }
     ::-webkit-scrollbar-thumb {
-      background: #c3c7d0;
+      background: var(--dz-line-strong);
       border-radius: 8px;
-      border: 3px solid #f4f4f3;
+      border: 3px solid var(--dz-canvas);
     }
   }
 }
 
 @layer components {
-  /* ---- Surfaces: the one card style of the site (soft depth, 12px radius) ---- */
+  /* =======================================================================
+     SURFACES
+     -----------------------------------------------------------------------
+     One panel style for the entire site: a 1px hairline and a 6px radius.
+     No shadow, no gradient header. Separation comes from the border and from
+     the whitespace around it, which is what lets dense tables stay readable
+     without a page full of floating boxes.
+     ======================================================================= */
   .panel {
-    background: #ffffff;
-    border: 1px solid #e6e7eb;
-    border-radius: 12px;
-    box-shadow: 0 1px 2px rgba(17, 17, 28, 0.04), 0 10px 30px -14px rgba(17, 17, 28, 0.12);
+    background: var(--dz-surface);
+    border: 1px solid var(--dz-line);
+    border-radius: 6px;
   }
+  /* Header strip for a panel. Flat fill + hairline underneath; the previous
+     version used a vertical gradient, which was doing nothing but adding a
+     "chrome" band above content that is mostly numbers. */
   .panel-hd {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    background: linear-gradient(180deg, #fbfbfa 0%, #f2f2f1 100%);
-    border-bottom: 1px solid #e6e7eb;
-    border-radius: 11px 11px 0 0;
-    padding: 10px 16px;
-    font-size: 12px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #585d6e;
+    gap: 12px;
+    background: var(--dz-subtle);
+    border-bottom: 1px solid var(--dz-line);
+    border-radius: 5px 5px 0 0;
+    padding: 9px 14px;
+  }
+  /* A panel that starts with rows rather than a title strip — used for the
+     price tables, where the column headers do the labelling. */
+  .panel-plain {
+    background: var(--dz-surface);
+    border: 1px solid var(--dz-line);
+    border-radius: 6px;
+    overflow: hidden;
   }
 
-  /* Always-light surface.
-     The dark palette flips `bg-white` to #161922, which is right for cards but
-     hides brand marks whose wordmark is dark navy (Bytek Store): the tile went
-     dark and the logo vanished. Use this instead of `bg-white` behind any dark
-     logo so the mark keeps its contrast in both themes. */
+  /* Always-light surface, for dark wordmarks (Bytek Store's tile went dark in
+     dark mode and the navy logo disappeared). */
   .dz-light-tile {
     background-color: #ffffff;
   }
 
-  /* ---- Buttons ---- */
+  /* =======================================================================
+     TYPOGRAPHY PRIMITIVES
+     ======================================================================= */
+
+  /* Micro label: the site uses these as column heads, stat captions and field
+     names instead of the previous rounded pill badges. Uppercase + tracked +
+     mono, at 10-11px, reads as a spec sheet rather than a chip. */
+  .label {
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Segoe UI Mono', Menlo, Consolas, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--dz-ink-3);
+    line-height: 1.4;
+  }
+
+  /* Section heading. One size, one weight, no decorative bar and no dot. */
+  .h-sec {
+    font-size: 15px;
+    font-weight: 650;
+    letter-spacing: -0.012em;
+    color: var(--dz-ink);
+  }
+
+  /* Numbers, spec values, store codes. */
+  .data {
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Segoe UI Mono', Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  /* =======================================================================
+     STATS — a hairline-separated row, not four floating boxes
+     ======================================================================= */
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding-left: 14px;
+    border-left: 1px solid var(--dz-line);
+  }
+  .stat:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .stat-v {
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Segoe UI Mono', Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--dz-ink);
+    line-height: 1.1;
+  }
+  .stat-k {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dz-ink-3);
+  }
+
+  /* =======================================================================
+     TAGS — square-ish status chips
+     ======================================================================= */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid var(--dz-line);
+    background: var(--dz-subtle);
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Segoe UI Mono', Menlo, Consolas, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--dz-ink-2);
+    white-space: nowrap;
+  }
+  .tag-ok { color: var(--dz-ok); background: var(--dz-ok-soft); border-color: color-mix(in srgb, var(--dz-ok) 22%, transparent); }
+  .tag-warn { color: var(--dz-warn); background: var(--dz-warn-soft); border-color: color-mix(in srgb, var(--dz-warn) 22%, transparent); }
+  .tag-bad { color: var(--dz-bad); background: var(--dz-bad-soft); border-color: color-mix(in srgb, var(--dz-bad) 22%, transparent); }
+
+  /* 6px status dot. Still round, because a dot that is a dot. */
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    flex-shrink: 0;
+    background: currentColor;
+  }
+  .dot-ok { color: var(--dz-ok); }
+  .dot-warn { color: var(--dz-warn); }
+  .dot-bad { color: var(--dz-bad); }
+
+  /* =======================================================================
+     BUTTONS
+     -----------------------------------------------------------------------
+     Primary is ink, not blue. A blue-filled button on every surface was the
+     single loudest template tell; making the main action near-black and
+     reserving blue for links/active states removes it everywhere at once.
+     ======================================================================= */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 1;
+    padding: 9px 14px;
+    border: 1px solid transparent;
+    transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .btn:focus-visible {
+    outline: 2px solid var(--dz-focus);
+    outline-offset: 2px;
+  }
+
+  .btn-primary {
+    background: var(--dz-ink);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background: #26262b;
+  }
+  .btn-primary:active {
+    background: #000;
+  }
+  html.dark .btn-primary {
+    /* Not pure white: a #f4f4f5 slab on a near-black canvas reads as a
+       glare patch rather than a button. */
+    background: #e4e4e7;
+    color: #111114;
+  }
+  html.dark .btn-primary:hover {
+    background: #f4f4f5;
+  }
+
+  .btn-secondary {
+    background: var(--dz-surface);
+    color: var(--dz-ink);
+    border-color: var(--dz-line-strong);
+  }
+  .btn-secondary:hover {
+    border-color: var(--dz-ink-4);
+    background: var(--dz-subtle);
+  }
+
+  .btn-accent {
+    background: var(--dz-accent);
+    color: #fff;
+  }
+  .btn-accent:hover {
+    background: var(--dz-accent-hover);
+  }
+
+  .btn-quiet {
+    background: transparent;
+    color: var(--dz-ink-2);
+    border-color: transparent;
+  }
+  .btn-quiet:hover {
+    background: var(--dz-subtle);
+    color: var(--dz-ink);
+  }
+
+  .btn-sm {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  /* Kept for the legacy `btn-blue` / `btn-dark` call sites so existing markup
+     picks up the new flat treatment rather than the old gradient. */
   .btn-blue {
-    background: linear-gradient(180deg, #3a94d2 0%, #2c87c3 100%);
+    background: var(--dz-ink);
     color: #fff;
-    font-weight: 700;
-    border-radius: 10px;
+    font-weight: 600;
+    border-radius: 5px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    box-shadow: 0 1px 2px rgba(21, 63, 91, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22);
-    transition: filter 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+    transition: background-color 0.14s ease;
   }
-  .btn-blue:hover {
-    filter: brightness(1.07);
-    box-shadow: 0 6px 18px -6px rgba(44, 135, 195, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  }
-  .btn-blue:active {
-    filter: brightness(0.94);
-    transform: translateY(1px);
-  }
+  html.dark .btn-blue { background: #e4e4e7; color: #111114; }
+  .btn-blue:hover { background: #26262b; }
 
+  /* Same treatment for the legacy dark-button class. Declared separately
+     rather than with `composes`, which is CSS-Modules-only and silently does
+     nothing in a plain global stylesheet. */
   .btn-dark {
-    background: linear-gradient(180deg, #1e2136 0%, #11111c 100%);
+    background: var(--dz-ink);
     color: #fff;
-    font-weight: 700;
-    border-radius: 10px;
+    font-weight: 600;
+    border-radius: 5px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    box-shadow: 0 1px 2px rgba(17, 17, 28, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    transition: filter 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+    transition: background-color 0.14s ease;
   }
-  .btn-dark:hover {
-    filter: brightness(1.6);
-    box-shadow: 0 6px 18px -6px rgba(17, 17, 28, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  }
-  .btn-dark:active {
-    transform: translateY(1px);
-  }
+  html.dark .btn-dark { background: #e4e4e7; color: #111114; }
+  .btn-dark:hover { background: #26262b; }
 
-  /* ---- Blue links: signature PCPP style ---- */
-  a.pcpp-link, .pcpp-link {
-    color: #2c87c3;
+  /* =======================================================================
+     LINKS
+     ======================================================================= */
+  a.pcpp-link, .pcpp-link, .link {
+    color: var(--dz-accent);
+    text-decoration: none;
   }
-  a.pcpp-link:hover, .pcpp-link:hover {
-    color: #1e5c85;
+  a.pcpp-link:hover, .pcpp-link:hover, .link:hover {
+    color: var(--dz-accent-hover);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
 
-  /* ---- Hero decoration: dotted circuit grid on navy ---- */
+  /* =======================================================================
+     DATA TABLES
+     ======================================================================= */
+  .dz-table {
+    width: 100%;
+    font-size: 13px;
+  }
+  .dz-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--dz-subtle);
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Segoe UI Mono', Menlo, Consolas, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dz-ink-3);
+    text-align: left;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--dz-line);
+    white-space: nowrap;
+  }
+  .dz-table tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--dz-line);
+    vertical-align: middle;
+  }
+  .dz-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .dz-table tbody tr {
+    transition: background-color 0.12s ease;
+  }
+  .dz-table tbody tr:hover {
+    background: var(--dz-subtle);
+  }
+  .num {
+    text-align: right;
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Segoe UI Mono', Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Compact compare control: a 26px checkbox in the card corner. The labelled
+     pill this replaced was 44px tall and appeared on every one of ~200 cards,
+     so the page carried 200 competing buttons and the price stopped being the
+     loudest thing on the row. */
+  .dz-compare-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 4px;
+    border: 1px solid var(--dz-line);
+    background: var(--dz-surface);
+    color: var(--dz-ink-3);
+    cursor: pointer;
+    transition: border-color 0.14s ease, color 0.14s ease, background-color 0.14s ease;
+  }
+  .dz-compare-box:hover {
+    border-color: var(--dz-ink-4);
+    color: var(--dz-ink-2);
+  }
+  .dz-compare-box.is-on {
+    border-color: var(--dz-accent);
+    background: var(--dz-accent-soft);
+    color: var(--dz-accent);
+  }
+  .dz-compare-box-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Stretched link: the anchor expands to cover its positioned ancestor so the
+     whole card is clickable. Lets a card be one link while still hosting real
+     sibling controls (compare, add-to-builder) without nesting anchors. */
+  .dz-stretched { position: static; }
+  .dz-stretched::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    border-radius: inherit;
+  }
+  /* Lift a control above the stretched-link overlay. */
+  .dz-relative { position: relative; z-index: 20; }
+
+  /* =======================================================================
+     DECORATION — toned down to near-invisibility
+     -----------------------------------------------------------------------
+     The old hero texture (a 22px dot grid plus two large radial glows) was
+     built to look like a tech hero. It survives because other components
+     reference the class names, but at these alphas it reads as paper texture
+     rather than as a glowing banner.
+     ======================================================================= */
   .dz-hero-grid {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-    background-size: 22px 22px;
+    background-image: radial-gradient(rgba(127, 127, 140, 0.13) 1px, transparent 1px);
+    background-size: 26px 26px;
   }
   .dz-hero-glow {
     background:
-      radial-gradient(520px 240px at 82% -10%, rgba(44, 135, 195, 0.32), transparent 65%),
-      radial-gradient(420px 220px at 8% 118%, rgba(44, 135, 195, 0.16), transparent 60%);
+      radial-gradient(520px 240px at 82% -10%, color-mix(in srgb, var(--dz-accent) 7%, transparent), transparent 65%);
+  }
+
+  /* A single hairline used as a top accent on a dark band. Replaces the old
+     full-width `via-[#2c87c3]/60` gradient underline. */
+  .dz-accent-rule {
+    background: var(--dz-accent);
   }
 
   /* ---- Skeleton shimmer ---- */
   .dz-skeleton {
-    background: linear-gradient(90deg, #f1f3f6 0%, #e1e6ee 50%, #f1f3f6 100%);
+    background: linear-gradient(90deg, var(--dz-subtle) 0%, var(--dz-sunken) 50%, var(--dz-subtle) 100%);
     background-size: 200% 100%;
     animation: dz-shimmer 1.6s ease-in-out infinite;
   }
@@ -210,7 +584,7 @@
 
 /* ---- Builder click-feedback motion kit (functional, 120–300ms) ---- */
 @keyframes dz-row-flash {
-  0% { background-color: rgba(44, 135, 195, 0.14); }
+  0% { background-color: color-mix(in srgb, var(--dz-accent) 12%, transparent); }
   100% { background-color: transparent; }
 }
 @keyframes dz-modal-pop {
@@ -298,7 +672,7 @@
 }
 
 /* =====================================================================
-   DARK MODE
+   LEGACY DARK-MODE REMAP
    ---------------------------------------------------------------------
    Class strategy: `.dark` lands on <html> before first paint (inline script
    in app/layout.tsx), then ThemeToggle flips it.
@@ -311,90 +685,92 @@
    These rules are deliberately UNLAYERED: unlayered declarations beat
    Tailwind's `utilities` layer regardless of source order, which is what
    lets a single .dark selector flip the whole site.
+
+   New components should use the `--dz-*` custom properties above instead of
+   adding entries to this list.
    ===================================================================== */
 
 /* --- Canvas & base typography --- */
 html.dark {
-  color-scheme: dark;
-  background-color: #0b0d14;
-  scrollbar-color: #39404f #0b0d14;
+  background-color: #0a0a0c;
+  scrollbar-color: #32323a #0a0a0c;
 }
 html.dark body {
-  background-color: #0b0d14;
+  background-color: #0a0a0c;
   color: #e6e9ef;
 }
 html.dark ::-webkit-scrollbar-track {
-  background: #0b0d14;
+  background: #0a0a0c;
 }
 html.dark ::-webkit-scrollbar-thumb {
-  background: #39404f;
-  border-color: #0b0d14;
+  background: #32323a;
+  border-color: #0a0a0c;
 }
 
 /* --- Surfaces --- */
-.dark .bg-white { background-color: #161922; }
-.dark .bg-white\/95 { background-color: rgba(22, 25, 34, 0.95); }
-.dark .bg-white\/90 { background-color: rgba(22, 25, 34, 0.90); }
-.dark .bg-white\/80 { background-color: rgba(22, 25, 34, 0.80); }
+.dark .bg-white { background-color: #101014; }
+.dark .bg-white\/95 { background-color: rgba(16, 16, 20, 0.95); }
+.dark .bg-white\/90 { background-color: rgba(16, 16, 20, 0.90); }
+.dark .bg-white\/80 { background-color: rgba(16, 16, 20, 0.80); }
 .dark .bg-slate-50,
 .dark .bg-slate-50\/40,
 .dark .bg-slate-50\/50,
 .dark .bg-slate-50\/60,
 .dark .bg-slate-50\/70,
-.dark .bg-slate-50\/80 { background-color: #12151d; }
+.dark .bg-slate-50\/80 { background-color: #16161b; }
 .dark .bg-slate-100,
 .dark .bg-slate-100\/70,
-.dark .bg-slate-100\/60 { background-color: #1a1e28; }
+.dark .bg-slate-100\/60 { background-color: #1c1c22; }
 .dark .bg-slate-200,
 .dark .bg-slate-200\/60,
-.dark .bg-slate-200\/70 { background-color: #232833; }
+.dark .bg-slate-200\/70 { background-color: #26262e; }
 /* Already-dark surfaces (navy blocks, dark buttons) stay dark, just tuned. */
-.dark .bg-slate-900 { background-color: #0e1119; }
-.dark .bg-slate-950 { background-color: #0a0c12; }
-.dark .bg-slate-800 { background-color: #151821; }
-.dark .bg-slate-700 { background-color: #1e222d; }
+.dark .bg-slate-900 { background-color: #0e0e12; }
+.dark .bg-slate-950 { background-color: #08080a; }
+.dark .bg-slate-800 { background-color: #16161b; }
+.dark .bg-slate-700 { background-color: #1f1f26; }
 
-/* Panel-header gradients */
-.dark .from-slate-50 { --tw-gradient-from: #12151d var(--tw-gradient-from-position); }
-.dark .to-white { --tw-gradient-to: #12151d var(--tw-gradient-to-position); }
-.dark .from-slate-100 { --tw-gradient-from: #1a1e28 var(--tw-gradient-from-position); }
+/* Panel-header fills */
+.dark .from-slate-50 { --tw-gradient-from: #16161b var(--tw-gradient-from-position); }
+.dark .to-white { --tw-gradient-to: #16161b var(--tw-gradient-to-position); }
+.dark .from-slate-100 { --tw-gradient-from: #1c1c22 var(--tw-gradient-from-position); }
 
 /* --- Tinted (status) surfaces --- */
 .dark .bg-blue-50,
 .dark .bg-blue-50\/40,
 .dark .bg-blue-50\/50,
 .dark .bg-blue-50\/60,
-.dark .bg-blue-50\/80 { background-color: #0e2130; }
-.dark .bg-blue-100 { background-color: #123047; }
+.dark .bg-blue-50\/80 { background-color: #102234; }
+.dark .bg-blue-100 { background-color: #16334c; }
 .dark .bg-emerald-50,
-.dark .bg-emerald-50\/80 { background-color: #0c2419; }
+.dark .bg-emerald-50\/80 { background-color: #0c2418; }
 .dark .bg-emerald-100,
-.dark .bg-emerald-100\/60 { background-color: #0f3323; }
+.dark .bg-emerald-100\/60 { background-color: #103322; }
 .dark .bg-amber-50,
-.dark .bg-amber-50\/80 { background-color: #241c0d; }
+.dark .bg-amber-50\/80 { background-color: #241c0b; }
 .dark .bg-amber-100 { background-color: #33270f; }
 .dark .bg-rose-50,
 .dark .bg-rose-50\/20,
 .dark .bg-rose-50\/30,
 .dark .bg-rose-50\/40,
 .dark .bg-rose-50\/70,
-.dark .bg-red-50 { background-color: #241216; }
+.dark .bg-red-50 { background-color: #2b1512; }
 .dark .bg-rose-100,
-.dark .bg-red-100\/60 { background-color: #341820; }
+.dark .bg-red-100\/60 { background-color: #3a1c18; }
 
 /* --- Text --- */
 .dark .text-slate-900 { color: #f2f4f8; }
 .dark .text-slate-800 { color: #e6e9ef; }
 .dark .text-slate-700 { color: #d2d6df; }
-.dark .text-slate-600 { color: #b0b6c2; }
-.dark .text-slate-500 { color: #98a0ae; }
-.dark .text-slate-400 { color: #8b93a2; }
-.dark .text-slate-300 { color: #6e7686; }
-.dark .text-slate-200 { color: #5a6270; }
+.dark .text-slate-600 { color: #a7adb9; }
+.dark .text-slate-500 { color: #8b93a2; }
+.dark .text-slate-400 { color: #767e8d; }
+.dark .text-slate-300 { color: #636b7a; }
+.dark .text-slate-200 { color: #525a68; }
 .dark .text-\[\#191b2a\] { color: #e8ebf1; }
 
 /* Accent text: lifted for contrast on dark surfaces */
-.dark .text-emerald-800 { color: #6ee7b7; }
+.dark .text-emerald-800 { color: #4ade9b; }
 .dark .text-emerald-700 { color: #34d399; }
 .dark .text-emerald-600 { color: #10b981; }
 .dark .text-blue-700 { color: #93c5fd; }
@@ -414,16 +790,20 @@ html.dark ::-webkit-scrollbar-thumb {
 
 /* --- Component classes that set their own colours --- */
 .dark .panel {
-  background-color: #161922;
-  border-color: #262b36;
+  background-color: #101014;
+  border-color: #232328;
 }
 .dark .panel-hd {
-  background-image: linear-gradient(180deg, #171b24 0%, #12151d 100%);
-  border-bottom-color: #262b36;
-  color: #98a0ae;
+  background-color: #16161b;
+  border-bottom-color: #232328;
+  color: #77777f;
+}
+.dark .panel-plain {
+  background-color: #101014;
+  border-color: #232328;
 }
 .dark .dz-hero-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(150, 150, 165, 0.10) 1px, transparent 1px);
 }
 
 /* --- Platform widgets that ignore the cascade ---
@@ -431,43 +811,45 @@ html.dark ::-webkit-scrollbar-thumb {
    are rendered by the OS, so both need explicit dark values or they flash
    white over the dark UI. */
 .dark ::selection {
-  background: rgba(93, 178, 232, 0.28);
+  background: rgba(91, 156, 245, 0.28);
 }
 .dark ::-moz-selection {
-  background: rgba(93, 178, 232, 0.28);
+  background: rgba(91, 156, 245, 0.28);
 }
 .dark option {
-  background-color: #161922;
+  background-color: #101014;
   color: #e6e9ef;
 }
 .dark input:-webkit-autofill,
 .dark input:-webkit-autofill:hover,
 .dark input:-webkit-autofill:focus {
   -webkit-text-fill-color: #e8ebf1;
-  -webkit-box-shadow: 0 0 0 1000px #161922 inset;
+  -webkit-box-shadow: 0 0 0 1000px #101014 inset;
   caret-color: #e8ebf1;
   transition: background-color 9999s ease-in-out 0s;
 }
 .dark textarea:-webkit-autofill {
   -webkit-text-fill-color: #e8ebf1;
-  -webkit-box-shadow: 0 0 0 1000px #161922 inset;
+  -webkit-box-shadow: 0 0 0 1000px #101014 inset;
 }
 
 .dark a.pcpp-link,
-.dark .pcpp-link { color: #5db2e8; }
+.dark .pcpp-link,
+.dark .link { color: #5b9cf5; }
 .dark a.pcpp-link:hover,
-.dark .pcpp-link:hover { color: #8ac8ef; }
+.dark .pcpp-link:hover,
+.dark .link:hover { color: #85b6f8; }
 
 /* --- Borders & dividers --- */
-.dark .border-slate-100 { border-color: #22262f; }
+.dark .border-slate-100 { border-color: #1d1d23; }
 .dark .border-slate-200,
 .dark .border-slate-200\/60,
 .dark .border-slate-200\/70,
 .dark .border-slate-200\/80,
-.dark .border-slate-200\/90 { border-color: #262b36; }
-.dark .border-slate-300 { border-color: #333947; }
-.dark .divide-slate-100 { border-color: #21252e; }
-.dark .divide-slate-200 { border-color: #262b36; }
+.dark .border-slate-200\/90 { border-color: #232328; }
+.dark .border-slate-300 { border-color: #32323a; }
+.dark .divide-slate-100 { border-color: #1d1d23; }
+.dark .divide-slate-200 { border-color: #232328; }
 .dark .border-blue-100 { border-color: #1d3a52; }
 .dark .border-emerald-200,
 .dark .border-emerald-200\/60,
@@ -477,31 +859,31 @@ html.dark ::-webkit-scrollbar-thumb {
 .dark .border-rose-200,
 .dark .border-rose-200\/60,
 .dark .border-rose-200\/90 { border-color: #4c1d24; }
-.dark .ring-black\/10 { --tw-ring-color: rgba(0, 0, 0, 0.45); }
+.dark .ring-black\/10 { --tw-ring-color: rgba(255, 255, 255, 0.08); }
 
 /* --- Hover states --- */
 .dark .hover\:bg-slate-50:hover,
-.dark .hover\:bg-slate-50\/60:hover { background-color: #171b24; }
+.dark .hover\:bg-slate-50\/60:hover { background-color: #17171c; }
 .dark .hover\:bg-slate-100:hover,
-.dark .group:hover .group-hover\:bg-slate-100 { background-color: #20252f; }
-.dark .hover\:bg-slate-200:hover { background-color: #2a303c; }
-.dark .hover\:bg-slate-700:hover { background-color: #262b36; }
+.dark .group:hover .group-hover\:bg-slate-100 { background-color: #212128; }
+.dark .hover\:bg-slate-200:hover { background-color: #2b2b33; }
+.dark .hover\:bg-slate-700:hover { background-color: #232328; }
 .dark .hover\:bg-blue-50\/40:hover,
 .dark .hover\:bg-blue-50\/50:hover,
-.dark .hover\:bg-blue-50\/60:hover { background-color: #102434; }
-.dark .hover\:bg-blue-100:hover { background-color: #163a54; }
+.dark .hover\:bg-blue-50\/60:hover { background-color: #102234; }
+.dark .hover\:bg-blue-100:hover { background-color: #16334c; }
 .dark .hover\:bg-emerald-50:hover { background-color: #0f3020; }
 .dark .hover\:bg-rose-50\/30:hover,
 .dark .hover\:bg-rose-100:hover { background-color: #2e171d; }
 .dark .hover\:bg-red-50:hover { background-color: #2e171d; }
 
 /* --- Placeholders --- */
-.dark .placeholder\:text-slate-400::placeholder { color: #6e7686; }
-.dark .placeholder\:text-slate-300::placeholder { color: #5a6270; }
+.dark .placeholder\:text-slate-400::placeholder { color: #636b7a; }
+.dark .placeholder\:text-slate-300::placeholder { color: #525a68; }
 
 /* --- Skeletons --- */
 .dark .dz-skeleton {
-  background: linear-gradient(90deg, #131722 0%, #1c2233 50%, #131722 100%);
+  background: linear-gradient(90deg, #14141a 0%, #1e1e26 50%, #14141a 100%);
   background-size: 200% 100%;
 }
 
@@ -533,4 +915,3 @@ html.dark ::-webkit-scrollbar-thumb {
 .dz-ticker-track:hover {
   animation-play-state: paused;
 }
-

@@ -481,7 +481,7 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
       {filteredProducts.length > 0 ? (
         viewMode === "cards" ? (
           /* Denser Magazine Cards View */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
             {filteredProducts.map((p) => {
               const st = productStats.get(p.id);
               const pOffers = st?.offers ?? EMPTY_OFFERS;
@@ -493,149 +493,115 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
               const hasUsed = pOffers.some((o) => o.condition === "used");
 
               return (
-                <div
+                /* Stretched-link card. The whole tile navigates, so there is
+                   no "View offers" button competing with the price; the
+                   secondary controls sit above the overlay on their own z. */
+                <article
                   key={p.id}
-                  className={`rounded-xl p-4 border flex flex-col justify-between overflow-hidden group transition-all hover:shadow-card-hover hover:-translate-y-0.5 ${
+                  className={`group relative flex flex-col rounded-lg border bg-surface transition-colors ${
                     isRupturedProduct
-                      ? "bg-slate-50/70 border-rose-200/90 hover:border-rose-300"
-                      : "bg-white border-slate-200/90 hover:border-[#2c87c3]/60 shadow-card"
+                      ? "border-line-soft"
+                      : "border-line hover:border-[#2c87c3]/45"
                   }`}
                 >
-                  <div>
-                    {/* Top Badges */}
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-blue-50 text-[#2c87c3] border border-blue-100">
-                          {p.category}
-                        </span>
-                        {isRupturedProduct ? (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200 flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse" />
-                            <span>{t("common.outOfStock")}</span>
-                          </span>
-                        ) : hasInStock ? (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            <span>{t("common.inStock")}</span>
-                          </span>
-                        ) : null}
-                        {hasNew && (
-                          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
-                            {t("common.new")}
-                          </span>
-                        )}
-                        {hasUsed && (
-                          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200/70">
-                            {t("common.used")}
-                          </span>
-                        )}
-                      </div>
-                      <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
-                        {t("common.offersCounted", { count: pOffers.length, plural: pluralSuffix(pOffers.length) })}
-                      </span>
-                    </div>
+                  <CompareToggle productId={p.id} locale={locale} compact className="absolute right-2.5 top-2.5 z-20" />
 
-                    {/* Image + Title */}
-                    <div className="flex items-start gap-3.5">
-                      <div className="relative p-1.5 rounded-xl bg-slate-50 border border-slate-100 shrink-0 group-hover:border-blue-100 transition-colors">
-                        <Thumb src={productImage(p)} alt={p.model} size={56} />
-                        {isRupturedProduct && (
-                          <div className="absolute inset-0 bg-white/70 flex items-center justify-center rounded-xl">
-                            <span className="bg-rose-600 text-white text-[8px] font-black uppercase px-1.5 py-0.5 rounded shadow">
-                              {t("common.soldOut")}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <Link
-                          href={href(`/product/${p.id}`)}
-                          className={`font-bold text-sm block leading-snug transition-colors ${
-                            isRupturedProduct
-                              ? "text-slate-700 group-hover:text-rose-600"
-                              : "text-slate-900 group-hover:text-[#2c87c3]"
-                          }`}
-                        >
-                          {p.brand} {p.model}
-                        </Link>
-
-                        {/* Specs Pills */}
-                        <div className="flex flex-wrap gap-1 mt-2">
-                          {specs.map(([k, v]) => (
-                            <span
-                              key={k}
-                              className="text-[10px] px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium"
-                            >
-                              {k}: {String(v)}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Pricing and Action Footer */}
-                  <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <div>
-                        <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider block">
-                          {isRupturedProduct ? t("common.lastKnownPrice") : t("common.from")}
-                        </span>
-                        {best ? (
-                          <div
-                            className={`text-base sm:text-lg font-extrabold tracking-tight tabular-nums ${
-                              isRupturedProduct ? "text-slate-400 line-through" : "text-emerald-700 dark:text-emerald-400"
-                            }`}
-                          >
-                            {formatPrice(best.priceDa, locale)}
-                          </div>
-                        ) : (
-                          <div className="text-xs text-rose-500 font-medium italic">{t("category.offersExhausted")}</div>
-                        )}
-                      </div>
-                      {best && (
-                        <div className="text-right text-[11px] truncate max-w-[170px] text-slate-500 dark:text-slate-400">
-                          {isRupturedProduct ? (
-                            <span className="text-rose-600 dark:text-rose-400 font-semibold">{t("category.outOfStockAtStore", { store: best.store })}</span>
-                          ) : (
-                            <>
-                              {t("common.at")} <b className="text-slate-700 dark:text-slate-200">{best.store}</b>
-                              <span className="text-slate-400 block text-[10px]">({best.wilaya})</span>
-                            </>
-                          )}
+                  <div className="flex gap-3 p-3.5 pb-2.5">
+                    <div className="relative shrink-0">
+                      <Thumb src={productImage(p)} alt={p.model} size={44} />
+                      {isRupturedProduct && (
+                        <div className="absolute inset-0 flex items-center justify-center rounded bg-surface/85">
+                          <span className="data text-[9px] font-bold uppercase text-[#b42318]">
+                            {t("common.soldOut")}
+                          </span>
                         </div>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-1.5 pt-1">
-                      <CompareToggle productId={p.id} locale={locale} />
+                    <div className="min-w-0 flex-1 pr-8">
+                      <Link
+                        href={href(`/product/${p.id}`)}
+                        className={`dz-stretched block text-[13.5px] font-semibold leading-snug ${
+                          isRupturedProduct
+                            ? "text-ink-2"
+                            : "text-ink group-hover:text-[#0a63c9] dark:group-hover:text-[#5b9cf5]"
+                        }`}
+                      >
+                        <span className="dz-break">{p.brand} {p.model}</span>
+                      </Link>
+
+                      {/* Specs read as one monospace line. They used to be
+                          three tinted pills, which on a 200-card page meant
+                          600 small rounded shapes and no scannable row. */}
+                      {specs.length > 0 && (
+                        <div className="data mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-[10.5px] leading-snug text-ink-3">
+                          {specs.map(([k, v], i) => (
+                            <span key={k} className="inline-flex items-center gap-1">
+                              {i > 0 && <span aria-hidden="true" className="text-ink-4">·</span>}
+                              <span className="text-ink-4 uppercase tracking-[0.06em]">{k}</span>
+                              <span className="text-ink-2">{String(v)}</span>
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="mt-2 flex flex-wrap items-center gap-1">
+                        {isRupturedProduct ? (
+                          <span className="tag tag-bad">{t("common.outOfStock")}</span>
+                        ) : hasInStock ? (
+                          <span className="tag tag-ok">
+                            <span className="dot" aria-hidden="true" />
+                            {t("common.inStock")}
+                          </span>
+                        ) : null}
+                        {hasNew && <span className="tag">{t("common.new")}</span>}
+                        {hasUsed && <span className="tag tag-warn">{t("common.used")}</span>}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Price block. The figure is the point of the page, so it
+                      is the largest type on the card and sits on the ink
+                      colour rather than being tinted green for decoration. */}
+                  <div className="mt-auto flex items-end justify-between gap-3 border-t border-line-soft px-3.5 py-2.5">
+                    <div className="min-w-0">
+                      <div className="label">{isRupturedProduct ? t("common.lastKnownPrice") : t("common.from")}</div>
+                      {best ? (
+                        <div
+                          className={`data mt-0.5 text-[17px] font-semibold leading-none tracking-tight ${
+                            isRupturedProduct ? "text-ink-4 line-through" : "text-ink"
+                          }`}
+                        >
+                          {formatPrice(best.priceDa, locale)}
+                        </div>
+                      ) : (
+                        <div className="mt-1 text-[11px] font-medium text-[#b42318]">{t("category.offersExhausted")}</div>
+                      )}
+                      {best && !isRupturedProduct && (
+                        <div className="mt-1 truncate text-[11px] text-ink-3">
+                          {best.store}
+                          <span className="text-ink-4"> · </span>
+                          {best.wilaya}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex shrink-0 items-center gap-2">
+                      <span className="data text-[11px] text-ink-3">
+                        {t("common.offersCounted", { count: pOffers.length, plural: pluralSuffix(pOffers.length) })}
+                      </span>
                       {isBuilderCategory && (
                         <Link
                           href={href(`/builder?add=${p.category}:${p.id}`)}
-                          className={`px-2.5 py-1.5 min-h-[36px] rounded-lg border text-xs font-semibold transition-colors flex items-center shrink-0 ${
-                            isRupturedProduct
-                              ? "border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400"
-                              : "border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] hover:bg-blue-50/50 text-slate-700 dark:border-slate-700 dark:text-slate-300"
-                          }`}
+                          className="btn btn-secondary btn-sm dz-relative"
                           title={isRupturedProduct ? t("category.addBuilderBrokenTitle") : t("common.addToBuilder")}
                         >
                           {isRupturedProduct ? t("category.addBuilderBroken") : t("category.addBuilder")}
                         </Link>
                       )}
-                      <Link
-                        href={href(`/product/${p.id}`)}
-                        className={`flex-1 px-3 py-1.5 min-h-[36px] rounded-lg text-white font-semibold text-xs transition-colors flex items-center justify-center gap-1 text-center shrink-0 ${
-                          isRupturedProduct
-                            ? "bg-rose-600 hover:bg-rose-700"
-                            : "bg-slate-900 hover:bg-[#2c87c3] dark:bg-slate-700 dark:hover:bg-[#2c87c3]"
-                        }`}
-                      >
-                        <span>{isRupturedProduct ? t("common.details") : t("common.viewOffers")}</span>
-                        <span aria-hidden="true">→</span>
-                      </Link>
                     </div>
                   </div>
-                </div>
+                </article>
               );
             })}
           </div>
