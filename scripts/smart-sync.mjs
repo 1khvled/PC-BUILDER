@@ -31,11 +31,15 @@ if (fs.existsSync(envLocalPath)) {
 
 const DRY = process.argv.includes("--dry-run");
 const FORCE = process.argv.includes("--force");
-const DEFAULT_URL = "https://sculmoqvdfcohnvtsrsb.supabase.co";
-const DEFAULT_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNjdWxtb3F2ZGZjb2hudnRzcnNiIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4OTI1MzUzOSwiZXhwIjoyMTA0ODI5NTM5fQ.E3z8bCYuPwQ2apMz5Swk0nDQb0t5D3w4PERWsppj06Y";
+// Credentials come ONLY from the environment or .env.local. A service-role key
+// in source gives anonymous write access to the production database, and the
+// one that used to live here was pushed to a public repo -- treat it as
+// compromised and rotate it in the Supabase dashboard. Do not reinstate a
+// hardcoded fallback.
+const PROJECT_URL = "https://sculmoqvdfcohnvtsrsb.supabase.co";
 
-const URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_URL).replace(/[\r\n]/g, "").trim();
-const KEY = (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_KEY).replace(/[\r\n]/g, "").trim();
+const URL = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || PROJECT_URL).replace(/[\r\n]/g, "").trim();
+const KEY = (process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "").replace(/[\r\n]/g, "").trim();
 
 const CHUNK_SIZE = 100;
 
@@ -98,6 +102,7 @@ export async function smartSync() {
   }
 
   // 1. Freshness Check: check latest update date in Supabase
+  // 1. Freshness Check: check latest update date in Supabase
   if (!FORCE) {
     try {
       const latestOffer = await api("offers?select=day&order=day.desc&limit=1");
@@ -123,9 +128,23 @@ export async function smartSync() {
     }
   }
 
+  // 1. Dry-run barrier. This used to be only a banner above and then the run
+  //    fell through into store/product upserts and, worse, into the obsolete-
+  //    offer prune — deleting live rows "in dry run" like every other step.
+  //    The seed can legitimately be *partial* (it only carries offers bake
+  //    regenerated that day), so walking the prune with a stale seed would
+  //    delete thousands of healthy DB rows. A dry run now reads nothing with
+  //    side effects, reports the seed shape, and stops.
+  if (DRY) {
+    console.log(`[SmartSync] DRY-RUN stop before any write. Seed: ${seed.offers.length} offers / ${seed.products.length} products / ${seed.stores.length} stores (day ${seed.day}).`);
+    console.log("[SmartSync] NB: running a real sync with a *partial* seed prunes every DB offer it doesn't know — regenerate supabase-seed.json with bake first.");
+    return { ok: true, status: "dry_run", offers: seed.offers.length };
+  }
+
   console.log("[SmartSync] Syncing store definitions...");
   // 2. Stores sync: merge duplicates
   await api("stores?on_conflict=name", "POST", seed.stores, { Prefer: "resolution=merge-duplicates" });
+
   const storeRows = await fetchAll("stores?select=id,name");
   const storeIdMap = Object.fromEntries(storeRows.map((s) => [s.name, s.id]));
 

@@ -382,6 +382,7 @@
  "psu-mars-mpb850": "https://wifidjelfa.com/wp-content/uploads/2024/09/101005606084673679.jpg",
  "psu-mars-mpb750": "https://wifidjelfa.com/wp-content/uploads/2023/08/100467883376640032.jpg",
  "psu-850-b": "https://wifidjelfa.com/wp-content/uploads/2025/05/101344981028962501.jpg",
+ "case-gearmaster-gm10": "https://wifidjelfa.com/wp-content/uploads/2026/08/102024641568047407.jpg",
  "case-deepcool-cg380": "https://wifidjelfa.com/wp-content/uploads/2026/08/102024641568047266.jpg",
  "case-gamdias-talos-e3": "https://wifidjelfa.com/wp-content/uploads/2026/06/101938909088317978.jpg",
  "case-antec": "https://wifidjelfa.com/wp-content/uploads/2026/01/101720483912745136.jpg",
@@ -455,7 +456,6 @@
  "psu-gamdias-aura-gp650": "https://informatics-dz.com/wp-content/uploads/2026/01/IMG_1191.jpg",
  "psu-acer-ac750w": "https://informatics-dz.com/wp-content/uploads/2024/05/IMG_0904-2.jpg",
  "case-gearmaster": "https://informatics-dz.com/wp-content/uploads/2026/06/NEW-GM-GM24-SP-EDITION-Black.jpg",
- "case-gearmaster-gm10": "https://informatics-dz.com/wp-content/uploads/2025/03/0-02-05-78e11b8efec5d7685fbaff4d974d2cfce0bd8a4a06088a379771d5bd9217e553_4ef055f1e5a7c997.jpg",
  "mon-hybrok-hp24-100": "https://informatics-dz.com/wp-content/uploads/2026/02/800d1aca-f66d-4e04-962c-b1cfd8c1f0f0.jpg",
  "mon-dahua-lm27-curved": "https://informatics-dz.com/wp-content/uploads/2025/08/0-02-05-3f431f1f18b7dc4cd06ec6d9249960b8170324808503483bea20d5ad90648847_dde3a8e1fa8efb56.jpg",
  "mon-samsung-g3": "https://informatics-dz.com/wp-content/uploads/2024/05/0-02-05-a7ae66949e23ac86959d2a2ad90f4b58ff9e29b785c2bc7d7fc5c268075e41e4_875f38d2fb605b07.jpg",
@@ -476,7 +476,6 @@
  "gpu-rx570-8gb": "https://cdn9.ouedkniss.com/400/medias/announcements/images/pYP75p/4N7r3NNozVZXtnaiowjmoycwc6tU0XIUQIcnuwau.jpg",
  "gpu-rtx3080ti-12gb": "https://cdn7.ouedkniss.com/400/medias/announcements/images/pYP75p/OkvRyYXm9XOBFaq2uFE6SHyIWL1wjWfejEJW9iIi.jpg",
  "gpu-rx580-4gb": "https://cdn8.ouedkniss.com/400/medias/announcements/images/2kX10W/wBHbkXb9LHVsdHbUWCdfKVK9lDcMYOj7ysC18dPU.jpg",
- "ssd-sn580-1tb": "https://cdn7.ouedkniss.com/400/medias/announcements/images/xk80W3/aD1PkZWbQXhT5XPXjNvYjUkTE1OAMUuHrnsTKmsy.jpg",
  "psu-hybrok-750-gold": "https://cdn9.ouedkniss.com/400/medias/announcements/images/zvXz12/nJS6HbH7DWq8XPZRTGJgPZYg2m3YUDsdD08LovVK.jpg",
  "psu-deepcool-pk750d": "https://cdn8.ouedkniss.com/400/medias/announcements/images/Kv9xJ/R17pHvu7083zVTy8RFNUgfE56ZsepSyVwbJ87YW7.jpg",
  "mon-benq-xl2411k": "https://cdn7.ouedkniss.com/400/medias/announcements/images/ZVPMLJ/DM0DU9G67xX0IeNhOdylW9aDNpSShiuEgcgEf8A5.jpg",
@@ -488,7 +487,6 @@
  "psu-cougar-vte600": "https://cdn7.ouedkniss.com/medias/announcements/images/XD1m3l/rYfiFEj3lN0HT4OST4gSSbTqVxMyULWiCT0A8pOU.jpg",
  "gpu-gtx1660-6gb": "https://cdn9.ouedkniss.com/medias/announcements/images/4xEODJ/T2WXw9fLhKuaD1hqGNad6HSQ34loenvAleNfnJve.jpg",
  "cpu-r5-4500": "https://cdn9.ouedkniss.com/medias/announcements/images/Zp6Mv/JGWg6eIpwbf4dPj5FHgEhHgLsTAvSWJ4Q30qR3DI.jpg",
- "gpu-rx5500-4gb": "https://blidacomputer.dz/wp-content/uploads/2025/03/2147.jpg",
  "printer-pantum-p2509": "https://cdn9.ouedkniss.com/medias/announcements/images/jqLzVz/LPBR46on2AcRWHmypIipLT7mQL4fQlKxrlo8Tef5.jpg",
  "cooler-f2002-360": "https://cdn8.ouedkniss.com/medias/announcements/images/voRVQ0/LU2iEpdSDuqY5JNXspbzjKIfpbGuSbFFCwpfYdu9.jpg",
  "gpu-rx6750xt-12gb": "https://cdn9.ouedkniss.com/medias/announcements/images/5yrgLq/Uzftjhfu4xBCCqVlxRntZq8Y9ARcdxOwQiyjGqUY.jpg",
@@ -501,6 +499,6 @@
  "printer-epson-l4260": "https://cdn7.ouedkniss.com/medias/announcements/images/XDDJVg/Kxpq4jEKO9Yb0lExVzIgHUyFjM4PQYHo5mGWNX9x.jpg",
  "printer-epson-l3210": "https://cdn7.ouedkniss.com/medias/announcements/images/BBWLDn/MtRfGCDnCN1dnIVbvURwNAJTdNLqQ6QZQdbtc9RH.jpg",
  "printer-canon-mg2540": "https://cdn7.ouedkniss.com/medias/announcements/images/NNr3v/mn3GjAzqvXLdyEvUGSEbOcsnnxwUBtjMxhAOHbOD.jpg",
- "printer-brother-dcpt520w": "https://blidacomputer.dz/wp-content/uploads/2025/03/9.png",
- "case-capsys-classic": "https://cdn7.ouedkniss.com/medias/announcements/images/lZ7o6/TL4253DZorwtk3ry5QZU0mv3njpKtwJbHcPUk7s7.jpg"
+ "case-capsys-classic": "https://cdn7.ouedkniss.com/medias/announcements/images/lZ7o6/TL4253DZorwtk3ry5QZU0mv3njpKtwJbHcPUk7s7.jpg",
+ "gpu-rx5500-4gb": "https://blidacomputer.dz/wp-content/uploads/2025/03/2147.jpg"
 }

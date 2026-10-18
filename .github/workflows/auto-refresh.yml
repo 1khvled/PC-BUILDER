@@ -77,8 +77,13 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add supabase-seed.json lib/data/live.ts lib/data/live-images.ts full.json || true
+          # bake.cjs writes exactly three files; commit all three. full.json is
+          # deliberately NOT committed: it is 90+MB, gitignored, and only ever
+          # needed locally — adding it here fails the add and slowed every run.
+          git add lib/data/live.ts lib/data/live-images-src.json supabase-seed.json
           git commit -m "chore(data): auto-update catalog & seed [skip ci]" || exit 0
-          git pull --rebase origin main || true
+          # No `|| true` on either of these: a stale base or a rejected push must
+          # fail the job (red) and retry on the next schedule, not silently skip.
+          git pull --rebase origin main
           git push origin main
 
