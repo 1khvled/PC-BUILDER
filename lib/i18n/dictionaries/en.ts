@@ -201,7 +201,7 @@ export const en: Dictionary = {
   "home.statSnapshot": "latest snapshot",
   "home.lowestPrices": "Lowest prices on the market",
   "home.allDeals": "All deals →",
-  "home.tableCaption": "The lowest component prices recorded on the Algerian market, with the store and wilaya of each offer",
+  "home.tableCaption": "The eight lowest prices recorded on the Algerian market",
   "home.howItWorks": "How it works",
   "home.step1Title": "Pick your components",
   "home.step1Text": "Browse the catalog or configure your full build in the System Builder.",
