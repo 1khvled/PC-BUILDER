@@ -1,23 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 
 // ---------------------------------------------------------------------------
-// "Instrument" design system
+// Theme notes
 // ---------------------------------------------------------------------------
-// Two global moves do most of the anti-slop work here, and both are theme
-// replacements rather than per-component edits:
+// Radius and shadow use Tailwind's DEFAULTS. The previous pass replaced both
+// scales wholesale to flatten the cards, which was fighting the framework and
+// left a bespoke scale nothing else could reason about. Flatness now comes from
+// where surfaces are drawn (1px border, no ambient shadow) rather than from
+// shrinking every radius, so the default scale stays intact and `rounded-lg`
+// means the same thing here as it does everywhere else.
 //
-//  1. borderRadius is REPLACED (not extended), so the ~400 existing
-//     `rounded-xl` / `rounded-2xl` call sites collapse from 12px/16px down to
-//     6px/8px in one edit. The old build had a radii soup -- 8/10/12/16 and
-//     `rounded-full` all floating around the same screen -- which is a strong
-//     "generated template" tell. `full` is deliberately kept for the 2px status
-//     dots and the language pill, which should still read as pills.
-//
-//  2. boxShadow is REPLACED and `card` is flattened to `none`. Soft ambient
-//     shadows were applied to *every* surface, so nothing read as a distinct
-//     layer. Structure now comes from hairline borders and whitespace; the only
-//     shadows left in the scale are genuinely floating things (popovers, the
-//     toast, the sticky header on scroll).
+// `zIndex` is an explicit scale. The codebase had eight different arbitrary
+// depths (`z-10` .. `z-[100]`) chosen ad hoc, which made stacking order
+// unreadable and was the single most common cause of "why is this behind
+// that".
 // ---------------------------------------------------------------------------
 module.exports = {
   content: [
@@ -29,50 +25,17 @@ module.exports = {
   // inline script in app/layout.tsx, so there is never a light-mode flash.
   darkMode: "class",
   theme: {
-    // Replacement, not extension — see note 1 above.
-    borderRadius: {
-      none: "0px",
-      xs: "2px",
-      sm: "3px",
-      DEFAULT: "4px",
-      md: "4px",
-      lg: "6px",
-      xl: "6px",
-      "2xl": "8px",
-      "3xl": "10px",
-      full: "9999px",
-    },
-    // Replacement — see note 2 above.
-    boxShadow: {
-      none: "none",
-      xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-      sm: "0 1px 2px 0 rgb(0 0 0 / 0.06)",
-      DEFAULT: "0 1px 3px 0 rgb(0 0 0 / 0.07)",
-      md: "0 4px 12px -2px rgb(0 0 0 / 0.10)",
-      lg: "0 12px 32px -8px rgb(0 0 0 / 0.18)",
-      xl: "0 24px 60px -12px rgb(0 0 0 / 0.24)",
-      "2xl": "0 32px 80px -16px rgb(0 0 0 / 0.28)",
-      inner: "inset 0 2px 4px 0 rgb(0 0 0 / 0.06)",
-      // Flat by design: cards are separated by their 1px border, not a glow.
-      card: "none",
-      "card-hover": "none",
-      // Genuinely floating layers keep a shadow, but always paired with a
-      // hairline ring so they read as attached to a surface, not pasted on.
-      pop: "0 16px 48px -12px rgb(0 0 0 / 0.28)",
-      dropdown: "0 12px 36px -10px rgb(0 0 0 / 0.22)",
-    },
     extend: {
       fontFamily: {
-        // The fallback inside var() is load-bearing. `next/font` emits the
-        // `--font-sans` definition as a generated class whose name is a build
-        // hash (e.g. `__variable_3ccf5d`). If a deploy serves HTML built with
-        // one hash and a stylesheet built with another, the custom property is
-        // simply undefined on <html> -- and because `var()` with no fallback is
-        // invalid at computed-value time, `font-family` collapses to `inherit`
-        // and the ENTIRE site renders in the browser default serif. That is
-        // exactly what production did. With a fallback the worst case is
-        // system sans, which is an acceptable failure.
         sans: [
+          // The fallback inside var() is load-bearing. `next/font` defines
+          // `--font-sans` through a generated class whose name is a build hash.
+          // If a deploy serves HTML built with one hash and a stylesheet built
+          // with another, the property is undefined -- and `var()` with no
+          // fallback is invalid at computed-value time, so font-family collapses
+          // to `inherit` and the whole site renders in the browser default
+          // serif. That happened in production. With a fallback the worst case
+          // is system sans.
           "var(--font-sans, -apple-system)",
           "BlinkMacSystemFont",
           "'Segoe UI'",
@@ -81,8 +44,10 @@ module.exports = {
           "Arial",
           "sans-serif",
         ],
-        // Zero-cost system mono. Reserved for figures, spec keys and micro
-        // labels — the "instrument" cue that this is a data product.
+        // Monospace is reserved for figures and identifiers: prices, spec
+        // values, part numbers, table headers. It is NOT used for headings or
+        // UI prose -- wearing mono everywhere reads as a costume rather than a
+        // hierarchy.
         mono: [
           "ui-monospace",
           "'SF Mono'",
@@ -107,21 +72,16 @@ module.exports = {
           paper: "#f4f4f3",
           line: "#e6e7eb",
         },
-
-        // NOTE: every colour below is a `var()` reference, not a literal.
-        // Tailwind would otherwise bake a static hex into `bg-surface` and
-        // `text-ink`, and those utilities would stay light in dark mode no
-        // matter how the `--dz-*` custom properties were redeclared. Pointing
-        // them at the variables means the dark theme is a single block of
-        // overrides at the top of globals.css instead of `dark:` variants
-        // scattered across every component.
+        // Every token below is a `var()` reference, not a literal. Tailwind
+        // would otherwise bake a static hex into `bg-surface` and `text-ink`,
+        // and those utilities would stay light in dark mode regardless of how
+        // `--dz-*` was redeclared.
         accent: {
           DEFAULT: "var(--dz-accent)",
           hover: "var(--dz-accent-hover)",
           soft: "var(--dz-accent-soft)",
         },
-        // Semantic states. The ONLY other colours allowed to appear, and only
-        // as status -- never as decoration.
+        // Status only. Never decoration.
         ok: { DEFAULT: "var(--dz-ok)", soft: "var(--dz-ok-soft)" },
         warn: { DEFAULT: "var(--dz-warn)", soft: "var(--dz-warn-soft)" },
         bad: { DEFAULT: "var(--dz-bad)", soft: "var(--dz-bad-soft)" },
@@ -142,10 +102,17 @@ module.exports = {
           subtle: "var(--dz-subtle)",
         },
       },
+      // One scale, top to bottom. Pick a name, don't invent a number.
+      zIndex: {
+        base: "0",
+        raised: "10", // sticky sub-layers inside a component (image scrim, overlay)
+        sticky: "20", // sticky headers and bars
+        dropdown: "30", // menus and popovers
+        overlay: "40", // modals, drawers, mobile bottom nav
+        toast: "50", // toasts, tooltips, top progress bar
+        skip: "60", // keyboard-only skip link, must beat everything
+      },
       maxWidth: {
-        // One content width for the whole site. Every `max-w-7xl` in the
-        // codebase now resolves to the same measure, which is what makes the
-        // page edges line up as one system instead of several.
         shell: "1360px",
       },
     },

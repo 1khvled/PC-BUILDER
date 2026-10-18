@@ -57,7 +57,12 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
   const [wilaya, setWilaya] = useState<string>("all");
   const [search, setSearch] = useState<string>("");
   const [inStockOnly, setInStockOnly] = useState<boolean>(false);
-  const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
+  // Table is the default. This is a price-comparison page: the visitor came to
+  // compare prices across stores, and a table presents price, store, wilaya and
+  // stock as scannable columns. Cards forced a 77-item grid of tall tiles with
+  // the number they care about buried mid-card. A saved preference is still
+  // honoured, so this only changes what a first-time visitor sees.
+  const [viewMode, setViewMode] = useState<"cards" | "table">("table");
 
   // --- i18n: dictionary is imported statically, picked at render time --------
   const t = useMemo(() => makeT(locale), [locale]);
@@ -273,14 +278,16 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
               {catLabel}
             </h1>
+            {/* Result count, not a pill badge. It is live status text, so it
+                stays in the heading's baseline and keeps its aria-live region. */}
             <span
-              className="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-[#2c87c3] border border-blue-100"
+              className="data text-[13px] font-medium text-ink-3"
               role="status"
               aria-live="polite"
             >
               {t("category.modelsCounted", { count: filteredProducts.length })}
               {filteredProducts.length !== rawProducts.length && (
-                <span className="text-slate-400 font-semibold"> / {rawProducts.length}</span>
+                <span className="text-ink-4"> / {rawProducts.length}</span>
               )}
             </span>
           </div>
@@ -606,164 +613,142 @@ export default function CategoryCatalogClient({ slug, catLabel, offers: serverOf
             })}
           </div>
         ) : (
-          /* Dense Table View */
-          <div className="bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
-          {/* 700px of table inside a 360px viewport, so it scrolls sideways.
-              A scrollable region must be focusable and named, or it cannot be
-              scrolled at all with a keyboard. */}
-          <div
-            className="overflow-x-auto"
-            tabIndex={0}
-            role="region"
-            aria-label={t("category.viewTableTitle")}
-          >
-            <table className="w-full text-sm min-w-[700px]">
-                <thead className="bg-slate-50/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
-                  <tr>
-                    <th className="text-left px-4 py-3">{t("category.tableProduct")}</th>
-                    <th className="text-left px-3 py-3">{t("category.tableSpecs")}</th>
-                    <th className="text-center px-3 py-3">{t("category.tableOffers")}</th>
-                    <th className="text-center px-3 py-3">{t("category.tableAvailability")}</th>
-                    <th className="text-right px-4 py-3">{t("category.tableBestPrice")}</th>
-                    <th className="text-left px-4 py-3">{t("category.tableStore")}</th>
-                    <th className="text-right px-4 py-3 w-28">{t("category.tableAction")}</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-xs">
-                  {filteredProducts.map((p) => {
-                    const st = productStats.get(p.id);
-                    const pOffers = st?.offers ?? EMPTY_OFFERS;
-                    const hasInStock = st?.inStock ?? false;
-                    const isRupturedProduct = (st?.count ?? 0) > 0 && !hasInStock;
-                    const best = st?.best ?? null;
-                    const specs = Object.entries(p.specs).slice(0, 3);
-
-                    return (
-                      <tr
-                        key={p.id}
-                        className={`transition-colors group ${
-                          isRupturedProduct
-                            ? "bg-rose-50/20 hover:bg-rose-50/40 text-slate-500"
-                            : "hover:bg-blue-50/40"
-                        }`}
-                      >
-                        <td className="px-4 py-3.5">
-                          <div className="flex items-center gap-3">
-                            <Thumb src={productImage(p)} alt={p.model} size={44} />
-                            <div className="min-w-0">
-                              <Link
-                                href={href(`/product/${p.id}`)}
-                                className={`font-bold text-sm block truncate ${
-                                  isRupturedProduct
-                                    ? "text-slate-700 hover:text-rose-600"
-                                    : "text-[#2c87c3] hover:underline"
-                                }`}
-                              >
-                                {p.brand} {p.model}
-                              </Link>
-                            </div>
-                          </div>
-                        </td>
-
-                        <td className="px-3 py-3.5">
-                          <div className="flex flex-wrap gap-1">
-                            {specs.map(([k, v]) => (
-                              <span
-                                key={k}
-                                className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 font-medium border border-slate-200/80"
-                              >
-                                {k}: {String(v)}
-                              </span>
-                            ))}
-                          </div>
-                        </td>
-
-                        <td className="px-3 py-3.5 text-center">
-                          <span className="inline-block px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold text-[11px]">
-                            {pOffers.length}
-                          </span>
-                        </td>
-
-                        {/* Stock Availability Column */}
-                        <td className="px-3 py-3.5 text-center">
-                          {isRupturedProduct ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold text-[10px] border border-rose-200">
-                              <span className="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse" />
-                              {t("common.outOfStock")}
-                            </span>
-                          ) : hasInStock ? (
-                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-bold text-[10px] border border-emerald-200">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                              {t("common.inStock")}
-                            </span>
-                          ) : (
-                            <span className="inline-block px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[10px]">
-                              {t("common.checkAvailability")}
-                            </span>
-                          )}
-                        </td>
-
-                        <td className="px-4 py-3.5 text-right">
-                          {best ? (
-                            <div>
-                              <div
-                                className={`font-extrabold text-sm tabular-nums ${
-                                  isRupturedProduct ? "text-slate-400 line-through" : "text-slate-900"
-                                }`}
-                              >
-                                {formatPrice(best.priceDa, locale)}
-                              </div>
-                              {isRupturedProduct && (
-                                <span className="text-[10px] font-bold text-rose-600">{t("common.soldOut")}</span>
-                              )}
-                            </div>
-                          ) : (
-                            <span className="text-slate-300 font-normal">—</span>
-                          )}
-                        </td>
-
-                        <td className="px-4 py-3.5 text-slate-600">
-                          {best ? (
-                            <div>
-                              <div className="font-semibold text-slate-800 text-xs">{best.store}</div>
-                              <div className="text-[11px] text-slate-400">{best.wilaya}</div>
-                            </div>
-                          ) : (
-                            <span className="text-slate-400 italic">{t("common.noOffer")}</span>
-                          )}
-                        </td>
-
-                        <td className="px-4 py-3.5 text-right">
-                          <div className="inline-flex items-center justify-end gap-1.5">
-                            <CompareToggle productId={p.id} locale={locale} />
-                            {isBuilderCategory && (
-                              <Link
-                                href={href(`/builder?add=${p.category}:${p.id}`)}
-                                className="inline-flex items-center justify-center px-2.5 py-2 min-h-[40px] rounded-lg border border-slate-200 hover:border-[#2c87c3] hover:text-[#2c87c3] text-slate-700 font-semibold text-xs transition-colors"
-                                title={t("common.addToBuilder")}
-                              >
-                                {t("category.addBuilder")}
-                              </Link>
-                            )}
-                            <Link
-                              href={href(`/product/${p.id}`)}
-                              className={`inline-flex items-center justify-center px-3 py-2 min-h-[40px] rounded-lg text-white font-semibold text-xs transition-colors ${
-                                isRupturedProduct ? "bg-rose-600 hover:bg-rose-700" : "bg-slate-900 hover:bg-[#2c87c3]"
-                              }`}
-                            >
-                              {isRupturedProduct ? t("common.details") : `${t("common.viewOffers")} →`}
-                            </Link>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )
-      ) : (
+                    /* Dense Table View. Now the DEFAULT view for this page, so it carries the
+                         weight the card grid used to: price, store and stock as
+                         scannable columns, one compact control per row. */
+                    <div className="panel-plain">
+                    {/* 700px of table inside a 360px viewport, so it scrolls sideways.
+                        A scrollable region must be focusable and named, or it cannot be
+                        scrolled at all with a keyboard. */}
+                    <div
+                      className="overflow-x-auto"
+                      tabIndex={0}
+                      role="region"
+                      aria-label={t("category.viewTableTitle")}
+                    >
+                      <table className="dz-table min-w-[760px]">
+                          <thead>
+                            <tr>
+                              <th scope="col" className="pl-[58px]">{t("category.tableProduct")}</th>
+                              <th scope="col">{t("category.tableSpecs")}</th>
+                              <th scope="col" className="text-center">{t("category.tableOffers")}</th>
+                              <th scope="col" className="text-center">{t("category.tableAvailability")}</th>
+                              <th scope="col" className="text-right">{t("category.tableBestPrice")}</th>
+                              <th scope="col">{t("category.tableStore")}</th>
+                              <th scope="col" className="w-10 text-right pr-3">
+                                <span className="sr-only">{t("category.tableAction")}</span>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {filteredProducts.map((p) => {
+                              const st = productStats.get(p.id);
+                              const pOffers = st?.offers ?? EMPTY_OFFERS;
+                              const hasInStock = st?.inStock ?? false;
+                              const isRupturedProduct = (st?.count ?? 0) > 0 && !hasInStock;
+                              const best = st?.best ?? null;
+                              const specs = Object.entries(p.specs).slice(0, 3);
+          
+                              return (
+                                <tr
+                                  key={p.id}
+                                  className={isRupturedProduct ? "opacity-60" : undefined}
+                                >
+                                  <td className="pl-3">
+                                    <Link
+                                      href={href(`/product/${p.id}`)}
+                                      className="group flex items-center gap-3"
+                                    >
+                                      <Thumb src={productImage(p)} alt={p.model} size={34} />
+                                      <span className="min-w-0">
+                                        <span className="block truncate text-[13px] font-medium text-ink group-hover:text-accent">
+                                          {p.brand} {p.model}
+                                        </span>
+                                      </span>
+                                    </Link>
+                                  </td>
+          
+                                  <td>
+                                    <span className="data flex flex-wrap items-center gap-x-2 text-[10.5px] leading-snug text-ink-3">
+                                      {specs.map(([k, v], i) => (
+                                        <span key={k} className="inline-flex items-center gap-1">
+                                          {i > 0 && <span aria-hidden="true" className="text-ink-4">·</span>}
+                                          <span className="uppercase tracking-[0.06em] text-ink-4">{k}</span>
+                                          <span className="text-ink-2">{String(v)}</span>
+                                        </span>
+                                      ))}
+                                    </span>
+                                  </td>
+          
+                                  <td className="num text-[12px] text-ink-3">{pOffers.length}</td>
+          
+                                  <td className="text-center">
+                                    {isRupturedProduct ? (
+                                      <span className="tag tag-bad">{t("common.outOfStock")}</span>
+                                    ) : hasInStock ? (
+                                      <span className="tag tag-ok">
+                                        <span className="dot" aria-hidden="true" />
+                                        {t("common.inStock")}
+                                      </span>
+                                    ) : (
+                                      <span className="tag">{t("common.checkAvailability")}</span>
+                                    )}
+                                  </td>
+          
+                                  <td className="num">
+                                    {best ? (
+                                      <span
+                                        className={`text-[14px] font-semibold ${
+                                          isRupturedProduct ? "text-ink-4 line-through" : "text-ink"
+                                        }`}
+                                      >
+                                        {formatPrice(best.priceDa, locale)}
+                                      </span>
+                                    ) : (
+                                      <span className="text-ink-4">—</span>
+                                    )}
+                                  </td>
+          
+                                  <td>
+                                    {best ? (
+                                      <span className="block text-[12px]">
+                                        <span className="block truncate font-medium text-ink-2">{best.store}</span>
+                                        <span className="block truncate text-[11px] text-ink-3">{best.wilaya}</span>
+                                      </span>
+                                    ) : (
+                                      <span className="text-[11px] text-ink-4">{t("common.noOffer")}</span>
+                                    )}
+                                  </td>
+          
+                                  {/* One compact control per row. The old row carried
+                                      compare + add-to-builder + view-offers, which is
+                                      three buttons on every one of ~77 rows. */}
+                                  <td className="pr-3">
+                                    <div className="flex items-center justify-end gap-1">
+                                      <CompareToggle
+                                        productId={p.id}
+                                        locale={locale}
+                                        compact
+                                      />
+                                      {isBuilderCategory && (
+                                        <Link
+                                          href={href(`/builder?add=${p.category}:${p.id}`)}
+                                          className="btn btn-secondary btn-sm dz-relative"
+                                          title={t("common.addToBuilder")}
+                                        >
+                                          {t("category.addBuilder")}
+                                        </Link>
+                                      )}
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )      ) : (
         <EmptyState
           type="products"
           title={t("category.emptyTitle", { cat: label })}

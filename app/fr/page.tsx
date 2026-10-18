@@ -6,6 +6,8 @@ import { getOffers, getProducts, getScrapedAt } from "@/lib/data/catalog";
 import { LIVE_EXTRA } from "@/lib/data/live";
 import { GUIDES } from "@/lib/data/guides";
 import Thumb from "@/components/Thumb";
+import { categoryLabel } from "@/lib/i18n/categories";
+import { makeT } from "@/lib/i18n/runtime";
 import BytekAd from "@/components/BytekAd";
 import AliExpressDealsBanner from "@/components/AliExpressDealsBanner";
 
@@ -130,7 +132,7 @@ export default async function Home() {
     })
     .filter((x): x is { p: Product; best: Offer } => Boolean(x.best && x.best.priceDa >= 3000))
     .sort((a, b) => a.best.priceDa - b.best.priceDa)
-    .slice(0, 8);
+    .slice(0, 14);
 
   const popularGuides = GUIDES.slice(0, 2);
 
@@ -140,146 +142,122 @@ export default async function Home() {
     { value: "58", label: "wilayas livrées" },
     { value: scrapedAt.slice(0, 10), label: "dernier relevé" },
   ];
+  // Category labels must be localized; CATEGORIES carries English labels for URLs.
+  const t = makeT("fr");
 
-  return (
-    <main className="pb-12">
-      {/* HERO — see the note on the English home page. The navy slab with a
-          dot-grid texture, radial glows and a gradient word is replaced by a
-          paper band with the live price table beside it, which is what the
-          page is actually for. */}
+
+return (
+    <main>
+      {/* HERO — see the note on the English home page: short masthead, the
+          price table is the product, provenance is one line of facts. */}
       <section className="border-b border-line bg-surface">
-        <div className="mx-auto max-w-shell px-4 pt-9 pb-7 sm:pt-12 sm:pb-9">
-          {/* `grid-cols-1` is load-bearing: see the note on the English home page. */}
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-10">
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="dot dot-ok" aria-hidden="true" />
-                <span className="label">Comparateur indépendant • {liveCount} offres indexées</span>
-              </div>
-
-              <h1 className="mt-3.5 text-[30px] font-bold leading-[1.06] tracking-[-0.032em] sm:text-[44px]">
-                Assemblez votre PC au{" "}
-                <span className="text-[#0a63c9] dark:text-[#5b9cf5]">meilleur prix</span>{" "}
-                en Algérie.
-              </h1>
-
-              <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-ink-2 sm:text-[15px]">
-                Prix relevés chaque jour sur les boutiques DZ, triés par prix croissant.
-                Zéro commission, tri 100% organique — vous achetez directement chez le marchand.
-              </p>
-
-              <div className="mt-6 flex flex-wrap items-center gap-2.5">
-                <Link href="/fr/builder" className="btn btn-primary px-5 py-2.5">
-                  Lancer le System Builder
-                </Link>
-                <Link href="/fr/deals" className="btn btn-secondary px-5 py-2.5">
-                  Voir les bons plans
-                </Link>
-              </div>
-            </div>
-
-            <div className="panel self-start">
-              <div className="panel-hd">
-                <span className="label">Prix les plus bas du marché</span>
-                <Link
-                  href="/fr/deals"
-                  className="text-[11px] font-semibold text-[#0a63c9] hover:underline dark:text-[#5b9cf5]"
-                >
-                  Tous les bons plans
-                </Link>
-              </div>
-              <ul>
-                {trending.slice(0, 6).map(({ p, best }, i) => (
-                  <li key={p.id} className="border-b border-line-soft last:border-b-0">
-                    <Link
-                      href={`/fr/product/${p.id}`}
-                      className="flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-surface-subtle"
-                    >
-                      <span className="data w-4 shrink-0 text-[11px] text-ink-4">{i + 1}</span>
-                      <Thumb src={productImage(p)} alt={p.model} size={32} />
-                      <span className="min-w-0 flex-1 overflow-hidden">
-                        <span className="block truncate text-[12.5px] font-medium text-ink">{p.brand} {p.model}</span>
-                        <span className="block truncate text-[10.5px] text-ink-3">
-                          {best?.store} · {best?.wilaya}
-                        </span>
-                      </span>
-                      <span className="data shrink-0 text-[13px] font-semibold text-ink">
-                        {fmt(best?.priceDa ?? 0)}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <div className="mx-auto max-w-shell px-4 py-8 sm:py-10">
+          <div className="max-w-2xl">
+            <h1 className="text-[28px] font-semibold leading-[1.15] text-balance sm:text-[38px]">
+              Assemblez votre PC au{" "}
+              <span className="text-accent">meilleur prix</span>{" "}
+              en Algérie.
+            </h1>
+            <p className="mt-3 text-[14px] leading-relaxed text-pretty text-ink-2 sm:text-[15px]">
+              Prix relevés chaque jour sur les boutiques DZ, triés par prix croissant.
+              Zéro commission, tri 100% organique — vous achetez directement chez le marchand.
+            </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-x-7 gap-y-4 border-t border-line pt-5 sm:gap-x-9">
-            {stats.map((s) => (
-              <div key={s.label} className="stat">
-                <span className="stat-v">{s.value}</span>
-                <span className="stat-k">{s.label}</span>
-              </div>
-            ))}
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
+            <Link href="/fr/builder" className="btn btn-primary px-4 py-2.5">
+              Lancer le System Builder
+            </Link>
+            <Link href="/fr/deals" className="btn btn-secondary px-4 py-2.5">
+              Voir les bons plans
+            </Link>
+            <dl className="ml-auto flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              {stats.map((st) => (
+                <div key={st.label} className="flex items-baseline gap-1.5">
+                  <dt className="sr-only">{st.label}</dt>
+                  <dd className="data text-[13px] font-semibold text-ink">{st.value}</dd>
+                  <span className="text-[11px] text-ink-3">{st.label}</span>
+                </div>
+              ))}
+            </dl>
           </div>
         </div>
       </section>
 
-      <div className="mx-auto max-w-shell space-y-10 px-4 py-8">
-        {/* Bytek Store Official Partner Ad */}
-        <BytekAd variant="banner" locale="fr" placement="fr-home-top" />
-        <HomeRecentStrip locale={"fr"} />
+      <div className="mx-auto max-w-shell space-y-8 px-4 py-8">
+        {/* Le produit : un vrai tableau de prix, en tête de page. */}
+        <section className="panel-plain">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-3">
+            <h2 className="h-sec">Prix les plus bas du marché</h2>
+            <Link href="/fr/deals" className="text-[12px] font-semibold text-accent hover:underline">
+              Tous les bons plans
+            </Link>
+          </div>
 
-        {/* Comment ça marche */}
-        <section>
-          <h2 className="h-sec mb-3.5">Comment ça marche</h2>
-          <ol className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
-            {[
-              {
-                n: "1",
-                title: "Choisissez vos composants",
-                text: "Parcourez le catalogue ou configurez votre build complet dans le System Builder.",
-                href: "/fr/category/cpu",
-                cta: "Parcourir le catalogue",
-              },
-              {
-                n: "2",
-                title: "Comparez les prix en DA",
-                text: "Chaque produit agrège les offres des boutiques DZ, neuf et occasion séparés.",
-                href: "/fr/deals",
-                cta: "Voir les bons plans",
-              },
-              {
-                n: "3",
-                title: "Achetez chez le marchand",
-                text: "Lien direct vers la boutique, paiement à la livraison, expédition 58 wilayas.",
-                href: "/fr/builder",
-                cta: "Lancer le Builder",
-              },
-            ].map((s) => (
-              <li key={s.n}>
-                <Link
-                  href={s.href}
-                  className="group flex h-full flex-col rounded-lg border border-line bg-surface p-4 transition-colors hover:border-[#0a63c9]/40 dark:hover:border-[#5b9cf5]/40"
-                >
-                  <span className="label">{s.n.padStart(2, "0")}</span>
-                  <span className="mt-2 text-[14px] font-semibold text-ink">{s.title}</span>
-                  <span className="mt-1.5 flex-1 text-[12px] leading-relaxed text-ink-2">{s.text}</span>
-                  <span className="mt-3 text-[12px] font-semibold text-[#0a63c9] group-hover:underline dark:text-[#5b9cf5]">
-                    {s.cta}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ol>
+          <div className="overflow-x-auto">
+            <table className="dz-table min-w-[680px]">
+              <caption className="sr-only">
+                Les prix les plus bas relevés sur le marché algérien, avec la boutique et la wilaya de chaque offre
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col" className="w-10 text-center">#</th>
+                  <th scope="col" className="pl-[46px]">Produit</th>
+                  <th scope="col">Boutique</th>
+                  <th scope="col" className="w-28 text-center">Disponibilité</th>
+                  <th scope="col" className="text-right">Meilleur prix</th>
+                </tr>
+              </thead>
+              <tbody>
+                {trending.map(({ p, best }, i) => (
+                  <tr key={p.id}>
+                    <td className="data text-center text-ink-4">{i + 1}</td>
+                    <td>
+                      <Link href={`/fr/product/${p.id}`} className="group flex items-center gap-3">
+                        <Thumb src={productImage(p)} alt={p.model} size={34} />
+                        <span className="min-w-0">
+                          <span className="block truncate text-[13px] font-medium text-ink group-hover:text-accent">
+                            {p.brand} {p.model}
+                          </span>
+                          <span className="block truncate text-[11px] text-ink-3">
+                            {categoryLabel(p.category, t)}
+                          </span>
+                        </span>
+                      </Link>
+                    </td>
+                    <td className="text-[12px]">
+                      <span className="block truncate font-medium text-ink-2">{best?.store}</span>
+                      <span className="block truncate text-[11px] text-ink-3">{best?.wilaya}</span>
+                    </td>
+                    <td className="text-center">
+                      {best && !isRuptured(best) && best.stock !== "Rupture" && best.stock !== "Sur commande" ? (
+                        <span className="tag tag-ok">
+                          <span className="dot" aria-hidden="true" />
+                          En stock
+                        </span>
+                      ) : (
+                        <span className="tag tag-bad">Rupture</span>
+                      )}
+                    </td>
+                    <td className="num text-[14px] font-semibold text-ink">
+                      {fmt(best?.priceDa ?? 0)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
 
-        {/* Parcourir par catégorie */}
+        {/* Catégories : un index, pas une grille de cartes. */}
         <section>
-          <h2 className="h-sec mb-3.5">Parcourir par catégorie</h2>
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
+          <h2 className="h-sec mb-3">Parcourir par catégorie</h2>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-1 sm:grid-cols-3 lg:grid-cols-5">
             {CATEGORIES.map((c) => {
               const items = products.filter((p) => p.category === c.slug);
-              const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
+              const prices = items
+                .map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity)
+                .filter(Number.isFinite);
               const minPrice = minOf(prices);
               const extraN = LIVE_EXTRA.filter((e) => e.category === c.slug).length;
 
@@ -287,92 +265,116 @@ export default async function Home() {
                 <Link
                   key={c.slug}
                   href={`/fr/category/${c.slug}`}
-                  className="group flex flex-col rounded-lg border border-line bg-surface p-3.5 transition-colors hover:border-[#0a63c9]/40"
+                  className="group flex items-baseline justify-between gap-2 border-b border-line-soft py-2 transition-colors hover:border-accent"
                 >
-                  <span className="flex items-center gap-2">
-                    <CategorySvg slug={c.slug} />
-                    <span className="truncate text-[13px] font-semibold text-ink">{c.label}</span>
-                  </span>
-                  <span className="mt-2.5 block">
-                    <span className="label block">{minPrice ? "dès" : "\u00a0"}</span>
-                    <span className="data mt-0.5 block text-[15px] font-semibold leading-none text-ink">
-                      {minPrice ? fmt(minPrice) : "\u2014"}
+                  <span className="min-w-0">
+                    <span className="block truncate text-[13px] font-medium text-ink group-hover:text-accent">
+                      {categoryLabel(c.slug, t)}
+                    </span>
+                    <span className="text-[11px] text-ink-3">
+                      {items.length} modèle{items.length > 1 ? "s" : ""}
+                      {extraN > 0 && <span className="text-warn"> · +{extraN}</span>}
                     </span>
                   </span>
-                  <span className="mt-1.5 text-[11px] text-ink-3">
-                    {items.length} modèle{items.length > 1 ? "s" : ""}
-                    {extraN > 0 && <span className="text-[#8a5d00] dark:text-[#f0c168]"> · +{extraN} live</span>}
+                  <span className="data shrink-0 text-[12px] font-semibold text-ink-2">
+                    {minPrice ? fmt(minPrice) : "—"}
                   </span>
                 </Link>
               );
             })}
           </div>
+
           {SIDE_CATEGORIES.length > 0 && (
-            <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-3">
-              <span className="label">Périphériques</span>
+            <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-line pt-3">
               <span className="text-[11px] text-ink-3">Matériel bureautique hors configurateur PC</span>
-              <div className="ml-auto flex flex-wrap items-center gap-1.5">
-                {SIDE_CATEGORIES.map((c) => {
-                  const items = products.filter((p) => p.category === c.slug);
-                  const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
-                  const minPrice = minOf(prices);
-                  return (
-                    <Link
-                      key={c.slug}
-                      href={`/fr/category/${c.slug}`}
-                      className="inline-flex items-center gap-1.5 rounded border border-line bg-surface px-2 py-1 text-[11px] font-medium text-ink-2 transition-colors hover:border-[#0a63c9]/40 hover:text-ink"
-                    >
-                      <CategorySvg slug={c.slug} />
-                      <span>{c.label}</span>
-                      {minPrice && <span className="data text-ink-3">dès {fmt(minPrice)}</span>}
-                    </Link>
-                  );
-                })}
-              </div>
+              {SIDE_CATEGORIES.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/fr/category/${c.slug}`}
+                  className="rounded border border-line px-2 py-0.5 text-[11px] font-medium text-ink-2 transition-colors hover:border-accent hover:text-ink"
+                >
+                  {categoryLabel(c.slug, t)}
+                </Link>
+              ))}
             </div>
           )}
         </section>
 
-        {/* AliExpress Deals & Coupons Telegram Channel */}
-        <AliExpressDealsBanner variant="banner" locale="fr" />
+        {/* Comment ça marche, en bandeau compact plutôt qu'en trois cartes. */}
+        <section className="border-y border-line py-5">
+          <h2 className="h-sub mb-3">Comment ça marche</h2>
+          <ol className="grid gap-x-6 gap-y-3 sm:grid-cols-3">
+            {[
+              {
+                n: "1",
+                title: "Choisissez vos composants",
+                text: "Parcourez le catalogue ou configurez votre build complet dans le System Builder.",
+                href: "/fr/category/cpu",
+              },
+              {
+                n: "2",
+                title: "Comparez les prix en DA",
+                text: "Chaque produit agrège les offres des boutiques DZ, neuf et occasion séparés.",
+                href: "/fr/deals",
+              },
+              {
+                n: "3",
+                title: "Achetez chez le marchand",
+                text: "Lien direct vers la boutique, paiement à la livraison, expédition 58 wilayas.",
+                href: "/fr/builder",
+              },
+            ].map((s) => (
+              <li key={s.n} className="flex gap-2.5">
+                <span className="data shrink-0 text-[12px] font-semibold text-accent">
+                  {String(s.n).padStart(2, "0")}
+                </span>
+                <span className="min-w-0">
+                  <Link href={s.href} className="text-[13px] font-medium text-ink hover:text-accent">
+                    {s.title}
+                  </Link>
+                  <p className="mt-0.5 text-[12px] leading-relaxed text-ink-3">{s.text}</p>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </section>
 
-        {/* Guides & Builder CTA */}
-        <div className="grid grid-cols-1 gap-3 lg:grid-cols-5">
-          <section className="panel lg:col-span-3">
-            <div className="panel-hd">
-              <span className="label">Guides d'achat gaming DZ</span>
-              <Link
-                href="/fr/guides"
-                className="text-[11px] font-semibold text-[#0a63c9] hover:underline dark:text-[#5b9cf5]"
-              >
-                Tous les guides
-              </Link>
-            </div>
-            <div>
+        <BytekAd variant="banner" locale="fr" placement="fr-home-top" />
+
+        <div className="grid gap-6 lg:grid-cols-5">
+          <section className="lg:col-span-3">
+            <h2 className="h-sec mb-3">Guides d'achat gaming DZ</h2>
+            <div className="border-t border-line">
               {popularGuides.map((g) => (
                 <Link
                   key={g.slug}
                   href={`/fr/guides/${g.slug}`}
-                  className="group block border-b border-line-soft px-4 py-3 transition-colors last:border-b-0 hover:bg-surface-subtle"
+                  className="group block border-b border-line-soft py-3 transition-colors hover:bg-surface-subtle"
                 >
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="text-[13px] font-semibold text-ink group-hover:text-[#0a63c9] dark:group-hover:text-[#5b9cf5]">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="text-[13px] font-medium text-ink group-hover:text-accent">
                       {g.title}
                     </span>
-                    <span className="data shrink-0 text-[10.5px] text-ink-3">{g.readMin} min</span>
+                    <span className="data shrink-0 text-[11px] text-ink-3">{g.readMin} min</span>
                   </div>
-                  <div className="mt-1 line-clamp-2 text-[11.5px] leading-relaxed text-ink-3">{g.hook}</div>
+                  <p className="mt-1 line-clamp-2 text-[12px] leading-relaxed text-ink-3">{g.hook}</p>
                 </Link>
               ))}
             </div>
+            <Link
+              href="/fr/guides"
+              className="mt-3 inline-block text-[12px] font-semibold text-accent hover:underline"
+            >
+              Tous les guides
+            </Link>
           </section>
 
-          <section className="panel flex flex-col justify-between p-5 lg:col-span-2">
+          <section className="lg:col-span-2 flex flex-col justify-between rounded-lg border border-line bg-surface-subtle p-5">
             <div>
               <span className="tag tag-ok">Configurateur</span>
-              <h3 className="mt-3 text-[17px] font-semibold leading-snug tracking-tight text-ink">
+              <h2 className="mt-3 text-[16px] font-semibold leading-snug text-ink">
                 Votre build complet, chiffré aux prix réels du marché DZ.
-              </h3>
+              </h2>
               <p className="mt-2 text-[12px] leading-relaxed text-ink-2">
                 Vérification de compatibilité automatique, puissance estimée, permalien partageable.
               </p>
@@ -383,6 +385,8 @@ export default async function Home() {
           </section>
         </div>
 
+        <HomeRecentStrip locale={"fr"} />
+        <AliExpressDealsBanner variant="banner" locale="fr" />
         <CurrencyConverter locale="fr" />
       </div>
     </main>

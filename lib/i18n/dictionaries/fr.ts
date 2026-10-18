@@ -195,7 +195,7 @@ export const fr = {
   "home.statSnapshot": "dernier relevé",
   "home.lowestPrices": "Prix les plus bas du marché",
   "home.allDeals": "Tous les bons plans →",
-  "home.tableCaption": "Les huit meilleurs prix relevés sur le marché algérien",
+  "home.tableCaption": "The lowest component prices recorded on the Algerian market, with the store and wilaya of each offer",
   "home.howItWorks": "Comment ça marche",
   "home.step1Title": "Choisissez vos composants",
   "home.step1Text": "Parcourez le catalogue ou configurez votre build complet dans le System Builder.",
