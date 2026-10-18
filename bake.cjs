@@ -79,7 +79,7 @@ const RULES = [
   { cat: "printer", id: "printer-epson-l3110", any: ["l3110"], none: ["tete", "tête", "encre", "cartouche", "bouteille", "tampon", "pad"] },
   { cat: "printer", id: "printer-epson-l4260", any: ["l4260"], none: ["tete", "tête", "encre", "cartouche"] },
   { cat: "printer", id: "printer-epson-l8050", any: ["l8050", "l805"], none: ["tete", "tête", "encre", "cartouche", "bouteille"] },
-  { cat: "printer", id: "printer-epson-m2170", any: ["m2170", "m2140"], none: ["bouteille", "encre"] },
+  { cat: "printer", id: "printer-epson-m2170", all: ["imprimante"], any: ["m2170", "m2140"], none: ["bouteille", "cartouche", "toner", "tampon", "maintenance", "t04d1", "c9345"] },
   { cat: "printer", id: "printer-hp-laser-107w", any: ["107w", "107a"], none: ["toner", "cartouche", "106a"] },
   { cat: "printer", id: "printer-hp-mfp-135w", any: ["135w", "135a"], none: ["toner", "cartouche"] },
   { cat: "printer", id: "printer-hp-smart-tank-580", all: ["smart", "tank"], any: ["580", "515", "516", "530", "670"], none: ["bouteille", "encre"] },
