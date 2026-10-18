@@ -141,7 +141,9 @@ export default function Footer() {
           {/* Brand Col */}
           <div className="lg:col-span-2 space-y-3">
             <div className="flex items-center gap-2.5">
-              <img src="/brand/logo.webp" alt="DZ PartPicker" className="h-5 w-auto object-contain" />
+              <div className="h-8.5 px-2 py-1 rounded-lg bg-[#08090f] border border-blue-500/30 ring-1 ring-cyan-500/15 flex items-center justify-center">
+                <img src="/brand/logo.webp" alt="DZ PartPicker" className="h-4.5 w-auto object-contain" />
+              </div>
               <span className="text-white font-bold text-base tracking-tight">DZ PartPicker</span>
             </div>
             <p className="text-slate-400 text-xs leading-relaxed max-w-sm">

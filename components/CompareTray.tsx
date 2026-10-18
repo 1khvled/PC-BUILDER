@@ -15,17 +15,7 @@ import { productImage, type Product } from "@/lib/data/products";
  * otherwise. Mounted by CategoryCatalogClient; the /compare page reads the
  * same ids from the URL so a shared link works without localStorage.
  */
-export function CompareToggle({
-  productId,
-  locale = DEFAULT_LOCALE,
-  compact = false,
-  className = "",
-}: {
-  productId: string;
-  locale?: Locale;
-  compact?: boolean;
-  className?: string;
-}) {
+export function CompareToggle({ productId, locale = DEFAULT_LOCALE }: { productId: string; locale?: Locale }) {
   const t = makeT(locale);
   const [on, setOn] = useState(false);
 
@@ -47,43 +37,19 @@ export function CompareToggle({
     window.dispatchEvent(new Event("dz-compare"));
   };
 
-  // Compact is the icon-only control used on catalog cards. The labelled
-  // variant below was a 44px-tall pill on every one of ~200 cards, which put
-  // 200 competing buttons on the page and buried the actual price.
-  if (compact) {
-    return (
-      <button
-        type="button"
-        onClick={click}
-        aria-pressed={on}
-        aria-label={on ? t("compare.remove") : t("compare.add")}
-        title={on ? t("compare.remove") : t("compare.add")}
-        className={`dz-compare-box ${on ? "is-on" : ""} ${className}`}
-      >
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" className="dz-compare-box-icon">
-          {on ? (
-            <path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          ) : (
-            <rect x="3.25" y="3.25" width="9.5" height="9.5" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
-          )}
-        </svg>
-      </button>
-    );
-  }
-
   return (
     <button
       type="button"
       onClick={click}
       aria-pressed={on}
       title={on ? t("compare.remove") : t("compare.add")}
-      className={`flex min-h-[36px] items-center rounded border px-2 text-[11px] font-semibold transition-colors ${className} ${
+      className={`flex min-h-[44px] items-center rounded-lg border px-2.5 text-xs font-semibold transition-colors ${
         on
-          ? "border-accent/40 bg-accent-soft text-accent"
-          : "border-slate-200 text-slate-500 hover:border-accent/40 hover:text-accent"
+          ? "border-[#2c87c3] bg-blue-50 text-[#2c87c3]"
+          : "border-slate-200 text-slate-500 hover:border-[#2c87c3] hover:text-[#2c87c3]"
       }`}
     >
-      <span aria-hidden="true" className="mr-1 text-xs">
+      <span aria-hidden="true" className="mr-1 text-sm">
         {on ? "☑" : "☐"}
       </span>
       {t("compare.short")}

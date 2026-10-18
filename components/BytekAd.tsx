@@ -100,21 +100,23 @@ export default function BytekAd({
         href={href}
         target="_blank"
         rel="noopener noreferrer sponsored"
-        className="group block rounded-lg border border-line bg-surface p-3 transition-colors hover:border-[#0a63c9]/40"
+        className="group block rounded-xl bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#0f172a] p-3 text-white border border-indigo-500/30 hover:border-indigo-400 transition-all shadow-md"
       >
         <div className="flex items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2 min-w-0">
-            <span className="tag shrink-0">{t("ad.sponsor")}</span>
-            <span className="truncate font-medium text-ink">{t("ad.compact")}</span>
+            <span className="px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 font-extrabold text-[10px] uppercase tracking-wider border border-indigo-500/40 shrink-0">
+              {t("ad.sponsor")}
+            </span>
+            <span className="font-bold text-slate-100 truncate">{t("ad.compact")}</span>
           </div>
-          <span className="shrink-0 text-[11px] font-semibold text-[#0a63c9] dark:text-[#5b9cf5]">
-            bytekstore.shop
+          <span className="font-extrabold text-indigo-300 group-hover:text-white flex items-center gap-1 shrink-0 text-[11px]">
+            bytekstore.shop <span className="group-hover:translate-x-0.5 transition-transform">→</span>
           </span>
         </div>
         {/* Independence stated on this variant too: it is the one used on every
             text-heavy page, which is exactly where a reader is most likely to
             wonder whether the sponsor bought the placement. */}
-        <p className="mt-1 text-[10px] leading-relaxed text-ink-3">{t("ad.independence")}</p>
+        <p className="mt-1 text-[10px] leading-relaxed text-slate-500">{t("ad.independence")}</p>
       </a>
     );
   }
@@ -126,20 +128,21 @@ export default function BytekAd({
         href={href}
         target="_blank"
         rel="noopener noreferrer sponsored"
-        className="group flex items-center gap-3 rounded-lg border border-line bg-surface p-3 transition-colors hover:border-[#0a63c9]/40 sm:gap-4 sm:p-3.5"
+        className="group flex items-center gap-3 sm:gap-4 rounded-xl border border-indigo-500/25 bg-gradient-to-r from-[#0f172a] via-[#151634] to-[#0f172a] p-3 sm:p-3.5 text-white hover:border-indigo-400/70 transition-all"
       >
-        <span className="dz-light-tile inline-flex items-center rounded border border-line px-1.5 py-1">
-          <BytekLogo className="h-6 w-auto" />
-        </span>
+        <BytekLogo className="h-6 sm:h-7 w-auto" />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            <span className="tag shrink-0">{t("ad.sponsor")}</span>
-            <span className="truncate text-[13px] font-semibold text-ink">{t("ad.title")}</span>
+            <span className="px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-extrabold text-[9px] uppercase tracking-widest border border-indigo-500/40">
+              {t("ad.sponsor")}
+            </span>
+            <span className="font-bold text-[13px] truncate">{t("ad.title")}</span>
           </div>
-          <p className="mt-0.5 line-clamp-2 text-[11px] leading-relaxed text-ink-2">{t("ad.text")}</p>
+          <p className="text-[11px] text-slate-300/90 mt-0.5 line-clamp-2 leading-relaxed">{t("ad.text")}</p>
         </div>
-        <span className="hidden shrink-0 whitespace-nowrap text-xs font-semibold text-[#0a63c9] group-hover:underline sm:inline dark:text-[#5b9cf5]">
-          {t("ad.cta")}
+        <span className="shrink-0 inline-flex items-center gap-1 text-xs font-extrabold text-indigo-300 group-hover:text-white whitespace-nowrap">
+          <span className="hidden sm:inline">{t("ad.cta")}</span>
+          <span className="text-base group-hover:translate-x-0.5 transition-transform">→</span>
         </span>
       </a>
     );
@@ -151,22 +154,23 @@ export default function BytekAd({
         href={href}
         target="_blank"
         rel="noopener noreferrer sponsored"
-        className="group block rounded-lg border border-line bg-surface p-5 transition-colors hover:border-[#0a63c9]/40"
+        className="group block rounded-2xl bg-gradient-to-br from-[#0c0f1d] via-[#14162e] to-[#090b14] text-white border border-indigo-500/30 p-5 hover:border-indigo-400/70 hover:shadow-card-hover transition-all"
       >
-        <div className="flex items-center gap-2.5">
-          <span className="dz-light-tile inline-flex items-center rounded border border-line px-1.5 py-1">
-            <BytekLogo className="h-6 w-auto" />
+        <div className="flex items-center gap-3">
+          <BytekLogo className="h-8 w-auto" />
+          <span className="px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 font-extrabold text-[9px] uppercase tracking-widest border border-indigo-500/40">
+            {t("ad.sponsor")}
           </span>
-          <span className="tag">{t("ad.sponsor")}</span>
         </div>
-        <h3 className="mt-3 text-base font-semibold leading-snug text-ink">
+        <h3 className="font-black text-base text-white mt-3 leading-snug group-hover:text-indigo-200 transition-colors">
           {t("ad.title")}
         </h3>
-        <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-ink-2">{t("ad.text")}</p>
-        <span className="mt-3 inline-block text-xs font-semibold text-[#0a63c9] group-hover:underline dark:text-[#5b9cf5]">
+        <p className="text-xs text-slate-300/90 mt-1.5 leading-relaxed line-clamp-3">{t("ad.text")}</p>
+        <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-extrabold text-indigo-300 group-hover:text-white">
           {t("ad.cta")}
+          <span className="group-hover:translate-x-0.5 transition-transform">→</span>
         </span>
-        <span className="mt-2 block text-[10px] leading-relaxed text-ink-3">{t("ad.independence")}</span>
+        <span className="mt-2 block text-[10px] leading-relaxed text-slate-500">{t("ad.independence")}</span>
       </a>
     );
   }
@@ -175,19 +179,20 @@ export default function BytekAd({
     return (
       <aside
         aria-label="Bytek Store Esports Peripherals"
-        className="relative overflow-hidden rounded-lg border border-line bg-surface p-5 sm:p-7"
+        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c0f1d] via-[#14162e] to-[#090b14] text-white p-5 sm:p-7 border border-indigo-500/35 shadow-xl"
       >
-        <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#0a63c9] dark:bg-[#5b9cf5]" aria-hidden="true" />
+        {/* Ambient glows */}
+        <div className="absolute top-0 right-0 -mt-12 -mr-12 w-64 h-64 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-10 -mb-10 w-48 h-48 bg-[#2c87c3]/15 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-80" />
 
-        <div className="relative z-10 space-y-4 pl-2 sm:pl-3">
+        <div className="relative z-10 space-y-4">
           {/* Header Row */}
-          <div className="flex flex-col justify-between gap-3 border-b border-line pb-4 sm:flex-row sm:items-center">
-            <div className="flex items-center gap-2.5">
-              <span className="dz-light-tile inline-flex items-center rounded border border-line px-1.5 py-1">
-                <BytekLogo className="h-6 w-auto" />
-              </span>
-              <span className="tag tag-ok">
-                <span className="dot" aria-hidden="true" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+            <div className="flex items-center gap-3">
+              <BytekLogo className="h-7 sm:h-8 w-auto" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-extrabold uppercase tracking-widest border border-indigo-500/40">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
                 {t("ad.partner")}
               </span>
             </div>
@@ -195,17 +200,18 @@ export default function BytekAd({
               href={href}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="btn btn-primary self-start px-4 py-2 sm:self-auto"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-extrabold text-xs shadow-md transition-all self-start sm:self-auto group"
             >
               <span>{t("bytek.shopAll")}</span>
+              <span className="group-hover:translate-x-0.5 transition-transform">→</span>
             </a>
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold tracking-tight text-ink sm:text-xl">
+            <h3 className="text-base sm:text-xl font-black text-white tracking-tight">
               {t("bytek.peripheralsTitle")}
             </h3>
-            <p className="mt-1 max-w-3xl text-[13px] leading-relaxed text-ink-2">
+            <p className="text-xs sm:text-sm text-slate-300/90 mt-1 max-w-3xl leading-relaxed">
               {t("bytek.peripheralsSubtitle")}
             </p>
           </div>
@@ -216,22 +222,22 @@ export default function BytekAd({
               href={`${STORE_URL}wireless-gaming-mouse-algeria?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=peripherals_mice&utm_content=${encodeURIComponent(placement)}`}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="group p-3 rounded-lg border border-line bg-surface-subtle hover:border-[#0a63c9]/40 transition-colors flex flex-col justify-between"
+              className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="w-8 h-8 rounded-lg bg-accent-soft text-[#0a63c9] dark:text-[#5b9cf5] flex items-center justify-center mb-2">
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-400/20 text-indigo-300 flex items-center justify-center mb-2">
                   <MouseVector className="w-4 h-4" />
                 </div>
-                <div className="text-xs font-semibold text-ink">
+                <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
                   {t("bytek.catMice")}
                 </div>
-                <div className="text-[11px] text-ink-3 mt-0.5 line-clamp-2 leading-snug">
+                <div className="text-[11px] text-slate-400 mt-0.5 line-clamp-2 leading-snug">
                   {t("bytek.catMiceDesc")}
                 </div>
               </div>
-              <div className="mt-2 text-[10px] font-semibold text-[#0a63c9] dark:text-[#5b9cf5]">
+              <div className="mt-2 text-[10px] text-indigo-400 font-bold flex items-center gap-1">
                 <span>{t("bytek.shopMice")}</span>
-                
+                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
               </div>
             </a>
 
@@ -239,22 +245,22 @@ export default function BytekAd({
               href={`${STORE_URL}gaming-keyboards-algeria?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=peripherals_keyboards&utm_content=${encodeURIComponent(placement)}`}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="group p-3 rounded-lg border border-line bg-surface-subtle hover:border-[#0a63c9]/40 transition-colors flex flex-col justify-between"
+              className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="w-8 h-8 rounded-lg bg-accent-soft text-[#0a63c9] dark:text-[#5b9cf5] flex items-center justify-center mb-2">
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-400/20 text-indigo-300 flex items-center justify-center mb-2">
                   <KeyboardVector className="w-4 h-4" />
                 </div>
-                <div className="text-xs font-semibold text-ink">
+                <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
                   {t("bytek.catKeyboards")}
                 </div>
-                <div className="text-[11px] text-ink-3 mt-0.5 line-clamp-2 leading-snug">
+                <div className="text-[11px] text-slate-400 mt-0.5 line-clamp-2 leading-snug">
                   {t("bytek.catKeyboardsDesc")}
                 </div>
               </div>
-              <div className="mt-2 text-[10px] font-semibold text-[#0a63c9] dark:text-[#5b9cf5]">
+              <div className="mt-2 text-[10px] text-indigo-400 font-bold flex items-center gap-1">
                 <span>{t("bytek.shopKeyboards")}</span>
-                
+                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
               </div>
             </a>
 
@@ -262,22 +268,22 @@ export default function BytekAd({
               href={`${STORE_URL}gaming-headsets-algeria?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=peripherals_audio&utm_content=${encodeURIComponent(placement)}`}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="group p-3 rounded-lg border border-line bg-surface-subtle hover:border-[#0a63c9]/40 transition-colors flex flex-col justify-between"
+              className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="w-8 h-8 rounded-lg bg-accent-soft text-[#0a63c9] dark:text-[#5b9cf5] flex items-center justify-center mb-2">
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-400/20 text-indigo-300 flex items-center justify-center mb-2">
                   <HeadsetVector className="w-4 h-4" />
                 </div>
-                <div className="text-xs font-semibold text-ink">
+                <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
                   {t("bytek.catAudio")}
                 </div>
-                <div className="text-[11px] text-ink-3 mt-0.5 line-clamp-2 leading-snug">
+                <div className="text-[11px] text-slate-400 mt-0.5 line-clamp-2 leading-snug">
                   {t("bytek.catAudioDesc")}
                 </div>
               </div>
-              <div className="mt-2 text-[10px] font-semibold text-[#0a63c9] dark:text-[#5b9cf5]">
+              <div className="mt-2 text-[10px] text-indigo-400 font-bold flex items-center gap-1">
                 <span>{t("bytek.shopAudio")}</span>
-                
+                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
               </div>
             </a>
 
@@ -285,22 +291,22 @@ export default function BytekAd({
               href={`${STORE_URL}gaming-controllers-algeria?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=peripherals_controllers&utm_content=${encodeURIComponent(placement)}`}
               target="_blank"
               rel="noopener noreferrer sponsored"
-              className="group p-3 rounded-lg border border-line bg-surface-subtle hover:border-[#0a63c9]/40 transition-colors flex flex-col justify-between"
+              className="group p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-indigo-400/50 transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="w-8 h-8 rounded-lg bg-accent-soft text-[#0a63c9] dark:text-[#5b9cf5] flex items-center justify-center mb-2">
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/15 border border-indigo-400/20 text-indigo-300 flex items-center justify-center mb-2">
                   <GamepadVector className="w-4 h-4" />
                 </div>
-                <div className="text-xs font-semibold text-ink">
+                <div className="font-extrabold text-xs text-white group-hover:text-indigo-300 transition-colors">
                   {t("bytek.catControllers")}
                 </div>
-                <div className="text-[11px] text-ink-3 mt-0.5 line-clamp-2 leading-snug">
+                <div className="text-[11px] text-slate-400 mt-0.5 line-clamp-2 leading-snug">
                   {t("bytek.catControllersDesc")}
                 </div>
               </div>
-              <div className="mt-2 text-[10px] font-semibold text-[#0a63c9] dark:text-[#5b9cf5]">
+              <div className="mt-2 text-[10px] text-indigo-400 font-bold flex items-center gap-1">
                 <span>{t("bytek.shopControllers")}</span>
-                
+                <span className="group-hover:translate-x-0.5 transition-transform">→</span>
               </div>
             </a>
           </div>
@@ -322,40 +328,36 @@ export default function BytekAd({
     );
   }
 
-  /* Sponsor placement. Previously a navy/indigo gradient slab with two blurred
-     colour glows and a gradient CTA, which read as louder than the product
-     content next to it -- and in dark mode it became a purple-blue rectangle
-     sitting on a near-black canvas. It is now a plain surface with a hairline
-     and an accent left edge: clearly a sponsor, clearly not competing. */
   return (
-    <div className="relative overflow-hidden rounded-lg bg-surface border border-line p-5 sm:p-6">
-      <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#0a63c9] dark:bg-[#5b9cf5]" aria-hidden="true" />
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0c0f1d] via-[#14162e] to-[#090b14] text-white p-6 sm:p-7 border border-indigo-500/30 shadow-xl">
+      {/* Background Glows & Accent */}
+      <div className="absolute top-0 right-0 -mt-10 -mr-10 w-60 h-60 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/3 -mb-10 w-48 h-48 bg-[#2c87c3]/20 rounded-full blur-2xl pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-80" />
 
-      <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pl-2 sm:pl-3">
-        <div className="space-y-2.5 max-w-2xl">
+      <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="space-y-3 max-w-2xl">
           <div className="flex flex-wrap items-center gap-2.5">
-            <span className="dz-light-tile inline-flex items-center rounded border border-line px-1.5 py-1">
-              <BytekLogo className="h-6 w-auto" />
-            </span>
-            <span className="tag">
-              <span className="dot dot-ok" aria-hidden="true" />
+            <BytekLogo className="h-8 sm:h-9 w-auto" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-[10px] font-extrabold uppercase tracking-widest border border-indigo-500/40">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
               {t("ad.partner")}
             </span>
           </div>
 
-          <h3 className="text-[17px] sm:text-xl font-semibold tracking-tight text-ink leading-snug">
+          <h3 className="text-lg sm:text-2xl font-black tracking-tight text-white leading-snug">
             {t("ad.title")}
           </h3>
 
-          <p className="text-[13px] text-ink-2 leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-300/90 leading-relaxed">
             {t("ad.text")}
           </p>
 
           {/* Concrete trust points: the three things that actually decide a purchase */}
           <ul className="flex flex-wrap gap-x-4 gap-y-1.5 pt-0.5">
             {TRUST_POINTS.map((k) => (
-              <li key={k} className="inline-flex items-center gap-1.5 text-[11px] text-ink-2 font-medium">
-                <span className="dot dot-ok" aria-hidden="true" />
+              <li key={k} className="inline-flex items-center gap-1.5 text-[11px] text-slate-300 font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
                 {t(k)}
               </li>
             ))}
@@ -367,17 +369,18 @@ export default function BytekAd({
             href={href}
             target="_blank"
             rel="noopener noreferrer sponsored"
-            className="btn btn-primary px-5 py-2.5"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-extrabold text-sm shadow-lg shadow-indigo-600/30 hover:shadow-indigo-500/50 hover:scale-[1.02] active:scale-[0.98] transition-all text-center"
           >
-            {t("ad.cta")}
+            <span>{t("ad.cta")}</span>
+            <span className="text-base">→</span>
           </a>
-          <span className="text-[11px] text-ink-3 leading-relaxed text-center md:text-right md:max-w-[280px]">
+          <span className="text-[11px] text-slate-400 font-medium text-center md:text-right">
             {t("ad.verified")}
             {/* Guardrail in docs/MONETIZATION-PLAN.md: editorial independence is
                 stated wherever a sponsor is present. Rendering it inside the
                 component means every placement inherits it, including any added
                 later, instead of relying on the footer being read. */}
-            <span className="block mt-0.5">{t("ad.independence")}</span>
+            <span className="block mt-1 max-w-xs">{t("ad.independence")}</span>
           </span>
         </div>
       </div>

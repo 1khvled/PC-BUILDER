@@ -469,17 +469,16 @@ export default async function EnglishProductPage({ params }: { params: { id: str
             </div>
           </div>
 
-          {/* Cross-Sell Sponsor Card. This was a lavender gradient
-              (`from-indigo-50 to-purple-50`) which has no dark-mode counterpart
-              in the remap table, so in dark mode it rendered as a pale slab
-              pinned to the right of the buy box. */}
+          {/* Cross-Sell Sponsor Card */}
           <a
             href="https://bytekstore.shop/?utm_source=dzpartpicker&utm_medium=referral&utm_campaign=sponsor&utm_content=en-product-buybox"
             target="_blank"
             rel="noopener noreferrer sponsored"
-            className="block rounded-lg border border-line bg-surface-subtle p-3 text-[11px] leading-relaxed text-ink-2 transition-colors hover:border-[#0a63c9]/40"
+            className="block rounded-xl border border-indigo-200/70 bg-gradient-to-r from-indigo-50/60 to-purple-50/40 p-3 text-[11px] leading-relaxed text-slate-600 transition-colors hover:border-indigo-300 shadow-2xs"
           >
-            <span className="tag mr-1.5 align-middle">{t("ad.sponsor")}</span>
+            <span className="mr-1.5 rounded-md bg-indigo-600 text-white px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider">
+              {t("ad.sponsor")}
+            </span>
             {t("ad.buybox")}
           </a>
         </div>

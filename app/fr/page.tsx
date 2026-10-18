@@ -142,97 +142,131 @@ export default async function Home() {
   ];
 
   return (
-    <main className="pb-12">
-      {/* HERO — see the note on the English home page. The navy slab with a
-          dot-grid texture, radial glows and a gradient word is replaced by a
-          paper band with the live price table beside it, which is what the
-          page is actually for. */}
-      <section className="border-b border-line bg-surface">
-        <div className="mx-auto max-w-shell px-4 pt-9 pb-7 sm:pt-12 sm:pb-9">
-          {/* `grid-cols-1` is load-bearing: see the note on the English home page. */}
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-10">
-            <div className="min-w-0">
-              <div className="flex items-center gap-2">
-                <span className="dot dot-ok" aria-hidden="true" />
-                <span className="label">Comparateur indépendant • {liveCount} offres indexées</span>
-              </div>
+    <main className="pb-10">
+      {/* Hero band — navy gradient, circuit dots + blue glows */}
+      <section className="relative overflow-hidden bg-[#11111c] text-white">
+        <div className="absolute inset-0 dz-hero-grid" aria-hidden="true" />
+        <div className="absolute inset-0 dz-hero-glow" aria-hidden="true" />
+        {/* accent baseline */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#2c87c3]/60 to-transparent" aria-hidden="true" />
 
-              <h1 className="mt-3.5 text-[30px] font-bold leading-[1.06] tracking-[-0.032em] sm:text-[44px]">
-                Assemblez votre PC au{" "}
-                <span className="text-[#0a63c9] dark:text-[#5b9cf5]">meilleur prix</span>{" "}
-                en Algérie.
-              </h1>
-
-              <p className="mt-4 max-w-xl text-[14px] leading-relaxed text-ink-2 sm:text-[15px]">
-                Prix relevés chaque jour sur les boutiques DZ, triés par prix croissant.
-                Zéro commission, tri 100% organique — vous achetez directement chez le marchand.
-              </p>
-
-              <div className="mt-6 flex flex-wrap items-center gap-2.5">
-                <Link href="/fr/builder" className="btn btn-primary px-5 py-2.5">
-                  Lancer le System Builder
-                </Link>
-                <Link href="/fr/deals" className="btn btn-secondary px-5 py-2.5">
-                  Voir les bons plans
-                </Link>
-              </div>
+        <div className="relative max-w-7xl mx-auto px-4 py-14 sm:py-20">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold text-slate-200">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              </span>
+              Comparateur indépendant • {liveCount} offres indexées
             </div>
-
-            <div className="panel self-start">
-              <div className="panel-hd">
-                <span className="label">Prix les plus bas du marché</span>
-                <Link
-                  href="/fr/deals"
-                  className="text-[11px] font-semibold text-[#0a63c9] hover:underline dark:text-[#5b9cf5]"
-                >
-                  Tous les bons plans
-                </Link>
-              </div>
-              <ul>
-                {trending.slice(0, 6).map(({ p, best }, i) => (
-                  <li key={p.id} className="border-b border-line-soft last:border-b-0">
-                    <Link
-                      href={`/fr/product/${p.id}`}
-                      className="flex items-center gap-3 px-3 py-2.5 transition-colors hover:bg-surface-subtle"
-                    >
-                      <span className="data w-4 shrink-0 text-[11px] text-ink-4">{i + 1}</span>
-                      <Thumb src={productImage(p)} alt={p.model} size={32} />
-                      <span className="min-w-0 flex-1 overflow-hidden">
-                        <span className="block truncate text-[12.5px] font-medium text-ink">{p.brand} {p.model}</span>
-                        <span className="block truncate text-[10.5px] text-ink-3">
-                          {best?.store} · {best?.wilaya}
-                        </span>
-                      </span>
-                      <span className="data shrink-0 text-[13px] font-semibold text-ink">
-                        {fmt(best?.priceDa ?? 0)}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight mt-4 leading-[1.1]">
+              Assemblez votre PC au{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#5db2e8] to-[#2c87c3]">
+                meilleur prix
+              </span>{" "}
+              en Algérie.
+            </h1>
+            <p className="text-sm sm:text-base text-slate-300/90 mt-4 leading-relaxed max-w-2xl">
+              Prix relevés chaque jour sur les boutiques DZ, triés par prix croissant.
+              Zéro commission, tri 100% organique — vous achetez directement chez le marchand.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 mt-7">
+              <Link href="/fr/builder" className="btn-blue px-6 py-3 text-sm">
+                Lancer le System Builder
+                <span aria-hidden="true">→</span>
+              </Link>
+              <Link
+                href="/fr/deals"
+                className="px-6 py-3 rounded-[10px] text-sm font-bold border border-white/20 text-white hover:bg-white/10 transition-colors"
+              >
+                Voir les bons plans
+              </Link>
             </div>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-x-7 gap-y-4 border-t border-line pt-5 sm:gap-x-9">
+          {/* Stats chips */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-10 max-w-3xl">
             {stats.map((s) => (
-              <div key={s.label} className="stat">
-                <span className="stat-v">{s.value}</span>
-                <span className="stat-k">{s.label}</span>
+              <div
+                key={s.label}
+                className="rounded-xl bg-white/[0.08] border border-white/10 px-4 py-3"
+              >
+                <div className="text-lg sm:text-xl font-extrabold tracking-tight text-white tabular-nums truncate">
+                  {s.value}
+                </div>
+                <div className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold mt-0.5">
+                  {s.label}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <div className="mx-auto max-w-shell space-y-10 px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-10 space-y-12">
         {/* Bytek Store Official Partner Ad */}
         <BytekAd variant="banner" locale="fr" placement="fr-home-top" />
         <HomeRecentStrip locale={"fr"} />
 
-        {/* Comment ça marche */}
+        {/* Meilleurs prix du moment — dense price table */}
+        <section className="panel">
+          <div className="panel-hd">
+            <span className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
+              Prix les plus bas du marché
+            </span>
+            <Link href="/fr/deals" className="pcpp-link font-bold normal-case tracking-normal">
+              Tous les bons plans →
+            </Link>
+          </div>
+          <table className="w-full text-sm">
+            <caption className="sr-only">Les huit meilleurs prix relevés sur le marché algérien</caption>
+            <tbody className="divide-y divide-slate-100">
+              {trending.map(({ p, best }, i) => (
+                <tr key={p.id} className="group transition-colors hover:bg-blue-50/40">
+                  {/* Rank is the first thing to go on narrow screens: the
+                      product name and price matter more than its position. */}
+                  <td className="pl-4 py-2.5 w-12 hidden sm:table-cell">
+                    <span className="w-6 h-6 rounded-lg bg-slate-100 group-hover:bg-[#2c87c3] group-hover:text-white text-slate-500 text-[11px] font-extrabold flex items-center justify-center transition-colors tabular-nums">
+                      {i + 1}
+                    </span>
+                  </td>
+                  <td className="pl-4 py-2.5 w-12 sm:pl-4">
+                    <Thumb src={productImage(p)} alt={p.model} size={44} />
+                  </td>
+                  <td className="px-2 py-2.5 min-w-0">
+                    <Link href={`/fr/product/${p.id}`} className="pcpp-link font-bold text-sm dz-break leading-snug">
+                      {p.brand} {p.model}
+                    </Link>
+                    <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5 flex-wrap">
+                      <span>{best?.store}</span>
+                      <span className="text-slate-300">•</span>
+                      <span>{best?.wilaya}</span>
+                      <span className="text-slate-300">•</span>
+                      <span className="text-emerald-600 font-semibold inline-flex items-center gap-1 text-[11px]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        {best?.stock || "En stock"}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-2.5 text-right whitespace-nowrap">
+                    <span className="font-extrabold text-emerald-700 tabular-nums group-hover:text-emerald-600 transition-colors">
+                      {fmt(best?.priceDa ?? 0)}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        {/* How it works — 3 steps */}
         <section>
-          <h2 className="h-sec mb-3.5">Comment ça marche</h2>
-          <ol className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="w-1 h-5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
+            <h2 className="text-lg font-extrabold tracking-tight">Comment ça marche</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               {
                 n: "1",
@@ -256,27 +290,32 @@ export default async function Home() {
                 cta: "Lancer le Builder",
               },
             ].map((s) => (
-              <li key={s.n}>
-                <Link
-                  href={s.href}
-                  className="group flex h-full flex-col rounded-lg border border-line bg-surface p-4 transition-colors hover:border-[#0a63c9]/40 dark:hover:border-[#5b9cf5]/40"
-                >
-                  <span className="label">{s.n.padStart(2, "0")}</span>
-                  <span className="mt-2 text-[14px] font-semibold text-ink">{s.title}</span>
-                  <span className="mt-1.5 flex-1 text-[12px] leading-relaxed text-ink-2">{s.text}</span>
-                  <span className="mt-3 text-[12px] font-semibold text-[#0a63c9] group-hover:underline dark:text-[#5b9cf5]">
-                    {s.cta}
+              <Link
+                key={s.n}
+                href={s.href}
+                className="panel p-5 group hover:border-[#2c87c3]/50 hover:shadow-card-hover transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="w-9 h-9 rounded-xl bg-blue-50 text-[#2c87c3] border border-blue-100 flex items-center justify-center font-extrabold text-sm">
+                    {s.n}
                   </span>
-                </Link>
-              </li>
+                  <span className="text-slate-300 group-hover:text-[#2c87c3] group-hover:translate-x-1 transition-all" aria-hidden="true">→</span>
+                </div>
+                <div className="font-bold text-sm mt-3.5">{s.title}</div>
+                <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">{s.text}</p>
+                <span className="pcpp-link text-xs font-bold mt-2.5 inline-block">{s.cta}</span>
+              </Link>
             ))}
-          </ol>
+          </div>
         </section>
 
         {/* Parcourir par catégorie */}
         <section>
-          <h2 className="h-sec mb-3.5">Parcourir par catégorie</h2>
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="w-1 h-5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
+            <h2 className="text-lg font-extrabold tracking-tight">Parcourir par catégorie</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {CATEGORIES.map((c) => {
               const items = products.filter((p) => p.category === c.slug);
               const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
@@ -287,31 +326,44 @@ export default async function Home() {
                 <Link
                   key={c.slug}
                   href={`/fr/category/${c.slug}`}
-                  className="group flex flex-col rounded-lg border border-line bg-surface p-3.5 transition-colors hover:border-[#0a63c9]/40"
+                  className="group bg-white dark:bg-[#121623] rounded-xl border border-slate-200/90 dark:border-white/[0.08] p-3.5 sm:p-4 flex items-center gap-3.5 hover:border-[#2c87c3]/70 hover:shadow-card-hover transition-all duration-150"
                 >
-                  <span className="flex items-center gap-2">
+                  <div className="w-11 h-11 rounded-lg bg-slate-100 dark:bg-white/[0.06] border border-slate-200/70 dark:border-white/10 text-slate-700 dark:text-slate-200 flex items-center justify-center shrink-0 group-hover:bg-[#2c87c3]/10 group-hover:text-[#2c87c3] group-hover:border-[#2c87c3]/30 transition-all">
                     <CategorySvg slug={c.slug} />
-                    <span className="truncate text-[13px] font-semibold text-ink">{c.label}</span>
-                  </span>
-                  <span className="mt-2.5 block">
-                    <span className="label block">{minPrice ? "dès" : "\u00a0"}</span>
-                    <span className="data mt-0.5 block text-[15px] font-semibold leading-none text-ink">
-                      {minPrice ? fmt(minPrice) : "\u2014"}
-                    </span>
-                  </span>
-                  <span className="mt-1.5 text-[11px] text-ink-3">
-                    {items.length} modèle{items.length > 1 ? "s" : ""}
-                    {extraN > 0 && <span className="text-[#8a5d00] dark:text-[#f0c168]"> · +{extraN} live</span>}
-                  </span>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-[#2c87c3] transition-colors tracking-tight">
+                      {c.label}
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 flex items-center gap-1.5 flex-wrap">
+                      <span>{items.length} modèle{items.length > 1 ? "s" : ""}</span>
+                      {minPrice ? (
+                        <>
+                          <span className="text-slate-300 dark:text-slate-600">•</span>
+                          <span className="text-emerald-700 dark:text-emerald-400 font-semibold">
+                            dès {fmt(minPrice)}
+                          </span>
+                        </>
+                      ) : null}
+                      {extraN > 0 && <span className="text-amber-600 dark:text-amber-400 font-semibold">• +{extraN} live</span>}
+                    </div>
+                  </div>
+                  <svg className="w-4 h-4 text-slate-300 dark:text-slate-600 group-hover:text-[#2c87c3] group-hover:translate-x-0.5 transition-all shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
                 </Link>
               );
             })}
           </div>
           {SIDE_CATEGORIES.length > 0 && (
-            <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-line pt-3">
-              <span className="label">Périphériques</span>
-              <span className="text-[11px] text-ink-3">Matériel bureautique hors configurateur PC</span>
-              <div className="ml-auto flex flex-wrap items-center gap-1.5">
+            <div className="mt-4 pt-4 border-t border-slate-100 dark:border-white/10 flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300 font-semibold uppercase text-[10px] tracking-wider">
+                  Périphériques
+                </span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">Matériel bureautique hors configurateur PC</span>
+              </div>
+              <div className="flex items-center gap-2">
                 {SIDE_CATEGORIES.map((c) => {
                   const items = products.filter((p) => p.category === c.slug);
                   const prices = items.map((p) => bestOffer(p.id, offers)?.priceDa ?? Infinity).filter(Number.isFinite);
@@ -320,11 +372,21 @@ export default async function Home() {
                     <Link
                       key={c.slug}
                       href={`/fr/category/${c.slug}`}
-                      className="inline-flex items-center gap-1.5 rounded border border-line bg-surface px-2 py-1 text-[11px] font-medium text-ink-2 transition-colors hover:border-[#0a63c9]/40 hover:text-ink"
+                      className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-[#121623] hover:border-[#2c87c3] text-slate-700 dark:text-slate-200 hover:text-[#2c87c3] text-xs font-semibold transition-all shadow-2xs group"
                     >
                       <CategorySvg slug={c.slug} />
                       <span>{c.label}</span>
-                      {minPrice && <span className="data text-ink-3">dès {fmt(minPrice)}</span>}
+                      <span className="text-[11px] text-slate-400 font-normal">
+                        ({items.length} modèle{items.length > 1 ? "s" : ""})
+                      </span>
+                      {minPrice ? (
+                        <span className="text-emerald-700 dark:text-emerald-400 font-bold text-[11px]">
+                          • dès {fmt(minPrice)}
+                        </span>
+                      ) : null}
+                      <svg className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-[#2c87c3] group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
                     </Link>
                   );
                 })}
@@ -337,48 +399,49 @@ export default async function Home() {
         <AliExpressDealsBanner variant="banner" locale="fr" />
 
         {/* Guides & Builder CTA */}
-        <div className="grid grid-cols-1 gap-3 lg:grid-cols-5">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+          {/* Guides */}
           <section className="panel lg:col-span-3">
             <div className="panel-hd">
-              <span className="label">Guides d'achat gaming DZ</span>
-              <Link
-                href="/fr/guides"
-                className="text-[11px] font-semibold text-[#0a63c9] hover:underline dark:text-[#5b9cf5]"
-              >
-                Tous les guides
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2c87c3]" aria-hidden="true" />
+                Guides d'achat gaming DZ
+              </span>
+              <Link href="/fr/guides" className="pcpp-link font-bold normal-case tracking-normal">
+                Tous les guides →
               </Link>
             </div>
-            <div>
+            <div className="divide-y divide-slate-100">
               {popularGuides.map((g) => (
-                <Link
-                  key={g.slug}
-                  href={`/fr/guides/${g.slug}`}
-                  className="group block border-b border-line-soft px-4 py-3 transition-colors last:border-b-0 hover:bg-surface-subtle"
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="text-[13px] font-semibold text-ink group-hover:text-[#0a63c9] dark:group-hover:text-[#5b9cf5]">
-                      {g.title}
-                    </span>
-                    <span className="data shrink-0 text-[10.5px] text-ink-3">{g.readMin} min</span>
+                <Link key={g.slug} href={`/fr/guides/${g.slug}`} className="block px-4 py-3.5 hover:bg-blue-50/40 transition-colors group">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-bold text-sm pcpp-link">{g.title}</span>
+                    <span className="text-[11px] text-slate-400 shrink-0 bg-slate-100 px-2 py-0.5 rounded-full">⏱ {g.readMin} min</span>
                   </div>
-                  <div className="mt-1 line-clamp-2 text-[11.5px] leading-relaxed text-ink-3">{g.hook}</div>
+                  <div className="text-xs text-slate-500 mt-1 truncate">{g.hook}</div>
                 </Link>
               ))}
             </div>
           </section>
 
-          <section className="panel flex flex-col justify-between p-5 lg:col-span-2">
-            <div>
-              <span className="tag tag-ok">Configurateur</span>
-              <h3 className="mt-3 text-[17px] font-semibold leading-snug tracking-tight text-ink">
+          {/* Builder promo card */}
+          <section className="lg:col-span-2 relative overflow-hidden rounded-xl bg-[#11111c] text-white p-6 flex flex-col justify-between min-h-[220px] shadow-card">
+            <div className="absolute inset-0 dz-hero-grid opacity-60" aria-hidden="true" />
+            <div className="absolute inset-0 dz-hero-glow" aria-hidden="true" />
+            <div className="relative">
+              <span className="inline-block px-2.5 py-1 rounded-full bg-[#2c87c3]/20 border border-[#2c87c3]/40 text-[11px] font-bold uppercase tracking-wider text-[#7cc0ea]">
+                Configurateur
+              </span>
+              <h3 className="text-xl font-extrabold tracking-tight mt-3 leading-snug">
                 Votre build complet, chiffré aux prix réels du marché DZ.
               </h3>
-              <p className="mt-2 text-[12px] leading-relaxed text-ink-2">
+              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
                 Vérification de compatibilité automatique, puissance estimée, permalien partageable.
               </p>
             </div>
-            <Link href="/fr/builder" className="btn btn-primary mt-5 self-start px-4 py-2.5">
+            <Link href="/fr/builder" className="relative btn-blue px-5 py-2.5 text-sm self-start mt-5">
               Ouvrir le System Builder
+              <span aria-hidden="true">→</span>
             </Link>
           </section>
         </div>
